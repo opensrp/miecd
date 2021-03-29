@@ -1,0 +1,160 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/ConnectedHeader renders the ConnectedHeader component 1`] = `
+Object {
+  "children": Array [
+    <nav
+      id="image-settings"
+    >
+      <Link
+        to="/"
+      >
+        <img
+          alt="OpenSRP"
+          src="logo.png"
+        />
+        <img
+          alt="OpenSRP"
+          src="vietnam-moh.png"
+        />
+      </Link>
+    </nav>,
+    <NavbarToggler
+      onClick={[Function]}
+      tag="button"
+      type="button"
+    />,
+    <Collapse
+      appear={false}
+      enter={true}
+      exit={true}
+      in={false}
+      isOpen={false}
+      mountOnEnter={false}
+      navbar={true}
+      onEnter={[Function]}
+      onEntered={[Function]}
+      onEntering={[Function]}
+      onExit={[Function]}
+      onExited={[Function]}
+      onExiting={[Function]}
+      tag="div"
+      timeout={350}
+      unmountOnExit={false}
+    >
+      <Nav
+        className="ml-auto"
+        navbar={true}
+        tag="ul"
+        vertical={false}
+      >
+        <NavLink
+          activeClassName="active"
+          className="nav-link"
+          to="/login"
+        >
+          Login
+        </NavLink>
+      </Nav>
+    </Collapse>,
+  ],
+  "expand": "md",
+  "tag": "nav",
+}
+`;
+
+exports[`components/ConnectedHeader renders the ConnectedHeader when logged in 1`] = `
+Object {
+  "children": Array [
+    <nav
+      id="image-settings"
+    >
+      <Link
+        to="/"
+      >
+        <img
+          alt="OpenSRP"
+          src="logo.png"
+        />
+        <img
+          alt="OpenSRP"
+          src="vietnam-moh.png"
+        />
+      </Link>
+    </nav>,
+    <NavbarToggler
+      onClick={[Function]}
+      tag="button"
+      type="button"
+    />,
+    <Collapse
+      appear={false}
+      enter={true}
+      exit={true}
+      in={false}
+      isOpen={false}
+      mountOnEnter={false}
+      navbar={true}
+      onEnter={[Function]}
+      onEntered={[Function]}
+      onEntering={[Function]}
+      onExit={[Function]}
+      onExited={[Function]}
+      onExiting={[Function]}
+      tag="div"
+      timeout={350}
+      unmountOnExit={false}
+    >
+      <Nav
+        className="ml-auto"
+        navbar={true}
+        tag="ul"
+        vertical={false}
+      >
+        <UncontrolledDropdown
+          inNavbar={true}
+          nav={true}
+        >
+          <DropdownToggle
+            aria-haspopup={true}
+            caret={true}
+            color="secondary"
+            nav={true}
+          >
+            <FontAwesomeIcon
+              icon={
+                Array [
+                  "far",
+                  "user",
+                ]
+              }
+            />
+             
+            RobertBaratheon
+          </DropdownToggle>
+          <DropdownMenu
+            flip={true}
+            right={true}
+            tag="div"
+          >
+            <DropdownItem
+              tag="button"
+              toggle={true}
+            >
+              <NavLink
+                activeClassName="active"
+                className="nav-link"
+                to="/logout"
+              >
+                Sign Out
+              </NavLink>
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+      </Nav>
+    </Collapse>,
+  ],
+  "expand": "md",
+  "tag": "nav",
+}
+`;
