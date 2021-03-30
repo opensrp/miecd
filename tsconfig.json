@@ -17,5 +17,5 @@
         "noFallthroughCasesInSwitch": true,
         "baseUrl": "src"
     },
-    "include": ["src"]
+    "include": ["src", "i18next-parser.config.js"]
 }
