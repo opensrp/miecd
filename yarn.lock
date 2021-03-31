@@ -1150,14 +1150,23 @@
     regenerator-runtime "^0.13.4"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
 =======
+=======
+>>>>>>> Update gatekeeper package
 <<<<<<< HEAD
 "@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
 =======
 "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.6", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
 >>>>>>> Add i18next libraries
+<<<<<<< HEAD
 >>>>>>> Add i18next libraries
+=======
+=======
+"@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.6", "@babel/runtime@^7.2.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
+>>>>>>> Update gatekeeper package
+>>>>>>> Update gatekeeper package
   version "7.13.10"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
   integrity sha512-4QPkjJq6Ns3V/RgpEahRk+AGfL0eO6RHHtTWoNNr5mO49G6B5+X6d6THgWEAvTrznU5xYpbAlVKRYcsCgh/Akw==
@@ -1543,7 +1552,11 @@
   resolved "https://registry.yarnpkg.com/@onaio/element-map/-/element-map-0.0.5.tgz#6c8b55314d41fb76c1ea7538d4ee217a121936cb"
   integrity sha512-PxhKq2uR9j8fZkvIqiUMp8CvZTX358d3sWuLj5a7LRpTK/Y+ZS1L9XZp2Xb9pplHCSferZxzwjm/YfKqVr56lA==
 
+<<<<<<< HEAD
 "@onaio/gatekeeper@^0.1.1":
+=======
+"@onaio/gatekeeper@0.1.1":
+>>>>>>> Update gatekeeper package
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@onaio/gatekeeper/-/gatekeeper-0.1.1.tgz#b843ec6766f88ef295addbfa3f81f6b0d9a8b2a6"
   integrity sha512-5H06OjEzSPiCBTrU5Ib2pYXSYOR9Ub7lsRtss93J9nFS2XSXtxcuprfH6OCy2tY8X5LxaLAdNNjEXc0Tx59dZg==
@@ -3538,6 +3551,7 @@ cli-truncate@^0.2.1:
     slice-ansi "0.0.4"
     string-width "^1.0.1"
 
+<<<<<<< HEAD
 cli-width@^2.0.0:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-2.2.1.tgz#b0433d0b4e9c847ef18868a4ef16fd5fc8271c48"
@@ -3548,7 +3562,14 @@ cli-width@^3.0.0:
   resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-3.0.0.tgz#a2f48437a2caa9a22436e794bf071ec9e61cedf6"
   integrity sha512-FxqpkPPwu1HjuN93Omfm4h8uIanXofW0RxVEW3k5RKx+mJJYSthzNhp32Kzxxy3YAEZ/Dc/EWN1vZRY0+kOhbw==
 
+<<<<<<< HEAD
 client-oauth2@^4.2.5, client-oauth2@^4.3.3:
+=======
+client-oauth2@^4.2.3, client-oauth2@^4.2.5:
+=======
+client-oauth2@^4.2.5, client-oauth2@^4.3.3:
+>>>>>>> Update gatekeeper package
+>>>>>>> Update gatekeeper package
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/client-oauth2/-/client-oauth2-4.3.3.tgz#7a700e6f4bf412c1f96da0d6b50e07676561e086"
   integrity sha512-k8AvUYJon0vv75ufoVo4nALYb/qwFFicO3I0+39C6xEdflqVtr+f9cy+0ZxAduoVSTfhP5DX2tY2XICAd5hy6Q==
