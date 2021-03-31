@@ -243,9 +243,8 @@ export const Routes = (props: RoutesProps) => {
                                 ].map((url) => `${url}${CHILD_PATIENT_DETAIL_URL}`);
                             })()}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={(routeProps: RouteComponentProps) => (
-                                <ConnectedPatientDetails isChild {...routeProps} />
-                            )}
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            component={(routeProps: any) => <ConnectedPatientDetails isChild {...routeProps} />}
                         />
                         <ConnectedPrivateRoute
                             disableLoginProtection={false}
@@ -266,9 +265,8 @@ export const Routes = (props: RoutesProps) => {
                                 );
                             })()}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={(routeProps: RouteComponentProps) => (
-                                <ConnectedPatientDetails isChild {...routeProps} />
-                            )}
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            component={(routeProps: any) => <ConnectedPatientDetails isChild {...routeProps} />}
                         />
                         <ConnectedPrivateRoute
                             disableLoginProtection={false}
