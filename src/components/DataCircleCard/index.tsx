@@ -21,7 +21,7 @@ import {
 import { getLinkToHierarchicalDataTable, Dictionary } from '../../helpers/utils';
 
 import { addFilterArgs } from '../../store/ducks/sms_events';
-import { SMS_FILTER_FUNCTION } from '../../types';
+import { SmsFilterFunction } from '../../types';
 import './index.css';
 
 /**
@@ -38,7 +38,7 @@ interface Props extends RouteComponentProps {
     inappropriateFeeding?: number;
     title: string;
     addFilterArgsActionCreator?: typeof addFilterArgs;
-    filterArgs?: SMS_FILTER_FUNCTION[];
+    filterArgs?: SmsFilterFunction[];
     module: PREGNANCY | NBC_AND_PNC_CHILD | NBC_AND_PNC_WOMAN | NUTRITION | '';
     className?: string;
     userLocationId: string;

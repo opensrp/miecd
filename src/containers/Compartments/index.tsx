@@ -43,18 +43,18 @@ import {
     SmsData,
     smsDataFetched,
 } from '../../store/ducks/sms_events';
-import { SMS_FILTER_FUNCTION } from '../../types';
+import { SmsFilterFunction } from '../../types';
 import './index.css';
 
 interface Props {
-    filterArgsInStore: SMS_FILTER_FUNCTION[];
+    filterArgsInStore: SmsFilterFunction[];
     smsData: SmsData[];
     userLocationData: UserLocation[];
     dataFetched: boolean;
     userUUID: string;
     addFilterArgs: typeof addFilterArgsActionCreator;
     removeFilterArgs: typeof removeFilterArgsActionCreator;
-    filterArgs: SMS_FILTER_FUNCTION[];
+    filterArgs: SmsFilterFunction[];
     module: string;
     provinces: Location[];
     districts: Location[];
@@ -63,7 +63,7 @@ interface Props {
 }
 
 interface PregnancyAndNBCDataCircleCardProps {
-    filterArgs?: SMS_FILTER_FUNCTION[];
+    filterArgs?: SmsFilterFunction[];
     noRisk: number;
     permissionLevel: number;
     module: string;
@@ -73,7 +73,7 @@ interface PregnancyAndNBCDataCircleCardProps {
 }
 
 interface NutritionDataCircleCardProps {
-    filterArgs: SMS_FILTER_FUNCTION[];
+    filterArgs: SmsFilterFunction[];
     inappropriateFeeding: number;
     module: string;
     overweight: number;
@@ -150,7 +150,7 @@ export const Compartments = ({
         ) {
             removeFilterArgs();
             addFilterArgs(filterArgs);
-            addFilterArgs([locationFilterFunction as SMS_FILTER_FUNCTION]);
+            addFilterArgs([locationFilterFunction as SmsFilterFunction]);
         }
         const locationPath = buildHeaderBreadCrumb(
             userLocationId,
@@ -182,7 +182,7 @@ export const Compartments = ({
         setallPregnanciesProps(
             module === PREGNANCY
                 ? ({
-                      filterArgs: [filterByDateInTheFuture] as SMS_FILTER_FUNCTION[],
+                      filterArgs: [filterByDateInTheFuture] as SmsFilterFunction[],
                       module: PREGNANCY,
                       noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, birthsInTheFuture, 'logface_risk'),
                       permissionLevel: userLocationLevel,
@@ -202,7 +202,7 @@ export const Compartments = ({
         setpregnaciesDueIn2WeeksProps(
             module === PREGNANCY
                 ? {
-                      filterArgs: [filterByDateInNext2Weeks] as SMS_FILTER_FUNCTION[],
+                      filterArgs: [filterByDateInNext2Weeks] as SmsFilterFunction[],
                       module: PREGNANCY,
                       noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, last2WeeksSmsData || [], 'logface_risk'),
                       permissionLevel: userLocationLevel,
@@ -219,7 +219,7 @@ export const Compartments = ({
         setpregnanciesDueIn1WeekProps(
             module === PREGNANCY
                 ? {
-                      filterArgs: [filterByDateInNext1Week] as SMS_FILTER_FUNCTION[],
+                      filterArgs: [filterByDateInNext1Week] as SmsFilterFunction[],
                       module: PREGNANCY,
                       noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, last1WeekSmsData || [], 'logface_risk'),
                       permissionLevel: userLocationLevel,
@@ -245,7 +245,7 @@ export const Compartments = ({
         setDataCircleCardChildData(
             module === NBC_AND_PNC
                 ? {
-                      filterArgs: [filterByEcChild] as SMS_FILTER_FUNCTION[],
+                      filterArgs: [filterByEcChild] as SmsFilterFunction[],
                       module: NBC_AND_PNC_CHILD,
                       noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, newBorn, 'logface_risk'),
                       permissionLevel: userLocationLevel,
@@ -269,7 +269,7 @@ export const Compartments = ({
                           (dataItem: SmsData) => {
                               return dataItem.client_type === EC_WOMAN || dataItem.client_type === EC_FAMILY_MEMBER;
                           },
-                      ] as SMS_FILTER_FUNCTION[],
+                      ] as SmsFilterFunction[],
                       module: NBC_AND_PNC_WOMAN,
                       noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, woman, 'logface_risk'),
                       permissionLevel: userLocationLevel,
@@ -476,7 +476,7 @@ const mapStateToprops = (state: Partial<Store>) => {
         districts: getLocationsOfLevel(state, 'District'),
         filterArgsInStore: getFilterArgs(state),
         provinces: getLocationsOfLevel(state, 'Province'),
-        smsData: getFilteredSmsData(state, getFilterArgs(state) as SMS_FILTER_FUNCTION[]),
+        smsData: getFilteredSmsData(state, getFilterArgs(state) as SmsFilterFunction[]),
         userLocationData: getUserLocations(state),
         userUUID: getUserId(state),
         villages: getLocationsOfLevel(state, 'Village'),

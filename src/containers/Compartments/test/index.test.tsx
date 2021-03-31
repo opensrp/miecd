@@ -24,7 +24,7 @@ import locationsReducer, {
 } from '../../../store/ducks/locations';
 import smsReducer, { fetchSms, reducerName as smsReducerName, SmsData } from '../../../store/ducks/sms_events';
 import store from '../../../store/index';
-import { SMS_FILTER_FUNCTION } from '../../../types';
+import { SmsFilterFunction } from '../../../types';
 import { communes, districts, provinces, villages } from '../../HierarchichalDataTable/test/fixtures';
 import { userLocations } from '../../LogFace/tests/userLocationFixtures';
 import { smsDataFixtures } from './fixtures';
@@ -53,7 +53,7 @@ describe('Compartments', () => {
                             (smsData: SmsData) => {
                                 return smsData.sms_type === PREGNANCY_REGISTRATION;
                             },
-                        ] as SMS_FILTER_FUNCTION[]
+                        ] as SmsFilterFunction[]
                     }
                     module={PREGNANCY}
                 />
@@ -71,7 +71,7 @@ describe('Compartments', () => {
                                 (smsData: SmsData) => {
                                     return smsData.sms_type === PREGNANCY_REGISTRATION;
                                 },
-                            ] as SMS_FILTER_FUNCTION[]
+                            ] as SmsFilterFunction[]
                         }
                         module={PREGNANCY}
                     />
@@ -112,7 +112,7 @@ describe('Compartments', () => {
                                 (smsData: SmsData) => {
                                     return smsData.sms_type === PREGNANCY_REGISTRATION;
                                 },
-                            ] as SMS_FILTER_FUNCTION[]
+                            ] as SmsFilterFunction[]
                         }
                         module={PREGNANCY}
                     />
@@ -138,7 +138,7 @@ describe('Compartments', () => {
                                         smsData.sms_type === NUTRITION_REGISTRATION
                                     );
                                 },
-                            ] as SMS_FILTER_FUNCTION[]
+                            ] as SmsFilterFunction[]
                         }
                         module={NUTRITION}
                     />
@@ -160,7 +160,7 @@ describe('Compartments', () => {
                                 (smsData: SmsData) => {
                                     return smsData.sms_type === NEWBORN_REPORT;
                                 },
-                            ] as SMS_FILTER_FUNCTION[]
+                            ] as SmsFilterFunction[]
                         }
                         module={NBC_AND_PNC}
                     />

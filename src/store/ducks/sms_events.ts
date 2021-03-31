@@ -3,7 +3,7 @@ import { values } from 'lodash';
 import { AnyAction, Store } from 'redux';
 import { EVENT_ID } from '../../constants';
 import { groupBy } from '../../helpers/utils';
-import { SMS_FILTER_FUNCTION } from '../../types';
+import { SmsFilterFunction } from '../../types';
 
 /** The reducer name */
 export const reducerName = 'SmsReducer';
@@ -66,7 +66,7 @@ export interface RemoveFilterArgs extends AnyAction {
 
 /** Interface for AddFilterArgs */
 export interface AddFilterArgsAction extends AnyAction {
-    filterArgs: SMS_FILTER_FUNCTION[];
+    filterArgs: SmsFilterFunction[];
     type: typeof ADD_FILTER_ARGS;
 }
 
@@ -93,7 +93,7 @@ export const removeSms: RemoveSmsAction = {
 };
 
 /** Add filter args action creator */
-export const addFilterArgs = (filterArgs: SMS_FILTER_FUNCTION[]): AddFilterArgsAction => {
+export const addFilterArgs = (filterArgs: SmsFilterFunction[]): AddFilterArgsAction => {
     return {
         filterArgs,
         type: ADD_FILTER_ARGS as typeof ADD_FILTER_ARGS,
@@ -109,7 +109,7 @@ export const removeFilterArgs = (): RemoveFilterArgs => {
 interface SmsState {
     smsData: { [key: string]: SmsData };
     smsDataFetched: boolean;
-    filterArgs: SMS_FILTER_FUNCTION[] | null;
+    filterArgs: SmsFilterFunction[] | null;
 }
 
 /** initial sms-state state */
@@ -170,10 +170,10 @@ export function smsDataFetched(state: Partial<Store>): boolean {
  * Returns a list of SmsData that has been filtered based on the value
  * of a field specified.
  * @param {Partil<Store>} state - the state of the SmsReducer redux store.
- * @param {SMS_FILTER_FUNCTION[]}  filterArgs - an array of SMS_FILTER_FUNCTIONs.
+ * @param {SmsFilterFunction[]}  filterArgs - an array of SMS_FILTER_FUNCTIONs.
  * @return {SmsData[]} - an array of SmsData objects that have passed the filtration criteria of all the filterArgs.
  */
-export function getFilteredSmsData(state: Partial<Store>, filterArgs: SMS_FILTER_FUNCTION[]): SmsData[] {
+export function getFilteredSmsData(state: Partial<Store>, filterArgs: SmsFilterFunction[]): SmsData[] {
     let results = values((state as any)[reducerName].smsData);
     for (const filterArgsIndex in filterArgs) {
         if (filterArgsIndex) {
@@ -184,7 +184,7 @@ export function getFilteredSmsData(state: Partial<Store>, filterArgs: SMS_FILTER
 }
 
 /** Returns the filterArgs currently in the store */
-export function getFilterArgs(state: Partial<Store>): SMS_FILTER_FUNCTION[] {
+export function getFilterArgs(state: Partial<Store>): SmsFilterFunction[] {
     if ((state as any)[reducerName].filterArgs) {
         return (state as any)[reducerName].filterArgs;
     }
