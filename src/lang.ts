@@ -1,0 +1,183 @@
+import i18n from './mls';
+import { Dictionary } from '@onaio/utils';
+
+const lang: Dictionary<string> = {};
+const { t } = i18n;
+
+/** recompute values */
+function fill() {
+    // string literals
+    lang.WELCOME_TO_MIECD = t('Welcome to the MIECD dashboard{}');
+    lang.VIEW_LATEST_MESSAGE_UPDATES_ABOUT_YOUR_PATIENTS = t('View the latest message updates about your patients.');
+    lang.OPENSRP = t('OpenSRP');
+    lang.VIEW = t('View');
+    lang.DAYS_SINCE_BIRTH = t('Days since birth');
+    lang.CHILD_WEIGHT_MONITORING = t('Child Weight Monitoring');
+    lang.LENGTH_HEIGHT_MONITORING = t('Length/Height Monitoring');
+    lang.CURRENT_WEIGHT = t('Current weight');
+    lang.CURRENT_SYMPTOMS = t('Current symptoms');
+    lang.CURRENT_NUTRTION = t('current nutrition');
+    lang.CURRENT_PREGNANCY = t('current pregnancy');
+    lang.LOCATION_OF_RESIDENCE = t('Location of Residence');
+    lang.LOCATION_OF_BIRTH = t('Location of birth');
+    lang.RISK_CARTEGORIZATION = t('Risk Cartegorization');
+    lang.HIGH = t('high');
+    lang.LOW = t('low');
+    lang.RED = t('red');
+    lang.NO = t('no');
+    lang.OVERWEIGHT_CAPITALIZED = t('Overweight');
+    lang.OVERWEIGHT = t('overweight');
+    lang.STUNTED_CAPITALIZED = t('Stunted');
+    lang.STUNTED = t('stunted');
+    lang.SEVERE_WASTING_CAPITALIZED = t('Severe Wasting');
+    lang.SEVERE_WASTING = t('severe wasting');
+    lang.INAPPROPRIATELY_FED_CAPITALIZED = t('Inappropriately Fed');
+    lang.INAPPROPRIATELY_FED = t('inappropriately fed');
+    lang.NOT_SET_LOWERCASE = t('not set');
+    lang.HOME = t('Home');
+    lang.PREGNANCY = t('Pregnancy');
+    lang.NBC_AND_PNC = t('NBC & PNC');
+    lang.NBC_AND_PNC_CHILD = t('NBC & PNC_CHILD');
+    lang.NBC_AND_PNC_WOMAN = t('NBC & PNC_WOMAN');
+    lang.NUTRITION = t('Nutrition');
+    lang.COMPARTMENTS = t('Compartments');
+    lang.ANALYSIS = t('Analysis');
+    lang.CLIENT = t('Client');
+    lang.REPORT = t('Report');
+    lang.DATE = t('Date');
+    lang.REPORTER = t('Reporter');
+    lang.ADMIN = t('Admin');
+    lang.CLIENT_RECORDS = t('Client Records');
+    lang.REPORTS = t('Reports');
+    lang.ALL_CLIENTS = t('All clients');
+    lang.HOUSEHOLD = t('Household');
+    lang.ANC = t('ANC');
+    lang.CHILD = t('Child');
+    lang.USERS = t('Users');
+    lang.ROLES = t('Roles');
+    lang.TEAMS = t('Teams');
+    lang.LOCATIONS = t('Locations');
+    lang.LOGIN = t('Login');
+    lang.SIGN_OUT = t('Sign Out');
+    lang.LOG_FACE_LOWER = t('Log face');
+    lang.LOG_FACE = t('Log Face');
+    lang.LOGFACE_SEARCH_PLACEHOLDER = t('Search ID, Reporter, Patients');
+    lang.RISK_LEVEL = t('Risk Level');
+    lang.SELECT_RISK = t('Select risk');
+    lang.SELECT_LOCATION = t('Select Location');
+    lang.SELECT_TYPE = t('Select Type');
+    lang.ALL = t('all');
+    lang.TYPE = t('Type');
+    lang.UP = t('up');
+    lang.BACK = t('Back');
+    lang.BACK_TO_PREGNANCY_COMPARTMENTS = t('Back to Pregnancy Compartments');
+    lang.HIGH_RISK = t('High Risk');
+    lang.LOW_RISK = t('Low Risk');
+    lang.NO_RISK_LOWERCASE = t('no risk');
+    lang.NO_RISK = t('No Risk');
+    lang.RED_ALERT = t('Red Alert');
+    lang.NOT_SET = t('Not Set');
+    lang.TOTAL = t('Total');
+    lang.VIETNAM = t('Vietnam');
+    lang.COUNTRY = t('Country');
+    lang.PROVINCE = t('Province');
+    lang.COMMUNE = t('Commune');
+    lang.DISTRICT = t('District');
+    lang.VILLAGE = t('Village');
+    lang.PATIENT_DETAILS = t('Patient Details');
+    lang.BASIC_INFORMATION = t('Basic Information');
+    lang.ID = t('ID');
+    lang.CURRENT_GRAVIDITY = t('Current Gravidity');
+    lang.GRAVIDITY = t('Gravidity');
+    lang.PATIENT_ID = t('Patient ID');
+    lang.CURRENT_PARITY = t('Current Parity');
+    lang.PARITY = t('Parity');
+    lang.CHILD_AGE = t('Age');
+    lang.RESIDENCE = t('Location of residence');
+    lang.LOCATION = t('Location');
+    lang.RED_ALERT_CLASSNAME = t('red-alert');
+    lang.PREVIOUS_PREGNANCY_RISK = t('Previous Pregnancy Risk');
+    lang.CURRENT_EDD = t('Current EDD');
+    lang.EDD = t('EDD');
+    lang.RISK_CATEGORY = t('Risk category');
+    lang.MIECD_VIETNAM = t('MIECD VIETNAM');
+    // lang.NO_PROVIDERS = t('No providers');
+    lang.MOTHERS_WEIGHT = "Mother's Weight";
+    lang.CHILD_WEIGHT = t('Child Weight');
+    lang.CHILD_HEIGHT = t('Child Height');
+    lang.CHILD_HEIGHT_MONITORING = t('Child Height Monitoring');
+    lang.MOTHER_WEIGHT_TRACKING = "Mother's Weight Tracking";
+    lang.PREGNANCY_DESCRIPTION = `This dashboard displays information collected from MIECD Viet Nam Pregnancy Module for
+patients in your geographical location. The Module covers the whole pregnancy period
+from conception to delivery and includes Pregnancy Registration, ANC visits, Birth
+reports/Death reports, Risk Reports, Risk alerts and ResponseReports.`;
+    lang.NEWBORN_REPORT = t('Newborn Report');
+    lang.PREGNANCY_DASHBOARD_WELCOME = t('Welcome to the pregnancy dashboard');
+    lang.NBC_AND_PNC_DASHBOARD_WELCOME = t('Welcome to Newborn and Postnatal Care');
+    lang.NUTRITION_DASHBOARD_WELCOME = t('Welcome to Nutrition Care');
+    lang.EC_WOMAN = t('ec_woman');
+    lang.EC_FAMILY_MEMBER = t('ec_family_member');
+    lang.EC_CHILD = t('ec_child');
+    lang.COULD_NOT_FIND_ANY_LOCATION = t('could not find any location');
+    lang.COULD_NOT_FIND_RISK_CARTEGORIZATION = t('could not find any risk cartegorization');
+    lang.CM = t('cm');
+    lang.KG = t('kg');
+    lang.CHILD_HEIGHT_VS_MONTHS = t('Child height vs month');
+    lang.CHILD_WEIGHT_VS_MONTHS = t('Child weight vs month');
+    lang.NO_RISK_CATEGORY = t('no risk category');
+    lang.COULD_NOT_FIND_ANY_EDD = t('could not find any edd');
+    // sms events fields
+    lang.DATE_OF_BIRTH = t('date_of_birth');
+    lang.NUTRITION_STATUS = t('nutrition_status');
+    lang.GROWTH_STATUS = t('growth_status');
+    lang.FEEDING_CATEGORY = t('feeding_category');
+    lang.AGE = t('age');
+    lang.EVENT_DATE = t('EventDate');
+    lang.EVENT_ID = t('event_id');
+    lang.HEALTH_WORKER_LOCATION_NAME = t('health_worker_location_name');
+    lang.MESSAGE = t('message');
+    lang.CAPITALIZED_MESSAGE = t('Message');
+    lang.ANC_ID = t('anc_id');
+    lang.LOGFACE_RISK = t('logface_risk');
+    lang.HEALTH_WORKER_NAME = t('health_worker_name');
+    lang.SMS_TYPE = t('sms_type');
+    lang.HEIGHT = t('height');
+    lang.WEIGHT = t('weight');
+    lang.RISK = t('risk');
+    lang.LMP_EDD = t('lmp_edd');
+    lang.PARITY_LOWERCASE = t('parity');
+    lang.GRAVIDITY_LOWER = t('gravidity');
+    lang.LOCATION_ID = t('location_id');
+    lang.CLIENT_TYPE = t('client_type');
+    lang.PREGNANCY_REGISTRATION = t('Pregnancy Registration');
+    lang.RESPONSE_REPORT = t('Response Report');
+    lang.RED_ALERT_REPORT = t('Red Alert Report');
+    lang.SOCIAL_DETERMINANTS = t('Social Determinants');
+    lang.ANC_VISIT = t('ANC Visit');
+    lang.DELIVERY_PLANNING = t('Delivery Planning');
+    lang.PREGNANCY_DETECTION = t('Pregnancy Detection');
+    lang.PREGNANCY_IDENTIFICATION = t('Pregnancy Identification');
+    lang.ANC_REPORT = t('ANC Report');
+    lang.HOME_VISIT_REPORT = t('Home Visit Report');
+    lang.BIRTH_REPORT = t('Birth Report');
+    lang.DEATH_REPORT = t('Death Report');
+    lang.FAMILY_REGISTRATION = t('Family Member Registration');
+    lang.POSTNATAL_AND_NEWBORN_CARE = t('Postnatal and Newborn Care');
+    lang.NUTRITION_REGISTRATION = t('Nutrition Registration');
+    lang.NUTRITION_REPORT = t('Nutrition Report');
+    lang.MONTHLY_NUTRITION_REPORT = t('Monthly Nutrition Report');
+    lang.DEPARTURE_CODE = t('Departure Code');
+    lang.REFUSAL_CODE = t('Refusal Code');
+    lang.ACCOUNT_CHECK = t('Account Check');
+}
+
+// run it initial
+fill();
+
+// bind some events and fill values again (doing the magic you expect to happen magically)
+i18n.on(`languageChanged`, () => {
+    fill();
+});
+
+// export the const
+export default lang;
