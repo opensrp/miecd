@@ -1,20 +1,12 @@
 import ListView from '@onaio/list-view';
 import React, { Component } from 'react';
+import { TFunction, Trans, WithTranslation, withTranslation } from 'react-i18next';
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Row } from 'reactstrap';
 import {
     ANC_REPORT,
     BIRTH_REPORT,
-    CHILD_HEIGHT,
-    CHILD_HEIGHT_MONITORING,
-    CHILD_WEIGHT,
-    CHILD_WEIGHT_MONITORING,
-    CURRENT_NUTRTION,
-    CURRENT_PREGNANCY,
     GESTATION_PERIOD,
     HEIGHT,
-    KG,
-    MOTHER_WEIGHT_TRACKING,
-    MOTHERS_WEIGHT,
     NUTRITION_REGISTRATION,
     NUTRITION_REPORT,
     PREGNANCY_REGISTRATION,
@@ -124,15 +116,15 @@ export const getEventsPregnancyArray = (singlePatientEvents: SmsData[], isChild:
 
     return data;
 };
-
-class ReportTable extends Component<Props, State> {
+export type ReportTableTypes = Props & WithTranslation;
+class ReportTable extends Component<ReportTableTypes, State> {
     public static getDerivedStateFromProps(props: Props) {
         return {
             pregnancyEventsArray: getEventsPregnancyArray(props.singlePatientEvents, props.isChild),
         };
     }
 
-    constructor(props: Readonly<Props>) {
+    constructor(props: Readonly<ReportTableTypes>) {
         super(props);
 
         this.state = {
@@ -201,11 +193,18 @@ class ReportTable extends Component<Props, State> {
     };
 
     public render() {
+        const { t } = this.props;
+
         const listViewProps = {
             data: this.getPregnancyStringArray(this.state.pregnancyEventsArray)[this.state.currentPregnancy]
                 ? this.getPregnancyStringArray(this.state.pregnancyEventsArray)[this.state.currentPregnancy]
                 : [],
-            headerItems: ['Report', 'Date', 'Reporter', 'Message'],
+            headerItems: [
+                t('table-header.Report'),
+                t('table-header.Date'),
+                t('table-header.Reporter'),
+                t('table-header.Message'),
+            ],
             tableClass: 'table-container',
             tbodyClass: 'body',
             tdClass: 'default-width',
@@ -214,7 +213,9 @@ class ReportTable extends Component<Props, State> {
         return (
             <>
                 <Row id="filter-panel">
-                    <p>Showing reports for:&emsp;</p>
+                    <p>
+                        <Trans t={t}>Showing reports for:&emsp;</Trans>
+                    </p>
                     <div className="filters">
                         {this.props.isChild ? (
                             <Dropdown
@@ -225,10 +226,10 @@ class ReportTable extends Component<Props, State> {
                                 }}
                             >
                                 <DropdownToggle variant="success" id="dropdown-basic" caret>
-                                    {CURRENT_NUTRTION}
+                                    {t('current nutrition')}
                                 </DropdownToggle>
                                 <DropdownMenu>
-                                    <DropdownItem>{CURRENT_NUTRTION}</DropdownItem>
+                                    <DropdownItem>{t('current nutrition')}</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                         ) : (
@@ -237,25 +238,30 @@ class ReportTable extends Component<Props, State> {
                                     <span>
                                         {this.state.pregnancyDropdownLabel.length
                                             ? this.state.pregnancyDropdownLabel
-                                            : 'select pregnancy'}
+                                            : t('select pregnancy')}
                                     </span>
                                 </DropdownToggle>
                                 <DropdownMenu>
                                     {this.getPregnancyStringArray(this.state.pregnancyEventsArray).map(
                                         (pregnancy, i) => {
                                             return (
-                                                <DropdownItem onClick={this.handlePregnancyDropDownClick} key={i}>
+                                                <DropdownItem
+                                                    onClick={(e) => this.handlePregnancyDropDownClick(e, t)}
+                                                    key={i}
+                                                >
                                                     {(() => {
                                                         if (i === 0) {
-                                                            return CURRENT_PREGNANCY;
+                                                            return t('current pregnancy');
                                                         }
                                                         const pregnancyIndex =
                                                             this.getPregnancyStringArray(
                                                                 this.state.pregnancyEventsArray,
                                                             ).length - i;
-                                                        return `${
-                                                            pregnancyIndex + getNumberSuffix(pregnancyIndex)
-                                                        } pregnancy`;
+                                                        return t(
+                                                            `${
+                                                                pregnancyIndex + getNumberSuffix(pregnancyIndex)
+                                                            } pregnancy`,
+                                                        );
                                                     })()}
                                                 </DropdownItem>
                                             );
@@ -274,11 +280,11 @@ class ReportTable extends Component<Props, State> {
                         weights={
                             this.getWeightsArray(this.state.pregnancyEventsArray, WEIGHT)[this.state.currentPregnancy]
                         }
-                        chartWrapperId={this.props.isChild ? 'nutrition-chart' : 'pregnancy-chart'}
-                        title={this.props.isChild ? CHILD_WEIGHT_MONITORING : MOTHER_WEIGHT_TRACKING}
-                        legendString={this.props.isChild ? CHILD_WEIGHT : MOTHERS_WEIGHT}
-                        units={KG}
-                        xAxisLabel={WEIGHT}
+                        chartWrapperId={this.props.isChild ? t('nutrition-chart') : t('pregnancy-chart')}
+                        title={this.props.isChild ? t('Child Weight Monitoring') : t("Mother's Weight Tracking")}
+                        legendString={this.props.isChild ? t('Child Weight') : t("Mother's Weight")}
+                        units={t('kg')}
+                        xAxisLabel={t('weight')}
                     />
                     {this.props.isChild ? (
                         <WeightAndHeightChart
@@ -288,10 +294,10 @@ class ReportTable extends Component<Props, State> {
                                 ]
                             }
                             chartWrapperId="nutrition-chart-1"
-                            title={CHILD_HEIGHT_MONITORING}
-                            legendString={CHILD_HEIGHT}
-                            units="cm"
-                            xAxisLabel={HEIGHT}
+                            title={t('Child Height Monitoring')}
+                            legendString={t('Child Height')}
+                            units={t('cm')}
+                            xAxisLabel={t('height')}
                         />
                     ) : null}
                 </Row>
@@ -305,12 +311,12 @@ class ReportTable extends Component<Props, State> {
         });
     };
 
-    private handlePregnancyDropDownClick = (e: React.MouseEvent) => {
+    private handlePregnancyDropDownClick = (e: React.MouseEvent, t: TFunction) => {
         // here we will take the new index and change the state using that index
-        if ((e.target as HTMLInputElement).innerText === CURRENT_PREGNANCY) {
+        if ((e.target as HTMLInputElement).innerText === t('current pregnancy')) {
             this.setState({
                 currentPregnancy: 0,
-                pregnancyDropdownLabel: CURRENT_PREGNANCY,
+                pregnancyDropdownLabel: t('current pregnancy'),
             });
         } else {
             this.setState({
@@ -321,4 +327,4 @@ class ReportTable extends Component<Props, State> {
     };
 }
 
-export default ReportTable;
+export default withTranslation()(ReportTable);
