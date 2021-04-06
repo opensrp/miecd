@@ -144,6 +144,7 @@ export class SubMenu extends React.Component<subMenuPropsTypes, SubMenuState> {
     /** updates parent component with the label of the currently collapsed navigation module */
     private setModuleLabel = () => {
         const labelAlreadySet = this.props.collapsedModuleLabel === this.props.parentNav.label;
+
         labelAlreadySet && this.props.setCollapsedModuleLabel !== undefined
             ? this.props.setCollapsedModuleLabel('')
             : this.props.setCollapsedModuleLabel?.(this.props.parentNav.label);

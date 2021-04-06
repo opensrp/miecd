@@ -65,7 +65,7 @@ import smsReducer, {
     getSmsData,
     SmsData,
 } from '../../store/ducks/sms_events';
-import { SMS_FILTER_FUNCTION } from '../../types';
+import { SmsFilterFunction } from '../../types';
 
 reducerRegistry.register(reducerName, locationsReducer);
 reducerRegistry.register(smsReducerName, smsReducer);
@@ -981,7 +981,7 @@ const mapStateToProps = (state: Partial<Store>, ownProps: any): any => {
         provinces: getLocationsOfLevel(state, 'Province'),
         risk_highligter: ownProps.match.params.risk_highlighter,
         smsData: getFilterArgs(state)
-            ? getFilteredSmsData(state, getFilterArgs(state) as SMS_FILTER_FUNCTION[])
+            ? getFilteredSmsData(state, getFilterArgs(state) as SmsFilterFunction[])
             : getSmsData(state),
         title: ownProps.match.params.title,
         villages: getLocationsOfLevel(state, 'Village'),

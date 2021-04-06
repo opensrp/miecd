@@ -1,2 +1,4 @@
+import { SmsData } from './store/ducks/sms_events';
+
 // typings
-export type SMS_FILTER_FUNCTION = (smsData: SmsData) => boolean;
+export type SmsFilterFunction = (smsData: SmsData) => boolean;

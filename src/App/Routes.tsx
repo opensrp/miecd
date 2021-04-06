@@ -52,10 +52,10 @@ import Analysis from '../containers/pages/Analysis';
 import Home from '../containers/pages/Home';
 import ModuleHome from '../containers/pages/ModuleHome';
 import ConnectedPatientDetails from '../containers/PatientDetails';
-import { headerShouldNotRender, oAuthUserInfoGetter } from '../helpers/utils';
+import { Dictionary, headerShouldNotRender, oAuthUserInfoGetter } from '../helpers/utils';
 import { SmsData } from '../store/ducks/sms_events';
 import './App.css';
-import { SMS_FILTER_FUNCTION } from '../types';
+import { SmsFilterFunction } from '../types';
 
 library.add(faUser);
 
@@ -135,7 +135,7 @@ export const Routes = (props: RoutesProps) => {
                                             (smsData: SmsData) => {
                                                 return smsData.sms_type === PREGNANCY_REGISTRATION;
                                             },
-                                        ] as SMS_FILTER_FUNCTION[]
+                                        ] as SmsFilterFunction[]
                                     }
                                     module={PREGNANCY}
                                 />
@@ -153,7 +153,7 @@ export const Routes = (props: RoutesProps) => {
                                             (smsData: SmsData) => {
                                                 return smsData.sms_type === NEWBORN_REPORT;
                                             },
-                                        ] as SMS_FILTER_FUNCTION[]
+                                        ] as SmsFilterFunction[]
                                     }
                                     module={NBC_AND_PNC}
                                 />
@@ -174,7 +174,7 @@ export const Routes = (props: RoutesProps) => {
                                                     smsData.sms_type === NUTRITION_REGISTRATION
                                                 );
                                             },
-                                        ] as SMS_FILTER_FUNCTION[]
+                                        ] as SmsFilterFunction[]
                                     }
                                     module={NUTRITION}
                                 />
@@ -243,9 +243,8 @@ export const Routes = (props: RoutesProps) => {
                                 ].map((url) => `${url}${CHILD_PATIENT_DETAIL_URL}`);
                             })()}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={(routeProps: RouteComponentProps) => (
-                                <ConnectedPatientDetails isChild {...routeProps} />
-                            )}
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            component={(routeProps: any) => <ConnectedPatientDetails isChild {...routeProps} />}
                         />
                         <ConnectedPrivateRoute
                             disableLoginProtection={false}
@@ -266,9 +265,8 @@ export const Routes = (props: RoutesProps) => {
                                 );
                             })()}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={(routeProps: RouteComponentProps) => (
-                                <ConnectedPatientDetails isChild {...routeProps} />
-                            )}
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            component={(routeProps: any) => <ConnectedPatientDetails isChild {...routeProps} />}
                         />
                         <ConnectedPrivateRoute
                             disableLoginProtection={false}

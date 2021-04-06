@@ -34,7 +34,7 @@
         "react-router": "^5.0.1",
         "react-router-dom": "^5.0.1",
         "react-router-last-location": "^2.0.1",
-        "react-scripts": "^4.0.3",
+        "react-scripts": "3.4.4",
         "react-vis": "^1.11.7",
         "reactstrap": "^8.0.1",
         "redux": "^4.0.4",
@@ -97,8 +97,8 @@
         "@types/react-router-dom": "^4.3.4",
         "@types/redux-testkit": "^1.0.3",
         "@types/seamless-immutable": "^7.1.10",
-        "@typescript-eslint/eslint-plugin": "^4.19.0",
-        "@typescript-eslint/parser": "^4.19.0",
+        "@typescript-eslint/eslint-plugin": "^4.20.0",
+        "@typescript-eslint/parser": "^4.20.0",
         "babel-eslint": "^10.0.2",
         "enzyme": "^3.10.0",
         "enzyme-adapter-react-16": "^1.14.0",
@@ -121,5 +121,9 @@
         "tslint-config-prettier": "^1.18.0",
         "tslint-plugin-prettier": "^2.0.1",
         "tslint-react": "^4.0.0"
+    },
+    "resolutions": {
+        "**/@typescript-eslint/eslint-plugin": "^4.20.0",
+        "**/@typescript-eslint/parser": "^4.20.0"
     }
 }
