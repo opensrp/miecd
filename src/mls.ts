@@ -44,6 +44,7 @@ i18n.use(LanguageDetector)
         debug: true,
         detection: langDetectorOptions,
         resources,
+        returnEmptyString: false,
         interpolation: {
             escapeValue: false, // not needed for react as it escapes by default
         },
