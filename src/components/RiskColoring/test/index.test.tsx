@@ -1,6 +1,7 @@
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
+import { mountWithTranslations } from '../../../helpers/testUtils';
 import RiskColoring from '../index';
 
 describe('RiskColoring', () => {
@@ -10,15 +11,15 @@ describe('RiskColoring', () => {
     });
 
     it('must show correct Risk level depending on the string passed as a prop', () => {
-        let wrapper = mount(<RiskColoring risk="high" />);
-        expect(toJson(wrapper)).toMatchSnapshot('hight_risk');
-        wrapper = mount(<RiskColoring risk="low" />);
-        expect(toJson(wrapper)).toMatchSnapshot('low_risk');
-        wrapper = mount(<RiskColoring risk="red" />);
-        expect(toJson(wrapper)).toMatchSnapshot('red_alert');
-        wrapper = mount(<RiskColoring risk="not set" />);
-        expect(toJson(wrapper)).toMatchSnapshot('not_set');
-        wrapper = mount(<RiskColoring />);
-        expect(toJson(wrapper)).toMatchSnapshot('default');
+        let wrapper = mountWithTranslations(<RiskColoring risk="high" />);
+        expect(toJson(wrapper.find('RiskColoring'))).toMatchSnapshot('hight_risk');
+        wrapper = mountWithTranslations(<RiskColoring risk="low" />);
+        expect(toJson(wrapper.find('RiskColoring'))).toMatchSnapshot('low_risk');
+        wrapper = mountWithTranslations(<RiskColoring risk="red" />);
+        expect(toJson(wrapper.find('RiskColoring'))).toMatchSnapshot('red_alert');
+        wrapper = mountWithTranslations(<RiskColoring risk="not set" />);
+        expect(toJson(wrapper.find('RiskColoring'))).toMatchSnapshot('not_set');
+        wrapper = mountWithTranslations(<RiskColoring />);
+        expect(toJson(wrapper.find('RiskColoring'))).toMatchSnapshot('default');
     });
 });
