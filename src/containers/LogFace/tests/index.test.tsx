@@ -7,6 +7,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import ConnectedLogFace from '..';
 import { DEFAULT_NUMBER_OF_LOGFACE_ROWS, PREGNANCY } from '../../../constants';
+import { mountWithTranslations } from '../../../helpers/testUtils';
 import store from '../../../store';
 import reducer, { fetchLocations, fetchUserId, fetchUserLocations, reducerName } from '../../../store/ducks/locations';
 import { fetchSms, removeSms } from '../../../store/ducks/sms_events';
@@ -41,7 +42,7 @@ describe('containers/LogFace', () => {
 
     it('renders correctly', () => {
         store.dispatch(fetchSms(smsSlice));
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <ConnectedRouter history={history}>
                     <ConnectedLogFace {...props} />
@@ -60,7 +61,7 @@ describe('containers/LogFace', () => {
 
     it('renders only 10 items per page', () => {
         store.dispatch(fetchSms(smsSlice));
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <ConnectedRouter history={history}>
                     <ConnectedLogFace {...props} />
@@ -75,7 +76,7 @@ describe('containers/LogFace', () => {
 
     it('search works correctly', () => {
         store.dispatch(fetchSms(smsSlice));
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <ConnectedRouter history={history}>
                     <ConnectedLogFace {...props} />
