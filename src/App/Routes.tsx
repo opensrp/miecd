@@ -1,9 +1,9 @@
+import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { ConnectedLogout, ConnectedOauthCallback, LogoutProps } from '@onaio/gatekeeper';
 import { isAuthenticated } from '@onaio/session-reducer';
-import React from 'react';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Route, RouteComponentProps, Switch } from 'react-router';
@@ -20,33 +20,22 @@ import {
     CHILD_PATIENT_DETAIL_URL,
     HIERARCHICAL_DATA_URL,
     LOGOUT_URL,
-    NBC_AND_PNC,
     NBC_AND_PNC_ANALYSIS_URL,
     NBC_AND_PNC_COMPARTMENTS_URL,
-    NBC_AND_PNC_DASHBOARD_WELCOME,
     NBC_AND_PNC_LOGFACE_URL,
     NBC_AND_PNC_URL,
-    NEWBORN_REPORT,
-    NUTRITION,
     NUTRITION_ANALYSIS_URL,
     NUTRITION_COMPARTMENTS_URL,
-    NUTRITION_DASHBOARD_WELCOME,
     NUTRITION_LOGFACE_URL,
-    NUTRITION_REGISTRATION,
-    NUTRITION_REPORT,
     NUTRITION_URL,
     PATIENT_DETAIL_URL,
-    PREGNANCY,
     PREGNANCY_ANALYSIS_URL,
     PREGNANCY_COMPARTMENTS_URL,
-    PREGNANCY_DASHBOARD_WELCOME,
-    PREGNANCY_DESCRIPTION,
     PREGNANCY_LOGFACE_URL,
-    PREGNANCY_REGISTRATION,
     PREGNANCY_URL,
 } from '../constants';
 import Compartments from '../containers/Compartments';
-import ConnectedHierarchichalDataTable from '../containers/HierarchichalDataTable';
+import ConnectedHierarchicalDataTable from '../containers/HierarchichalDataTable';
 import ConnectedLogFace from '../containers/LogFace';
 import Analysis from '../containers/pages/Analysis';
 import Home from '../containers/pages/Home';
@@ -56,6 +45,7 @@ import { Dictionary, headerShouldRender, oAuthUserInfoGetter } from '../helpers/
 import { SmsData } from '../store/ducks/sms_events';
 import './App.css';
 import { SmsFilterFunction } from '../types';
+import { useTranslation } from 'react-i18next';
 
 library.add(faUser);
 
@@ -71,6 +61,22 @@ export interface RoutesProps {
 
 export const Routes = (props: RoutesProps) => {
     const { authenticated } = props;
+    const { t } = useTranslation();
+    const NBC_AND_PNC = t('NBC & PNC');
+    const NBC_AND_PNC_DASHBOARD_WELCOME = t('Welcome to Newborn and Postnatal Care');
+    const NEWBORN_REPORT = t('Newborn Report');
+    const NUTRITION = t('Nutrition');
+    const NUTRITION_DASHBOARD_WELCOME = t('Welcome to Nutrition Care');
+    const NUTRITION_REGISTRATION = t('Nutrition Registration');
+    const NUTRITION_REPORT = t('Nutrition Report');
+    const PREGNANCY = t('Pregnancy');
+    const PREGNANCY_DASHBOARD_WELCOME = t('Welcome to the pregnancy dashboard');
+    const PREGNANCY_DESCRIPTION = t(`This dashboard displays information collected from MIECD Viet Nam Pregnancy Module for
+patients in your geographical location. The Module covers the whole pregnancy period
+from conception to delivery and includes Pregnancy Registration, ANC visits, Birth
+reports/Death reports, Risk Reports, Risk alerts and ResponseReports.`);
+    const PREGNANCY_REGISTRATION = t('Pregnancy Registration');
+
     return (
         <div className={`${authenticated && headerShouldRender() ? 'main-container' : 'hidden-container'}`}>
             <SideMenu authenticated={authenticated} />
@@ -193,7 +199,7 @@ export const Routes = (props: RoutesProps) => {
                                         `${url}${HIERARCHICAL_DATA_URL}/:module?/:risk_highlighter?/:title?/:current_level?/:direction?/:node_id?/:permission_level?/:from_level?`,
                                 );
                             })()}
-                            component={ConnectedHierarchichalDataTable}
+                            component={ConnectedHierarchicalDataTable}
                         />
                         <ConnectedPrivateRoute
                             disableLoginProtection={false}
