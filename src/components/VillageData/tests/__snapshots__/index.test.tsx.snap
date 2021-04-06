@@ -89,14 +89,14 @@ Array [
     <td
       className="default-width"
     >
-      <riskColoring
+      <RiskColoring
         risk=""
       >
         <span
           className="badge badge-info"
           id="default-width"
         />
-      </riskColoring>
+      </RiskColoring>
     </td>
   </tr>,
   <tr
@@ -149,7 +149,7 @@ Array [
     <td
       className="default-width"
     >
-      <riskColoring
+      <RiskColoring
         risk="no risk"
       >
         <span
@@ -162,7 +162,7 @@ Array [
             </p>
           </div>
         </span>
-      </riskColoring>
+      </RiskColoring>
     </td>
   </tr>,
   <tr
@@ -215,7 +215,7 @@ Array [
     <td
       className="default-width"
     >
-      <riskColoring
+      <RiskColoring
         risk="low"
       >
         <span
@@ -228,7 +228,7 @@ Array [
             </p>
           </div>
         </span>
-      </riskColoring>
+      </RiskColoring>
     </td>
   </tr>,
   <tr
@@ -281,7 +281,7 @@ Array [
     <td
       className="default-width"
     >
-      <riskColoring
+      <RiskColoring
         risk="low"
       >
         <span
@@ -294,7 +294,7 @@ Array [
             </p>
           </div>
         </span>
-      </riskColoring>
+      </RiskColoring>
     </td>
   </tr>,
   <tr
@@ -347,7 +347,7 @@ Array [
     <td
       className="default-width"
     >
-      <riskColoring
+      <RiskColoring
         risk="Not Set"
       >
         <span
@@ -360,16 +360,10 @@ Array [
             </p>
           </div>
         </span>
-      </riskColoring>
+      </RiskColoring>
     </td>
   </tr>,
 ]
 `;
 
-exports[`components/VillageData must render correctly with no data: Village data with no data 1`] = `
-<VillageData
-  current_level={0}
-  module=""
-  smsData={Array []}
-/>
-`;
+exports[`components/VillageData must render correctly with no data: Village data with no data 1`] = `null`;

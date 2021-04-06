@@ -1,10 +1,11 @@
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import VillageData, { Props } from '..';
+import { mountWithTranslations } from '../../../helpers/testUtils';
 import store from '../../../store/index';
 import villageDataProps from './villageDataPropsfixtures';
 
@@ -21,12 +22,12 @@ describe('components/VillageData', () => {
     });
 
     it('must render correctly with no data', () => {
-        const wrapper = mount(<VillageData />);
-        expect(toJson(wrapper)).toMatchSnapshot('Village data with no data');
+        const wrapper = mountWithTranslations(<VillageData />);
+        expect(toJson(wrapper.find('VillageData Row'))).toMatchSnapshot('Village data with no data');
     });
 
     it('must render correctly with data', () => {
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
                     <VillageData {...(villageDataProps as Props)} />
@@ -39,7 +40,7 @@ describe('components/VillageData', () => {
 
 describe('components/VillageData/nbcAndPncMotherMapFunction', () => {
     it('must return the correct value given specific input', () => {
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
                     <VillageData {...(villageDataProps as Props)} />
@@ -54,7 +55,7 @@ describe('components/VillageData/nbcAndPncMotherMapFunction', () => {
 
 describe('components/VillageData/nbcAndPncChildMapFunction', () => {
     it('must return the correct value given specific input', () => {
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
                     <VillageData {...(villageDataProps as Props)} />
@@ -69,7 +70,7 @@ describe('components/VillageData/nbcAndPncChildMapFunction', () => {
 
 describe('components/VillageData/pregnancyMapFunction', () => {
     it('must return the correct value given specific input', () => {
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
                     <VillageData {...(villageDataProps as Props)} />
