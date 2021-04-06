@@ -2,27 +2,26 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { Card, CardBody, CardTitle } from 'reactstrap';
+import './index.css';
 import {
-    ALL,
-    INAPPROPRIATELY_FED,
+    RED,
+    PREGNANCY,
     NBC_AND_PNC_CHILD,
     NBC_AND_PNC_WOMAN,
-    NO,
-    NO_RISK,
     NUTRITION,
+    ALL,
+    INAPPROPRIATELY_FED,
+    NO,
     OVERWEIGHT,
-    PREGNANCY,
-    RED,
-    RED_ALERT,
     RISK,
     SEVERE_WASTING,
     STUNTED,
 } from '../../constants';
 import { getLinkToHierarchicalDataTable, Dictionary } from '../../helpers/utils';
-
 import { addFilterArgs } from '../../store/ducks/sms_events';
 import { SmsFilterFunction } from '../../types';
 import './index.css';
+import { useTranslation } from 'react-i18next';
 
 /**
  * interface for props to be passed to DataCircleCard component.
@@ -72,22 +71,23 @@ function DataCircleCard({
     userLocationId,
     permissionLevel,
 }: Props) {
+    const { t } = useTranslation();
     const pregnancyAndPncCircleSpec: CircleSpecProps[] = [
         {
             class: 'red',
-            riskLabel: RED_ALERT,
+            riskLabel: t('Red Alert'),
             riskType: RED,
             riskValue: redAlert,
         },
         {
             class: 'yellow',
-            riskLabel: RISK,
+            riskLabel: t('risk'),
             riskType: RISK,
             riskValue: risk,
         },
         {
             class: 'green',
-            riskLabel: NO_RISK,
+            riskLabel: t('No Risk'),
             riskType: NO,
             riskValue: noRisk,
         },
@@ -96,25 +96,25 @@ function DataCircleCard({
     const nutritionCircleSpec: CircleSpecProps[] = [
         {
             class: 'stunting',
-            riskLabel: 'Stunting',
+            riskLabel: t('Stunting'),
             riskType: STUNTED,
             riskValue: stunting,
         },
         {
             class: 'wasting',
-            riskLabel: 'Wasting',
+            riskLabel: t('Wasting'),
             riskType: SEVERE_WASTING,
             riskValue: wasting,
         },
         {
             class: 'overweight',
-            riskLabel: 'Overweight',
+            riskLabel: t('Overweight'),
             riskType: OVERWEIGHT,
             riskValue: overweight,
         },
         {
             class: 'inappropriate-feeding',
-            riskLabel: 'Inappropriate Feeding',
+            riskLabel: t('Inappropriate Feeding'),
             riskType: INAPPROPRIATELY_FED,
             riskValue: inappropriateFeeding,
         },
