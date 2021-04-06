@@ -1,7 +1,6 @@
-import { mount, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import React from 'react';
 import BasicInformation from '..';
+import { mountWithTranslations } from '../../../helpers/testUtils';
 
 const props = [
     { label: 'currentEdd', value: 'test edd' },
@@ -13,13 +12,8 @@ const props = [
 ];
 
 describe('BasicInformation', () => {
-    // eslint-disable-next-line jest/expect-expect
-    it('must render without crashing', () => {
-        shallow(<BasicInformation labelValuePairs={props} />);
-    });
-
     it('must render correctly', () => {
-        const wrapper = mount(<BasicInformation labelValuePairs={props} />);
-        expect(toJson(wrapper)).toMatchSnapshot();
+        const wrapper = mountWithTranslations(<BasicInformation labelValuePairs={props} />);
+        expect(toJson(wrapper.find('BasicInformation'))).toMatchSnapshot();
     });
 });
