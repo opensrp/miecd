@@ -6,7 +6,7 @@ import { ConnectedLogout, ConnectedOauthCallback, LogoutProps } from '@onaio/gat
 import { isAuthenticated } from '@onaio/session-reducer';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
-import { Route, RouteComponentProps, Switch } from 'react-router';
+import { Route, Switch } from 'react-router';
 import { LastLocationProvider } from 'react-router-last-location';
 import Loading from '../components/page/Loading';
 import SideMenu from '../components/page/SideMenu';
@@ -41,7 +41,7 @@ import Analysis from '../containers/pages/Analysis';
 import Home from '../containers/pages/Home';
 import ModuleHome from '../containers/pages/ModuleHome';
 import ConnectedPatientDetails from '../containers/PatientDetails';
-import { Dictionary, headerShouldRender, oAuthUserInfoGetter } from '../helpers/utils';
+import { headerShouldRender, oAuthUserInfoGetter } from '../helpers/utils';
 import { SmsData } from '../store/ducks/sms_events';
 import './App.css';
 import { SmsFilterFunction } from '../types';

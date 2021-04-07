@@ -1,7 +1,7 @@
 import { history } from '@onaio/connected-reducer-registry';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { ConnectedRouter } from 'connected-react-router';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import { Provider } from 'react-redux';
