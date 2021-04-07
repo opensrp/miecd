@@ -1,6 +1,7 @@
 import toJson from 'enzyme-to-json';
 import BasicInformation from '..';
 import { mountWithTranslations } from '../../../helpers/testUtils';
+import React from 'react';
 
 const props = [
     { label: 'currentEdd', value: 'test edd' },

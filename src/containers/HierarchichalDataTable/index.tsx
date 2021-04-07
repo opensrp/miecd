@@ -14,6 +14,7 @@ import NoRecord from '../../components/NoRecord';
 import Loading from '../../components/page/Loading/index';
 import VillageData from '../../components/VillageData';
 import { LOCATION_SLICES } from '../../configs/env';
+import React from 'react';
 import {
     ALL,
     BACKPAGE_ICON,

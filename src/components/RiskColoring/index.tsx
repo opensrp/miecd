@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { HIGH, LOW, NO_RISK, NOT_SET_LOWERCASE, RED } from '../../constants';
 import './index.css';
+import React from 'react';
 
 interface RiskColoringProps {
     risk: string;

@@ -15,6 +15,7 @@ import { BACKPAGE_ICON, FEEDING_CATEGORY, GROWTH_STATUS, NUTRITION_STATUS } from
 import { filterByPatientId, sortByEventDate } from '../../helpers/utils';
 import { getSmsData, SmsData } from '../../store/ducks/sms_events';
 import './index.css';
+import React from 'react';
 
 interface Props extends RouteComponentProps {
     patientId: string;
