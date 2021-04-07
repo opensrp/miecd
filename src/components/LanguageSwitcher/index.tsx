@@ -1,6 +1,8 @@
 /** globe icon with a dropdown where users can select language */
 import React from 'react';
-import { LanguageCode } from '@opensrp/pkg-config';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Fragment } from 'react';
 
 export type LanguageCode = 'en' | 'vi';
 
@@ -12,7 +14,7 @@ export type LanguageOptions = {
 interface LanguageSwitcherProps {
     allLanguageOptions: LanguageOptions;
     supportedLanguages: LanguageCode[];
-    onLanguageChange?: (languageOptionKey: string | number) => void;
+    onLanguageChange?: (languageOptionKey: LanguageCode) => void;
 }
 
 const defaultProps = {
@@ -49,31 +51,32 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
 
     const supportedLanguageOptions = getSupportedLanguageOptions(fullLanguageOptions, supportedLanguages);
 
-    const languageChangeHandler = ({ key }) => {
-        onLanguageChange?.(key);
+    const languageChangeHandler: React.MouseEventHandler<HTMLElement> = (event) => {
+        const key = event?.currentTarget?.getAttribute('data-key') as LanguageCode | null;
+        if (key) {
+            onLanguageChange?.(key);
+        }
     };
 
     const LangMenu = (
-        <Menu onClick={languageChangeHandler}>
+        <Fragment>
             {Object.entries(supportedLanguageOptions).map(([languageCode, label]) => {
-                return <Menu.Item key={languageCode}>{label}</Menu.Item>;
+                return (
+                    <DropdownItem data-key={languageCode} key={languageCode} onClick={languageChangeHandler}>
+                        {label}
+                    </DropdownItem>
+                );
             })}
-        </Menu>
+        </Fragment>
     );
 
     return (
-        <Dropdown overlay={LangMenu} placement="bottomRight">
-            <Button
-                onClick={(e) => e.preventDefault()}
-                shape="circle"
-                icon={<GlobalOutlined />}
-                style={{
-                    background: 'transparent',
-                    border: 0,
-                }}
-                type="primary"
-            />
-        </Dropdown>
+        <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle nav caret>
+                <FontAwesomeIcon icon={['far', 'globe']} />
+            </DropdownToggle>
+            <DropdownMenu right>{LangMenu}</DropdownMenu>
+        </UncontrolledDropdown>
     );
 };
 

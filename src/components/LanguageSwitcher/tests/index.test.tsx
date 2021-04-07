@@ -1,30 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { LanguageCode } from '@opensrp/pkg-config/dist/types';
+import { Dictionary } from '@onaio/utils';
 import { mount, shallow } from 'enzyme';
 import React from 'react';
-import { LanguageOptions, LanguageSwitcher } from '..';
-
-jest.mock('antd', () => {
-    const actual = jest.requireActual('antd');
-    const CustomDropDown = (props: any) => {
-        return (
-            <>
-                {props.overlay}
-                {props.children}
-            </>
-        );
-    };
-    return {
-        ...actual,
-        Dropdown: CustomDropDown,
-    };
-});
+import { LanguageCode, LanguageOptions, LanguageSwitcher } from '..';
 
 describe('components/pages/languageSwitcher', () => {
     afterEach(() => {
         jest.resetAllMocks();
     });
 
+    // eslint-disable-next-line jest/expect-expect
     it('renders correctly', () => {
         shallow(<LanguageSwitcher />);
     });
@@ -32,8 +16,7 @@ describe('components/pages/languageSwitcher', () => {
     it('works correctly', () => {
         const languageOptions: LanguageOptions = {
             en: 'English',
-            fr: 'Français',
-            ar: 'Arabic',
+            vi: 'Vietnamese',
         };
 
         const languageHandlerMock = jest.fn();
@@ -41,25 +24,25 @@ describe('components/pages/languageSwitcher', () => {
         const props = {
             onLanguageChange: languageHandlerMock,
             allLanguageOptions: languageOptions,
-            supportedLanguages: ['en', 'fr'] as LanguageCode[],
+            supportedLanguages: ['en', 'vi'] as LanguageCode[],
         };
 
         const wrapper = mount(<LanguageSwitcher {...props} />);
-        expect(wrapper.find('button')).toHaveLength(1);
+        expect(wrapper.find('button')).toHaveLength(2);
 
-        expect(wrapper.text()).toMatchInlineSnapshot(`"EnglishFrançais"`);
+        expect(wrapper.text()).toMatchInlineSnapshot(`"EnglishVietnamese"`);
 
         // choose language change to french
-        wrapper.find('MenuItem').at(1).simulate('click');
+        wrapper.find('[data-key="en"]').first().simulate('click');
         expect(languageHandlerMock.mock.calls).toEqual([['en']]);
 
-        wrapper.find('MenuItem').at(2).simulate('click');
-        expect(languageHandlerMock.mock.calls).toEqual([['en'], ['fr']]);
+        wrapper.find('[data-key="vi"]').first().simulate('click');
+        expect(languageHandlerMock.mock.calls).toEqual([['en'], ['vi']]);
         wrapper.update();
     });
 
     it('shows all options when supportedLangues is not defined', () => {
-        const languageOptions: LanguageOptions = {
+        const languageOptions: Dictionary = {
             en: 'English',
             fr: 'Français',
             ar: 'Arabic',
@@ -71,7 +54,7 @@ describe('components/pages/languageSwitcher', () => {
         };
 
         const wrapper = mount(<LanguageSwitcher {...props} />);
-        expect(wrapper.find('button')).toHaveLength(1);
+        expect(wrapper.find('button')).toHaveLength(0);
 
         expect(wrapper.text()).toMatchInlineSnapshot(`""`);
     });
