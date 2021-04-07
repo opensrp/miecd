@@ -92,7 +92,7 @@ class ModuleHome extends React.Component<Props & WithTranslation> {
                                                 this.props.deactivateLinks ? 'deactivated' : ''
                                             }`}
                                         >
-                                            {t('button.View')}
+                                            {t('View')}
                                         </button>
                                     </Link>
                                 </div>

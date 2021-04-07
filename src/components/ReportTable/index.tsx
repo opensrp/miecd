@@ -199,12 +199,7 @@ class ReportTable extends Component<ReportTableTypes, State> {
             data: this.getPregnancyStringArray(this.state.pregnancyEventsArray)[this.state.currentPregnancy]
                 ? this.getPregnancyStringArray(this.state.pregnancyEventsArray)[this.state.currentPregnancy]
                 : [],
-            headerItems: [
-                t('table-header.Report'),
-                t('table-header.Date'),
-                t('table-header.Reporter'),
-                t('table-header.Message'),
-            ],
+            headerItems: [t('Report'), t('Date'), t('Reporter'), t('Message')],
             tableClass: 'table-container',
             tbodyClass: 'body',
             tdClass: 'default-width',

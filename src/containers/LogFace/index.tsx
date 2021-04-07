@@ -385,7 +385,7 @@ export const LogFace = ({
                         </Dropdown>
                     </div>
                     <a id="export-button" href={SUPERSET_PREGNANCY_DATA_EXPORT} download={true}>
-                        {t('button.Export data')}
+                        {t('Export data')}
                     </a>
                 </div>
             </div>
