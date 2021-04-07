@@ -1,4 +1,4 @@
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { createBrowserHistory } from 'history';
 import React from 'react';
@@ -6,6 +6,7 @@ import { Router } from 'react-router';
 import snapshotDiff from 'snapshot-diff';
 import SideMenu from '..';
 import { PREGNANCY } from '../../../../constants';
+import { mountWithTranslations } from '../../../../helpers/testUtils';
 
 const history = createBrowserHistory();
 
@@ -26,7 +27,7 @@ describe('components/page/SideMenu', () => {
     });
 
     it('renders side menu correctly', () => {
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Router history={history}>
                 <SideMenu authenticated />
             </Router>,
@@ -37,7 +38,7 @@ describe('components/page/SideMenu', () => {
     });
 
     it('manages state correctly', () => {
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Router history={history}>
                 <SideMenu authenticated />
             </Router>,
@@ -45,7 +46,7 @@ describe('components/page/SideMenu', () => {
 
         expect(wrapper.find('SideMenu').state('collapsedModuleLabel')).toEqual('');
 
-        wrapper.find(`ul#${PREGNANCY}`).simulate('click');
+        wrapper.find('ul#Pregnancy').simulate('click');
         expect(wrapper.find('SideMenu').state('collapsedModuleLabel')).toEqual(PREGNANCY);
         wrapper.unmount();
     });
@@ -54,7 +55,7 @@ describe('components/page/SideMenu', () => {
         // clicking changes the collapsedModuleLabel state and collapses
         // nav to reveal child navigation
 
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Router history={history}>
                 <SideMenu authenticated />)
             </Router>,
@@ -66,7 +67,7 @@ describe('components/page/SideMenu', () => {
         const beforeClickWrapper = toJson(wrapper);
 
         // clicking on a parent nav changes the collapsedState for that navigation module
-        const PregnancyNav = wrapper.find(`ul#${PREGNANCY}`);
+        const PregnancyNav = wrapper.find('ul#Pregnancy');
         expect(PregnancyNav.length).toEqual(1);
         PregnancyNav.simulate('click');
         wrapper.update();

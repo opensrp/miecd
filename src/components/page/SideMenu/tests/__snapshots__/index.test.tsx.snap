@@ -69,231 +69,153 @@ exports[`components/page/SideMenu sets the collapsedModuleLabel correctly from c
 - First value
 + Second value
 
-@@ -138,11 +138,11 @@
-                    <div
-                      className=\\"side-menu-extend col\\"
-                    >
-                      <withRouter(SubMenu)
-                        childNavs={Array []}
--                       collapsedModuleLabel=\\"\\"
-+                       collapsedModuleLabel=\\"Pregnancy\\"
-                        customIcon={
-                          Object {
-                            \\"$$typeof\\": Symbol(react.forward_ref),
-                            \\"render\\": [Function SvgHome],
-                          }
-@@ -160,11 +160,11 @@
-                        }
-                        setCollapsedModuleLabel={[Function anonymous]}
-                      >
-                        <SubMenu
-                          childNavs={Array []}
--                         collapsedModuleLabel=\\"\\"
-+                         collapsedModuleLabel=\\"Pregnancy\\"
-                          customIcon={
-                            Object {
-                              \\"$$typeof\\": Symbol(react.forward_ref),
-                              \\"render\\": [Function SvgHome],
+@@ -78653,11 +78653,11 @@
+                        <div
+                          className=\\"side-menu-extend col\\"
+                        >
+                          <withRouter(SubMenu)
+                            childNavs={Array []}
+-                           collapsedModuleLabel=\\"\\"
++                           collapsedModuleLabel=\\"Pregnancy\\"
+                            customIcon={
+                              Object {
+                                \\"$$typeof\\": Symbol(react.forward_ref),
+                                \\"render\\": [Function SvgHome],
+                              }
+@@ -78675,11 +78675,11 @@
                             }
-@@ -345,11 +345,11 @@
-                              \\"label\\": \\"Analysis\\",
-                              \\"url\\": \\"/pregnancy_analysis\\",
-                            },
-                          ]
-                        }
--                       collapsedModuleLabel=\\"\\"
-+                       collapsedModuleLabel=\\"Pregnancy\\"
-                        customIcon={
-                          Object {
-                            \\"$$typeof\\": Symbol(react.forward_ref),
-                            \\"render\\": [Function SvgPregnancy],
-                          }
-@@ -382,11 +382,11 @@
-                                \\"label\\": \\"Analysis\\",
-                                \\"url\\": \\"/pregnancy_analysis\\",
-                              },
-                            ]
-                          }
--                         collapsedModuleLabel=\\"\\"
-+                         collapsedModuleLabel=\\"Pregnancy\\"
-                          customIcon={
-                            Object {
-                              \\"$$typeof\\": Symbol(react.forward_ref),
-                              \\"render\\": [Function SvgPregnancy],
+                            setCollapsedModuleLabel={[Function anonymous]}
+                          >
+                            <SubMenu
+                              childNavs={Array []}
+-                             collapsedModuleLabel=\\"\\"
++                             collapsedModuleLabel=\\"Pregnancy\\"
+                              customIcon={
+                                Object {
+                                  \\"$$typeof\\": Symbol(react.forward_ref),
+                                  \\"render\\": [Function SvgHome],
+                                }
+@@ -78860,11 +78860,11 @@
+                                  \\"label\\": \\"Analysis\\",
+                                  \\"url\\": \\"/pregnancy_analysis\\",
+                                },
+                              ]
                             }
-@@ -511,11 +511,11 @@
-                            <Collapse
-                              appear={false}
-                              enter={true}
-                              exit={true}
-                              in={false}
--                             isOpen={false}
-+                             isOpen={true}
-                              mountOnEnter={false}
-                              onEnter={[Function noop]}
-                              onEntered={[Function noop]}
-                              onEntering={[Function noop]}
-                              onExit={[Function noop]}
-@@ -527,11 +527,11 @@
-                            >
-                              <Transition
-                                appear={false}
-                                enter={true}
-                                exit={true}
--                               in={false}
-+                               in={true}
-                                mountOnEnter={false}
-                                onEnter={[Function noop]}
-                                onEntered={[Function bound onEntered]}
-                                onEntering={[Function bound onEntering]}
-                                onExit={[Function bound onExit]}
-@@ -539,12 +539,16 @@
-                                onExiting={[Function bound onExiting]}
-                                timeout={350}
-                                unmountOnExit={false}
-                              >
-                                <div
--                                 className=\\"collapse\\"
--                                 style={Object {}}
-+                                 className=\\"collapsing\\"
-+                                 style={
-+                                   Object {
-+                                     \\"height\\": 0,
-+                                   }
-+                                 }
+-                           collapsedModuleLabel=\\"\\"
++                           collapsedModuleLabel=\\"Pregnancy\\"
+                            customIcon={
+                              Object {
+                                \\"$$typeof\\": Symbol(react.forward_ref),
+                                \\"render\\": [Function SvgPregnancy],
+                              }
+@@ -78897,11 +78897,11 @@
+                                    \\"label\\": \\"Analysis\\",
+                                    \\"url\\": \\"/pregnancy_analysis\\",
+                                  },
+                                ]
+                              }
+-                             collapsedModuleLabel=\\"\\"
++                             collapsedModuleLabel=\\"Pregnancy\\"
+                              customIcon={
+                                Object {
+                                  \\"$$typeof\\": Symbol(react.forward_ref),
+                                  \\"render\\": [Function SvgPregnancy],
+                                }
+@@ -79026,11 +79026,11 @@
+                                <Collapse
+                                  appear={false}
+                                  enter={true}
+                                  exit={true}
+                                  in={false}
+-                                 isOpen={false}
++                                 isOpen={true}
+                                  mountOnEnter={false}
+                                  onEnter={[Function noop]}
+                                  onEntered={[Function noop]}
+                                  onEntering={[Function noop]}
+                                  onExit={[Function noop]}
+@@ -79042,11 +79042,11 @@
                                 >
-                                  <Nav
-                                    key=\\"child-nav-0\\"
-                                    tag=\\"ul\\"
-                                    vertical={false}
-@@ -736,11 +740,11 @@
-                              \\"label\\": \\"Analysis\\",
-                              \\"url\\": \\"/nbc_and_pnc_analysis\\",
-                            },
-                          ]
-                        }
--                       collapsedModuleLabel=\\"\\"
-+                       collapsedModuleLabel=\\"Pregnancy\\"
-                        customIcon={
-                          Object {
-                            \\"$$typeof\\": Symbol(react.forward_ref),
-                            \\"render\\": [Function SvgNbcandpnc],
-                          }
-@@ -773,11 +777,11 @@
-                                \\"label\\": \\"Analysis\\",
-                                \\"url\\": \\"/nbc_and_pnc_analysis\\",
-                              },
-                            ]
-                          }
--                         collapsedModuleLabel=\\"\\"
-+                         collapsedModuleLabel=\\"Pregnancy\\"
-                          customIcon={
-                            Object {
-                              \\"$$typeof\\": Symbol(react.forward_ref),
-                              \\"render\\": [Function SvgNbcandpnc],
+                                  <Transition
+                                    appear={false}
+                                    enter={true}
+                                    exit={true}
+-                                   in={false}
++                                   in={true}
+                                    mountOnEnter={false}
+                                    onEnter={[Function noop]}
+                                    onEntered={[Function bound onEntered]}
+                                    onEntering={[Function bound onEntering]}
+                                    onExit={[Function bound onExit]}
+@@ -79054,12 +79054,16 @@
+                                    onExiting={[Function bound onExiting]}
+                                    timeout={350}
+                                    unmountOnExit={false}
+                                  >
+                                    <div
+-                                     className=\\"collapse\\"
+-                                     style={Object {}}
++                                     className=\\"collapsing\\"
++                                     style={
++                                       Object {
++                                         \\"height\\": 0,
++                                       }
++                                     }
+                                    >
+                                      <Nav
+                                        key=\\"child-nav-0\\"
+                                        tag=\\"ul\\"
+                                        vertical={false}
+@@ -79251,11 +79255,11 @@
+                                  \\"label\\": \\"Analysis\\",
+                                  \\"url\\": \\"/nbc_and_pnc_analysis\\",
+                                },
+                              ]
                             }
-@@ -1127,11 +1131,11 @@
-                              \\"label\\": \\"Analysis\\",
-                              \\"url\\": \\"/nutrition_analysis\\",
-                            },
-                          ]
-                        }
--                       collapsedModuleLabel=\\"\\"
-+                       collapsedModuleLabel=\\"Pregnancy\\"
-                        customIcon={
-                          Object {
-                            \\"$$typeof\\": Symbol(react.forward_ref),
-                            \\"render\\": [Function SvgNutrition],
-                          }
-@@ -1164,11 +1168,11 @@
-                                \\"label\\": \\"Analysis\\",
-                                \\"url\\": \\"/nutrition_analysis\\",
-                              },
-                            ]
-                          }
--                         collapsedModuleLabel=\\"\\"
-+                         collapsedModuleLabel=\\"Pregnancy\\"
-                          customIcon={
-                            Object {
-                              \\"$$typeof\\": Symbol(react.forward_ref),
-                              \\"render\\": [Function SvgNutrition],
+-                           collapsedModuleLabel=\\"\\"
++                           collapsedModuleLabel=\\"Pregnancy\\"
+                            customIcon={
+                              Object {
+                                \\"$$typeof\\": Symbol(react.forward_ref),
+                                \\"render\\": [Function SvgNbcandpnc],
+                              }
+@@ -79288,11 +79292,11 @@
+                                    \\"label\\": \\"Analysis\\",
+                                    \\"url\\": \\"/nbc_and_pnc_analysis\\",
+                                  },
+                                ]
+                              }
+-                             collapsedModuleLabel=\\"\\"
++                             collapsedModuleLabel=\\"Pregnancy\\"
+                              customIcon={
+                                Object {
+                                  \\"$$typeof\\": Symbol(react.forward_ref),
+                                  \\"render\\": [Function SvgNbcandpnc],
+                                }
+@@ -79642,11 +79646,11 @@
+                                  \\"label\\": \\"Analysis\\",
+                                  \\"url\\": \\"/nutrition_analysis\\",
+                                },
+                              ]
                             }
-@@ -1503,11 +1507,11 @@
-                          </div>
-                        </SubMenu>
-                      </withRouter(SubMenu)>
-                      <withRouter(SubMenu)
-                        childNavs={Array []}
--                       collapsedModuleLabel=\\"\\"
-+                       collapsedModuleLabel=\\"Pregnancy\\"
-                        key=\\"4\\"
-                        parentNav={
-                          Object {
-                            \\"icon\\": Array [
-                              \\"fas\\",
-@@ -1519,11 +1523,11 @@
-                        }
-                        setCollapsedModuleLabel={[Function anonymous]}
-                      >
-                        <SubMenu
-                          childNavs={Array []}
--                         collapsedModuleLabel=\\"\\"
-+                         collapsedModuleLabel=\\"Pregnancy\\"
-                          history={
-                            Object {
-                              \\"action\\": \\"POP\\",
-                              \\"block\\": [Function block],
-                              \\"createHref\\": [Function createHref],
-@@ -1710,11 +1714,11 @@
-                              \\"label\\": \\"Child\\",
-                              \\"url\\": \\"/404\\",
-                            },
-                          ]
-                        }
--                       collapsedModuleLabel=\\"\\"
-+                       collapsedModuleLabel=\\"Pregnancy\\"
-                        key=\\"5\\"
-                        parentNav={
-                          Object {
-                            \\"icon\\": Array [
-                              \\"far\\",
-@@ -1744,11 +1748,11 @@
-                                \\"label\\": \\"Child\\",
-                                \\"url\\": \\"/404\\",
-                              },
-                            ]
-                          }
--                         collapsedModuleLabel=\\"\\"
-+                         collapsedModuleLabel=\\"Pregnancy\\"
-                          history={
-                            Object {
-                              \\"action\\": \\"POP\\",
-                              \\"block\\": [Function block],
-                              \\"createHref\\": [Function createHref],
-@@ -2132,11 +2136,11 @@
-                              \\"label\\": \\"Locations\\",
-                              \\"url\\": \\"/404\\",
-                            },
-                          ]
-                        }
--                       collapsedModuleLabel=\\"\\"
-+                       collapsedModuleLabel=\\"Pregnancy\\"
-                        key=\\"6\\"
-                        parentNav={
-                          Object {
-                            \\"icon\\": Array [
-                              \\"fas\\",
-@@ -2166,11 +2170,11 @@
-                                \\"label\\": \\"Locations\\",
-                                \\"url\\": \\"/404\\",
-                              },
-                            ]
-                          }
--                         collapsedModuleLabel=\\"\\"
-+                         collapsedModuleLabel=\\"Pregnancy\\"
-                          history={
-                            Object {
-                              \\"action\\": \\"POP\\",
-                              \\"block\\": [Function block],
-                              \\"createHref\\": [Function createHref],"
+-                           collapsedModuleLabel=\\"\\"
++                           collapsedModuleLabel=\\"Pregnancy\\"
+                            customIcon={
+                              Object {
+                                \\"$$typeof\\": Symbol(react.forward_ref),
+                                \\"render\\": [Function SvgNutrition],
+                              }
+@@ -79679,11 +79683,11 @@
+                                    \\"label\\": \\"Analysis\\",
+                                    \\"url\\": \\"/nutrition_analysis\\",
+                                  },
+                                ]
+                              }
+-                             collapsedModuleLabel=\\"\\"
++                             collapsedModuleLabel=\\"Pregnancy\\"
+                              customIcon={
+                                Object {
+                                  \\"$$typeof\\": Symbol(react.forward_ref),
+                                  \\"render\\": [Function SvgNutrition],
+                                }"
 `;
