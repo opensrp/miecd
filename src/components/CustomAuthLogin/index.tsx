@@ -1,4 +1,4 @@
-import { ProviderLinks, Providers } from '@onaio/gatekeeper';
+import { AuthorizationGrantType, ProviderLinks, Providers, useOAuthLogin } from '@onaio/gatekeeper';
 import React from 'react';
 import { MIECD_VIETNAM, NO_PROVIDERS } from '../../constants';
 import './index.css';
@@ -14,6 +14,7 @@ export interface OauthLoginProps {
  */
 const CustomOauthLogin = (props: OauthLoginProps) => {
     const { providers, ProviderLinksComponent } = props;
+    const authorizationUris = useOAuthLogin({ authorizationGrantType: AuthorizationGrantType.IMPLICIT, providers });
     return ProviderLinksComponent && providers ? (
         <div className="row login-row">
             <div className="image col-lg col-xl" />
@@ -24,7 +25,16 @@ const CustomOauthLogin = (props: OauthLoginProps) => {
                 </div>
                 <div className="center">
                     <h3>{MIECD_VIETNAM}</h3>
-                    <ProviderLinksComponent {...{ providers }} />
+                    {Object.entries(authorizationUris).map((item) => {
+                        return (
+                            /** render a link for each provider */
+                            <p className="gatekeeper-p item" key={item[0]}>
+                                <a className="gatekeeper-btn" href={item[1]}>
+                                    {item[0]}
+                                </a>
+                            </p>
+                        );
+                    })}
                 </div>
             </div>
         </div>
