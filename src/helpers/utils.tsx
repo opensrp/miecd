@@ -68,8 +68,8 @@ export function oAuthUserInfoGetter(apiResponse: Dictionary): SessionState | voi
 /**
  * determines weather the header should be rendered.
  */
-export function headerShouldNotRender(): boolean {
-    return RegExp(URLS_TO_HIDE_HEADER.join('|')).test(window.location.pathname);
+export function headerShouldRender(): boolean {
+    return !RegExp(URLS_TO_HIDE_HEADER.join('|')).test(window.location.pathname);
 }
 
 /**

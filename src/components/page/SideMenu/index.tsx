@@ -15,7 +15,7 @@ import {
     ENABLE_REPORT_MODULE,
 } from '../../../configs/env';
 
-import { headerShouldNotRender } from '../../../helpers/utils';
+import { headerShouldRender } from '../../../helpers/utils';
 import {
     ADMIN_NAVIGATION_MODULE,
     CLIENT_NAVIGATION_MODULE,
@@ -86,7 +86,7 @@ class SideMenu extends React.Component<HeaderPropsTypes, SideMenuState> {
         return (
             <div
                 className={`${
-                    this.props.authenticated && !headerShouldNotRender() && !this.checkHomePageURL(this.props)
+                    this.props.authenticated && headerShouldRender() && !this.checkHomePageURL(this.props)
                         ? 'sidebar'
                         : 'hidden-container'
                 }`}

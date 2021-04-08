@@ -6,7 +6,7 @@ import { Route } from 'react-router';
 import { providers } from '../configs/settings';
 import { LOGIN_URL } from '../constants';
 import ConnectedHeader from '../containers/ConnectedHeader';
-import { headerShouldNotRender } from '../helpers/utils';
+import { headerShouldRender } from '../helpers/utils';
 import './App.css';
 
 import CustomOauthLogin from '../components/CustomAuthLogin';
@@ -27,7 +27,7 @@ class App extends Component {
                 />
                 {/* tslint:enable jsx-no-lambda */}
                 <ConnectedHeader />
-                {!headerShouldNotRender() && <ConnectedRoutes />}
+                {headerShouldRender() && <ConnectedRoutes />}
             </div>
         );
     }
