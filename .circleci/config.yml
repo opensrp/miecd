@@ -36,7 +36,7 @@ jobs:
           command: yarn lint
       
       - run:
-          name: Run test with coverage for clients/core
+          name: Run test with coverage
           command: yarn test --collectCoverage
 
       - run:
