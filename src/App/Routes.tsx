@@ -52,7 +52,7 @@ import Analysis from '../containers/pages/Analysis';
 import Home from '../containers/pages/Home';
 import ModuleHome from '../containers/pages/ModuleHome';
 import ConnectedPatientDetails from '../containers/PatientDetails';
-import { Dictionary, headerShouldNotRender, oAuthUserInfoGetter } from '../helpers/utils';
+import { Dictionary, headerShouldRender, oAuthUserInfoGetter } from '../helpers/utils';
 import { SmsData } from '../store/ducks/sms_events';
 import './App.css';
 import { SmsFilterFunction } from '../types';
@@ -72,7 +72,7 @@ export interface RoutesProps {
 export const Routes = (props: RoutesProps) => {
     const { authenticated } = props;
     return (
-        <div className={`${authenticated && !headerShouldNotRender() ? 'main-container' : 'hidden-container'}`}>
+        <div className={`${authenticated && headerShouldRender() ? 'main-container' : 'hidden-container'}`}>
             <SideMenu authenticated={authenticated} />
             <div className="content">
                 <Switch>
