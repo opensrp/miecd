@@ -9,6 +9,8 @@ import { PREGNANCY } from '../../../../constants';
 
 const history = createBrowserHistory();
 
+jest.mock('../../../../configs/env');
+
 describe('components/page/SideMenu', () => {
     beforeEach(() => {
         jest.resetAllMocks();

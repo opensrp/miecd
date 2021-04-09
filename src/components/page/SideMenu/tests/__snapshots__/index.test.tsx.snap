@@ -217,5 +217,83 @@ exports[`components/page/SideMenu sets the collapsedModuleLabel correctly from c
                             Object {
                               \\"$$typeof\\": Symbol(react.forward_ref),
                               \\"render\\": [Function SvgNutrition],
-                            }"
+                            }
+@@ -1503,11 +1507,11 @@
+                          </div>
+                        </SubMenu>
+                      </withRouter(SubMenu)>
+                      <withRouter(SubMenu)
+                        childNavs={Array []}
+-                       collapsedModuleLabel=\\"\\"
++                       collapsedModuleLabel=\\"Pregnancy\\"
+                        key=\\"4\\"
+                        parentNav={
+                          Object {
+                            \\"icon\\": Array [
+                              \\"fas\\",
+@@ -1519,11 +1523,11 @@
+                        }
+                        setCollapsedModuleLabel={[Function anonymous]}
+                      >
+                        <SubMenu
+                          childNavs={Array []}
+-                         collapsedModuleLabel=\\"\\"
++                         collapsedModuleLabel=\\"Pregnancy\\"
+                          history={
+                            Object {
+                              \\"action\\": \\"POP\\",
+                              \\"block\\": [Function block],
+                              \\"createHref\\": [Function createHref],
+@@ -1710,11 +1714,11 @@
+                              \\"label\\": \\"Child\\",
+                              \\"url\\": \\"/404\\",
+                            },
+                          ]
+                        }
+-                       collapsedModuleLabel=\\"\\"
++                       collapsedModuleLabel=\\"Pregnancy\\"
+                        key=\\"5\\"
+                        parentNav={
+                          Object {
+                            \\"icon\\": Array [
+                              \\"far\\",
+@@ -1744,11 +1748,11 @@
+                                \\"label\\": \\"Child\\",
+                                \\"url\\": \\"/404\\",
+                              },
+                            ]
+                          }
+-                         collapsedModuleLabel=\\"\\"
++                         collapsedModuleLabel=\\"Pregnancy\\"
+                          history={
+                            Object {
+                              \\"action\\": \\"POP\\",
+                              \\"block\\": [Function block],
+                              \\"createHref\\": [Function createHref],
+@@ -2132,11 +2136,11 @@
+                              \\"label\\": \\"Locations\\",
+                              \\"url\\": \\"/404\\",
+                            },
+                          ]
+                        }
+-                       collapsedModuleLabel=\\"\\"
++                       collapsedModuleLabel=\\"Pregnancy\\"
+                        key=\\"6\\"
+                        parentNav={
+                          Object {
+                            \\"icon\\": Array [
+                              \\"fas\\",
+@@ -2166,11 +2170,11 @@
+                                \\"label\\": \\"Locations\\",
+                                \\"url\\": \\"/404\\",
+                              },
+                            ]
+                          }
+-                         collapsedModuleLabel=\\"\\"
++                         collapsedModuleLabel=\\"Pregnancy\\"
+                          history={
+                            Object {
+                              \\"action\\": \\"POP\\",
+                              \\"block\\": [Function block],
+                              \\"createHref\\": [Function createHref],"
 `;
