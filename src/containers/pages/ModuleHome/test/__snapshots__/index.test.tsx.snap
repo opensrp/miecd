@@ -158,7 +158,7 @@ exports[`PregnancyHome must render correctly 1`] = `
                   <button
                     className="button-style "
                   >
-                    button.View
+                    View
                   </button>
                 </a>
               </LinkAnchor>
