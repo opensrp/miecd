@@ -11,6 +11,7 @@ jobs:
 
         environment:
           SKIP_PREFLIGHT_CHECK: 'true'
+          NODE_OPTIONS: --max_old_space_size=4096
 
     working_directory: ~/repo
 
