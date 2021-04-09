@@ -21,6 +21,7 @@ import {
     reportTableProps,
     singlePatientEvents,
 } from './fixtures';
+import React from 'react';
 
 jest.mock('highcharts');
 

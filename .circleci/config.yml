@@ -9,6 +9,10 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:14.16
 
+        environment:
+          SKIP_PREFLIGHT_CHECK: 'true'
+          NODE_OPTIONS: --max_old_space_size=4096
+
     working_directory: ~/repo
 
     steps:
@@ -33,8 +37,8 @@ jobs:
           command: yarn lint
       
       - run:
-          name: Run test with coverage for clients/core
-          command: yarn test --collectCoverage
+          name: Run test with coverage
+          command: yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles
 
       - run:
           name: upload coverage to coveralls
