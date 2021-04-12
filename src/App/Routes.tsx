@@ -45,7 +45,7 @@ import { headerShouldRender, oAuthUserInfoGetter } from '../helpers/utils';
 import { SmsData } from '../store/ducks/sms_events';
 import './App.css';
 import { SmsFilterFunction } from '../types';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 library.add(faUser);
 
@@ -71,10 +71,16 @@ export const Routes = (props: RoutesProps) => {
     const NUTRITION_REPORT = t('Nutrition Report');
     const PREGNANCY = t('Pregnancy');
     const PREGNANCY_DASHBOARD_WELCOME = t('Welcome to the pregnancy dashboard');
-    const PREGNANCY_DESCRIPTION = t(`This dashboard displays information collected from MIECD Viet Nam Pregnancy Module for
-patients in your geographical location. The Module covers the whole pregnancy period
-from conception to delivery and includes Pregnancy Registration, ANC visits, Birth
-reports/Death reports, Risk Reports, Risk alerts and ResponseReports.`);
+    const PREGNANCY_DESCRIPTION = (
+        <Trans>
+            This dashboard displays information collected from MIECD Viet Nam Pregnancy Module for patients in your
+            geographical location.
+            <p className="font-italic">
+                The Module covers the whole pregnancy period from conception to delivery and includes Pregnancy
+                Registration, ANC visits, Birth reports/Death reports, Risk Reports, Risk alerts and ResponseReports.
+            </p>
+        </Trans>
+    );
     const PREGNANCY_REGISTRATION = t('Pregnancy Registration');
 
     return (
