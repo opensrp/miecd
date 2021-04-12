@@ -67,7 +67,6 @@ describe('components/page/SideMenu', () => {
 
         // clicking on a parent nav changes the collapsedState for that navigation module
         const pregnancyNav = wrapper.find('div#sub-menu-Pregnancy Nav.side-collapse-nav');
-        console.log(toJson(pregnancyNav));
         expect(pregnancyNav.length).toEqual(1);
         pregnancyNav.simulate('click');
         wrapper.update();
