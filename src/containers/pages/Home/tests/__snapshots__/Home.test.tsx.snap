@@ -35,19 +35,19 @@ exports[`containers/pages/Home renders Home correctly 1`] = `
         </h1>
       </div>
       <div
-        className="components-list"
+        className="center-vertically"
       >
         <div
-          className="spacer"
+          className="components-list"
         >
-          <img
-            alt="woman"
-            id="womanchild1"
-            src="pregnant-woman.svg"
-          />
           <div
-            className="home-sub-containers"
+            className="spacer"
           >
+            <img
+              alt="pregnancy module avatar"
+              id="pregnancyAvatar"
+              src="pregnancy.jpg"
+            />
             <div
               className="sub-container-message"
             >
@@ -90,18 +90,14 @@ exports[`containers/pages/Home renders Home correctly 1`] = `
               </div>
             </div>
           </div>
-        </div>
-        <div
-          className="spacer"
-        >
-          <img
-            alt="woman"
-            id="womanchild2"
-            src="carrying-baby.svg"
-          />
           <div
-            className="home-sub-containers"
+            className="spacer"
           >
+            <img
+              alt="NBC & PNC module avatar"
+              id="nbcPncAvatar"
+              src="pnc_nbc.jpg"
+            />
             <div
               className="sub-container-message"
             >
@@ -144,18 +140,14 @@ exports[`containers/pages/Home renders Home correctly 1`] = `
               </div>
             </div>
           </div>
-        </div>
-        <div
-          className="spacer"
-        >
-          <img
-            alt="woman"
-            id="womanchild3"
-            src="baby-feeding.svg"
-          />
           <div
-            className="home-sub-containers"
+            className="spacer"
           >
+            <img
+              alt="nutrition module avatar"
+              id="nutritionAvatar"
+              src="nutrition.jpg"
+            />
             <div
               className="sub-container-message"
             >
