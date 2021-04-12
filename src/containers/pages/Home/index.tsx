@@ -1,9 +1,9 @@
 // this is the home page component
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import womanchild3 from '../../../assets/images/baby-feeding.svg';
-import womanchild2 from '../../../assets/images/carrying-baby.svg';
-import womanchild1 from '../../../assets/images/pregnant-woman.svg';
+import pregnancyAvatar from '../../../assets/images/pregnant-woman.svg';
+import nbcPncAvatar from '../../../assets/images/carrying-baby.svg';
+import nutritionAvatar from '../../../assets/images/baby-feeding.svg';
 import { NBC_AND_PNC_URL, NUTRITION_URL, PREGNANCY_URL } from '../../../constants';
 import './index.css';
 
@@ -16,11 +16,8 @@ class Home extends React.Component {
                 </div>
                 <div className="components-list">
                     <div className="spacer">
-                        <img src={womanchild1} id="womanchild1" alt="woman" />
+                        <img src={pregnancyAvatar} id="pregnancyAvatar" alt="pregnancy module avatar" />
                         <div className="home-sub-containers">
-                            {/* <div className="sub-container-heading">
-                <p>Log face</p>
-              </div> */}
                             <div className="sub-container-message">
                                 <div id="cont-size">
                                     <h1>Pregnancy</h1>
@@ -37,14 +34,11 @@ class Home extends React.Component {
                         </div>
                     </div>
                     <div className="spacer">
-                        <img src={womanchild2} id="womanchild2" alt="woman" />
+                        <img src={nbcPncAvatar} id="nbcPncAvatar" alt="NBC &#38; PNC module avatar" />
                         <div className="home-sub-containers">
-                            {/* <div className="sub-container-heading">
-                <p>Log face</p>
-              </div> */}
                             <div className="sub-container-message">
                                 <div id="cont-size">
-                                    <h1>NBC & PNC</h1>
+                                    <h1>NBC &#38; PNC</h1>
                                 </div>
                                 <div id="cont-size">
                                     <h4>View the latest message updates about your patients.</h4>
@@ -58,11 +52,8 @@ class Home extends React.Component {
                         </div>
                     </div>
                     <div className="spacer">
-                        <img src={womanchild3} id="womanchild3" alt="woman" />
+                        <img src={nutritionAvatar} id="nutritionAvatar" alt="nutrition module avatar" />
                         <div className="home-sub-containers">
-                            {/* <div className="sub-container-heading">
-                <p>Log face</p>
-              </div> */}
                             <div className="sub-container-message">
                                 <div id="cont-size">
                                     <h1>Nutrition</h1>
