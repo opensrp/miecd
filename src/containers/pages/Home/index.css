@@ -77,11 +77,7 @@
 }
 
 .home-main .home-sub-containers {
-    background-color: #f7f6fb;
-    border: 1px solid #dadce0;
-    border-radius: 18px;
-    box-shadow: 0 1px 3px 0 #d7d7e0;
-    padding: 10px;
+    background-color: inherit;
     height: 100%;
     width: 100%;
 }
@@ -93,16 +89,33 @@
 }
 
 .home-main .sub-container-message {
+    display: flex;
+    flex-direction: column;
     font-size: 1rem;
-    margin: 5%;
     height: 100%;
+    width: 90%;
+    transform: translateY(-20%);
 }
 
 .home-main .spacer {
     height: 100%;
+    width: 30%;
     flex: 1 1 auto;
     margin: 25px;
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f7f6fb;
+    border: 1px solid #dadce0;
+    border-radius: 18px;
+    box-shadow: 0 1px 3px 0 #d7d7e0;
+    padding-top: 10px;
+}
+
+.spacer > img {
+    display: flex;
+    height: 100%;
+    transform: translateY(-50%);
 }
 
 h4 p {
@@ -110,15 +123,9 @@ h4 p {
 }
 
 .home-main #cont-size {
-    height: 10%;
-    position: relative;
-    top: 35%;
+    display: flex;
+    height: auto;
     color: #637381;
-}
-
-.home-sub-containers hr {
-    margin-left: -10px;
-    margin-right: -10px;
 }
 
 .home-main #cont-size h1 {
@@ -143,7 +150,7 @@ h4 p {
 }
 
 .home-main #cont-sized {
-    top: 50%;
+    top: 20%;
     background: initial;
     position: relative;
     text-align: center;
@@ -166,22 +173,4 @@ h4 p {
         height: 400px;
         margin: 60px 20px;
     }
-}
-
-img#pregnancyAvatar {
-    position: absolute;
-    top: -21.5%;
-    left: 36%;
-}
-
-img#nbcPncAvatar {
-    position: absolute;
-    top: -22.4%;
-    left: 40%;
-}
-
-img#nutritionAvatar {
-    position: absolute;
-    top: -20.4%;
-    left: 35%;
 }
