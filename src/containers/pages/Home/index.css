@@ -4,10 +4,19 @@
 
 .home-main .components-list {
     display: flex;
+    align-items: center;
+    justify-content: center;
     padding-left: 25px;
     position: relative;
     flex-direction: row;
     height: 400px;
+}
+
+.center-vertically {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
 .nav {
@@ -32,15 +41,19 @@
 }
 
 .home-main {
-    padding: 50px 50px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 50px 0 50px;
     background: white;
-    height: 100%;
+    height: 100vh;
     position: relative;
 }
 
 .home-main .welcome-text {
+    justify-self: flex-start;
     text-align: center;
-    padding: 50px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .home-main .welcome-text h1 {
@@ -76,12 +89,6 @@
     background: #4d54b4;
 }
 
-.home-main .home-sub-containers {
-    background-color: inherit;
-    height: 100%;
-    width: 100%;
-}
-
 .sub-container-heading {
     border: none;
     font-size: 22px;
@@ -114,6 +121,7 @@
 
 .spacer > img {
     display: flex;
+    width: 14rem;
     height: 100%;
     transform: translateY(-50%);
 }
