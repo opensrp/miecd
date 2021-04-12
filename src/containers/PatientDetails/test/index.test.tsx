@@ -13,7 +13,6 @@ reducerRegistry.register(reducerName, smsReducer);
 
 const history = createBrowserHistory();
 
-// jest.createMockFromModule('highcharts');
 jest.mock('highcharts');
 const props = {
     match: {

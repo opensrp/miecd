@@ -18,10 +18,13 @@ import {
     STUNTED,
 } from '../../constants';
 import { getLinkToHierarchicalDataTable, Dictionary } from '../../helpers/utils';
-import { addFilterArgs } from '../../store/ducks/sms_events';
+import reducer, { reducerName, addFilterArgs } from '../../store/ducks/sms_events';
 import { SmsFilterFunction } from '../../types';
 import './index.css';
 import { useTranslation } from 'react-i18next';
+import reducerRegistry from '@onaio/redux-reducer-registry';
+
+reducerRegistry.register(reducerName, reducer);
 
 /**
  * interface for props to be passed to DataCircleCard component.
