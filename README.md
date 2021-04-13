@@ -1,5 +1,8 @@
 # MIECD Vietnam
 
+[![CircleCI](https://circleci.com/gh/OpenSRP/miecd.svg?style=svg)](https://circleci.com/gh/OpenSRP/miecd)
+[![Coverage Status](https://coveralls.io/repos/github/OpenSRP/miecd/badge.svg?branch=main)](https://coveralls.io/github/OpenSRP/miecd?branch=main)
+
 The MIECD vietnam project aims to tackle delays that may lead to maternal and newborn mortality, working towards the objective of "No women should die in pregnancy due to preventable causes".
 
 MIECD provides a set of dashboards that give insight about data collected over specific locations at specific times about pregnancies, postnatal care and newborn health. The MIECD web app has 3 modules that correspond to the various types of data collected by the MIECD project:
