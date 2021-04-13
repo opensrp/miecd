@@ -9,7 +9,7 @@ import {
     SUPERSET_SMS_DATA_SLICE,
     USER_LOCATION_DATA_SLICE,
 } from '../configs/env';
-import { URLS_TO_HIDE_HEADER } from '../configs/settings';
+import { toastConfig, URLS_TO_HIDE_HEADER } from '../configs/settings';
 import {
     CHILD_PATIENT_DETAIL,
     COMMUNE,
@@ -46,6 +46,7 @@ import {
 } from '../store/ducks/locations';
 import { fetchSms, SmsData, smsDataFetched } from '../store/ducks/sms_events';
 import { Dictionary } from '@onaio/utils';
+import toast from 'react-hot-toast';
 export type { Dictionary };
 
 /** Custom function to get oAuth user info depending on the oAuth2 provider
@@ -519,4 +520,18 @@ export async function fetchData(supersetFetchMethod: typeof supersetFetch = supe
 
 export const convertMillisecondsToYear = (mSeconds: number) => {
     return Math.floor(mSeconds / (365 * 24 * 60 * 60 * 1000));
+};
+
+/** facade to display a success toast
+ * @param message - message to include in toast
+ */
+export const toastToSuccess = (message: string) => {
+    return toast.success(message, toastConfig);
+};
+
+/** facade to display an error toast
+ * @param message - message to include in toast
+ */
+export const toastToError = (message: string) => {
+    return toast.error(message, toastConfig);
 };
