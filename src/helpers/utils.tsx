@@ -47,6 +47,7 @@ import {
 import { fetchSms, SmsData, smsDataFetched } from '../store/ducks/sms_events';
 import { Dictionary } from '@onaio/utils';
 import toast from 'react-hot-toast';
+import { useState } from 'react';
 export type { Dictionary };
 
 /** Custom function to get oAuth user info depending on the oAuth2 provider
@@ -484,38 +485,45 @@ export function getLinkToPatientDetail(smsData: SmsData, prependWith: string) {
  * @param supersetFetchMethod - optional method to fetch data from superset
  */
 export async function fetchData(supersetFetchMethod: typeof supersetFetch = supersetFetch) {
+    const promises = [];
     if (!userIdFetched(store.getState())) {
         const opensrpService = new OpenSRPService('/security/authenticate');
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await opensrpService.read('').then((response: any) => {
+        const userIdPromise = opensrpService.read('').then((response: any) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             store.dispatch(fetchUserId((response as any).user.attributes._PERSON_UUID));
         });
+        promises.push(userIdPromise);
     }
 
     // fetch user location details
     if (!userLocationDataFetched(store.getState())) {
-        await supersetFetchMethod(USER_LOCATION_DATA_SLICE).then((result: UserLocation[]) => {
+        const locationDataPromise = supersetFetchMethod(USER_LOCATION_DATA_SLICE).then((result: UserLocation[]) => {
             store.dispatch(fetchUserLocations(result));
         });
+        promises.push(locationDataPromise);
     }
 
     // fetch all location slices
     for (const slice in LOCATION_SLICES) {
         if (slice) {
-            await supersetFetchMethod(LOCATION_SLICES[slice]).then((result: Location[]) => {
+            const locationPromise = supersetFetchMethod(LOCATION_SLICES[slice]).then((result: Location[]) => {
                 store.dispatch(fetchLocations(result));
             });
+            promises.push(locationPromise);
         }
     }
 
     // check if sms data is fetched and then fetch if not fetched already
     if (!smsDataFetched(store.getState())) {
-        await supersetFetchMethod(SUPERSET_SMS_DATA_SLICE).then((result: SmsData[]) => {
+        const smsDataPromise = supersetFetchMethod(SUPERSET_SMS_DATA_SLICE).then((result: SmsData[]) => {
             store.dispatch(fetchSms(result));
         });
+        promises.push(smsDataPromise);
     }
+
+    return Promise.all(promises).catch((err) => err);
 }
 
 export const convertMillisecondsToYear = (mSeconds: number) => {
@@ -534,4 +542,23 @@ export const toastToSuccess = (message: string) => {
  */
 export const toastToError = (message: string) => {
     return toast.error(message, toastConfig);
+};
+
+/** custom hook that abstracts behavior of a broken page */
+export const useHandleBrokenPage = () => {
+    const [broken, setBroken] = useState<boolean>(false);
+    const [error, setError] = useState<Error | undefined>();
+
+    /**
+     * Convenience function to handle cases where we must abort and tell the user we have done so
+     *
+     * @param {Error} error - Error object
+     */
+    function handleBrokenPage(error: Error) {
+        toastToError(error.message);
+        setError(error);
+        setBroken(true);
+    }
+
+    return { broken, error, handleBrokenPage };
 };
