@@ -39,6 +39,7 @@ import {
     getLinkToPatientDetail,
     getLocationId,
     sortFunction,
+    useHandleBrokenPage,
 } from '../../helpers/utils';
 import supersetFetch from '../../services/superset';
 import {
@@ -65,6 +66,7 @@ import smsReducer, {
 } from '../../store/ducks/sms_events';
 import './index.css';
 import { useTranslation, withTranslation } from 'react-i18next';
+import { ErrorPage } from 'components/ErrorPage';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -126,16 +128,21 @@ export const LogFace = ({
     userUUID = '',
     villages = [],
 }: Props) => {
+    const { error, handleBrokenPage, broken } = useHandleBrokenPage();
+    const [loading, setLoading] = React.useState<boolean>(false);
+
     useEffect(() => {
         removeFilterArgs();
-        fetchData();
+        fetchData()
+            .catch((err) => handleBrokenPage(err))
+            .finally(() => setLoading(false));
     }, []);
 
     useEffect(() => {
         const intervalId: NodeJS.Timeout = setInterval(() => {
             const smsDataInDescendingOrderByEventId: SmsData[] = smsData.sort(sortFunction);
 
-            // pick the lartgest ID if this smsDataInDescendingOrderByEventId list is not empty
+            // pick the largest ID if this smsDataInDescendingOrderByEventId list is not empty
             if (smsDataInDescendingOrderByEventId.length) {
                 const largestEventID: string = smsDataInDescendingOrderByEventId[0].event_id;
                 const supersetParams = superset.getFormData(GET_FORM_DATA_ROW_LIMIT, [
@@ -293,6 +300,14 @@ export const LogFace = ({
         startLabel: 'first',
         totalRecords: filteredData.length,
     };
+
+    if (broken) {
+        return <ErrorPage title={error?.name} message={error?.message} />; // TODO
+    }
+
+    if (loading) {
+        return <Ripple />;
+    }
 
     return (
         <div className="logface-content">
@@ -457,7 +472,7 @@ export const LogFace = ({
 };
 
 /**
- * @param {string} module a string represeting the module this logface is being used for.
+ * @param {string} module a string representing the module this logface is being used for.
  * @return {string} the logface url for the module passed in. empty string if the module is invalid.
  */
 function getModuleLogFaceUrlLink(module: string) {
