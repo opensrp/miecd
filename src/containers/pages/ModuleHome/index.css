@@ -24,6 +24,12 @@
     padding: 50px 50px;
 }
 
+.welcome-text {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
 .module-home-main .welcome-text h1 {
     text-align: left;
     color: #1b314b;
