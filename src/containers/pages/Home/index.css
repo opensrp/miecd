@@ -123,6 +123,7 @@
     display: flex;
     width: 14rem;
     height: 100%;
+    object-fit: cover;
     transform: translateY(-50%);
 }
 
@@ -172,9 +173,6 @@ h4 p {
         flex-direction: column;
         height: auto;
         padding: 0;
-    }
-    .home-main .spacer img {
-        left: 40% !important;
     }
     .home-main .spacer {
         width: 100%;
