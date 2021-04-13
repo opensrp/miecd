@@ -129,7 +129,7 @@ export const LogFace = ({
     villages = [],
 }: Props) => {
     const { error, handleBrokenPage, broken } = useHandleBrokenPage();
-    const [loading, setLoading] = React.useState<boolean>(false);
+    const [loading, setLoading] = React.useState<boolean>(true);
 
     useEffect(() => {
         removeFilterArgs();

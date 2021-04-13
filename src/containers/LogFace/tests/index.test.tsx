@@ -14,6 +14,7 @@ import { fetchSms, removeSms } from '../../../store/ducks/sms_events';
 import { communes, districts, provinces, villages } from '../../HierarchichalDataTable/test/fixtures';
 import { smsSlice } from './fixtures';
 import { userLocations } from './userLocationFixtures';
+import { act } from 'react-dom/test-utils';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -32,15 +33,19 @@ describe('containers/LogFace', () => {
         store.dispatch(fetchUserId('515ad0e9-fccd-4cab-8861-0ef3ecb831e0'));
     });
     // eslint-disable-next-line jest/expect-expect
-    it('renders without crashing', () => {
+    it('renders without crashing', async () => {
         shallow(
             <Provider store={store}>
                 <ConnectedLogFace {...props} />
             </Provider>,
         );
+
+        await act(async () => {
+            await new Promise((resolve) => setImmediate(resolve));
+        });
     });
 
-    it('renders correctly', () => {
+    it('renders correctly', async () => {
         store.dispatch(fetchSms(smsSlice));
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -50,16 +55,20 @@ describe('containers/LogFace', () => {
             </Provider>,
         );
 
-        wrapper.update();
+        await act(async () => {
+            await new Promise((resolve) => setImmediate(resolve));
+            wrapper.update();
+        });
         expect(toJson(wrapper.find('table'))).toMatchSnapshot('table snapshot');
         expect(toJson(wrapper.find('.location-type-filter'))).toMatchSnapshot('filter div');
         expect(toJson(wrapper.find('input#input'))).toMatchSnapshot('search div');
         expect(toJson(wrapper.find('#logface_title'))).toMatchSnapshot('logface title');
         expect(toJson(wrapper.find('.paginator'))).toMatchSnapshot('paginator');
+
         wrapper.unmount();
     });
 
-    it('renders only 10 items per page', () => {
+    it('renders only 10 items per page', async () => {
         store.dispatch(fetchSms(smsSlice));
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -69,12 +78,16 @@ describe('containers/LogFace', () => {
             </Provider>,
         );
 
+        await act(async () => {
+            await new Promise((resolve) => setImmediate(resolve));
+            wrapper.update();
+        });
         // + 1 is added here to unclude the header `tr`
         expect(wrapper.find('tr').length).toBe(DEFAULT_NUMBER_OF_LOGFACE_ROWS + 1);
         wrapper.unmount();
     });
 
-    it('search works correctly', () => {
+    it('search works correctly', async () => {
         store.dispatch(fetchSms(smsSlice));
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -83,6 +96,11 @@ describe('containers/LogFace', () => {
                 </ConnectedRouter>
             </Provider>,
         );
+
+        await act(async () => {
+            await new Promise((resolve) => setImmediate(resolve));
+            wrapper.update();
+        });
 
         expect(wrapper.find('input').length).toBe(1);
         // wrapper.find('input').simulate('change', { target: { value: '1569837448461' } });
