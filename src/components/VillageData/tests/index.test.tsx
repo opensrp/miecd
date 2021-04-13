@@ -9,6 +9,10 @@ import VillageData, { Props } from '..';
 import { mountWithTranslations } from '../../../helpers/testUtils';
 import store from '../../../store/index';
 import villageDataProps from './villageDataPropsfixtures';
+import MockDate from 'mockdate';
+
+global.fetch = require('jest-fetch-mock');
+MockDate.set('2021-04-12T19:31:00.000Z'); // 7-13-17 19:31 => Mersenne primes :)
 
 const history = createBrowserHistory();
 
