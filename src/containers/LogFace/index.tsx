@@ -64,7 +64,7 @@ import smsReducer, {
     smsDataFetched,
 } from '../../store/ducks/sms_events';
 import './index.css';
-import { I18nextProviderProps, useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -125,7 +125,7 @@ export const LogFace = ({
     userLocationData = [],
     userUUID = '',
     villages = [],
-}: Props & I18nextProviderProps) => {
+}: Props) => {
     useEffect(() => {
         removeFilterArgs();
         fetchData();
