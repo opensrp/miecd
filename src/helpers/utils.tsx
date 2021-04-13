@@ -523,7 +523,9 @@ export async function fetchData(supersetFetchMethod: typeof supersetFetch = supe
         promises.push(smsDataPromise);
     }
 
-    return Promise.all(promises).catch((err) => err);
+    return Promise.all(promises).catch((err) => {
+        throw err;
+    });
 }
 
 export const convertMillisecondsToYear = (mSeconds: number) => {
