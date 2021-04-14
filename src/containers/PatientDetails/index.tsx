@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
+import { TFunction } from 'i18next';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -9,30 +11,11 @@ import { Row } from 'reactstrap';
 import { Store } from 'redux';
 import BasicInformation, { LabelValuePair } from '../../components/BasicInformation';
 import ReportTable from '../../components/ReportTable';
-import {
-    BACK,
-    BACKPAGE_ICON,
-    CHILD_AGE,
-    COULD_NOT_FIND_ANY_EDD,
-    COULD_NOT_FIND_ANY_LOCATION,
-    CURRENT_EDD,
-    CURRENT_GRAVIDITY,
-    CURRENT_PARITY,
-    FEEDING_CATEGORY,
-    GROWTH_STATUS,
-    ID,
-    LOCATION,
-    NO_RISK_CATEGORY,
-    NO_RISK_LOWERCASE,
-    NUTRITION_STATUS,
-    PATIENT_DETAILS,
-    PREVIOUS_PREGNANCY_RISK,
-    RESIDENCE,
-    RISK_CARTEGORIZATION,
-} from '../../constants';
+import { BACKPAGE_ICON, FEEDING_CATEGORY, GROWTH_STATUS, NUTRITION_STATUS } from '../../constants';
 import { filterByPatientId, sortByEventDate } from '../../helpers/utils';
 import { getSmsData, SmsData } from '../../store/ducks/sms_events';
 import './index.css';
+import React from 'react';
 
 interface Props extends RouteComponentProps {
     patientId: string;
@@ -42,6 +25,8 @@ interface Props extends RouteComponentProps {
 
 export const PatientDetails = ({ isChild = false, patientId = 'none', smsData = [] }: Props) => {
     const [filteredData, setFilteredData] = useState<SmsData[]>([]);
+    const { t } = useTranslation();
+
     const lastLocation = useLastLocation();
     useEffect(() => {
         setFilteredData(
@@ -57,38 +42,43 @@ export const PatientDetails = ({ isChild = false, patientId = 'none', smsData = 
         <div className="patient-details">
             <Link to={lastLocation ? lastLocation.pathname : '#'} className="back-page">
                 <FontAwesomeIcon icon={BACKPAGE_ICON} size="lg" />
-                <span>{BACK}</span>
+                <span>{t('Back')}</span>
             </Link>
             <div id="titleDiv">
-                <h2 id="patients_title">{PATIENT_DETAILS}</h2>
+                <h2 id="patients_title">{t('Patient Details')}</h2>
             </div>
             <Row>
-                <BasicInformation labelValuePairs={getBasicInformationProps(patientId, isChild, filteredData)} />
+                <BasicInformation labelValuePairs={getBasicInformationProps(patientId, isChild, filteredData, t)} />
             </Row>
             <ReportTable isChild={isChild} singlePatientEvents={filteredData} />
         </div>
     );
 };
-function getBasicInformationProps(patientId: string, isChild: boolean, filteredData: SmsData[]): LabelValuePair[] {
+function getBasicInformationProps(
+    patientId: string,
+    isChild: boolean,
+    filteredData: SmsData[],
+    t: TFunction,
+): LabelValuePair[] {
     const basicInformationProps = !isChild
         ? ([
-              { label: ID, value: patientId },
-              { label: LOCATION, value: getCurrentLocation(filteredData) },
-              { label: CURRENT_GRAVIDITY, value: getCurrentGravidity(filteredData) },
-              { label: CURRENT_EDD, value: getCurrentEdd(filteredData) },
-              { label: CURRENT_PARITY, value: getCurrenParity(filteredData) },
-              { label: PREVIOUS_PREGNANCY_RISK, value: getPreviousPregnancyRisk(filteredData) },
+              { label: t('ID'), value: patientId },
+              { label: t('Location'), value: getCurrentLocation(filteredData, t) },
+              { label: t('Current Gravidity'), value: getCurrentGravidity(filteredData) },
+              { label: t('Current EDD'), value: getCurrentEdd(filteredData, t) },
+              { label: t('Current Parity'), value: getCurrenParity(filteredData) },
+              { label: t('Previous Pregnancy Risk'), value: getPreviousPregnancyRisk(filteredData, t) },
           ] as LabelValuePair[])
         : ([
-              { label: CHILD_AGE, value: getAge(filteredData) },
-              { label: ID, value: patientId },
-              { label: RISK_CARTEGORIZATION, value: getNutritionStatus(filteredData) },
-              { label: RESIDENCE, value: getCurrentLocation(filteredData) },
+              { label: t('Age'), value: getAge(filteredData) },
+              { label: t('ID'), value: patientId },
+              { label: t('Could not find any risk categorization'), value: getNutritionStatus(filteredData, t) },
+              { label: t('Location of residence'), value: getCurrentLocation(filteredData, t) },
           ] as LabelValuePair[]);
     return basicInformationProps;
 }
 
-function getCurrentEdd(filteredData: SmsData[]): string {
+function getCurrentEdd(filteredData: SmsData[], t: TFunction): string {
     const reversedFilteredData: SmsData[] = [...filteredData];
     reversedFilteredData.reverse();
     for (const data in reversedFilteredData) {
@@ -96,7 +86,7 @@ function getCurrentEdd(filteredData: SmsData[]): string {
             return `${reversedFilteredData[data].lmp_edd}`;
         }
     }
-    return COULD_NOT_FIND_ANY_EDD;
+    return t('could not find any edd');
 }
 
 function getAge(filteredData: SmsData[]): string {
@@ -110,7 +100,7 @@ function getAge(filteredData: SmsData[]): string {
     return '0';
 }
 
-function getNutritionStatus(filteredData: SmsData[]): string {
+function getNutritionStatus(filteredData: SmsData[], t: TFunction): string {
     const reversedFilteredData: SmsData[] = [...filteredData];
     reversedFilteredData.reverse();
     const statusFields: string[] = [NUTRITION_STATUS, GROWTH_STATUS, FEEDING_CATEGORY];
@@ -124,7 +114,7 @@ function getNutritionStatus(filteredData: SmsData[]): string {
             }
         }
     }
-    return NO_RISK_CATEGORY;
+    return t('no risk category');
 }
 
 function getCurrentGravidity(filteredData: SmsData[]): number {
@@ -149,7 +139,7 @@ function getCurrenParity(filteredData: SmsData[]): number {
     return 0;
 }
 
-function getCurrentLocation(filteredData: SmsData[]): string {
+function getCurrentLocation(filteredData: SmsData[], t: TFunction): string {
     const reversedFilteredData: SmsData[] = [...filteredData];
     reversedFilteredData.reverse();
     for (const data in reversedFilteredData) {
@@ -157,16 +147,16 @@ function getCurrentLocation(filteredData: SmsData[]): string {
             return reversedFilteredData[data].health_worker_location_name;
         }
     }
-    return COULD_NOT_FIND_ANY_LOCATION;
+    return t('could not find any location');
 }
 
-function getPreviousPregnancyRisk(filteredData: SmsData[]): string {
+function getPreviousPregnancyRisk(filteredData: SmsData[], t: TFunction): string {
     const reversedFilteredData: SmsData[] = [...filteredData];
     reversedFilteredData.reverse();
     if (reversedFilteredData[1]) {
         return reversedFilteredData[1].logface_risk;
     }
-    return NO_RISK_LOWERCASE;
+    return t('no risk');
 }
 
 type RouterProps = RouteComponentProps<{

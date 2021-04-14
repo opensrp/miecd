@@ -1103,7 +1103,7 @@ Health Status =
               href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
               onClick={[Function]}
             >
-              <riskColoring
+              <RiskColoring
                 risk="no risk"
               >
                 <span
@@ -1116,7 +1116,7 @@ Health Status =
                     </p>
                   </div>
                 </span>
-              </riskColoring>
+              </RiskColoring>
             </a>
           </LinkAnchor>
         </Link>
@@ -1190,7 +1190,7 @@ Interventions =
               href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
               onClick={[Function]}
             >
-              <riskColoring
+              <RiskColoring
                 risk="red"
               >
                 <span
@@ -1203,7 +1203,7 @@ Interventions =
                     </p>
                   </div>
                 </span>
-              </riskColoring>
+              </RiskColoring>
             </a>
           </LinkAnchor>
         </Link>
@@ -1282,7 +1282,7 @@ Current Symptoms = Heavy sweating, Coughing
               href="/pregnancy_log_face/patient_detail/100PAH"
               onClick={[Function]}
             >
-              <riskColoring
+              <RiskColoring
                 risk="red"
               >
                 <span
@@ -1295,7 +1295,7 @@ Current Symptoms = Heavy sweating, Coughing
                     </p>
                   </div>
                 </span>
-              </riskColoring>
+              </RiskColoring>
             </a>
           </LinkAnchor>
         </Link>

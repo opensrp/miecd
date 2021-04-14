@@ -1,9 +1,10 @@
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { Router } from 'react-router';
 import Home from '..';
+import { mountWithTranslations } from '../../../../helpers/testUtils';
 
 const history = createBrowserHistory();
 
@@ -22,12 +23,12 @@ describe('containers/pages/Home', () => {
     });
 
     it('renders Home correctly', () => {
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Router history={history}>
                 <Home />
             </Router>,
         );
-        expect(toJson(wrapper)).toMatchSnapshot();
+        expect(toJson(wrapper.find('.home-main'))).toMatchSnapshot();
         wrapper.unmount();
     });
 });

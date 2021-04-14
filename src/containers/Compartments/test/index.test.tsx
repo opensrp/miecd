@@ -1,5 +1,5 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { createBrowserHistory } from 'history';
 import MockDate from 'mockdate';
@@ -16,6 +16,7 @@ import {
     PREGNANCY,
     PREGNANCY_REGISTRATION,
 } from '../../../constants';
+import { mountWithTranslations } from '../../../helpers/testUtils';
 import locationsReducer, {
     fetchLocations,
     fetchUserId,
@@ -62,7 +63,7 @@ describe('Compartments', () => {
     });
     it('must render correctly for pregnancy module', () => {
         store.dispatch(fetchSms([]));
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
                     <ConnectedCompartments
@@ -103,7 +104,7 @@ describe('Compartments', () => {
         }
 
         store.dispatch(fetchSms(smsDataFixtures));
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
                     <ConnectedCompartments
@@ -126,7 +127,7 @@ describe('Compartments', () => {
     });
     it('must render correctly for Nutrition module', () => {
         store.dispatch(fetchSms(smsDataFixtures));
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
                     <ConnectedCompartments
@@ -151,7 +152,7 @@ describe('Compartments', () => {
     });
 
     it('must render correctly for NBC_AND_PNC module', () => {
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
                     <ConnectedCompartments

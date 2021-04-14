@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { WithTranslation, withTranslation } from 'react-i18next';
 import Ripple from '../../../components/page/Loading';
-import { ANALYSIS } from '../../../constants';
 import './index.css';
 
 interface State {
@@ -16,11 +16,11 @@ const defaultProps: Props = {
     endpoint: '',
     module: '',
 };
-
-export class Analysis extends React.Component<Props, State> {
+export type AnalysisPropTypes = Props & WithTranslation;
+export class Analysis extends React.Component<AnalysisPropTypes, State> {
     public static defaultProps = defaultProps;
 
-    constructor(props: Props) {
+    constructor(props: AnalysisPropTypes) {
         super(props);
         this.state = {
             loading: true,
@@ -28,10 +28,11 @@ export class Analysis extends React.Component<Props, State> {
     }
 
     public render() {
+        const { t } = this.props;
         return (
             <div className="analysis">
                 <div>
-                    <h2 className="analysis-title">{`${this.props.module} - ${ANALYSIS}`}</h2>
+                    <h2 className="analysis-title">{t(`${this.props.module} - Analysis`)}</h2>
                 </div>
                 <div className="analysis-wrapper">
                     {this.state.loading ? <Ripple /> : null}
@@ -56,4 +57,4 @@ export class Analysis extends React.Component<Props, State> {
     };
 }
 
-export default Analysis;
+export default withTranslation()(Analysis);

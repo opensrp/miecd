@@ -1,6 +1,7 @@
-import React from 'react';
-import { HIGH, HIGH_RISK, LOW, LOW_RISK, NO_RISK, NOT_SET, NOT_SET_LOWERCASE, RED, RED_ALERT } from '../../constants';
+import { useTranslation } from 'react-i18next';
+import { HIGH, LOW, NO_RISK, NOT_SET_LOWERCASE, RED } from '../../constants';
 import './index.css';
+import React from 'react';
 
 interface RiskColoringProps {
     risk: string;
@@ -11,8 +12,10 @@ const riskColoringDefaultProps: RiskColoringProps = {
 };
 
 /** Colour codes risk levels */
-const riskColoring = (props: RiskColoringProps) => {
+const RiskColoring = (props: RiskColoringProps) => {
     const { risk } = props;
+    const { t } = useTranslation();
+
     switch (risk.toLowerCase().trim()) {
         case NO_RISK:
         case 'no risk':
@@ -20,7 +23,7 @@ const riskColoring = (props: RiskColoringProps) => {
             return (
                 <span className="badge badge-success" id="default-width">
                     <div>
-                        <p>{NO_RISK}</p>
+                        <p>{t('No Risk')}</p>
                     </div>
                 </span>
             );
@@ -28,7 +31,7 @@ const riskColoring = (props: RiskColoringProps) => {
             return (
                 <span className="badge badge-warning" id="default-width">
                     <div>
-                        <p>{LOW_RISK}</p>
+                        <p>{t('Low Risk')}</p>
                     </div>
                 </span>
             );
@@ -36,7 +39,7 @@ const riskColoring = (props: RiskColoringProps) => {
             return (
                 <span className="badge badge-danger" id="default-width">
                     <div>
-                        <p>{HIGH_RISK}</p>
+                        <p>{t('High Risk')}</p>
                     </div>
                 </span>
             );
@@ -44,7 +47,7 @@ const riskColoring = (props: RiskColoringProps) => {
             return (
                 <span className="badge badge-danger" id="default-width">
                     <div>
-                        <p>{RED_ALERT}</p>
+                        <p>{t('Red Alert')}</p>
                     </div>
                 </span>
             );
@@ -52,7 +55,7 @@ const riskColoring = (props: RiskColoringProps) => {
             return (
                 <span className="badge badge-info" id="default-width">
                     <div>
-                        <p>{NOT_SET}</p>
+                        <p>{t('Not Set')}</p>
                     </div>
                 </span>
             );
@@ -65,6 +68,6 @@ const riskColoring = (props: RiskColoringProps) => {
     }
 };
 
-riskColoring.defaultProps = riskColoringDefaultProps;
+RiskColoring.defaultProps = riskColoringDefaultProps;
 
-export default riskColoring;
+export default RiskColoring;

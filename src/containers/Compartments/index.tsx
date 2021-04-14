@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { ReactNodeArray } from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { CardGroup, Row } from 'reactstrap';
 import { Store } from 'redux';
@@ -8,7 +9,6 @@ import ConnectedDataCircleCard from '../../components/DataCircleCard';
 import Ripple from '../../components/page/Loading';
 import VillageData from '../../components/VillageData';
 import {
-    COMPARTMENTS,
     EC_CHILD,
     EC_FAMILY_MEMBER,
     EC_WOMAN,
@@ -372,10 +372,12 @@ export const Compartments = ({
         userLocationId,
     ]);
 
+    const { t } = useTranslation();
+
     return (
         <div className="compartment-wrapper compartments compartment-data-table">
             <Row>
-                <h2 id="compartment_title">{COMPARTMENTS}</h2>
+                <h2 id="compartment_title">{t('Compartments')}</h2>
             </Row>
             <Row className="breadcrumb-row">
                 <p id="breadcrumb">

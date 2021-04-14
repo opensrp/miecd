@@ -1,6 +1,6 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardTitle, Col, Row, Table } from 'reactstrap';
-import { BASIC_INFORMATION } from '../../constants';
 import './index.css';
 
 export interface LabelValuePair {
@@ -13,10 +13,11 @@ interface Props {
 }
 
 export default function BasicInformation({ labelValuePairs = [] }: Props) {
+    const { t } = useTranslation();
     return (
         <Row id="detailsRow">
             <Card id="detailsCard">
-                <CardTitle>{BASIC_INFORMATION}</CardTitle>
+                <CardTitle>{t('Basic Information')}</CardTitle>
                 <Row>
                     <Col className="detailsColumn" sm="12" lg="6">
                         <Table borderless>

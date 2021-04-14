@@ -1,5 +1,54 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`DataCircleCard card body link works: card title link 1`] = `
+<Link
+  className="red circle"
+  key="0"
+  onClick={[Function]}
+  to="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/undefined/undefined/down/undefined/undefined"
+>
+  <LinkAnchor
+    className="red circle"
+    href="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/undefined/undefined/down/undefined/undefined"
+    navigate={[Function]}
+    onClick={[Function]}
+  >
+    <a
+      className="red circle"
+      href="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/undefined/undefined/down/undefined/undefined"
+      onClick={[Function]}
+    >
+      <span
+        className="number"
+      />
+      <span
+        className="risk-level"
+      >
+        Red Alert
+      </span>
+    </a>
+  </LinkAnchor>
+</Link>
+`;
+
+exports[`DataCircleCard card title link works: card title link 1`] = `
+<Link
+  onClick={[Function]}
+  to="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/undefined/undefined/down/undefined/undefined"
+>
+  <LinkAnchor
+    href="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/undefined/undefined/down/undefined/undefined"
+    navigate={[Function]}
+    onClick={[Function]}
+  >
+    <a
+      href="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/undefined/undefined/down/undefined/undefined"
+      onClick={[Function]}
+    />
+  </LinkAnchor>
+</Link>
+`;
+
 exports[`DataCircleCard must render correctly 1`] = `
 <Card
   className="dataCircleCard "

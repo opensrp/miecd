@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import ConnectedHierarchichalDataTable from '..';
+import ConnectedHierarchicalDataTable from '..';
+import { mountWithTranslations } from '../../../helpers/testUtils';
 import { fetchLocations } from '../../../store/ducks/locations';
 import { fetchSms } from '../../../store/ducks/sms_events';
 import store from '../../../store/index';
@@ -21,7 +22,7 @@ describe('HierarchichalDataTable', () => {
     it('renders without crashing', () => {
         shallow(
             <Provider store={store}>
-                <ConnectedHierarchichalDataTable />
+                <ConnectedHierarchicalDataTable />
             </Provider>,
         );
     });
@@ -43,10 +44,10 @@ describe('HierarchichalDataTable', () => {
             },
         };
 
-        let wrapper = mount(
+        let wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <ConnectedHierarchichalDataTable {...props} />
+                    <ConnectedHierarchicalDataTable {...props} />
                 </Router>
             </Provider>,
         );
@@ -67,10 +68,10 @@ describe('HierarchichalDataTable', () => {
 
         // pass props in the partern /:risk_highlighter?/:title?/:current_level?/:direction?/:node_id?/:from_level?
         //             hierarchicaldata/high-risk/156 Total Pregnancies/1/down/1
-        wrapper = mount(
+        wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <ConnectedHierarchichalDataTable {...props} />
+                    <ConnectedHierarchicalDataTable {...props} />
                 </Router>
             </Provider>,
         );
@@ -88,10 +89,10 @@ describe('HierarchichalDataTable', () => {
                 } as any,
             },
         };
-        wrapper = mount(
+        wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <ConnectedHierarchichalDataTable {...props} />
+                    <ConnectedHierarchicalDataTable {...props} />
                 </Router>
             </Provider>,
         );
@@ -109,10 +110,10 @@ describe('HierarchichalDataTable', () => {
                 } as any,
             },
         };
-        wrapper = mount(
+        wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <ConnectedHierarchichalDataTable {...props} />
+                    <ConnectedHierarchicalDataTable {...props} />
                 </Router>
             </Provider>,
         );
@@ -131,10 +132,10 @@ describe('HierarchichalDataTable', () => {
                 } as any,
             },
         };
-        wrapper = mount(
+        wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <ConnectedHierarchichalDataTable {...props} />
+                    <ConnectedHierarchicalDataTable {...props} />
                 </Router>
             </Provider>,
         );
@@ -153,10 +154,10 @@ describe('HierarchichalDataTable', () => {
                 } as any,
             },
         };
-        wrapper = mount(
+        wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <ConnectedHierarchichalDataTable {...props} />
+                    <ConnectedHierarchicalDataTable {...props} />
                 </Router>
             </Provider>,
         );
@@ -175,10 +176,10 @@ describe('HierarchichalDataTable', () => {
                 } as any,
             },
         };
-        wrapper = mount(
+        wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <ConnectedHierarchichalDataTable {...props} />
+                    <ConnectedHierarchicalDataTable {...props} />
                 </Router>
             </Provider>,
         );
@@ -197,10 +198,10 @@ describe('HierarchichalDataTable', () => {
                 } as any,
             },
         };
-        wrapper = mount(
+        wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <ConnectedHierarchichalDataTable {...props} />
+                    <ConnectedHierarchicalDataTable {...props} />
                 </Router>
             </Provider>,
         );
@@ -218,10 +219,10 @@ describe('HierarchichalDataTable', () => {
                 } as any,
             },
         };
-        wrapper = mount(
+        wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <ConnectedHierarchichalDataTable {...props} />
+                    <ConnectedHierarchicalDataTable {...props} />
                 </Router>
             </Provider>,
         );
@@ -239,10 +240,10 @@ describe('HierarchichalDataTable', () => {
             },
         };
 
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <ConnectedHierarchichalDataTable {...props} />
+                    <ConnectedHierarchicalDataTable {...props} />
                 </Router>
             </Provider>,
         );
@@ -264,10 +265,10 @@ describe('HierarchichalDataTable', () => {
             },
         };
 
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <ConnectedHierarchichalDataTable {...props} />
+                    <ConnectedHierarchicalDataTable {...props} />
                 </Router>
             </Provider>,
         );

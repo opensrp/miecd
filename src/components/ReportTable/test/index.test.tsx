@@ -1,7 +1,8 @@
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import ReportTable, { convertToStringArray, getEventsPregnancyArray } from '..';
 import { WEIGHT } from '../../../constants';
+import { mountWithTranslations } from '../../../helpers/testUtils';
 import { SmsData } from '../../../store/ducks/sms_events';
 import {
     convertToStringArrayInput,
@@ -36,23 +37,23 @@ describe('ReportTable', () => {
     });
 
     it('must render correctly', () => {
-        const wrapper = mount(<ReportTable singlePatientEvents={reportTableProps as SmsData[]} />);
+        const wrapper = mountWithTranslations(<ReportTable singlePatientEvents={reportTableProps as SmsData[]} />);
         expect(toJson(wrapper.find('tbody'))).toMatchSnapshot();
     });
 });
 
 describe('ReportTable.getPregnancyStringArray()', () => {
     it('Must return the correct value given certain input and ReportTable having certain props', () => {
-        const wrapper = mount(<ReportTable singlePatientEvents={singlePatientEvents as SmsData[]} />);
-        const instance: ReportTable = wrapper.instance() as ReportTable;
+        const wrapper = mountWithTranslations(<ReportTable singlePatientEvents={singlePatientEvents as SmsData[]} />);
+        const instance = wrapper.find('ReportTable').instance() as ReportTable;
         expect(instance.getPregnancyStringArray(getPregnancyStringsArrayInput)).toEqual(getPregnancyStringsArrayOutput);
     });
 });
 
 describe('ReportTable.getWeightsArray()', () => {
     it('Must return the correct value given certain input and ReportTable having certain props', () => {
-        const wrapper = mount(<ReportTable singlePatientEvents={singlePatientEvents as SmsData[]} />);
-        const instance: ReportTable = wrapper.instance() as ReportTable;
+        const wrapper = mountWithTranslations(<ReportTable singlePatientEvents={singlePatientEvents as SmsData[]} />);
+        const instance = wrapper.find('ReportTable').instance() as ReportTable;
         expect(instance.getWeightsArray(getWeightsArrayInput1, WEIGHT)).toEqual(getWeightsArrayOutput1);
         expect(instance.getWeightsArray(getWeightsArrayInput2, WEIGHT)).toEqual(getWeightsArrayOutput2);
     });
