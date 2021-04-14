@@ -9,7 +9,13 @@ import ConnectedLogFace from '..';
 import { DEFAULT_NUMBER_OF_LOGFACE_ROWS, PREGNANCY } from '../../../constants';
 import { mountWithTranslations } from '../../../helpers/testUtils';
 import store from '../../../store';
-import reducer, { fetchLocations, fetchUserId, fetchUserLocations, reducerName } from '../../../store/ducks/locations';
+import reducer, {
+    clearLocationSlice,
+    fetchLocations,
+    fetchUserId,
+    fetchUserLocations,
+    reducerName,
+} from '../../../store/ducks/locations';
 import { fetchSms, removeSms } from '../../../store/ducks/sms_events';
 import { communes, districts, provinces, villages } from '../../HierarchichalDataTable/test/fixtures';
 import { smsSlice } from './fixtures';
@@ -18,10 +24,14 @@ import { act } from 'react-dom/test-utils';
 
 reducerRegistry.register(reducerName, reducer);
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const fetch = require('jest-fetch-mock');
+
 describe('containers/LogFace', () => {
-    const props = { module: PREGNANCY };
+    const commonProps = { module: PREGNANCY };
     afterEach(() => {
         store.dispatch(removeSms);
+        fetch.resetMocks();
     });
     beforeEach(() => {
         jest.resetAllMocks();
@@ -36,7 +46,7 @@ describe('containers/LogFace', () => {
     it('renders without crashing', async () => {
         shallow(
             <Provider store={store}>
-                <ConnectedLogFace {...props} />
+                <ConnectedLogFace {...commonProps} />
             </Provider>,
         );
 
@@ -46,6 +56,11 @@ describe('containers/LogFace', () => {
     });
 
     it('renders correctly', async () => {
+        const supersetFetchMock = jest.fn(async () => []);
+        const props = {
+            ...commonProps,
+            supersetService: supersetFetchMock,
+        };
         store.dispatch(fetchSms(smsSlice));
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -59,6 +74,7 @@ describe('containers/LogFace', () => {
             await new Promise((resolve) => setImmediate(resolve));
             wrapper.update();
         });
+
         expect(toJson(wrapper.find('table'))).toMatchSnapshot('table snapshot');
         expect(toJson(wrapper.find('.location-type-filter'))).toMatchSnapshot('filter div');
         expect(toJson(wrapper.find('input#input'))).toMatchSnapshot('search div');
@@ -70,6 +86,11 @@ describe('containers/LogFace', () => {
 
     it('renders only 10 items per page', async () => {
         store.dispatch(fetchSms(smsSlice));
+        const supersetFetchMock = jest.fn(async () => []);
+        const props = {
+            ...commonProps,
+            supersetService: supersetFetchMock,
+        };
         const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <ConnectedRouter history={history}>
@@ -89,6 +110,11 @@ describe('containers/LogFace', () => {
 
     it('search works correctly', async () => {
         store.dispatch(fetchSms(smsSlice));
+        const supersetFetchMock = jest.fn(async () => []);
+        const props = {
+            ...commonProps,
+            supersetService: supersetFetchMock,
+        };
         const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <ConnectedRouter history={history}>
@@ -106,5 +132,66 @@ describe('containers/LogFace', () => {
         // wrapper.find('input').simulate('change', { target: { value: '1569837448461' } });
         // + 1 is added here to unclude the header `tr`
         expect(wrapper.find('tr').length).toBe(DEFAULT_NUMBER_OF_LOGFACE_ROWS + 1);
+    });
+});
+
+describe('containers/LogFace extended', () => {
+    const commonProps = { module: PREGNANCY };
+
+    beforeEach(() => {
+        jest.resetAllMocks();
+        store.dispatch(clearLocationSlice());
+        store.dispatch(removeSms);
+        fetch.resetMocks();
+    });
+
+    it('shows loader and Breaks just fine', async () => {
+        const supersetFetchMock = jest.fn(async () => []);
+        fetch.mockResponse(JSON.stringify([]));
+        const props = {
+            ...commonProps,
+            supersetService: supersetFetchMock,
+        };
+        const wrapper = mountWithTranslations(
+            <Provider store={store}>
+                <ConnectedRouter history={history}>
+                    <ConnectedLogFace {...props} />
+                </ConnectedRouter>
+            </Provider>,
+        );
+
+        expect(wrapper.find('Ripple')).toHaveLength(1);
+
+        fetch.mockReject(new Error('coughid'));
+
+        await act(async () => {
+            await new Promise((resolve) => setImmediate(resolve));
+            wrapper.update();
+        });
+
+        // loader is no longer showing
+        expect(wrapper.find('Ripple')).toHaveLength(0);
+
+        // showing broken page due to error
+        expect(wrapper.text()).toMatchInlineSnapshot(
+            `"An error occurredTypeErrorCannot read property 'attributes' of undefined"`,
+        );
+        // and finally check the requests made
+        expect(supersetFetchMock.mock.calls).toEqual([['3064'], ['2754'], ['2755'], ['2756'], ['2757'], ['2263']]);
+        expect(fetch.mock.calls).toEqual([
+            [
+                'https://reveal-stage.smartregister.org/opensrp/rest//security/authenticate/',
+                {
+                    headers: {
+                        accept: 'application/json',
+                        authorization: 'Bearer null',
+                        'content-type': 'application/json;charset=UTF-8',
+                    },
+                    method: 'GET',
+                },
+            ],
+        ]);
+
+        wrapper.unmount();
     });
 });

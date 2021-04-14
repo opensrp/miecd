@@ -39,6 +39,7 @@ import {
     getLinkToPatientDetail,
     getLocationId,
     sortFunction,
+    toastToError,
     useHandleBrokenPage,
 } from '../../helpers/utils';
 import supersetFetch from '../../services/superset';
@@ -156,7 +157,6 @@ const LogFace = (props: LogFaceProps) => {
         removeFilterArgs();
         fetchData(supersetService)
             .catch((err) => {
-                console.log('Err ===>', err);
                 handleBrokenPage(err);
             })
             .finally(() => setLoading(false));
@@ -176,8 +176,8 @@ const LogFace = (props: LogFaceProps) => {
                     .then((result: SmsData[]) => {
                         fetchSmsDataActionCreator(result);
                     })
-                    .catch(() => {
-                        // console.log(error);
+                    .catch((err) => {
+                        toastToError(err.Message);
                     });
             }
         }, SUPERSET_FETCH_TIMEOUT_INTERVAL);
@@ -340,8 +340,7 @@ const LogFace = (props: LogFaceProps) => {
             </div>
             <div className="filter-panel">
                 <div className="filters">
-                    {/*tslint:disable-next-line: jsx-no-lambda no-empty*/}
-                    <Formik initialValues={{}} onSubmit={() => {}}>
+                    <Formik initialValues={{}} onSubmit={() => void 0}>
                         {() => (
                             <Field
                                 type="text"
@@ -486,7 +485,9 @@ const LogFace = (props: LogFaceProps) => {
                     </Table>
                 </div>
             ) : (
-                <Ripple />
+                <div className="card">
+                    <div className="card-body">No data found</div>
+                </div>
             )}
             <div className="paginator">
                 <Paginator {...routePaginatorProps} />
