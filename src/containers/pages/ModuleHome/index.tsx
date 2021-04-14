@@ -1,11 +1,12 @@
 // this is the home page component
 import * as React from 'react';
+import { WithTranslation, withTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './index.css';
 
 interface Props {
     title: string;
-    description: string;
+    description: string | React.ReactNode;
     deactivateLinks: boolean;
     logFaceUrl: string;
     compartmentUrl: string;
@@ -20,10 +21,11 @@ const defaultProps: Props = {
     logFaceUrl: '#',
     title: '',
 };
-class ModuleHome extends React.Component<Props> {
+class ModuleHome extends React.Component<Props & WithTranslation> {
     public static defaultProps = defaultProps;
 
     public render() {
+        const { t } = this.props;
         return (
             <div className="module-home-main">
                 <div className="welcome-text">
@@ -34,16 +36,16 @@ class ModuleHome extends React.Component<Props> {
                     <div className="spacer">
                         <div className="home-sub-containers">
                             <div className="sub-container-heading">
-                                <p>Log face</p>
+                                <p>{t('Log face')}</p>
                             </div>
                             <hr />
                             <div className="sub-container-message">
                                 <div id="cont-size">
-                                    <p>Display of all messages receioved from MIECD in chronological order</p>
+                                    <p>{t('Display of all messages received from MIECD in chronological order')}</p>
                                 </div>
                                 <div id="cont-sized">
                                     <Link to={this.props.logFaceUrl}>
-                                        <button className="button-style ">View</button>
+                                        <button className="button-style ">{t('View')}</button>
                                     </Link>
                                 </div>
                             </div>
@@ -52,12 +54,12 @@ class ModuleHome extends React.Component<Props> {
                     <div className="spacer">
                         <div className="home-sub-containers">
                             <div className="sub-container-heading">
-                                <p>Compartments</p>
+                                <p>{t('Compartments')}</p>
                             </div>
                             <hr />
                             <div className="sub-container-message">
                                 <div id="cont-size">
-                                    <p>This is the aggregation and categorization of patients data</p>
+                                    <p>{t('This is the aggregation and categorization of patients data')}</p>
                                 </div>
                                 <div id="cont-sized">
                                     <Link to={this.props.compartmentUrl}>
@@ -66,7 +68,7 @@ class ModuleHome extends React.Component<Props> {
                                                 this.props.deactivateLinks ? 'deactivated' : ''
                                             }`}
                                         >
-                                            View
+                                            {t('View')}
                                         </button>
                                     </Link>
                                 </div>
@@ -76,12 +78,12 @@ class ModuleHome extends React.Component<Props> {
                     <div className="spacer">
                         <div className="home-sub-containers">
                             <div className="sub-container-heading">
-                                <p>Analysis</p>
+                                <p>{t('Analysis')}</p>
                             </div>
                             <hr />
                             <div className="sub-container-message">
                                 <div id="cont-size">
-                                    <p>Important analysis and indicators generated from collected data</p>
+                                    <p>{t('Important analysis and indicators generated from collected data')}</p>
                                 </div>
                                 <div id="cont-sized">
                                     <Link to={this.props.analysisUrl}>
@@ -90,7 +92,7 @@ class ModuleHome extends React.Component<Props> {
                                                 this.props.deactivateLinks ? 'deactivated' : ''
                                             }`}
                                         >
-                                            View
+                                            {t('View')}
                                         </button>
                                     </Link>
                                 </div>
@@ -103,4 +105,4 @@ class ModuleHome extends React.Component<Props> {
     }
 }
 
-export default ModuleHome;
+export default withTranslation()(ModuleHome);

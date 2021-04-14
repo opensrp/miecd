@@ -1,23 +1,8 @@
 import React from 'react';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardTitle, Row, Table } from 'reactstrap';
-import {
-    CURRENT_SYMPTOMS,
-    CURRENT_WEIGHT,
-    DAYS_SINCE_BIRTH,
-    EDD,
-    GRAVIDITY,
-    LOCATION,
-    LOCATION_OF_BIRTH,
-    LOCATION_OF_RESIDENCE,
-    NBC_AND_PNC_CHILD,
-    NUTRITION,
-    PARITY,
-    PATIENT_ID,
-    PREGNANCY,
-    PREVIOUS_PREGNANCY_RISK,
-    RISK_CATEGORY,
-} from '../../constants';
+import { NBC_AND_PNC_CHILD, NUTRITION, PREGNANCY } from '../../constants';
 import { getModuleLink, getNumberOfDaysSinceDate } from '../../helpers/utils';
 import { SmsData } from '../../store/ducks/sms_events';
 import { PaginationData, Paginator, PaginatorProps } from '../Paginator';
@@ -40,10 +25,12 @@ const defaultProps: Props = {
     smsData: [],
 };
 
-export default class VillageData extends React.Component<Props, State> {
+export type VillageDataPropsType = Props & WithTranslation;
+
+class VillageData extends React.Component<VillageDataPropsType, State> {
     public static defaultProps = defaultProps;
 
-    constructor(props: Props) {
+    constructor(props: VillageDataPropsType) {
         super(props);
         this.state = {
             currentPage: 1,
@@ -51,9 +38,11 @@ export default class VillageData extends React.Component<Props, State> {
     }
 
     public render() {
+        const { t } = this.props;
+
         const routePaginatorProps: PaginatorProps = {
-            endLabel: 'last',
-            nextLabel: 'next',
+            endLabel: t('last'),
+            nextLabel: t('next'),
             onPageChange: (paginationData: PaginationData) => {
                 this.setState({
                     currentPage: paginationData.currentPage,
@@ -61,8 +50,8 @@ export default class VillageData extends React.Component<Props, State> {
             },
             pageLimit: 5,
             pageNeighbours: 3,
-            previousLabel: 'previous',
-            startLabel: 'first',
+            previousLabel: t('previous'),
+            startLabel: t('first'),
             totalRecords: this.props.smsData.length,
         };
 
@@ -72,37 +61,37 @@ export default class VillageData extends React.Component<Props, State> {
                     <>
                         <Row className="village villageDataRow">
                             <Card className="table-card">
-                                <CardTitle>Selected Commune</CardTitle>
+                                <CardTitle>{t('Selected Commune')}</CardTitle>
                                 <CardBody>
                                     <Table striped borderless>
                                         <thead id="header">
                                             {this.props.module === PREGNANCY ? (
                                                 <tr>
-                                                    <th className="default-width">{PATIENT_ID}</th>
-                                                    <th className="default-width">{GRAVIDITY}</th>
-                                                    <th className="default-width">{PARITY}</th>
-                                                    <th className="default-width">{LOCATION}</th>
-                                                    <th className="default-width">{EDD}</th>
-                                                    <th className="default-width">{PREVIOUS_PREGNANCY_RISK}</th>
-                                                    <th className="default-width">{RISK_CATEGORY}</th>
+                                                    <th className="default-width">{t('Patient ID')}</th>
+                                                    <th className="default-width">{t('Gravidity')}</th>
+                                                    <th className="default-width">{t('Parity')}</th>
+                                                    <th className="default-width">{t('Location')}</th>
+                                                    <th className="default-width">{t('EDD')}</th>
+                                                    <th className="default-width">{t('Previous Pregnancy Risk')}</th>
+                                                    <th className="default-width">{t('Risk category')}</th>
                                                 </tr>
                                             ) : this.props.module === NUTRITION ? (
                                                 <tr>
-                                                    <th className="default-width">{PATIENT_ID}</th>
-                                                    <th className="default-width">{DAYS_SINCE_BIRTH}</th>
-                                                    <th className="default-width">{LOCATION_OF_RESIDENCE}</th>
-                                                    <th className="default-width">{CURRENT_WEIGHT}</th>
-                                                    <th className="default-width">{LOCATION_OF_BIRTH}</th>
-                                                    <th className="default-width">{RISK_CATEGORY}</th>
+                                                    <th className="default-width">{t('Patient ID')}</th>
+                                                    <th className="default-width">{t('Days since birth')}</th>
+                                                    <th className="default-width">{t('Location of Residence')}</th>
+                                                    <th className="default-width">{t('Current weight')}</th>
+                                                    <th className="default-width">{t('Location of birth')}</th>
+                                                    <th className="default-width">{t('Risk category')}</th>
                                                 </tr>
                                             ) : (
                                                 <tr>
-                                                    <th className="default-width">{PATIENT_ID}</th>
-                                                    <th className="default-width">{DAYS_SINCE_BIRTH}</th>
-                                                    <th className="default-width">{LOCATION_OF_RESIDENCE}</th>
-                                                    <th className="default-width">{CURRENT_SYMPTOMS}</th>
-                                                    <th className="default-width">{LOCATION_OF_BIRTH}</th>
-                                                    <th className="default-width">{RISK_CATEGORY}</th>
+                                                    <th className="default-width">{t('Patient ID')}</th>
+                                                    <th className="default-width">{t('Days since birth')}</th>
+                                                    <th className="default-width">{t('Location of Residence')}</th>
+                                                    <th className="default-width">{t('Current symptoms')}</th>
+                                                    <th className="default-width">{t('Location of birth')}</th>
+                                                    <th className="default-width">{t('Risk category')}</th>
                                                 </tr>
                                             )}
                                         </thead>
@@ -243,3 +232,5 @@ export default class VillageData extends React.Component<Props, State> {
         );
     };
 }
+
+export default withTranslation()(VillageData);

@@ -11,7 +11,6 @@ import WeightAndHeightChart from '..';
 import store from '../../../store/index';
 import { WeightMonthYear } from '../../ReportTable';
 import { chartArgument } from './fixtures';
-import { cloneDeep } from 'lodash';
 
 const history = createBrowserHistory();
 

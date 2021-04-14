@@ -1,23 +1,16 @@
-import { mount, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import CustomOauthLogin from '..';
+import { mountWithTranslations } from '../../../helpers/testUtils';
 import { providers } from './fixtures';
 
 describe('CustomOAuth login', () => {
-    // eslint-disable-next-line jest/expect-expect
-    it('must render without crashing', () => {
-        const props = {
-            providers,
-        };
-        shallow(<CustomOauthLogin {...props} />);
-    });
     it('must render correctly', () => {
         const props = {
             providers,
         };
-        const wrapper = mount(<CustomOauthLogin {...props} />);
-        expect(toJson(wrapper)).toMatchSnapshot();
+        const wrapper = mountWithTranslations(<CustomOauthLogin {...props} />);
+        expect(toJson(wrapper.find('CustomOauthLogin'))).toMatchSnapshot();
         wrapper.unmount();
     });
 });

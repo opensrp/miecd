@@ -1,5 +1,5 @@
+import './mls';
 import { history } from '@onaio/connected-reducer-registry';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { ConnectedRouter } from 'connected-react-router';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -8,13 +8,17 @@ import App from './App/App';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
+import Ripple from './components/page/Loading';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
-    <Provider store={store}>
-        <ConnectedRouter history={history}>
-            <App />
-        </ConnectedRouter>
-    </Provider>,
+    <React.Suspense fallback={Ripple}>
+        <Provider store={store}>
+            <ConnectedRouter history={history}>
+                <App />
+            </ConnectedRouter>
+        </Provider>
+    </React.Suspense>,
     document.getElementById('openSRP-root'),
 );
 

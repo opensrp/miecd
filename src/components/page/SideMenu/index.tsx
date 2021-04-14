@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { WithTranslation, withTranslation } from 'react-i18next';
 import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
@@ -14,19 +15,8 @@ import {
     ENABLE_NUTRITION_MODULE,
     ENABLE_REPORT_MODULE,
 } from '../../../configs/env';
-
 import { headerShouldRender } from '../../../helpers/utils';
-import {
-    ADMIN_NAVIGATION_MODULE,
-    CLIENT_NAVIGATION_MODULE,
-    ENABLE_ADMIN_MODULE,
-    ENABLE_CLIENT_RECORDS_MODULE,
-    HOME_NAVIGATION_MODULE,
-    NBC_AND_PNC_NAVIGATION_MODULE,
-    NUTRITION_MODULE,
-    PREGNANCY_NAVIGATION_MODULE,
-    REPORT_NAVIGATION_MODULE,
-} from './constants';
+import { ENABLE_ADMIN_MODULE, ENABLE_CLIENT_RECORDS_MODULE, navigationModulesFactory } from './constants';
 import './index.css';
 import SubMenu, { ModulePageLink, PageLink, SubMenuProps } from './SubMenu';
 
@@ -41,7 +31,7 @@ const defaultSideMenuState: SideMenuState = {
     collapsedModuleLabel: '',
 };
 
-type HeaderPropsTypes = RoutesProps & RouteComponentProps;
+type HeaderPropsTypes = RoutesProps & RouteComponentProps & WithTranslation;
 
 class SideMenu extends React.Component<HeaderPropsTypes, SideMenuState> {
     constructor(props: HeaderPropsTypes) {
@@ -57,6 +47,17 @@ class SideMenu extends React.Component<HeaderPropsTypes, SideMenuState> {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             icon?: any;
         }
+
+        const { t } = this.props;
+        const {
+            HOME_NAVIGATION_MODULE,
+            PREGNANCY_NAVIGATION_MODULE,
+            NBC_AND_PNC_NAVIGATION_MODULE,
+            NUTRITION_MODULE,
+            REPORT_NAVIGATION_MODULE,
+            CLIENT_NAVIGATION_MODULE,
+            ADMIN_NAVIGATION_MODULE,
+        } = navigationModulesFactory(t);
 
         const navigationModules: SubMenuToRender[] = [
             {
@@ -131,4 +132,4 @@ class SideMenu extends React.Component<HeaderPropsTypes, SideMenuState> {
 
 const connectedSideMenu = withRouter((props: HeaderPropsTypes) => <SideMenu {...props} />);
 
-export default connectedSideMenu;
+export default withTranslation()(connectedSideMenu);

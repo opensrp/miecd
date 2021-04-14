@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { Component } from 'react';
+import { Component } from 'react';
 import 'react-table/react-table.css';
 import { Card, CardBody, CardTitle, Container, Row, Table } from 'reactstrap';
 import './index.css';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { connect } from 'react-redux';
@@ -15,9 +14,9 @@ import NoRecord from '../../components/NoRecord';
 import Loading from '../../components/page/Loading/index';
 import VillageData from '../../components/VillageData';
 import { LOCATION_SLICES } from '../../configs/env';
+import React from 'react';
 import {
     ALL,
-    BACK,
     BACKPAGE_ICON,
     COMMUNE,
     DISTRICT,
@@ -26,31 +25,23 @@ import {
     HIERARCHICAL_DATA_URL,
     HIGH,
     INAPPROPRIATELY_FED,
-    INAPPROPRIATELY_FED_CAPITALIZED,
     LOGFACE_RISK,
     LOW,
     NO,
-    NO_RISK,
     NO_RISK_LOWERCASE,
     NUTRITION,
     NUTRITION_STATUS,
     OVERWEIGHT,
-    OVERWEIGHT_CAPITALIZED,
     PROVINCE,
     RED,
-    RED_ALERT,
     RED_ALERT_CLASSNAME,
     RISK,
     SEVERE_WASTING,
-    SEVERE_WASTING_CAPITALIZED,
     STUNTED,
-    STUNTED_CAPITALIZED,
-    TOTAL,
     UP,
     VILLAGE,
 } from '../../constants';
 import { locationDataIsAvailable, getModuleLink } from '../../helpers/utils';
-
 import supersetFetch from '../../services/superset';
 import locationsReducer, {
     fetchLocations,
@@ -66,6 +57,7 @@ import smsReducer, {
     SmsData,
 } from '../../store/ducks/sms_events';
 import { SmsFilterFunction } from '../../types';
+import { withTranslation, WithTranslation } from 'react-i18next';
 
 reducerRegistry.register(reducerName, locationsReducer);
 reducerRegistry.register(smsReducerName, smsReducer);
@@ -415,10 +407,12 @@ function addDataToLocations(
     };
 }
 
-class HierarchichalDataTable extends Component<Props, State> {
+export type HierarchicalDataTableType = Props & WithTranslation;
+
+class HierarchichalDataTable extends Component<HierarchicalDataTableType, State> {
     public static defaultProps = defaultProps;
 
-    public static getDerivedStateFromProps(nextProps: Props) {
+    public static getDerivedStateFromProps(nextProps: HierarchicalDataTableType) {
         const locationsWithData = addDataToLocations(
             {
                 communes: nextProps.communes,
@@ -514,7 +508,7 @@ class HierarchichalDataTable extends Component<Props, State> {
         };
     }
 
-    constructor(props: Props) {
+    constructor(props: HierarchicalDataTableType) {
         super(props);
         this.state = {
             data: [],
@@ -544,6 +538,7 @@ class HierarchichalDataTable extends Component<Props, State> {
     }
 
     public render() {
+        const { t } = this.props;
         if (
             locationDataIsAvailable(
                 this.props.villages,
@@ -565,7 +560,7 @@ class HierarchichalDataTable extends Component<Props, State> {
                         className="back-page"
                     >
                         <FontAwesomeIcon icon={BACKPAGE_ICON} size="lg" />
-                        <span>{BACK}</span>
+                        <span>{t('Back')}</span>
                     </span>
                     <h1>{this.props.title}</h1>
                     <Row className="villageDataRow">
@@ -577,19 +572,19 @@ class HierarchichalDataTable extends Component<Props, State> {
                                         {this.props.module !== NUTRITION ? (
                                             <tr>
                                                 <th className="default-width" />
-                                                <th className="default-width">{RED_ALERT}</th>
-                                                <th className="default-width">{RISK}</th>
-                                                <th className="default-width">{NO_RISK}</th>
-                                                <th className="default-width">{TOTAL}</th>
+                                                <th className="default-width">{t('Red Alert')}</th>
+                                                <th className="default-width">{t('risk')}</th>
+                                                <th className="default-width">{t('No Risk')}</th>
+                                                <th className="default-width">{t('Total')}</th>
                                             </tr>
                                         ) : (
                                             <tr>
                                                 <th className="default-width" />
-                                                <th className="default-width">{STUNTED_CAPITALIZED}</th>
-                                                <th className="default-width">{SEVERE_WASTING_CAPITALIZED}</th>
-                                                <th className="default-width">{OVERWEIGHT_CAPITALIZED}</th>
-                                                <th className="default-width">{INAPPROPRIATELY_FED_CAPITALIZED}</th>
-                                                <th className="default-width">{TOTAL}</th>
+                                                <th className="default-width">{t('Stunted')}</th>
+                                                <th className="default-width">{t('Severe Wasting')}</th>
+                                                <th className="default-width">{t('Overweight')}</th>
+                                                <th className="default-width">{t('Inappropriately Fed')}</th>
+                                                <th className="default-width">{t('Total')}</th>
                                             </tr>
                                         )}
                                     </thead>
@@ -700,7 +695,7 @@ class HierarchichalDataTable extends Component<Props, State> {
                                             })
                                         ) : (
                                             <tr id="no-rows">
-                                                <td>There seems to be no rows here :-(</td>
+                                                <td>{t('There seems to be no rows here :-(')}</td>
                                             </tr>
                                         )}
                                         {(() => {
@@ -708,7 +703,7 @@ class HierarchichalDataTable extends Component<Props, State> {
                                             return this.props.module !== NUTRITION ? (
                                                 <tr key="total">
                                                     <td className="default-width" id="total">
-                                                        Total({this.getLevelString()})
+                                                        {t(`Total(${this.getLevelString()})`)}
                                                     </td>
                                                     <td
                                                         className={`default-width ${
@@ -742,7 +737,7 @@ class HierarchichalDataTable extends Component<Props, State> {
                                             ) : (
                                                 <tr key="total">
                                                     <td className="default-width" id="total">
-                                                        Total({this.getLevelString()})
+                                                        {t(`Total(${this.getLevelString()})`)}
                                                     </td>
                                                     <td
                                                         className={`default-width ${
@@ -798,7 +793,7 @@ class HierarchichalDataTable extends Component<Props, State> {
                             }}
                         />
                     ) : this.props.current_level === 3 ? (
-                        <NoRecord message="No Patient Level data to show for this commune" />
+                        <NoRecord message={t('No Patient Level data to show for this commune')} />
                     ) : null}
                 </Container>
             );
@@ -990,8 +985,8 @@ const mapStateToProps = (state: Partial<Store>, ownProps: any): any => {
 
 const mapDispatchToProps = { fetchLocationsActionCreator: fetchLocations };
 
-const ConnectedHierarchichalDataTable = withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(HierarchichalDataTable),
+const ConnectedHierarchicalDataTable = withTranslation()(
+    withRouter(connect(mapStateToProps, mapDispatchToProps)(HierarchichalDataTable)),
 );
 
-export default ConnectedHierarchichalDataTable;
+export default ConnectedHierarchicalDataTable;

@@ -25,20 +25,13 @@ import {
     ALL,
     DEFAULT_NUMBER_OF_LOGFACE_ROWS,
     EVENT_ID,
-    LOG_FACE,
-    LOGFACE_SEARCH_PLACEHOLDER,
     NBC_AND_PNC,
     NBC_AND_PNC_LOGFACE_URL,
     NUTRITION,
     NUTRITION_LOGFACE_URL,
     PREGNANCY,
     PREGNANCY_LOGFACE_URL,
-    RISK_LEVEL,
     RISK_LEVELS,
-    SELECT_LOCATION,
-    SELECT_RISK,
-    SELECT_TYPE,
-    TYPE,
 } from '../../constants';
 import {
     fetchData,
@@ -71,6 +64,7 @@ import smsReducer, {
     smsDataFetched,
 } from '../../store/ducks/sms_events';
 import './index.css';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -172,6 +166,7 @@ export const LogFace = ({
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [filterString, setFilterString] = useState<string>('');
     const [filteredData, setFilteredData] = useState<SmsData[]>([]);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const allLabels: string[] = [riskLabel, locationLabel, typeLabel];
@@ -302,7 +297,7 @@ export const LogFace = ({
     return (
         <div className="logface-content">
             <div>
-                <h2 id="logface_title">{`${LOG_FACE} - ${module}`}</h2>
+                <h2 id="logface_title">{t(`Log Face - ${module}`)}</h2>
             </div>
             <div className="filter-panel">
                 <div className="filters">
@@ -313,7 +308,7 @@ export const LogFace = ({
                                 type="text"
                                 name="input"
                                 id="input"
-                                placeholder={LOGFACE_SEARCH_PLACEHOLDER}
+                                placeholder={t('Search ID, Reporter, Patients')}
                                 className={`form-control logface-search`}
                                 onChange={handleTermChange}
                                 disabled={!smsData.length}
@@ -321,7 +316,7 @@ export const LogFace = ({
                         )}
                     </Formik>
                     <div className="location-type-filter">
-                        <span>{RISK_LEVEL}</span>
+                        <span>{t('Risk Level')}</span>
                         <Dropdown isOpen={dropdownOpenRiskLevel} toggle={toggleRiskLevelDropDown}>
                             <DropdownToggle
                                 variant="success"
@@ -329,7 +324,7 @@ export const LogFace = ({
                                 caret={true}
                                 disabled={!smsData.length}
                             >
-                                <span>{riskLabel.length ? riskLabel : SELECT_RISK}</span>
+                                <span>{riskLabel.length ? riskLabel : t('Select risk')}</span>
                             </DropdownToggle>
                             <DropdownMenu>
                                 {map(RISK_LEVELS, (risk) => {
@@ -343,7 +338,7 @@ export const LogFace = ({
                         </Dropdown>
                     </div>
                     <div className="location-type-filter">
-                        <span>{SELECT_LOCATION}</span>
+                        <span>{t('Select Location')}</span>
                         <Dropdown isOpen={dropdownOpenLocation} toggle={toggleLocationDropDown}>
                             <DropdownToggle
                                 variant="success"
@@ -351,7 +346,7 @@ export const LogFace = ({
                                 caret={true}
                                 disabled={!smsData.length}
                             >
-                                <span>{locationLabel.length ? locationLabel : SELECT_LOCATION}</span>
+                                <span>{locationLabel.length ? locationLabel : t('Select Location')}</span>
                             </DropdownToggle>
                             <DropdownMenu>
                                 {map(getAllLocations(smsData).concat(ALL), (location) => {
@@ -365,7 +360,7 @@ export const LogFace = ({
                         </Dropdown>
                     </div>
                     <div className="location-type-filter">
-                        <span>{TYPE}</span>
+                        <span>{t('Type')}</span>
                         <Dropdown isOpen={dropdownOpenType} toggle={toggleTypeDropDown}>
                             <DropdownToggle
                                 variant="success"
@@ -373,7 +368,7 @@ export const LogFace = ({
                                 caret={true}
                                 disabled={!smsData.length}
                             >
-                                <span>{typeLabel.length ? typeLabel : SELECT_TYPE}</span>
+                                <span>{typeLabel.length ? typeLabel : t('Select Type')}</span>
                             </DropdownToggle>
                             <DropdownMenu>
                                 {map(SmsTypes, (type) => {
@@ -390,7 +385,7 @@ export const LogFace = ({
                         </Dropdown>
                     </div>
                     <a id="export-button" href={SUPERSET_PREGNANCY_DATA_EXPORT} download={true}>
-                        Export data
+                        {t('Export data')}
                     </a>
                 </div>
             </div>
@@ -399,14 +394,14 @@ export const LogFace = ({
                     <Table striped={true} borderless={true}>
                         <thead id="header">
                             <tr>
-                                <th className="default-width">Event Date</th>
-                                <th className="default-width">Location</th>
-                                <th className="default-width">SMS Type</th>
-                                <th className="default-width">Reporter</th>
-                                <th className="default-width">Patient</th>
-                                <th className="small-width">Age</th>
-                                <th className="large-width">Message</th>
-                                <th className="default-width">Risk Level</th>
+                                <th className="default-width">{t('Event Date')}</th>
+                                <th className="default-width">{t('Location')}</th>
+                                <th className="default-width">{t('SMS Type')}</th>
+                                <th className="default-width">{t('Reporter')}</th>
+                                <th className="default-width">{t('Patient')}</th>
+                                <th className="small-width">{t('Age')}</th>
+                                <th className="large-width">{t('Message')}</th>
+                                <th className="default-width">{t('Risk Level')}</th>
                             </tr>
                         </thead>
                         <tbody id="body">
@@ -573,4 +568,4 @@ const mapPropsToActions = {
 
 const ConnectedLogFace = connect(mapStateToprops, mapPropsToActions)(LogFace);
 
-export default ConnectedLogFace;
+export default withTranslation()(ConnectedLogFace);

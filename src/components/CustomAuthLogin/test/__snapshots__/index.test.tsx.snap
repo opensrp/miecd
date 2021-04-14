@@ -47,7 +47,7 @@ exports[`CustomOAuth login must render correctly 1`] = `
         className="center"
       >
         <h3>
-          MIECD VIETNAM
+          OpenSRP
         </h3>
         <p
           className="gatekeeper-p item"

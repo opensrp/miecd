@@ -171,9 +171,7 @@ exports[`HierarchichalDataTable renders correctly: hierarchichalDataTable 1`] = 
           className="default-width"
           id="total"
         >
-          Total(
-          Province
-          )
+          Total(Province)
         </td>
         <td
           className="default-width "
@@ -332,9 +330,7 @@ exports[`HierarchichalDataTable renders correctly: hierarchichalDataTable 2`] = 
       className="default-width"
       id="total"
     >
-      Total(
-      Province
-      )
+      Total(Province)
     </td>
     <td
       className="default-width "
@@ -491,9 +487,7 @@ exports[`HierarchichalDataTable renders correctly: hierarchichalDataTable 3`] = 
       className="default-width"
       id="total"
     >
-      Total(
-      Province
-      )
+      Total(Province)
     </td>
     <td
       className="default-width "
@@ -650,9 +644,7 @@ exports[`HierarchichalDataTable renders correctly: hierarchichalDataTable 4`] = 
       className="default-width"
       id="total"
     >
-      Total(
-      Province
-      )
+      Total(Province)
     </td>
     <td
       className="default-width "
@@ -809,9 +801,7 @@ exports[`HierarchichalDataTable renders correctly: hierarchichalDataTable 5`] = 
       className="default-width"
       id="total"
     >
-      Total(
-      Province
-      )
+      Total(Province)
     </td>
     <td
       className="default-width "
@@ -968,9 +958,7 @@ exports[`HierarchichalDataTable renders correctly: hierarchichalDataTable 6`] = 
       className="default-width"
       id="total"
     >
-      Total(
-      Province
-      )
+      Total(Province)
     </td>
     <td
       className="default-width "
@@ -1127,9 +1115,7 @@ exports[`HierarchichalDataTable renders correctly: hierarchichalDataTable 7`] = 
       className="default-width"
       id="total"
     >
-      Total(
-      Province
-      )
+      Total(Province)
     </td>
     <td
       className="default-width "
@@ -1286,9 +1272,7 @@ exports[`HierarchichalDataTable renders correctly: hierarchichalDataTable 8`] = 
       className="default-width"
       id="total"
     >
-      Total(
-      Province
-      )
+      Total(Province)
     </td>
     <td
       className="default-width "
@@ -1445,9 +1429,7 @@ exports[`HierarchichalDataTable renders correctly: hierarchichalDataTable 9`] = 
       className="default-width"
       id="total"
     >
-      Total(
-      Province
-      )
+      Total(Province)
     </td>
     <td
       className="default-width "

@@ -1,10 +1,10 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { mount } from 'enzyme';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import PatientDetails from '..';
+import { mountWithTranslations } from '../../../helpers/testUtils';
 import smsReducer, { reducerName } from '../../../store/ducks/sms_events';
 import store from '../../../store/index';
 
@@ -13,7 +13,6 @@ reducerRegistry.register(reducerName, smsReducer);
 
 const history = createBrowserHistory();
 
-// jest.createMockFromModule('highcharts');
 jest.mock('highcharts');
 const props = {
     match: {
@@ -25,7 +24,7 @@ const props = {
 describe('PatientDetails', () => {
     // eslint-disable-next-line jest/expect-expect
     it('must render correctly', () => {
-        mount(
+        mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
                     <PatientDetails {...props} />
