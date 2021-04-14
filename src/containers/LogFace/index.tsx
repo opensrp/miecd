@@ -486,7 +486,7 @@ const LogFace = (props: LogFaceProps) => {
                 </div>
             ) : (
                 <div className="card">
-                    <div className="card-body">No data found</div>
+                    <div className="card-body">{t('No data found')}</div>
                 </div>
             )}
             <div className="paginator">
