@@ -1512,6 +1512,13 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
+"@opensrp/server-service@^0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.17.tgz#6722bdb64f569db659e4d64227a7fc17d52d8527"
+  integrity sha512-jygPHabMY0TQoxWDTD0MTCJPLfbeTAlS1c0RWKkf8XwtMmHzwyZjH7DaN3YPR6inkeeH42Ry3nUiZ0NhFkHRFQ==
+  dependencies:
+    "@onaio/utils" "^0.0.1"
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.1.tgz#a21117b19ee9be70c379ec1877537ef2e1c63301"
