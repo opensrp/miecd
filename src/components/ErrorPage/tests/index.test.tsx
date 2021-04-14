@@ -20,7 +20,7 @@ describe('ErrorPage', () => {
 
         expect(toJson(wrapper)).toMatchSnapshot('full snapshot');
 
-        expect(wrapper.text()).toMatchInlineSnapshot();
+        expect(wrapper.text()).toMatchInlineSnapshot(`"An error occurredError TitleError Message"`);
 
         expect(wrapper.text().includes(errorTitle)).toBeTruthy();
         expect(wrapper.text().includes(errorMessage)).toBeTruthy();

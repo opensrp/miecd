@@ -27,6 +27,8 @@ reducerRegistry.register(reducerName, reducer);
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
 
+jest.mock('../../../configs/env');
+
 describe('containers/LogFace', () => {
     const commonProps = { module: PREGNANCY };
     afterEach(() => {
@@ -177,10 +179,10 @@ describe('containers/LogFace extended', () => {
             `"An error occurredTypeErrorCannot read property 'attributes' of undefined"`,
         );
         // and finally check the requests made
-        expect(supersetFetchMock.mock.calls).toEqual([['3064'], ['2754'], ['2755'], ['2756'], ['2757'], ['2263']]);
+        expect(supersetFetchMock.mock.calls).toEqual([['0'], ['0'], ['0'], ['0'], ['0'], ['0']]);
         expect(fetch.mock.calls).toEqual([
             [
-                'https://reveal-stage.smartregister.org/opensrp/rest//security/authenticate/',
+                'https://test.smartregister.org/opensrp/rest//security/authenticate/',
                 {
                     headers: {
                         accept: 'application/json',
