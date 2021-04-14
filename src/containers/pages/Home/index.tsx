@@ -1,9 +1,9 @@
 // this is the home page component
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import pregnancyAvatar from '../../../assets/images/pregnancy.jpg';
-import nbcPncAvatar from '../../../assets/images/pnc_nbc.jpg';
-import nutritionAvatar from '../../../assets/images/nutrition.jpg';
+import pregnancyAvatar from '../../../assets/images/pregnancy.jpeg';
+import nbcPncAvatar from '../../../assets/images/pnc_nbc.jpeg';
+import nutritionAvatar from '../../../assets/images/nutrition.jpeg';
 import { NBC_AND_PNC_URL, NUTRITION_URL, PREGNANCY_URL } from '../../../constants';
 import './index.css';
 
