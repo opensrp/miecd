@@ -135,7 +135,7 @@ function DataCircleCard({
                         }
                     }}
                 >
-                    {title}
+                    <h5 className="card_title">{title}</h5>
                 </Link>
             </CardTitle>
             <CardBody className="circlesRow">
