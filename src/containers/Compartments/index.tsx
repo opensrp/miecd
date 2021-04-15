@@ -285,12 +285,14 @@ export const Compartments = ({
 
     const [dataCircleCardNutrition1, setDataCircleCardNutrition1] = useState<null | NutritionDataCircleCardProps>(null);
     const [dataCircleCardNutrition2, setDataCircleCardNutrition2] = useState<null | NutritionDataCircleCardProps>(null);
+    const [dataCircleCardAllNutrition, setDataCircleCardAllNutrition] = useState<null | NutritionDataCircleCardProps>(
+        null,
+    );
 
     useEffect(() => {
         const childrenBetween0And2FilterFunction = childrenAgeRangeFilterFunction(0, 2);
         const childrenBetween2And5FilterFuction = childrenAgeRangeFilterFunction(2, 5);
         const childrenUnder2 = filteredData.filter(childrenBetween0And2FilterFunction);
-
         const childrenUnder5 = filteredData.filter(childrenBetween2And5FilterFuction);
 
         setDataCircleCardNutrition1(
@@ -332,6 +334,26 @@ export const Compartments = ({
                   }
                 : null,
         );
+
+        setDataCircleCardAllNutrition(
+            module === NUTRITION
+                ? {
+                      filterArgs: [() => true],
+                      inappropriateFeeding: getNumberOfSmsWithRisk(
+                          'inappropriately fed',
+                          filteredData,
+                          'feeding_category',
+                      ),
+                      module: NUTRITION,
+                      overweight: getNumberOfSmsWithRisk('overweight', filteredData, 'nutrition_status'),
+                      permissionLevel: userLocationLevel,
+                      stunting: getNumberOfSmsWithRisk('stunted', filteredData, 'growth_status'),
+                      title: 'Total Children',
+                      totalChildren: 0,
+                      wasting: getNumberOfSmsWithRisk('severe wasting', filteredData, 'nutrition_status'),
+                  }
+                : null,
+        );
     }, [filteredData, module, userLocationLevel]);
 
     const [circleCardComponent, setCircleCardComponent] = useState<ReactNodeArray>([]);
@@ -340,7 +362,7 @@ export const Compartments = ({
         const circleCardProps: Dictionary = {
             [PREGNANCY]: [pregnanciesDueIn1WeekProps, pregnaciesDueIn2WeeksProps, allPregnanciesProps],
             [NBC_AND_PNC]: [dataCircleCardChildData, dataCircleCardWomanData],
-            [NUTRITION]: [dataCircleCardNutrition1, dataCircleCardNutrition2],
+            [NUTRITION]: [dataCircleCardNutrition1, dataCircleCardNutrition2, dataCircleCardAllNutrition],
         };
 
         const componentArray: ReactNodeArray = [];
@@ -388,11 +410,13 @@ export const Compartments = ({
             {dataFetched && filteredData.length ? (
                 <>
                     <div className="cards-row">
-                        <CardGroup>{circleCardComponent.slice(0, 2)}</CardGroup>
+                        <CardGroup>
+                            {circleCardComponent.map((item, index) => (
+                                <React.Fragment key={index}>{item}</React.Fragment>
+                            ))}
+                        </CardGroup>
                     </div>
-                    <div className="cards-row">
-                        <CardGroup>{circleCardComponent[2] ? circleCardComponent[2] : null}</CardGroup>
-                    </div>
+
                     {(module === PREGNANCY || module === NUTRITION) && smsData.length ? (
                         <VillageData
                             {...{
@@ -419,7 +443,7 @@ export const Compartments = ({
 export const childrenAgeRangeFilterFunction = (startAge: number, endAge: number) => {
     return (dataItem: SmsData) => {
         const ageInYears = convertMillisecondsToYear(new Date().getTime() - new Date(dataItem.date_of_birth).getTime());
-        return ageInYears < endAge && ageInYears > startAge;
+        return ageInYears > startAge && ageInYears < endAge;
     };
 };
 
