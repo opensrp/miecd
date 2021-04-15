@@ -10,11 +10,11 @@
     background: #001429;
 }
 
-.custom-navbar__brand a img:nth-child(2) {
+.custom-navbar__brand img:nth-child(2) {
     padding: 10px;
 }
 
-.custom-navbar__brand a img {
+.custom-navbar__brand img {
     max-height: 56px;
 }
 

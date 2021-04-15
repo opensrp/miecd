@@ -91,11 +91,9 @@ export class HeaderComponent extends React.Component<HeaderPropTypes, State> {
 
         return (
             <Navbar className="custom-navbar navbar-expand-sm">
-                <NavbarBrand className="custom-navbar__brand">
-                    <Link to={HOME_URL}>
-                        <img src={logo} alt={WEBSITE_NAME} />
-                        <img src={logo2} alt={WEBSITE_NAME} />
-                    </Link>
+                <NavbarBrand to={HOME_URL} className="custom-navbar__brand">
+                    <img src={logo} alt={WEBSITE_NAME} />
+                    <img src={logo2} alt={WEBSITE_NAME} />
                 </NavbarBrand>
                 <NavbarToggler onClick={this.toggle} />
                 <Collapse isOpen={false} navbar>
