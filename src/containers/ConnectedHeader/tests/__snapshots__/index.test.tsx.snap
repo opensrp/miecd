@@ -3,22 +3,20 @@
 exports[`components/ConnectedHeader renders the ConnectedHeader component 1`] = `
 Object {
   "children": Array [
-    <nav
-      id="image-settings"
+    <NavbarBrand
+      className="custom-navbar__brand"
+      tag="a"
+      to="/"
     >
-      <ForwardRef
-        to="/"
-      >
-        <img
-          alt="OpenSRP"
-          src="logo.png"
-        />
-        <img
-          alt="OpenSRP"
-          src="vietnam-moh.png"
-        />
-      </ForwardRef>
-    </nav>,
+      <img
+        alt="OpenSRP"
+        src="logo.png"
+      />
+      <img
+        alt="OpenSRP"
+        src="vietnam-moh.png"
+      />
+    </NavbarBrand>,
     <NavbarToggler
       onClick={[Function]}
       tag="button"
@@ -55,10 +53,26 @@ Object {
         >
           Login
         </ForwardRef>
+        <LanguageSwitcher
+          allLanguageOptions={
+            Object {
+              "en": "English",
+              "vi": "Vietnamese",
+            }
+          }
+          onLanguageChange={[Function]}
+          supportedLanguages={
+            Array [
+              "en",
+              "vi",
+            ]
+          }
+        />
       </Nav>
     </Collapse>,
   ],
-  "expand": "md",
+  "className": "custom-navbar navbar-expand-sm",
+  "expand": false,
   "tag": "nav",
 }
 `;
@@ -66,22 +80,20 @@ Object {
 exports[`components/ConnectedHeader renders the ConnectedHeader when logged in 1`] = `
 Object {
   "children": Array [
-    <nav
-      id="image-settings"
+    <NavbarBrand
+      className="custom-navbar__brand"
+      tag="a"
+      to="/"
     >
-      <ForwardRef
-        to="/"
-      >
-        <img
-          alt="OpenSRP"
-          src="logo.png"
-        />
-        <img
-          alt="OpenSRP"
-          src="vietnam-moh.png"
-        />
-      </ForwardRef>
-    </nav>,
+      <img
+        alt="OpenSRP"
+        src="logo.png"
+      />
+      <img
+        alt="OpenSRP"
+        src="vietnam-moh.png"
+      />
+    </NavbarBrand>,
     <NavbarToggler
       onClick={[Function]}
       tag="button"
@@ -151,10 +163,26 @@ Object {
             </DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
+        <LanguageSwitcher
+          allLanguageOptions={
+            Object {
+              "en": "English",
+              "vi": "Vietnamese",
+            }
+          }
+          onLanguageChange={[Function]}
+          supportedLanguages={
+            Array [
+              "en",
+              "vi",
+            ]
+          }
+        />
       </Nav>
     </Collapse>,
   ],
-  "expand": "md",
+  "className": "custom-navbar navbar-expand-sm",
+  "expand": false,
   "tag": "nav",
 }
 `;
