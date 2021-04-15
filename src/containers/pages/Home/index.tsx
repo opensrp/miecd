@@ -2,9 +2,9 @@
 import * as React from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import womanchild3 from '../../../assets/images/baby-feeding.svg';
-import womanchild2 from '../../../assets/images/carrying-baby.svg';
-import womanchild1 from '../../../assets/images/pregnant-woman.svg';
+import pregnancyAvatar from '../../../assets/images/pregnancy.jpeg';
+import nbcPncAvatar from '../../../assets/images/pnc_nbc.jpeg';
+import nutritionAvatar from '../../../assets/images/nutrition.jpeg';
 import { NBC_AND_PNC_URL, NUTRITION_URL, PREGNANCY_URL } from '../../../constants';
 import './index.css';
 
@@ -16,10 +16,10 @@ class Home extends React.Component<WithTranslation> {
                 <div className="welcome-text">
                     <h1>{t('Welcome to the MIECD dashboard')}</h1>
                 </div>
-                <div className="components-list">
-                    <div className="spacer">
-                        <img src={womanchild1} id="womanchild1" alt="woman" />
-                        <div className="home-sub-containers">
+                <div className="center-vertically">
+                    <div className="components-list">
+                        <div className="spacer">
+                            <img src={pregnancyAvatar} id="pregnancyAvatar" alt="pregnancy module avatar" />
                             <div className="sub-container-message">
                                 <div id="cont-size">
                                     <h1>{t('Pregnancy')}</h1>
@@ -34,10 +34,9 @@ class Home extends React.Component<WithTranslation> {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="spacer">
-                        <img src={womanchild2} id="womanchild2" alt="woman" />
-                        <div className="home-sub-containers">
+                        <div className="spacer">
+                            <img src={nbcPncAvatar} id="nbcPncAvatar" alt="NBC &#38; PNC module avatar" />
+
                             <div className="sub-container-message">
                                 <div id="cont-size">
                                     <h1>{t('NBC & PNC')}</h1>
@@ -52,10 +51,9 @@ class Home extends React.Component<WithTranslation> {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="spacer">
-                        <img src={womanchild3} id="womanchild3" alt="woman" />
-                        <div className="home-sub-containers">
+                        <div className="spacer">
+                            <img src={nutritionAvatar} id="nutritionAvatar" alt="nutrition module avatar" />
+
                             <div className="sub-container-message">
                                 <div id="cont-size">
                                     <h1>{t('Nutrition')}</h1>
