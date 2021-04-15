@@ -73,7 +73,7 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
     return (
         <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>
-                <FontAwesomeIcon icon={['far', 'globe']} />
+                <FontAwesomeIcon icon={['fas', 'globe']} />
             </DropdownToggle>
             <DropdownMenu right>{LangMenu}</DropdownMenu>
         </UncontrolledDropdown>
