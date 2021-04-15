@@ -12,13 +12,14 @@ import {
     DropdownToggle,
     Nav,
     Navbar,
+    NavbarBrand,
     NavbarToggler,
     UncontrolledDropdown,
 } from 'reactstrap';
 import logo from '../../../assets/images/logo.png';
 import logo2 from '../../../assets/images/vietnam-moh.png';
 import { WEBSITE_NAME } from '../../../configs/env';
-import { LOGIN_URL, LOGOUT_URL } from '../../../constants';
+import { HOME_URL, LOGIN_URL, LOGOUT_URL } from '../../../constants';
 import { headerShouldRender } from '../../../helpers/utils';
 import { Dictionary } from '@onaio/utils';
 import './Header.css';
@@ -89,15 +90,15 @@ export class HeaderComponent extends React.Component<HeaderPropTypes, State> {
         }
 
         return (
-            <Navbar expand="md">
-                <nav id="image-settings">
-                    <Link to="/">
+            <Navbar className="custom-navbar navbar-expand-sm">
+                <NavbarBrand className="custom-navbar__brand">
+                    <Link to={HOME_URL}>
                         <img src={logo} alt={WEBSITE_NAME} />
                         <img src={logo2} alt={WEBSITE_NAME} />
                     </Link>
-                </nav>
+                </NavbarBrand>
                 <NavbarToggler onClick={this.toggle} />
-                <Collapse isOpen={this.state.isOpen} navbar>
+                <Collapse isOpen={false} navbar>
                     <Nav className="ml-auto" navbar>
                         {authenticated ? (
                             <UncontrolledDropdown nav inNavbar>
