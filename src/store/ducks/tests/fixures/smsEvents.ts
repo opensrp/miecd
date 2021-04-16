@@ -1,4 +1,6 @@
-export const expectedSmsData = [
+import { SmsData } from '../../sms_events';
+
+export const expectedSmsData = ([
     {
         EventDate: '25/09/19',
         sms_type: 'ANC Visit',
@@ -1419,4 +1421,4 @@ export const expectedSmsData = [
         health_worker_contact: 'telegram:978543639',
         team: ' NULL',
     },
-] as SmsData[];
+] as unknown) as SmsData[];
