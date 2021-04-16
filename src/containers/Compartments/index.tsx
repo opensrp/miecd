@@ -338,6 +338,7 @@ export const Compartments = ({
         setDataCircleCardAllNutrition(
             module === NUTRITION
                 ? {
+                      // for totals, the filter fn returns true for all (equivalent to not filtering)
                       filterArgs: [() => true],
                       inappropriateFeeding: getNumberOfSmsWithRisk(
                           'inappropriately fed',
@@ -443,7 +444,11 @@ export const Compartments = ({
 export const childrenAgeRangeFilterFunction = (startAge: number, endAge: number) => {
     return (dataItem: SmsData) => {
         const ageInYears = convertMillisecondsToYear(new Date().getTime() - new Date(dataItem.date_of_birth).getTime());
-        return ageInYears > startAge && ageInYears < endAge;
+        // when startAge = 0 and endAge > 0, the age range is: startAge ≤ ageInYears ≤ endAge (i.e startAge and endAge are both inclusive)
+        // when startAge > 0 and endAge > 0, the range is startAge < ageInYears ≤ endAge (startAge exclusive)
+        return startAge === 0
+            ? ageInYears >= startAge && ageInYears <= endAge
+            : ageInYears > startAge && ageInYears <= endAge;
     };
 };
 
