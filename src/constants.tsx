@@ -188,3 +188,6 @@ export const monthNames = [
     'November',
     'December',
 ];
+
+// operational constants
+export const DATE_FORMAT = 'dd/MM/yy';
