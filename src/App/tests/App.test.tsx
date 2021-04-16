@@ -47,6 +47,7 @@ describe('App', () => {
         const customOathLoginChildren = wrapper.find(CustomOauthLogin).children();
 
         expect(toJson(customOathLoginChildren)).toMatchSnapshot();
+        expect(wrapper.find('Toaster')).toHaveLength(1);
         wrapper.unmount();
     });
 });

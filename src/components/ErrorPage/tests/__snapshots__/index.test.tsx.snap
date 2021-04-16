@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorPage renders correctly: full snapshot 1`] = `
+<ErrorPage
+  message="Error Message"
+  title="Error Title"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col-md-12"
+      >
+        <div
+          className="error-template"
+        >
+          <h1>
+            An error occurred
+          </h1>
+          <h2>
+            Error Title
+          </h2>
+          <div
+            className="error-details"
+          >
+            Error Message
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ErrorPage>
+`;

@@ -39,6 +39,8 @@ import {
     getLinkToPatientDetail,
     getLocationId,
     sortFunction,
+    toastToError,
+    useHandleBrokenPage,
 } from '../../helpers/utils';
 import supersetFetch from '../../services/superset';
 import {
@@ -65,6 +67,8 @@ import smsReducer, {
 } from '../../store/ducks/sms_events';
 import './index.css';
 import { useTranslation, withTranslation } from 'react-i18next';
+import { ErrorPage } from 'components/ErrorPage';
+import { Store } from 'redux';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -72,27 +76,45 @@ reducerRegistry.register(locationReducerName, locationsReducer);
 /**
  * Interface representing Logface props
  */
-export interface Props {
+export interface LogFaceProps {
     module: string;
-    smsData?: SmsData[];
-    fetchSmsDataActionCreator?: typeof fetchSms;
-    dataFetched?: boolean;
-    numberOfRows?: number;
-    userUUID?: string;
-    userLocationData?: UserLocation[];
-    provinces?: Location[];
-    districts?: Location[];
-    communes?: Location[];
-    villages?: Location[];
-    addFilterArgs?: typeof addFilterArgsActionCreator;
-    removeFilterArgs?: typeof removeFilterArgsActionCreator;
-    fetchLocations?: typeof fetchLocations;
-    fetchUserLocations?: typeof fetchUserLocations;
-    userIdFetched?: boolean;
-    isUserLocationDataFetched?: boolean;
-    fetchUserIdActionCreator?: any;
-    filterArgsInStore?: Array<(smsData: SmsData) => boolean>;
+    smsData: SmsData[];
+    fetchSmsDataActionCreator: typeof fetchSms;
+    dataFetched: boolean;
+    numberOfRows: number;
+    userUUID: string;
+    userLocationData: UserLocation[];
+    provinces: Location[];
+    districts: Location[];
+    communes: Location[];
+    villages: Location[];
+    addFilterArgs: typeof addFilterArgsActionCreator;
+    removeFilterArgs: typeof removeFilterArgsActionCreator;
+    fetchLocations: typeof fetchLocations;
+    fetchUserLocations: typeof fetchUserLocations;
+    filterArgsInStore: Array<(smsData: SmsData) => boolean>;
+    supersetService: typeof supersetFetch;
 }
+
+const defaultProps: LogFaceProps = {
+    fetchLocations: fetchLocations,
+    fetchUserLocations: fetchUserLocations,
+    addFilterArgs: addFilterArgsActionCreator,
+    communes: [],
+    dataFetched: false,
+    districts: [],
+    fetchSmsDataActionCreator: fetchSms,
+    filterArgsInStore: [],
+    module: '',
+    numberOfRows: DEFAULT_NUMBER_OF_LOGFACE_ROWS,
+    provinces: [],
+    removeFilterArgs: removeFilterArgsActionCreator,
+    smsData: [],
+    userLocationData: [],
+    userUUID: '',
+    villages: [],
+    supersetService: supersetFetch,
+};
 
 /**
  * A representation of the the current values of the dropdown on the logface
@@ -107,46 +129,55 @@ interface DropDownLabels {
 }
 
 /**
- * The logface component
- * @param {Props} props
+ * The LogFace component
+ * @param {LogFaceProps} props
  */
-export const LogFace = ({
-    addFilterArgs = addFilterArgsActionCreator,
-    communes = [],
-    dataFetched = false,
-    districts = [],
-    fetchSmsDataActionCreator = fetchSms,
-    filterArgsInStore = [],
-    module,
-    numberOfRows = DEFAULT_NUMBER_OF_LOGFACE_ROWS,
-    provinces = [],
-    removeFilterArgs = removeFilterArgsActionCreator,
-    smsData = [],
-    userLocationData = [],
-    userUUID = '',
-    villages = [],
-}: Props) => {
+const LogFace = (props: LogFaceProps) => {
+    const {
+        addFilterArgs,
+        communes,
+        dataFetched,
+        districts,
+        fetchSmsDataActionCreator,
+        filterArgsInStore,
+        module,
+        numberOfRows,
+        provinces,
+        removeFilterArgs,
+        smsData,
+        userLocationData,
+        userUUID,
+        villages,
+        supersetService,
+    } = props;
+    const { error, handleBrokenPage, broken } = useHandleBrokenPage();
+    const [loading, setLoading] = React.useState<boolean>(true);
+
     useEffect(() => {
         removeFilterArgs();
-        fetchData();
+        fetchData(supersetService)
+            .catch((err) => {
+                handleBrokenPage(err);
+            })
+            .finally(() => setLoading(false));
     }, []);
 
     useEffect(() => {
         const intervalId: NodeJS.Timeout = setInterval(() => {
             const smsDataInDescendingOrderByEventId: SmsData[] = smsData.sort(sortFunction);
 
-            // pick the lartgest ID if this smsDataInDescendingOrderByEventId list is not empty
+            // pick the largest ID if this smsDataInDescendingOrderByEventId list is not empty
             if (smsDataInDescendingOrderByEventId.length) {
                 const largestEventID: string = smsDataInDescendingOrderByEventId[0].event_id;
                 const supersetParams = superset.getFormData(GET_FORM_DATA_ROW_LIMIT, [
                     { comparator: largestEventID, operator: '>', subject: EVENT_ID },
                 ]);
-                supersetFetch(SUPERSET_SMS_DATA_SLICE, supersetParams)
+                supersetService(SUPERSET_SMS_DATA_SLICE, supersetParams)
                     .then((result: SmsData[]) => {
                         fetchSmsDataActionCreator(result);
                     })
-                    .catch(() => {
-                        // console.log(error);
+                    .catch((err) => {
+                        toastToError(err.Message);
                     });
             }
         }, SUPERSET_FETCH_TIMEOUT_INTERVAL);
@@ -294,6 +325,14 @@ export const LogFace = ({
         totalRecords: filteredData.length,
     };
 
+    if (broken) {
+        return <ErrorPage title={error?.name} message={error?.message} />; // TODO
+    }
+
+    if (loading) {
+        return <Ripple />;
+    }
+
     return (
         <div className="logface-content">
             <div>
@@ -301,8 +340,7 @@ export const LogFace = ({
             </div>
             <div className="filter-panel">
                 <div className="filters">
-                    {/*tslint:disable-next-line: jsx-no-lambda no-empty*/}
-                    <Formik initialValues={{}} onSubmit={() => {}}>
+                    <Formik initialValues={{}} onSubmit={() => void 0}>
                         {() => (
                             <Field
                                 type="text"
@@ -447,7 +485,9 @@ export const LogFace = ({
                     </Table>
                 </div>
             ) : (
-                <Ripple />
+                <div className="card">
+                    <div className="card-body">{t('No data found')}</div>
+                </div>
             )}
             <div className="paginator">
                 <Paginator {...routePaginatorProps} />
@@ -456,8 +496,12 @@ export const LogFace = ({
     );
 };
 
+LogFace.defaultProps = defaultProps;
+
+export { LogFace };
+
 /**
- * @param {string} module a string represeting the module this logface is being used for.
+ * @param {string} module a string representing the module this logface is being used for.
  * @return {string} the logface url for the module passed in. empty string if the module is invalid.
  */
 function getModuleLogFaceUrlLink(module: string) {
@@ -545,7 +589,22 @@ function filterDataByDropDowns(smsData: SmsData[], dropDownLabels: DropDownLabel
     return dataFiltered;
 }
 
-const mapStateToprops = (state: any): any => {
+export type MapStateToProps = Pick<
+    LogFaceProps,
+    | 'communes'
+    | 'dataFetched'
+    | 'districts'
+    | 'filterArgsInStore'
+    | 'provinces'
+    | 'smsData'
+    | 'userLocationData'
+    | 'userUUID'
+    | 'villages'
+>;
+
+export type MapDispatch = Pick<LogFaceProps, 'addFilterArgs' | 'fetchSmsDataActionCreator' | 'removeFilterArgs'>;
+
+const mapStateToProps = (state: Partial<Store>): MapStateToProps => {
     const result = {
         communes: getLocationsOfLevel(state, 'Commune'),
         dataFetched: smsDataFetched(state),
@@ -560,12 +619,12 @@ const mapStateToprops = (state: any): any => {
     return result;
 };
 
-const mapPropsToActions = {
+const mapPropsToActions: MapDispatch = {
     addFilterArgs: addFilterArgsActionCreator,
     fetchSmsDataActionCreator: fetchSms,
     removeFilterArgs: removeFilterArgsActionCreator,
 };
 
-const ConnectedLogFace = connect(mapStateToprops, mapPropsToActions)(LogFace);
+const ConnectedLogFace = connect(mapStateToProps, mapPropsToActions)(LogFace);
 
 export default withTranslation()(ConnectedLogFace);

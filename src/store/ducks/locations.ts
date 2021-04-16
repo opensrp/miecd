@@ -46,6 +46,9 @@ export const FETCHED_LOCATION = 'opensrp/reducer/FETCH_LOCATION';
 /** REMOVE_LOCATION action type */
 export const REMOVE_LOCATIONS = 'opensrp/reducer/REMOVE_LOCATIONS';
 
+/** Clear this whole slice */
+export const CLEAR_LOCATIONS_SLICE = 'opensrp/reducer/CLEAR_LOCATIONS';
+
 /** Interface for FetchLocationAction */
 export interface FetchLocationsAction extends AnyAction {
     locations: { [key: string]: Location };
@@ -58,7 +61,7 @@ export interface FetchUserIdAction extends AnyAction {
     type: typeof FETCHED_USER_ID;
 }
 
-/** Inteface for FetchuserLocationIdAction */
+/** Interface for FetchUserLocationIdAction */
 export interface FetchUserLocationIdAction extends AnyAction {
     userLocationId: string;
     type: typeof FETCHED_USER_LOCATION_ID;
@@ -67,6 +70,11 @@ export interface FetchUserLocationIdAction extends AnyAction {
 export interface FetchUserLocationsAction extends AnyAction {
     userLocations: { [key: string]: UserLocation };
     type: typeof FETCHED_USER_LOCATION;
+}
+
+/** describes action to clear all data from this slice */
+export interface ClearLocationSLice extends AnyAction {
+    type: typeof CLEAR_LOCATIONS_SLICE;
 }
 
 /** action of type REMOVE_LOCATIONS */
@@ -122,6 +130,13 @@ export const fetchUserLocationId = (userLocationId: string): FetchUserLocationId
         userLocationId,
     };
     return fetchUserLocationIdAction;
+};
+
+/** action to clear the full slice */
+export const clearLocationSlice = (): ClearLocationSLice => {
+    return {
+        type: CLEAR_LOCATIONS_SLICE,
+    };
 };
 
 /** interface for locations state in redux store */
@@ -188,6 +203,8 @@ export default function locationsReducer(
                 ...state,
                 locations: action.locations,
             };
+        case CLEAR_LOCATIONS_SLICE:
+            return initialState;
         default:
             return state;
     }
