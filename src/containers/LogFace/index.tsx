@@ -69,6 +69,7 @@ import './index.css';
 import { useTranslation, withTranslation } from 'react-i18next';
 import { ErrorPage } from 'components/ErrorPage';
 import { Store } from 'redux';
+import Select from 'react-select';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -188,11 +189,8 @@ const LogFace = (props: LogFaceProps) => {
         };
     }, []);
 
-    const [dropdownOpenRiskLevel, setDropdownOpenRiskLevel] = useState<boolean>(false);
     const [riskLabel, setRiskLabel] = useState<string>('');
-    const [dropdownOpenLocation, setDropdownOpenLocation] = useState<boolean>(false);
     const [locationLabel, setLocationLabel] = useState<string>('');
-    const [dropdownOpenType, setDropdownOpenType] = useState<boolean>(false);
     const [typeLabel, setTypeLabel] = useState<string>('');
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [filterString, setFilterString] = useState<string>('');
@@ -282,32 +280,8 @@ const LogFace = (props: LogFaceProps) => {
         );
     }, [filterString]);
 
-    const handleRiskLevelDropdownClick = (event: React.MouseEvent) => {
-        setRiskLabel((event.target as HTMLInputElement).innerText);
-    };
-
     const handleTermChange = (event: React.FormEvent<HTMLInputElement>) => {
         setFilterString((event.target as HTMLInputElement).value);
-    };
-
-    const handleLocationDropdownClick = async (event: React.MouseEvent) => {
-        setLocationLabel((event.target as HTMLInputElement).innerText);
-    };
-
-    const handleTypeDropdownClick = (event: React.MouseEvent) => {
-        setTypeLabel((event.target as HTMLInputElement).innerText);
-    };
-
-    const toggleTypeDropDown = () => {
-        setDropdownOpenType(!dropdownOpenType);
-    };
-
-    const toggleLocationDropDown = () => {
-        setDropdownOpenLocation(!dropdownOpenLocation);
-    };
-
-    const toggleRiskLevelDropDown = () => {
-        setDropdownOpenRiskLevel(!dropdownOpenRiskLevel);
     };
 
     const onPageChangeHandler = (paginationData: PaginationData) => {
@@ -353,74 +327,43 @@ const LogFace = (props: LogFaceProps) => {
                             />
                         )}
                     </Formik>
-                    <div className="location-type-filter">
+                    <div className="logface-page-filter">
                         <span>{t('Risk Level')}</span>
-                        <Dropdown isOpen={dropdownOpenRiskLevel} toggle={toggleRiskLevelDropDown}>
-                            <DropdownToggle
-                                variant="success"
-                                id="dropdown-basic"
-                                caret={true}
-                                disabled={!smsData.length}
-                            >
-                                <span>{riskLabel.length ? riskLabel : t('Select risk')}</span>
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                {map(RISK_LEVELS, (risk) => {
-                                    return (
-                                        <DropdownItem onClick={handleRiskLevelDropdownClick} key={risk}>
-                                            {risk}
-                                        </DropdownItem>
-                                    );
-                                })}
-                            </DropdownMenu>
-                        </Dropdown>
+                        <Select
+                            {...{
+                                placeholder: t('Select risk'),
+                                options: RISK_LEVELS.map((value) => ({ value, label: value })),
+                                onChange: (val) => setRiskLabel(val?.value ?? ''),
+                                disabled: !smsData.length,
+                                classNamePrefix: 'logface-filters',
+                            }}
+                        />
                     </div>
-                    <div className="location-type-filter">
+                    <div className="logface-page-filter">
                         <span>{t('Select Location')}</span>
-                        <Dropdown isOpen={dropdownOpenLocation} toggle={toggleLocationDropDown}>
-                            <DropdownToggle
-                                variant="success"
-                                id="dropdown-basic"
-                                caret={true}
-                                disabled={!smsData.length}
-                            >
-                                <span>{locationLabel.length ? locationLabel : t('Select Location')}</span>
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                {map(getAllLocations(smsData).concat(ALL), (location) => {
-                                    return (
-                                        <DropdownItem onClick={handleLocationDropdownClick} key={location}>
-                                            {location}
-                                        </DropdownItem>
-                                    );
-                                })}
-                            </DropdownMenu>
-                        </Dropdown>
+                        <Select
+                            {...{
+                                placeholder: t('Select location'),
+                                options: getAllLocations(smsData)
+                                    .concat(ALL)
+                                    .map((value) => ({ value, label: value })),
+                                onChange: (val) => setLocationLabel(val?.value ?? ''),
+                                disabled: !smsData.length,
+                                classNamePrefix: 'logface-filters',
+                            }}
+                        />
                     </div>
-                    <div className="location-type-filter">
+                    <div className="logface-page-filter">
                         <span>{t('Type')}</span>
-                        <Dropdown isOpen={dropdownOpenType} toggle={toggleTypeDropDown}>
-                            <DropdownToggle
-                                variant="success"
-                                id="dropdown-basic"
-                                caret={true}
-                                disabled={!smsData.length}
-                            >
-                                <span>{typeLabel.length ? typeLabel : t('Select Type')}</span>
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                {map(SmsTypes, (type) => {
-                                    return (
-                                        <DropdownItem onClick={handleTypeDropdownClick} key={type}>
-                                            {type}
-                                        </DropdownItem>
-                                    );
-                                })}
-                                <DropdownItem onClick={handleTypeDropdownClick} key={ALL}>
-                                    {ALL}
-                                </DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
+                        <Select
+                            {...{
+                                placeholder: t('Select type'),
+                                options: SmsTypes.map((value) => ({ value, label: value })),
+                                onChange: (val) => setTypeLabel(val?.value ?? ''),
+                                disabled: !smsData.length,
+                                classNamePrefix: 'logface-filters',
+                            }}
+                        />
                     </div>
                     <a id="export-button" href={SUPERSET_PREGNANCY_DATA_EXPORT} download={true}>
                         {t('Export data')}
@@ -520,7 +463,7 @@ function getModuleLogFaceUrlLink(module: string) {
 /**
  *
  * @param {SmsData[]} smsData an array of SmsData objects.
- * @return {string[]} an array represeting all locations that can be found
+ * @return {string[]} an array representing all locations that can be found
  * in the smsData array passed in.
  */
 function getAllLocations(smsData: SmsData[]): string[] {
@@ -628,3 +571,30 @@ const mapPropsToActions: MapDispatch = {
 const ConnectedLogFace = connect(mapStateToProps, mapPropsToActions)(LogFace);
 
 export default withTranslation()(ConnectedLogFace);
+
+/** renders filters on the page */
+export const PageFilter = () => {
+    const { t } = useTranslation();
+    return (
+        <div className="logface-page-filter">
+            <span>{t('Type')}</span>
+            {/* <Dropdown isOpen={dropdownOpenType} toggle={toggleTypeDropDown}>
+                <DropdownToggle variant="success" id="dropdown-basic" caret={true} disabled={!smsData.length}>
+                    <span>{typeLabel.length ? typeLabel : t('Select Type')}</span>
+                </DropdownToggle>
+                <DropdownMenu>
+                    {map(SmsTypes, (type) => {
+                        return (
+                            <DropdownItem onClick={handleTypeDropdownClick} key={type}>
+                                {type}
+                            </DropdownItem>
+                        );
+                    })}
+                    <DropdownItem onClick={handleTypeDropdownClick} key={ALL}>
+                        {ALL}
+                    </DropdownItem>
+                </DropdownMenu>
+            </Dropdown> */}
+        </div>
+    );
+};
