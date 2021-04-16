@@ -575,3 +575,30 @@ const mapPropsToActions: MapDispatch = {
 const ConnectedLogFace = connect(mapStateToProps, mapPropsToActions)(LogFace);
 
 export default withTranslation()(ConnectedLogFace);
+
+/** renders filters on the page */
+export const PageFilter = () => {
+    const { t } = useTranslation();
+    return (
+        <div className="logface-page-filter">
+            <span>{t('Type')}</span>
+            {/* <Dropdown isOpen={dropdownOpenType} toggle={toggleTypeDropDown}>
+                <DropdownToggle variant="success" id="dropdown-basic" caret={true} disabled={!smsData.length}>
+                    <span>{typeLabel.length ? typeLabel : t('Select Type')}</span>
+                </DropdownToggle>
+                <DropdownMenu>
+                    {map(SmsTypes, (type) => {
+                        return (
+                            <DropdownItem onClick={handleTypeDropdownClick} key={type}>
+                                {type}
+                            </DropdownItem>
+                        );
+                    })}
+                    <DropdownItem onClick={handleTypeDropdownClick} key={ALL}>
+                        {ALL}
+                    </DropdownItem>
+                </DropdownMenu>
+            </Dropdown> */}
+        </div>
+    );
+};
