@@ -1041,7 +1041,7 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       <td
         className="default-width"
       >
-        2019-10-04
+        04/10/19
       </td>
       <td
         className="default-width"
@@ -1128,7 +1128,7 @@ Health Status =
       <td
         className="default-width"
       >
-        2019-10-04
+        04/10/19
       </td>
       <td
         className="default-width"
@@ -1215,7 +1215,7 @@ Interventions =
       <td
         className="default-width"
       >
-        2019-10-04
+        04/10/19
       </td>
       <td
         className="default-width"
