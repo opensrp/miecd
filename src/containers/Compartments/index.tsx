@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { CardGroup, Row } from 'reactstrap';
 import { Store } from 'redux';
+import moment from 'moment';
 import ConnectedDataCircleCard from '../../components/DataCircleCard';
 import Ripple from '../../components/page/Loading';
 import VillageData from '../../components/VillageData';
@@ -26,7 +27,6 @@ import {
 } from '../../constants';
 import {
     buildHeaderBreadCrumb,
-    convertMillisecondsToYear,
     fetchData,
     getFilterFunctionAndLocationLevel,
     getLocationId,
@@ -438,13 +438,18 @@ export const Compartments = ({
 /**
  * filter function for smsData based on date_of_birth field
  * @param {SmsData} dataItem - SmsData item
- * @param {number} startAge - the begining of age range we are filtering for.
+ * @param {number} startAge - the beginning of age range we are filtering for.
  * @returns filterFunction  - the ending of age range we are filtering for.
  */
 export const childrenAgeRangeFilterFunction = (startAge: number, endAge: number) => {
     return (dataItem: SmsData) => {
-        const ageInYears = convertMillisecondsToYear(new Date().getTime() - new Date(dataItem.date_of_birth).getTime());
-        return ageInYears < endAge && ageInYears > startAge;
+        // calculate precise age ratio (e.g 2.5)
+        const ageInYears = moment().diff(moment(dataItem.date_of_birth), 'years', true);
+        // when startAge = 0 and endAge > 0, the age range is: startAge ≤ ageInYears ≤ endAge (i.e startAge and endAge are both inclusive)
+        // when startAge > 0 and endAge > 0, the range is startAge < ageInYears ≤ endAge (startAge exclusive)
+        return startAge === 0
+            ? ageInYears >= startAge && ageInYears <= endAge
+            : ageInYears > startAge && ageInYears <= endAge;
     };
 };
 
