@@ -23,6 +23,7 @@
         "classnames": "^2.2.6",
         "client-oauth2": "^4.2.5",
         "connected-react-router": "^6.5.2",
+        "cycle": "^1.0.3",
         "date-fns": "^2.21.1",
         "fetch-mock": "^7.3.9",
         "flush-promises": "^1.0.2",
@@ -48,8 +49,10 @@
         "reactstrap": "^8.0.1",
         "redux": "^4.0.4",
         "redux-thunk": "^2.3.0",
+        "reselect": "^4.0.0",
         "seamless-immutable": "^7.1.4",
         "snapshot-diff": "^0.5.2",
+        "tree-model": "^1.0.7",
         "typescript": "^4.1.0"
     },
     "scripts": {
