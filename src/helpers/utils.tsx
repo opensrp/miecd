@@ -528,10 +528,6 @@ export async function fetchData(supersetFetchMethod: typeof supersetFetch = supe
     });
 }
 
-export const convertMillisecondsToYear = (mSeconds: number) => {
-    return Math.floor(mSeconds / (365 * 24 * 60 * 60 * 1000));
-};
-
 /** facade to display a success toast
  * @param message - message to include in toast
  */
