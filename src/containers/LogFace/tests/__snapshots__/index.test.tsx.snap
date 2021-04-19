@@ -705,9 +705,23 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       <td
         className="large-width"
       >
-        Symptoms = No symptoms  
-Intervention = Ambulance On Time 
-Health Status = 
+        <ul>
+          <li
+            key="Symptoms : No symptoms-0"
+          >
+            Symptoms : No symptoms
+          </li>
+          <li
+            key="Intervention : Ambulance On Time-1"
+          >
+            Intervention : Ambulance On Time
+          </li>
+          <li
+            key="Health Status : -2"
+          >
+            Health Status : 
+          </li>
+        </ul>
       </td>
       <td
         className="default-width"
@@ -792,9 +806,23 @@ Health Status =
       <td
         className="large-width"
       >
-        Symptoms = Coughing, Fever 
-Location = At home 
-Interventions = 
+        <ul>
+          <li
+            key="Symptoms : Coughing, Fever-0"
+          >
+            Symptoms : Coughing, Fever
+          </li>
+          <li
+            key="Location : At home-1"
+          >
+            Location : At home
+          </li>
+          <li
+            key="Interventions : -2"
+          >
+            Interventions : 
+          </li>
+        </ul>
       </td>
       <td
         className="default-width"
@@ -879,14 +907,48 @@ Interventions =
       <td
         className="large-width"
       >
-        EDD = 09-10-2019
-Gravidity = 3
-Parity = 1
-Weight = 55 
-Height = 145
-BMI = 26
-Previous Gynaecology History = Previous pregnancy too close or too far, Home Delivery
-Current Symptoms = Heavy sweating, Coughing
+        <ul>
+          <li
+            key="EDD : 09-10-2019-0"
+          >
+            EDD : 09-10-2019
+          </li>
+          <li
+            key="Gravidity : 3-1"
+          >
+            Gravidity : 3
+          </li>
+          <li
+            key="Parity : 1-2"
+          >
+            Parity : 1
+          </li>
+          <li
+            key="Weight : 55-3"
+          >
+            Weight : 55
+          </li>
+          <li
+            key="Height : 145-4"
+          >
+            Height : 145
+          </li>
+          <li
+            key="BMI : 26-5"
+          >
+            BMI : 26
+          </li>
+          <li
+            key="Previous Gynaecology History : Previous pregnancy too close or too far, Home Delivery-6"
+          >
+            Previous Gynaecology History : Previous pregnancy too close or too far, Home Delivery
+          </li>
+          <li
+            key="Current Symptoms : Heavy sweating, Coughing-7"
+          >
+            Current Symptoms : Heavy sweating, Coughing
+          </li>
+        </ul>
       </td>
       <td
         className="default-width"

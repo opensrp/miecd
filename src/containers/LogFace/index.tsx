@@ -10,7 +10,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Table } from 'reactstrap';
-import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 import Ripple from '../../components/page/Loading';
 import { PaginationData, Paginator, PaginatorProps } from '../../components/Paginator';
 import RiskColoring from '../../components/RiskColoring';
@@ -70,6 +69,7 @@ import { useTranslation, withTranslation } from 'react-i18next';
 import { ErrorPage } from 'components/ErrorPage';
 import { Store } from 'redux';
 import Select from 'react-select';
+import { parseMessage } from './utils';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -409,7 +409,7 @@ const LogFace = (props: LogFaceProps) => {
                                                 </Link>
                                             </td>
                                             <td className="small-width">{dataObj.age}</td>
-                                            <td className="large-width">{dataObj.message}</td>
+                                            <td className="large-width">{parseMessage(dataObj.message)}</td>
                                             <td className="default-width">
                                                 <Link
                                                     to={getLinkToPatientDetail(
@@ -571,30 +571,3 @@ const mapPropsToActions: MapDispatch = {
 const ConnectedLogFace = connect(mapStateToProps, mapPropsToActions)(LogFace);
 
 export default withTranslation()(ConnectedLogFace);
-
-/** renders filters on the page */
-export const PageFilter = () => {
-    const { t } = useTranslation();
-    return (
-        <div className="logface-page-filter">
-            <span>{t('Type')}</span>
-            {/* <Dropdown isOpen={dropdownOpenType} toggle={toggleTypeDropDown}>
-                <DropdownToggle variant="success" id="dropdown-basic" caret={true} disabled={!smsData.length}>
-                    <span>{typeLabel.length ? typeLabel : t('Select Type')}</span>
-                </DropdownToggle>
-                <DropdownMenu>
-                    {map(SmsTypes, (type) => {
-                        return (
-                            <DropdownItem onClick={handleTypeDropdownClick} key={type}>
-                                {type}
-                            </DropdownItem>
-                        );
-                    })}
-                    <DropdownItem onClick={handleTypeDropdownClick} key={ALL}>
-                        {ALL}
-                    </DropdownItem>
-                </DropdownMenu>
-            </Dropdown> */}
-        </div>
-    );
-};

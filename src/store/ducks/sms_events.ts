@@ -15,7 +15,7 @@ export interface SmsData extends Dictionary {
     EventDate: string;
     event_id: string;
     health_worker_location_name: string;
-    message: string | number;
+    message: string;
     anc_id: string;
     logface_risk: string;
     health_worker_name: string;
