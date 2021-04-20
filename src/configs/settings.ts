@@ -1,5 +1,8 @@
 /** This is the main configuration module */
 import { Providers } from '@onaio/gatekeeper';
+import { PREGNANCY_MODULE, NUTRITION_MODULE } from '../constants';
+import { TFunction } from 'react-i18next';
+import { GREEN, GREY, RED, YELLOW } from './colors';
 import {
     DOMAIN_NAME,
     ENABLE_ONADATA_OAUTH,
@@ -72,3 +75,18 @@ export const toastConfig = {
     },
     duration: 2000,
 };
+
+// Risk categories in the logface component
+export const riskCategories = (t: TFunction) => ({
+    [PREGNANCY_MODULE]: [
+        { label: t('Red Alert'), value: 'red_alert', color: RED },
+        { label: t('Risk'), value: 'risk', color: YELLOW },
+        { label: t('No risk'), value: 'no_risk', color: GREEN },
+    ],
+    [NUTRITION_MODULE]: [
+        { label: t('Stunting'), value: 'stunting' },
+        { label: t('Wasting'), value: 'wasting' },
+        { label: t('Overweight'), value: 'overweight' },
+        { label: t('Inappropriate Feeding'), value: 'inappropriate_feeding' },
+    ],
+});
