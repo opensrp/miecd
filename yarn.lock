@@ -1535,10 +1535,10 @@
     query-string "^6.4.2"
     reactstrap "^7.1.0"
 
-"@onaio/list-view@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@onaio/list-view/-/list-view-0.0.2.tgz#6ebb309f5c2db72133130192f65f8fec2efe3235"
-  integrity sha512-jewrvEWV44NaX3NiFVjZ3B/5VEmPMbcLn9pc/kZ+CWjhKZDkLShtrzuEJWwaqRpg+qMXjb8ls03Zc+YLv+9oag==
+"@onaio/list-view@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@onaio/list-view/-/list-view-0.0.3.tgz#18cb78a0721fd30d331c9c267d242d838e58f623"
+  integrity sha512-vY8//UU2ZIuslzrFJC6NwnymZHh2+9EG7hwo87dlaX6p2bmZcYr44uzchNvFwNvW3C3xx3GV4LWkpU+WO95LCw==
   dependencies:
     "@onaio/element-map" "^0.0.5"
 
@@ -5592,6 +5592,11 @@ fast-levenshtein@^2.0.6, fast-levenshtein@~2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
+
+fast_array_intersect@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/fast_array_intersect/-/fast_array_intersect-1.1.0.tgz#8e8a83d95c515fd55bfb2b02da94da3d7f1c2b8b"
+  integrity sha512-/DCilZlUdz2XyNDF+ASs0PwY+RKG9Y4Silp/gbS72Cvbg4oibc778xcecg+pnNyiNHYgh/TApsiDTjpdniyShw==
 
 fastq@^1.6.0:
   version "1.11.0"
