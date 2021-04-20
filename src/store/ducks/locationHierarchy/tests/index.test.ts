@@ -6,7 +6,7 @@ import {
     fetchTree,
     deforest,
     getLocationsByLevel,
-    getLocationsByNameAndId,
+    getNodesByNameOrId,
 } from '..';
 import { rawHierarchy } from './hierarchyFixtures';
 import { serializeTree } from '../utils';
@@ -15,7 +15,7 @@ import store from 'store';
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 const treesSelector = getTreesByIds();
 const geoLevelSelector = getLocationsByLevel();
-const nameIdSelector = getLocationsByNameAndId();
+const nameIdSelector = getNodesByNameOrId();
 
 describe('src/ducks/locationHierarchies', () => {
     beforeEach(() => {
