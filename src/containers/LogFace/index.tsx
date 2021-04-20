@@ -3,12 +3,11 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import superset from '@onaio/superset-connector';
-import { Field, Formik } from 'formik';
 import { map } from 'lodash';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import { Table } from 'reactstrap';
 import Ripple from '../../components/page/Loading';
 import { PaginationData, Paginator, PaginatorProps } from '../../components/Paginator';
@@ -19,24 +18,25 @@ import {
     SUPERSET_PREGNANCY_DATA_EXPORT,
     SUPERSET_SMS_DATA_SLICE,
 } from '../../configs/env';
-import { SmsTypes } from '../../configs/settings';
+import { riskCategories, SmsTypes } from '../../configs/settings';
 import {
-    ALL,
     DEFAULT_NUMBER_OF_LOGFACE_ROWS,
     EVENT_ID,
+    LOCATION_FILTER_PARAM,
     NBC_AND_PNC,
     NBC_AND_PNC_LOGFACE_URL,
     NUTRITION,
     NUTRITION_LOGFACE_URL,
     PREGNANCY,
     PREGNANCY_LOGFACE_URL,
-    RISK_LEVELS,
+    PREGNANCY_MODULE,
+    RISK_CATEGORY_FILTER_PARAM,
+    SEARCH_FILTER_PARAM,
+    SMS_TYPE_FILTER_PARAM,
 } from '../../constants';
 import {
     fetchData,
-    getFilterFunctionAndLocationLevel,
     getLinkToPatientDetail,
-    getLocationId,
     sortFunction,
     toastToError,
     useHandleBrokenPage,
@@ -47,6 +47,7 @@ import {
     fetchUserLocations,
     getLocationsOfLevel,
     getUserId,
+    getUserLocationId,
     getUserLocations,
     Location,
     UserLocation,
@@ -54,12 +55,12 @@ import {
 import locationsReducer, { reducerName as locationReducerName } from '../../store/ducks/locations';
 import {
     addFilterArgs as addFilterArgsActionCreator,
+    getSmsDataByFilters,
     removeFilterArgs as removeFilterArgsActionCreator,
 } from '../../store/ducks/sms_events';
 import smsReducer, {
     fetchSms,
     getFilterArgs,
-    getSmsData,
     reducerName as smsReducerName,
     SmsData,
     smsDataFetched,
@@ -69,10 +70,20 @@ import { useTranslation, withTranslation } from 'react-i18next';
 import { ErrorPage } from 'components/ErrorPage';
 import { Store } from 'redux';
 import Select from 'react-select';
-import { parseMessage } from './utils';
+import { getQueryParams, parseMessage, updateUrlWithFilter } from './utils';
+import { SelectLocationFilter } from './SelectLocationFilter';
+import {
+    getNodesByNameOrId,
+    getTreesByIds,
+    hierarchyReducer,
+    hierarchyReducerName,
+} from 'store/ducks/locationHierarchy';
+import { TreeNode } from 'store/ducks/locationHierarchy/types';
+import { Dictionary } from '@onaio/utils';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
+reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 
 /**
  * Interface representing Logface props
@@ -95,6 +106,8 @@ export interface LogFaceProps {
     fetchUserLocations: typeof fetchUserLocations;
     filterArgsInStore: Array<(smsData: SmsData) => boolean>;
     supersetService: typeof supersetFetch;
+    userHierarchy?: TreeNode;
+    userLocationId: string;
 }
 
 const defaultProps: LogFaceProps = {
@@ -106,7 +119,7 @@ const defaultProps: LogFaceProps = {
     districts: [],
     fetchSmsDataActionCreator: fetchSms,
     filterArgsInStore: [],
-    module: '',
+    module: PREGNANCY_MODULE,
     numberOfRows: DEFAULT_NUMBER_OF_LOGFACE_ROWS,
     provinces: [],
     removeFilterArgs: removeFilterArgsActionCreator,
@@ -115,41 +128,26 @@ const defaultProps: LogFaceProps = {
     userUUID: '',
     villages: [],
     supersetService: supersetFetch,
+    userLocationId: '',
 };
 
-/**
- * A representation of the the current values of the dropdown on the logface
- * @member {string} riskLabel a label for no-risk, risk or red alert
- * @member {string} locationLabel a label for location drop down
- * @member {string} typeLabel a label for the SmsType
- */
-interface DropDownLabels {
-    riskLabel: string;
-    locationLabel: string;
-    typeLabel: string;
-}
+export type LogFacePropsType = LogFaceProps & RouteComponentProps;
 
 /**
  * The LogFace component
  * @param {LogFaceProps} props
  */
-const LogFace = (props: LogFaceProps) => {
+const LogFace = (props: LogFacePropsType) => {
     const {
-        addFilterArgs,
-        communes,
-        dataFetched,
-        districts,
         fetchSmsDataActionCreator,
-        filterArgsInStore,
         module,
         numberOfRows,
-        provinces,
         removeFilterArgs,
         smsData,
         userLocationData,
         userUUID,
-        villages,
         supersetService,
+        userHierarchy,
     } = props;
     const { error, handleBrokenPage, broken } = useHandleBrokenPage();
     const [loading, setLoading] = React.useState<boolean>(true);
@@ -190,103 +188,11 @@ const LogFace = (props: LogFaceProps) => {
         };
     }, [fetchSmsDataActionCreator, smsData, supersetService]);
 
-    const [riskLabel, setRiskLabel] = useState<string>('');
-    const [locationLabel, setLocationLabel] = useState<string>('');
-    const [typeLabel, setTypeLabel] = useState<string>('');
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [filterString, setFilterString] = useState<string>('');
-    const [filteredData, setFilteredData] = useState<SmsData[]>([]);
     const { t } = useTranslation();
 
-    useEffect(() => {
-        const allLabels: string[] = [riskLabel, locationLabel, typeLabel];
-        const userLocationId = getLocationId(userLocationData, userUUID);
-
-        const { locationFilterFunction } = getFilterFunctionAndLocationLevel(userLocationId, [
-            provinces,
-            districts,
-            communes,
-            villages,
-        ]);
-        if (
-            locationFilterFunction &&
-            !(
-                filterArgsInStore
-                    .map((element: any) => {
-                        return element.toString();
-                    })
-                    .indexOf(locationFilterFunction.toString()) > -1
-            )
-        ) {
-            removeFilterArgs();
-            addFilterArgs([locationFilterFunction as (smsData: SmsData) => boolean]);
-        }
-
-        if (
-            !filteredData.length &&
-            allLabels.every((label: string) => !label.length || label === ALL) &&
-            !(document.getElementById('input') && (document.getElementById('input') as HTMLInputElement)?.value)
-        ) {
-            setFilteredData(smsData);
-        } else {
-            const smsDataInDescendingOrderByEventId: SmsData[] = filteredData.sort(sortFunction);
-            if (smsDataInDescendingOrderByEventId.length) {
-                const highestId = smsDataInDescendingOrderByEventId[0].event_id;
-                const smsDataItem = smsData.find((dataItem: SmsData) => {
-                    return dataItem.event_id > highestId;
-                });
-                if (smsDataItem) {
-                    setFilteredData([...filteredData, smsDataItem].filter(locationFilterFunction));
-                }
-            }
-        }
-    }, [
-        userLocationData,
-        userUUID,
-        provinces,
-        districts,
-        communes,
-        villages,
-        filterArgsInStore,
-        removeFilterArgs,
-        addFilterArgs,
-        smsData,
-        filteredData,
-        locationLabel,
-        riskLabel,
-        typeLabel,
-    ]);
-
-    useEffect(() => {
-        // this sets the current page to 1 if it's not already 1
-        const resetCurrentPage = () => {
-            if (currentPage > 1) {
-                setCurrentPage(1);
-            }
-        };
-
-        setFilteredData(
-            filterDataByTextSearch(smsData, filterString, {
-                locationLabel,
-                riskLabel,
-                typeLabel,
-            }).sort(sortFunction),
-        );
-        resetCurrentPage();
-    }, [locationLabel, riskLabel, typeLabel, filterString, smsData, currentPage]);
-
-    useEffect(() => {
-        setFilteredData(
-            filterDataByTextSearch(smsData, filterString, {
-                locationLabel,
-                riskLabel,
-                typeLabel,
-            }).sort(sortFunction),
-        );
-    }, [filterString, locationLabel, riskLabel, smsData, typeLabel]);
-
     const handleTermChange = (event: React.FormEvent<HTMLInputElement>) => {
-        setFilterString((event.target as HTMLInputElement).value);
+        updateUrlWithFilter(SEARCH_FILTER_PARAM, props, (event.target as HTMLInputElement).value);
     };
 
     const onPageChangeHandler = (paginationData: PaginationData) => {
@@ -297,11 +203,11 @@ const LogFace = (props: LogFaceProps) => {
         endLabel: 'last',
         nextLabel: 'next',
         onPageChange: onPageChangeHandler,
-        pageLimit: 5,
+        pageLimit: numberOfRows,
         pageNeighbours: 3,
         previousLabel: 'previous',
         startLabel: 'first',
-        totalRecords: filteredData.length,
+        totalRecords: smsData.length,
     };
 
     if (broken) {
@@ -319,55 +225,46 @@ const LogFace = (props: LogFaceProps) => {
             </div>
             <div className="filter-panel">
                 <div className="filters">
-                    <Formik initialValues={{}} onSubmit={() => void 0}>
-                        {() => (
-                            <Field
-                                type="text"
-                                name="input"
-                                id="input"
-                                placeholder={t('Search ID, Reporter, Patients')}
-                                className={`form-control logface-search`}
-                                onChange={handleTermChange}
-                                disabled={!smsData.length}
-                            />
-                        )}
-                    </Formik>
+                    <input
+                        type="text"
+                        name="input"
+                        id="input"
+                        placeholder={t('Search ID, Reporter, Patients')}
+                        className={`form-control logface-search`}
+                        onChange={handleTermChange}
+                    />
+
                     <div className="logface-page-filter">
                         <span>{t('Risk Level')}</span>
                         <Select
-                            {...{
-                                placeholder: t('Select risk'),
-                                options: RISK_LEVELS.map((value) => ({ value, label: value })),
-                                onChange: (val) => setRiskLabel(val?.value ?? ''),
-                                disabled: !smsData.length,
-                                classNamePrefix: 'logface-filters',
-                            }}
+                            placeholder={t('Select risk')}
+                            options={(riskCategories(t) as Dictionary)[module].map((item: Dictionary) => ({
+                                value: item.value,
+                                label: item.label,
+                            }))}
+                            onChange={(val) => updateUrlWithFilter(RISK_CATEGORY_FILTER_PARAM, props, val?.value)}
+                            classNamePrefix="logface-filters"
+                            isClearable={true}
                         />
                     </div>
                     <div className="logface-page-filter">
                         <span>{t('Select Location')}</span>
-                        <Select
-                            {...{
-                                placeholder: t('Select location'),
-                                options: getAllLocations(smsData)
-                                    .concat(ALL)
-                                    .map((value) => ({ value, label: value })),
-                                onChange: (val) => setLocationLabel(val?.value ?? ''),
-                                disabled: !smsData.length,
-                                classNamePrefix: 'logface-filters',
-                            }}
+                        <SelectLocationFilter
+                            userLocationTree={userHierarchy}
+                            userLocationId={
+                                userLocationData.filter((data) => data.provider_id === userUUID)[0]?.location_id
+                            }
+                            onLocationChange={(value) => updateUrlWithFilter(LOCATION_FILTER_PARAM, props, value)}
                         />
                     </div>
                     <div className="logface-page-filter">
                         <span>{t('Type')}</span>
                         <Select
-                            {...{
-                                placeholder: t('Select type'),
-                                options: SmsTypes.map((value) => ({ value, label: value })),
-                                onChange: (val) => setTypeLabel(val?.value ?? ''),
-                                disabled: !smsData.length,
-                                classNamePrefix: 'logface-filters',
-                            }}
+                            placeholder={t('Select type')}
+                            options={SmsTypes.map((value) => ({ value, label: value }))}
+                            onChange={(val) => updateUrlWithFilter(SMS_TYPE_FILTER_PARAM, props, val?.value)}
+                            classNamePrefix="logface-filters"
+                            isClearable={true}
                         />
                     </div>
                     <a id="export-button" href={SUPERSET_PREGNANCY_DATA_EXPORT} download={true}>
@@ -375,8 +272,9 @@ const LogFace = (props: LogFaceProps) => {
                     </a>
                 </div>
             </div>
-            {dataFetched && filteredData.length ? (
-                <div className="table-container">
+
+            <div className="table-container">
+                {smsData.length ? (
                     <Table striped={true} borderless={true}>
                         <thead id="header">
                             <tr>
@@ -392,7 +290,7 @@ const LogFace = (props: LogFaceProps) => {
                         </thead>
                         <tbody id="body">
                             {map(
-                                filteredData.slice(
+                                smsData.slice(
                                     (currentPage - 1) * numberOfRows,
                                     (currentPage - 1) * numberOfRows + numberOfRows,
                                 ),
@@ -422,7 +320,7 @@ const LogFace = (props: LogFaceProps) => {
                                                         getModuleLogFaceUrlLink(module),
                                                     )}
                                                 >
-                                                    <RiskColoring {...{ risk: dataObj.logface_risk }} />
+                                                    <RiskColoring {...{ risk: dataObj.risk_level }} />
                                                 </Link>
                                             </td>
                                         </tr>
@@ -431,12 +329,13 @@ const LogFace = (props: LogFaceProps) => {
                             )}
                         </tbody>
                     </Table>
-                </div>
-            ) : (
-                <div className="card">
-                    <div className="card-body">{t('No data found')}</div>
-                </div>
-            )}
+                ) : (
+                    <div className="card">
+                        <div className="card-body">{t('No data found')}</div>
+                    </div>
+                )}
+            </div>
+
             <div className="paginator">
                 <Paginator {...routePaginatorProps} />
             </div>
@@ -465,78 +364,6 @@ function getModuleLogFaceUrlLink(module: string) {
     }
 }
 
-/**
- *
- * @param {SmsData[]} smsData an array of SmsData objects.
- * @return {string[]} an array representing all locations that can be found
- * in the smsData array passed in.
- */
-function getAllLocations(smsData: SmsData[]): string[] {
-    const locations = [];
-    for (const i in smsData) {
-        if (smsData[i].health_worker_location_name) {
-            locations.push(smsData[i].health_worker_location_name);
-        }
-    }
-
-    return Array.from(new Set(locations));
-}
-
-/**
- * @param {SmsData[]} allSmsData all the sms data passed as props to the to the logface component
- * @param {SmsData[]} filteredSmsData sms data that have been filtered by dropdowns(using filterDataByDropDowns)
- * @param {string} filterString a string by wich to filter smsData
- * @param {DropDownLabels} dropDownLabels labels of the drop downs on the logface which we will use to filter smsData
- */
-function filterDataByTextSearch(
-    allSmsData: SmsData[],
-    filterString: string,
-    dropDownLabels: DropDownLabels,
-): SmsData[] {
-    const { riskLabel, locationLabel, typeLabel } = dropDownLabels;
-    const isFiltered: boolean = [riskLabel, locationLabel, typeLabel].some(
-        (label: string) => label.length || label !== ALL,
-    );
-    let smsDataFilteredByDropDowns = allSmsData;
-    if (isFiltered) {
-        smsDataFilteredByDropDowns = filterDataByDropDowns(allSmsData, dropDownLabels);
-    } else {
-        smsDataFilteredByDropDowns = allSmsData;
-    }
-    return smsDataFilteredByDropDowns.filter(
-        (dataItem) =>
-            dataItem.event_id.toLocaleLowerCase().includes(filterString.toLocaleLowerCase()) ||
-            dataItem.health_worker_name.toLocaleLowerCase().includes(filterString.toLocaleLowerCase()) ||
-            dataItem.anc_id.toLocaleLowerCase().includes(filterString.toLocaleLowerCase()),
-    );
-}
-
-/**
- * filter sms data based on an event a user event based on the logface_risk, health_worker_location_name,
- * sms_type fields
- * @param {SmsData[]} smsData a list of SmsData objects
- * @param {React.MouseEvent} event the event we are filtering data based on.
- * @param {string} filterBy the category by which we are filtering the smsData.
- */
-function filterDataByDropDowns(smsData: SmsData[], dropDownLabels: DropDownLabels) {
-    const { riskLabel, locationLabel, typeLabel } = dropDownLabels;
-    const allLabels = [riskLabel, locationLabel, typeLabel];
-    const dataFiltered = smsData.filter((dataItem: SmsData) => {
-        return (
-            (allLabels[0].length && allLabels[0] !== ALL
-                ? dataItem.logface_risk.toLowerCase().includes(allLabels[0])
-                : allLabels[0] === ALL || !allLabels[0].length) &&
-            (allLabels[1].length && allLabels[1] !== ALL
-                ? dataItem.health_worker_location_name.replace(/\s+/g, ' ').includes(allLabels[1])
-                : allLabels[1] === ALL || !allLabels[1].length) &&
-            (allLabels[2].length && allLabels[2] !== ALL
-                ? dataItem.sms_type.includes(allLabels[2])
-                : allLabels[2] === ALL || !allLabels[2].length)
-        );
-    });
-    return dataFiltered;
-}
-
 export type MapStateToProps = Pick<
     LogFaceProps,
     | 'communes'
@@ -552,17 +379,36 @@ export type MapStateToProps = Pick<
 
 export type MapDispatch = Pick<LogFaceProps, 'addFilterArgs' | 'fetchSmsDataActionCreator' | 'removeFilterArgs'>;
 
-const mapStateToProps = (state: Partial<Store>): MapStateToProps => {
+const selectSmsData = getSmsDataByFilters();
+const nodeSelector = getNodesByNameOrId();
+const userHierarchySelector = getTreesByIds();
+
+const mapStateToProps = (state: Partial<Store>, ownProps: LogFacePropsType): MapStateToProps => {
+    const userLocationIdFilter = getQueryParams(ownProps.location)[LOCATION_FILTER_PARAM] as string;
+    const riskCategoryFilter = getQueryParams(ownProps.location)[RISK_CATEGORY_FILTER_PARAM] as string;
+    const smsTypeFilter = getQueryParams(ownProps.location)[SMS_TYPE_FILTER_PARAM] as string;
+    const searchFilter = getQueryParams(ownProps.location)[SEARCH_FILTER_PARAM] as string;
+    const userLocationNode = nodeSelector(state, { searchQuery: userLocationIdFilter })[0] as TreeNode | undefined;
+    const filteredSmsData = selectSmsData(state, {
+        locationNode: userLocationNode,
+        riskCategory: riskCategoryFilter,
+        smsType: smsTypeFilter,
+        searchFilter,
+    });
+    const userUUID = getUserId(state);
+    const userHierarchy = userHierarchySelector(state, { rootJurisdictionId: [userUUID] })[0] as TreeNode | undefined;
     const result = {
         communes: getLocationsOfLevel(state, 'Commune'),
         dataFetched: smsDataFetched(state),
         districts: getLocationsOfLevel(state, 'District'),
         filterArgsInStore: getFilterArgs(state),
         provinces: getLocationsOfLevel(state, 'Province'),
-        smsData: getSmsData(state),
+        smsData: filteredSmsData,
         userLocationData: getUserLocations(state),
-        userUUID: getUserId(state),
+        userUUID,
+        userHierarchy,
         villages: getLocationsOfLevel(state, 'Village'),
+        userLocationId: getUserLocationId(state),
     };
     return result;
 };

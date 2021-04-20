@@ -51,6 +51,8 @@ export const NBC_AND_PNC = 'NBC & PNC';
 export const NBC_AND_PNC_CHILD = 'NBC & PNC_CHILD';
 export const NBC_AND_PNC_WOMAN = 'NBC & PNC_WOMAN';
 export const NUTRITION = 'Nutrition';
+export const PREGNANCY_MODULE = 'Pregnancy';
+export const NUTRITION_MODULE = 'Nutrition';
 
 export const ALL = 'all';
 export const UP = 'up';
@@ -83,17 +85,12 @@ export const BIRTH_REPORT = 'Birth Report';
 export const NUTRITION_REGISTRATION = 'Nutrition Registration';
 export const NUTRITION_REPORT = 'Nutrition Report';
 
-export const DEFAULT_NUMBER_OF_LOGFACE_ROWS = 3;
-
 // TIME constants
 export const MICROSECONDS_IN_A_WEEK = 604800000;
 export const GESTATION_PERIOD = 24192000000;
 
 // Back arrow constant
 export const BACKPAGE_ICON: IconProp = ['fas', 'arrow-left'];
-
-// Risk cartegories in the logface component
-export const RISK_LEVELS = ['red', 'high', 'low', 'no risk', 'all'];
 
 // monthNames
 export const monthNames = [
@@ -112,6 +109,7 @@ export const monthNames = [
 ];
 
 // operational
+export const DEFAULT_NUMBER_OF_LOGFACE_ROWS = 5;
 export const EN_LANGUAGE_CODE = 'en' as const;
 export const VI_LANGUAGE_CODE = 'vi' as const;
 export const DATE_FORMAT = 'dd/MM/yy';
@@ -121,3 +119,7 @@ export const ALL_LANGUAGE_OPTIONS = {
     [EN_LANGUAGE_CODE]: 'English',
     [VI_LANGUAGE_CODE]: 'Vietnamese',
 };
+export const LOCATION_FILTER_PARAM = 'locationSearch';
+export const RISK_CATEGORY_FILTER_PARAM = 'riskCategory';
+export const SMS_TYPE_FILTER_PARAM = 'smsType';
+export const SEARCH_FILTER_PARAM = 'search';
