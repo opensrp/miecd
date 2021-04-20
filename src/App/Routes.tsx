@@ -6,7 +6,7 @@ import { ConnectedLogout, ConnectedOauthCallback, LogoutProps } from '@onaio/gat
 import { isAuthenticated } from '@onaio/session-reducer';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
-import { Route, Switch } from 'react-router';
+import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LastLocationProvider } from 'react-router-last-location';
 import Loading from '../components/page/Loading';
 import SideMenu from '../components/page/SideMenu';
@@ -294,19 +294,25 @@ export const Routes = (props: RoutesProps) => {
                             exact
                             path={PREGNANCY_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={() => <ConnectedLogFace module={PREGNANCY} />}
+                            component={(routeProps: RouteComponentProps) => (
+                                <ConnectedLogFace module={PREGNANCY} {...routeProps} />
+                            )}
                         />
                         <ConnectedPrivateRoute
                             exact
                             path={NBC_AND_PNC_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={() => <ConnectedLogFace module={NBC_AND_PNC} />}
+                            component={(routeProps: RouteComponentProps) => (
+                                <ConnectedLogFace module={NBC_AND_PNC} {...routeProps} />
+                            )}
                         />
                         <ConnectedPrivateRoute
                             exact
                             path={NUTRITION_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={() => <ConnectedLogFace module={NUTRITION} />}
+                            component={(routeProps: RouteComponentProps) => (
+                                <ConnectedLogFace module={NUTRITION} {...routeProps} />
+                            )}
                         />
                         {/* tslint:disable jsx-no-lambda */}
                         <Route
