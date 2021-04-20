@@ -2,7 +2,7 @@
 import { Providers } from '@onaio/gatekeeper';
 import { PREGNANCY_MODULE, NUTRITION_MODULE } from '../constants';
 import { TFunction } from 'react-i18next';
-import { GREEN, GREY, RED, YELLOW } from './colors';
+import { GREEN, RED, YELLOW } from './colors';
 import {
     DOMAIN_NAME,
     ENABLE_ONADATA_OAUTH,
