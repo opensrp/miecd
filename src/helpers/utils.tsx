@@ -51,6 +51,7 @@ import { Dictionary } from '@onaio/utils';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { format } from 'date-fns';
+import { fetchTree } from '../store/ducks/locationHierarchy';
 export type { Dictionary };
 
 /** Custom function to get oAuth user info depending on the oAuth2 provider
@@ -497,7 +498,9 @@ export async function fetchData(supersetFetchMethod: typeof supersetFetch = supe
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const userIdPromise = opensrpService.read('').then((response: any) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            store.dispatch(fetchUserId((response as any).user.attributes._PERSON_UUID));
+            const userId = (response as any).user.attributes._PERSON_UUID;
+            store.dispatch(fetchUserId(userId));
+            store.dispatch(fetchTree(response.locations, userId));
         });
         promises.push(userIdPromise);
     }
