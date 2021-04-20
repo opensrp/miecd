@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { values } from 'lodash';
+import { keyBy, values } from 'lodash';
 import { AnyAction, Store } from 'redux';
 import { EVENT_ID } from '../../constants';
-import { groupBy, formatDateStrings } from '../../helpers/utils';
+import { groupBy, formatDateStrings, sortFunction } from '../../helpers/utils';
 import { SmsFilterFunction } from '../../types';
 import { Dictionary } from '@onaio/utils';
+import { createSelector } from 'reselect';
+import { TreeNode } from './locationHierarchy/types';
+import intersect from 'fast_array_intersect';
 
 /** The reducer name */
 export const reducerName = 'SmsReducer';
@@ -194,3 +197,81 @@ export function getFilterArgs(state: Partial<Store>): SmsFilterFunction[] {
     }
     return [];
 }
+
+/** RESELECT */
+export interface SMSSelectorsFilters {
+    locationNode?: TreeNode;
+    riskCategory?: string;
+    smsType?: string;
+    searchFilter?: string;
+}
+
+export const getLocationNodeFilter = (_: Partial<Store>, props: SMSSelectorsFilters) => props.locationNode;
+export const getRiskCat = (_: Partial<Store>, props: SMSSelectorsFilters) => props.riskCategory;
+export const getSmsType = (_: Partial<Store>, props: SMSSelectorsFilters) => props.smsType;
+export const getSearch = (_: Partial<Store>, props: SMSSelectorsFilters) => props.searchFilter;
+
+export const getSmsDataByUserLocation = () =>
+    createSelector(getSmsData, getLocationNodeFilter, (smsData, locationNode) => {
+        if (locationNode === undefined) {
+            return smsData;
+        }
+        const descendantLocIdsLookup: Record<string, true> = {};
+        locationNode.walk((node) => {
+            descendantLocIdsLookup[node.model.id] = true;
+            return true;
+        });
+        const smsEventsOfInterest = smsData.filter((sms) => {
+            return descendantLocIdsLookup[sms.location_id];
+        });
+        console.log(
+            descendantLocIdsLookup,
+            keyBy(smsData, (sms) => sms.location_id),
+        );
+        return smsEventsOfInterest;
+    });
+
+export const getSmsDataByRiskCat = () =>
+    createSelector(getSmsData, getRiskCat, (smsData, riskCategory) => {
+        if (riskCategory === undefined) {
+            return smsData;
+        }
+        return smsData.filter((sms) => sms.risk_level === riskCategory);
+    });
+
+export const getSmsDataBySmsType = () =>
+    createSelector(getSmsData, getSmsType, (smsData, smsType) => {
+        if (smsType === undefined) {
+            return smsData;
+        }
+        return smsData.filter((sms) => sms.sms_type === smsType);
+    });
+
+export const getSmsDataBySearch = () =>
+    createSelector(getSmsData, getSearch, (smsData, search) => {
+        if (search === undefined) {
+            return smsData;
+        }
+        return smsData.filter(
+            (dataItem) =>
+                dataItem.event_id.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
+                dataItem.health_worker_name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
+                dataItem.anc_id.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
+        );
+    });
+
+const selectSmsByLocation = getSmsDataByUserLocation();
+const selectSmsByRisk = getSmsDataByRiskCat();
+const selectSmsByType = getSmsDataBySmsType();
+const selectSmsBySearch = getSmsDataBySearch();
+
+export const getSmsDataByFilters = () =>
+    createSelector(
+        selectSmsByLocation,
+        selectSmsByRisk,
+        selectSmsByType,
+        selectSmsBySearch,
+        (byLocation, byRisk, bySmsType, bySearch) => {
+            return intersect([byLocation, byRisk, bySmsType, bySearch], JSON.stringify).sort(sortFunction);
+        },
+    );
