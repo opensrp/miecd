@@ -184,7 +184,7 @@ const geoLevelSelector = getLocationsByLevel();
 /** factory that returns a selector that can be used to filter the nodes by either their
  * labels or ids
  */
-export const getLocationsByNameAndId = () =>
+export const getNodesByNameOrId = () =>
     createSelector(geoLevelSelector, getSearchQuery, (nodes, searchQuery): TreeNode[] => {
         if (searchQuery === undefined) {
             return nodes;
