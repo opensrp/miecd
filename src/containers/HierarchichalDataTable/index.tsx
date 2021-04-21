@@ -550,6 +550,9 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
             const tableRowLink = `${getModuleLink(this.props.module)}${HIERARCHICAL_DATA_URL}/${this.props.module}/${
                 this.props.risk_highligter
             }/${this.props.title}/${this.props.current_level ? this.props.current_level + 1 : 1}/down/`;
+
+            const element = getTotals(this.state.data, this.props.module);
+
             return (
                 <Container fluid className="compartment-data-table">
                     <span
@@ -562,7 +565,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                         <FontAwesomeIcon icon={BACKPAGE_ICON} size="lg" />
                         <span>{t('Back')}</span>
                     </span>
-                    <h1>{this.props.title}</h1>
+                    <h1>{t(`${element.total} ${this.props.title}`)}</h1>
                     <Row className="villageDataRow">
                         <Card className="table-card">
                             <CardTitle>{this.header()}</CardTitle>
@@ -699,7 +702,6 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                             </tr>
                                         )}
                                         {(() => {
-                                            const element = getTotals(this.state.data, this.props.module);
                                             return this.props.module !== NUTRITION ? (
                                                 <tr key="total" className="totals-row">
                                                     <td className="default-width" id="total">

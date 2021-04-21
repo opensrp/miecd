@@ -45,6 +45,7 @@ interface Props extends RouteComponentProps {
     className?: string;
     userLocationId: string;
     permissionLevel: number;
+    totalNumber?: number;
 }
 
 /**
@@ -73,6 +74,7 @@ function DataCircleCard({
     className = '',
     userLocationId,
     permissionLevel,
+    totalNumber,
 }: Props) {
     const { t } = useTranslation();
     const pregnancyAndPncCircleSpec: CircleSpecProps[] = [
@@ -135,7 +137,7 @@ function DataCircleCard({
                         }
                     }}
                 >
-                    {title}
+                    {t(`${totalNumber ?? ''} ${title}`)}
                 </Link>
             </CardTitle>
             <CardBody className="circlesRow">
