@@ -701,7 +701,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                         {(() => {
                                             const element = getTotals(this.state.data, this.props.module);
                                             return this.props.module !== NUTRITION ? (
-                                                <tr key="total">
+                                                <tr key="total" className="totals-row">
                                                     <td className="default-width" id="total">
                                                         {t(`Total(${this.getLevelString()})`)}
                                                     </td>
@@ -735,7 +735,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                                     <td className="default-width">{element.total}</td>
                                                 </tr>
                                             ) : (
-                                                <tr key="total">
+                                                <tr key="total" className="totals-row">
                                                     <td className="default-width" id="total">
                                                         {t(`Total(${this.getLevelString()})`)}
                                                     </td>

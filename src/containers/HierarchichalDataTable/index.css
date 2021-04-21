@@ -129,7 +129,6 @@
     border-top: none;
 }
 
-.compartment-data-table td#total,
 .compartment-data-table #header {
     color: #3a484f;
     font-size: 0.875rem;
@@ -183,4 +182,10 @@
 
 .compartment-data-table span.divider {
     color: #0292d3 !important;
+}
+.totals-row > .default-width,
+.totals-row > #total {
+    color: #3a484f;
+    font-size: 1rem;
+    font-weight: bolder;
 }
