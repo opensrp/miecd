@@ -77,6 +77,7 @@ interface State {
     data: LocationWithData[];
     district: string;
     villageData: SmsData[];
+    headerTitle: string[];
 }
 
 type RiskHighlighterType =
@@ -514,6 +515,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
             data: [],
             district: '',
             villageData: [],
+            headerTitle: ['Provinces'],
         };
     }
 
@@ -604,6 +606,16 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                                                     ? '#'
                                                                     : `${tableRowLink}${element.location_id}/${this.props.permissionLevel}`,
                                                             );
+                                                            // add drill down title to header
+                                                            // but only to level 3 (village)
+                                                            if (this.props.current_level !== 3) {
+                                                                this.setState({
+                                                                    headerTitle: [
+                                                                        ...this.state.headerTitle,
+                                                                        element.location_name,
+                                                                    ],
+                                                                });
+                                                            }
                                                         }}
                                                     >
                                                         {this.props.module !== NUTRITION ? (
@@ -832,98 +844,38 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
     }
 
     private header = () => {
-        let province = <span key={0}>{PROVINCE}</span>;
-        if (this.dontDisplayProvince()) {
-            province = <span key={0}>{null}</span>;
-        } else if (this.props.current_level > 0) {
-            province = (
+        const aLink = this.state.headerTitle.map((item, index, arr) => {
+            // index 0 reserved for default headerTitle value (i.e All Provinces)
+            if (
+                (index === 1 && this.dontDisplayProvince()) ||
+                (index === 2 && this.dontDisplayDistrict()) ||
+                (index === 3 && this.dontDisplayCommune())
+            ) {
+                return <span key={index}>{null}</span>;
+            }
+            return (
                 <Link
                     to={`${getModuleLink(this.props.module)}${HIERARCHICAL_DATA_URL}/${this.props.module}/${
                         this.props.risk_highligter
-                    }/${this.props.title}/0/${UP}/${this.props.node_id}/${this.props.permissionLevel}/${
+                    }/${this.props.title}/${index}/${UP}/${this.props.node_id}/${this.props.permissionLevel}/${
                         this.props.current_level
                     }`}
-                    key={0}
+                    key={index}
+                    onClick={() => {
+                        // slice of state.headerTitle array containing
+                        // items between index 0(inclusive) and index+1(exclusive) of the clicked item
+                        const newTitle = arr.slice(0, index + 1);
+                        this.setState({
+                            headerTitle: newTitle,
+                        });
+                    }}
                 >
-                    {PROVINCE}
+                    {index !== 0 && <span className="divider">&nbsp; / &nbsp;</span>}
+                    {this.props.t(`${item}`)}
                 </Link>
             );
-        }
-
-        let district = <span key={1}>''</span>;
-        if (this.dontDisplayDistrict()) {
-            district = <span key={1}>{null}</span>;
-        } else if (this.props.current_level === 1) {
-            district = <span key={1}>{DISTRICT}</span>;
-        } else {
-            district = (
-                <Link
-                    to={`${getModuleLink(this.props.module)}${HIERARCHICAL_DATA_URL}/${this.props.module}/${
-                        this.props.risk_highligter
-                    }/${this.props.title}/1/${UP}/${this.props.node_id}/${this.props.permissionLevel}/${
-                        this.props.current_level
-                    }`}
-                    key={1}
-                >
-                    {DISTRICT}
-                </Link>
-            );
-        }
-
-        let commune = <span key={2}>{COMMUNE}</span>;
-        if (this.dontDisplayCommune()) {
-            commune = <span key={2}>{null}</span>;
-        } else if (this.props.current_level === 2) {
-            commune = <span key={2}>{COMMUNE}</span>;
-        } else {
-            commune = (
-                <Link
-                    to={`${getModuleLink(this.props.module)}${HIERARCHICAL_DATA_URL}/${this.props.module}/${
-                        this.props.risk_highligter
-                    }/${this.props.title}/2/${UP}/${this.props.node_id}/${this.props.permissionLevel}/${
-                        this.props.current_level
-                    }`}
-                    key={2}
-                >
-                    {COMMUNE}
-                </Link>
-            );
-        }
-
-        const village = <span key={3}>{VILLAGE}</span>;
-        const provinceDivider = this.dontDisplayProvince() ? (
-            <span key={Math.random()}>{null}</span>
-        ) : (
-            <span className="divider" key={Math.random()}>
-                &nbsp; / &nbsp;
-            </span>
-        );
-        const districtDivider = this.dontDisplayDistrict() ? (
-            <span key={Math.random()}>{null}</span>
-        ) : (
-            <span className="divider" key={Math.random()}>
-                &nbsp; / &nbsp;
-            </span>
-        );
-        const communeDivider = this.dontDisplayCommune() ? (
-            <span key={Math.random()}>{null}</span>
-        ) : (
-            <span className="divider" key={Math.random()}>
-                &nbsp; / &nbsp;
-            </span>
-        );
-        switch (this.props.current_level) {
-            case 0:
-                return province;
-            case 1:
-                return [province, provinceDivider, district];
-            case 2:
-                return [province, provinceDivider, district, districtDivider, commune];
-            case 3:
-                return [province, provinceDivider, district, districtDivider, commune, communeDivider, village];
-            default:
-                return province;
-        }
+        });
+        return aLink;
     };
 }
 
