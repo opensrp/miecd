@@ -40,6 +40,7 @@ import {
     sortFunction,
     toastToError,
     useHandleBrokenPage,
+    parseMessage,
 } from '../../helpers/utils';
 import supersetFetch from '../../services/superset';
 import {
@@ -70,7 +71,7 @@ import { useTranslation, withTranslation } from 'react-i18next';
 import { ErrorPage } from 'components/ErrorPage';
 import { Store } from 'redux';
 import Select from 'react-select';
-import { getQueryParams, parseMessage, updateUrlWithFilter } from './utils';
+import { getQueryParams, updateUrlWithFilter } from './utils';
 import { SelectLocationFilter } from './SelectLocationFilter';
 import {
     getNodesByNameOrId,

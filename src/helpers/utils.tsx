@@ -52,6 +52,8 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { format } from 'date-fns';
 import { fetchTree } from '../store/ducks/locationHierarchy';
+import { split, trim, replace } from 'lodash';
+import * as React from 'react';
 export type { Dictionary };
 
 /** Custom function to get oAuth user info depending on the oAuth2 provider
@@ -584,4 +586,21 @@ export const useHandleBrokenPage = () => {
  */
 export const formatDateStrings = (dateString: string) => {
     return format(new Date(dateString), DATE_FORMAT);
+};
+
+/** convert the smsData message field from prose to more easily readable
+ * point format
+ *
+ * @param message - the message prose.
+ */
+export const parseMessage = (message: string) => {
+    const propValues = split(message, '\n');
+    const replacedEquals = propValues.map(trim).map((entry) => replace(entry, / =\s*/, ' : '));
+    return (
+        <ul>
+            {replacedEquals.map((value, index) => {
+                return <li key={`${value}-${index}`}>{value}</li>;
+            })}
+        </ul>
+    );
 };
