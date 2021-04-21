@@ -41,7 +41,7 @@ export interface WeightMonthYear {
  * @member {string} EventDate - the date the SmsEvent was created. this is
  * when the sms was sent.
  * @member {string | number} message - the string/number representation of the message
- * @member {string} health_workder_name - name of health worker who sent the message
+ * @member {string} health_worker_name - name of health worker who sent the message
  * @member {string}  sms_type - the sms type.
  */
 interface PregnancySmsData {
@@ -207,7 +207,7 @@ class ReportTable extends Component<ReportTableTypes, State> {
 
         return (
             <>
-                <Row id="filter-panel">
+                <div id="filter-panel">
                     <p>
                         <Trans t={t}>Showing reports for:&emsp;</Trans>
                     </p>
@@ -228,7 +228,11 @@ class ReportTable extends Component<ReportTableTypes, State> {
                                 </DropdownMenu>
                             </Dropdown>
                         ) : (
-                            <Dropdown isOpen={this.state.dropdownOpenPregnancy} toggle={this.togglePregnancyDropDown}>
+                            <Dropdown
+                                className="filters"
+                                isOpen={this.state.dropdownOpenPregnancy}
+                                toggle={this.togglePregnancyDropDown}
+                            >
                                 <DropdownToggle variant="success" id="dropdown-basic" caret>
                                     <span>
                                         {this.state.pregnancyDropdownLabel.length
@@ -266,11 +270,11 @@ class ReportTable extends Component<ReportTableTypes, State> {
                             </Dropdown>
                         )}
                     </div>
-                </Row>
+                </div>
                 <Row id="tableRow">
                     <ListView {...listViewProps} />
                 </Row>
-                <Row id="chart">
+                <div id="chart">
                     <WeightAndHeightChart
                         weights={
                             this.getWeightsArray(this.state.pregnancyEventsArray, WEIGHT)[this.state.currentPregnancy]
@@ -295,7 +299,7 @@ class ReportTable extends Component<ReportTableTypes, State> {
                             xAxisLabel={t('height')}
                         />
                     ) : null}
-                </Row>
+                </div>
             </>
         );
     }

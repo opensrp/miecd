@@ -47,9 +47,8 @@ export const PatientDetails = ({ isChild = false, patientId = 'none', smsData = 
             <div id="titleDiv">
                 <h2 id="patients_title">{t('Patient Details')}</h2>
             </div>
-            <Row>
-                <BasicInformation labelValuePairs={getBasicInformationProps(patientId, isChild, filteredData, t)} />
-            </Row>
+            <BasicInformation labelValuePairs={getBasicInformationProps(patientId, isChild, filteredData, t)} />
+
             <ReportTable isChild={isChild} singlePatientEvents={filteredData} />
         </div>
     );

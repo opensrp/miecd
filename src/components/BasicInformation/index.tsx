@@ -15,7 +15,7 @@ interface Props {
 export default function BasicInformation({ labelValuePairs = [] }: Props) {
     const { t } = useTranslation();
     return (
-        <Row id="detailsRow">
+        <div id="detailsRow">
             <Card id="detailsCard">
                 <CardTitle>{t('Basic Information')}</CardTitle>
                 <Row>
@@ -55,6 +55,6 @@ export default function BasicInformation({ labelValuePairs = [] }: Props) {
                     </Col>
                 </Row>
             </Card>
-        </Row>
+        </div>
     );
 }
