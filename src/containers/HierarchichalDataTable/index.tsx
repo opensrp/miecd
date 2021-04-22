@@ -599,16 +599,18 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                                 return (
                                                     <tr
                                                         key={element.location_id}
-                                                        // tslint:disable-next-line: jsx-no-lambda
+                                                        className={
+                                                            this.props.current_level !== 3
+                                                                ? 'cursor-pointer color-blue'
+                                                                : ''
+                                                        }
                                                         onClick={() => {
-                                                            this.props.history.push(
-                                                                this.props.current_level === 3
-                                                                    ? '#'
-                                                                    : `${tableRowLink}${element.location_id}/${this.props.permissionLevel}`,
-                                                            );
-                                                            // add drill down title to header
-                                                            // but only to level 3 (village)
+                                                            // drill down only up to level 3 (village)
                                                             if (this.props.current_level !== 3) {
+                                                                this.props.history.push(
+                                                                    `${tableRowLink}${element.location_id}/${this.props.permissionLevel}`,
+                                                                );
+                                                                // add drill down location name to header
                                                                 this.setState({
                                                                     headerTitle: [
                                                                         ...this.state.headerTitle,

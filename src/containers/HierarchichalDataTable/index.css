@@ -68,7 +68,6 @@
 .compartment-data-table table td:nth-child(1) {
     text-align: left;
     padding-left: 1%;
-    color: #0292d3;
     font-size: 15px;
     font-weight: 400;
     line-height: 18px;
@@ -88,6 +87,13 @@
 
 .compartment-data-table .table-container table #body {
     overflow: auto;
+}
+.color-blue td {
+    color: #0292d3 !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }
 
 .compartment-data-table > h1 {
