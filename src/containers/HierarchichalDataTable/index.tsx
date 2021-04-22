@@ -804,6 +804,8 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                 current_level: this.props.current_level,
                                 module: this.props.module,
                                 smsData: this.state.villageData,
+                                // commune name is the last item in the headerTitle array
+                                communeName: this.state.headerTitle[this.state.headerTitle.length - 1],
                             }}
                         />
                     ) : this.props.current_level === 3 ? (

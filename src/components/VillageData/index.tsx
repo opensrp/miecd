@@ -13,6 +13,7 @@ export interface Props {
     current_level: number;
     smsData: SmsData[];
     module: string;
+    communeName: string;
 }
 
 interface State {
@@ -23,6 +24,7 @@ const defaultProps: Props = {
     current_level: 0,
     module: '',
     smsData: [],
+    communeName: '',
 };
 
 export type VillageDataPropsType = Props & WithTranslation;
@@ -61,7 +63,7 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                     <>
                         <Row className="village villageDataRow">
                             <Card className="table-card">
-                                <CardTitle>{t('Selected Commune')}</CardTitle>
+                                <CardTitle className="commune-name">{t(this.props.communeName)}</CardTitle>
                                 <CardBody>
                                     <Table striped borderless>
                                         <thead id="header">

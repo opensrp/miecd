@@ -161,3 +161,7 @@
 span.divider {
     color: #0292d3 !important;
 }
+.commune-name {
+    font-size: 1.2rem !important;
+    font-weight: bolder !important;
+}
