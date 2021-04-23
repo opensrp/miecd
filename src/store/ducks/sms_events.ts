@@ -22,7 +22,7 @@ export interface SmsData {
     height: number;
     weight: number;
     previous_risks: string;
-    lmp_edd: any;
+    lmp_edd: string | number;
     parity: number;
     gravidity: number;
     location_id: string;

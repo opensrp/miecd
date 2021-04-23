@@ -454,8 +454,8 @@ const getNumberOfSmsWithRisk = (risk: string, smsData: SmsData[], field: string)
 export const filterByDateInNextNWeeks = (n: number) => {
     return (dataItem: SmsData) => {
         return (
-            Date.parse(dataItem.lmp_edd) - Date.now() > 0 &&
-            Date.parse(dataItem.lmp_edd) - Date.now() < n * MICROSECONDS_IN_A_WEEK
+            Date.parse(dataItem.lmp_edd.toString()) - Date.now() > 0 &&
+            Date.parse(dataItem.lmp_edd.toString()) - Date.now() < n * MICROSECONDS_IN_A_WEEK
         );
     };
 };
@@ -466,7 +466,7 @@ export const filterByDateInNextNWeeks = (n: number) => {
  * @param {SmsData} dataItem sms data item
  */
 const filterByDateInTheFuture = (dataItem: SmsData): boolean => {
-    return Date.parse(dataItem.lmp_edd) - Date.now() > 0;
+    return Date.parse(dataItem.lmp_edd.toString()) - Date.now() > 0;
 };
 
 /**
