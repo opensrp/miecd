@@ -160,7 +160,7 @@ const LogFace = (props: LogFaceProps) => {
                 handleBrokenPage(err);
             })
             .finally(() => setLoading(false));
-    }, []);
+    }, [handleBrokenPage, removeFilterArgs, supersetService]);
 
     useEffect(() => {
         const intervalId: NodeJS.Timeout = setInterval(() => {
@@ -186,7 +186,7 @@ const LogFace = (props: LogFaceProps) => {
                 clearInterval(intervalId);
             }
         };
-    }, []);
+    }, [fetchSmsDataActionCreator, smsData, supersetService]);
 
     const [dropdownOpenRiskLevel, setDropdownOpenRiskLevel] = useState<boolean>(false);
     const [riskLabel, setRiskLabel] = useState<string>('');
@@ -252,16 +252,20 @@ const LogFace = (props: LogFaceProps) => {
         removeFilterArgs,
         addFilterArgs,
         smsData,
+        filteredData,
+        locationLabel,
+        riskLabel,
+        typeLabel,
     ]);
 
-    // this sets the current page to 1 if it's not already 1
-    const resetCurrentPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(1);
-        }
-    };
-
     useEffect(() => {
+        // this sets the current page to 1 if it's not already 1
+        const resetCurrentPage = () => {
+            if (currentPage > 1) {
+                setCurrentPage(1);
+            }
+        };
+
         setFilteredData(
             filterDataByTextSearch(smsData, filterString, {
                 locationLabel,
@@ -270,7 +274,7 @@ const LogFace = (props: LogFaceProps) => {
             }).sort(sortFunction),
         );
         resetCurrentPage();
-    }, [locationLabel, riskLabel, typeLabel]);
+    }, [locationLabel, riskLabel, typeLabel, filterString, smsData, currentPage]);
 
     useEffect(() => {
         setFilteredData(
@@ -280,7 +284,7 @@ const LogFace = (props: LogFaceProps) => {
                 typeLabel,
             }).sort(sortFunction),
         );
-    }, [filterString]);
+    }, [filterString, locationLabel, riskLabel, smsData, typeLabel]);
 
     const handleRiskLevelDropdownClick = (event: React.MouseEvent) => {
         setRiskLabel((event.target as HTMLInputElement).innerText);
