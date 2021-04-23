@@ -160,7 +160,8 @@ const LogFace = (props: LogFaceProps) => {
                 handleBrokenPage(err);
             })
             .finally(() => setLoading(false));
-    }, [handleBrokenPage, removeFilterArgs, supersetService]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [removeFilterArgs, supersetService]);
 
     useEffect(() => {
         const intervalId: NodeJS.Timeout = setInterval(() => {
