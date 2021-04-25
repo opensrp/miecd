@@ -70,11 +70,14 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                                             {this.props.module === PREGNANCY ? (
                                                 <tr>
                                                     <th className="default-width">{t('Patient ID')}</th>
-                                                    <th className="default-width">{t('Gravidity')}</th>
-                                                    <th className="default-width">{t('Parity')}</th>
-                                                    <th className="default-width">{t('Location')}</th>
+                                                    <th className="default-width">{t('Age')}</th>
+                                                    <th className="default-width">{t('Location Of Residence')}</th>
+                                                    <th className="default-width">{t('Current Symptoms')}</th>
+                                                    <th className="default-width">
+                                                        {t('Previous Pregnancy Risk / Existing Medical Condition')}
+                                                    </th>
                                                     <th className="default-width">{t('EDD')}</th>
-                                                    <th className="default-width">{t('Previous Pregnancy Risk')}</th>
+                                                    <th className="default-width">{t('Planned Delivery Location')}</th>
                                                     <th className="default-width">{t('Risk category')}</th>
                                                 </tr>
                                             ) : this.props.module === NUTRITION ? (
@@ -196,11 +199,12 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                         {dataItem.anc_id}
                     </Link>
                 </td>
-                <td className="default-width">{dataItem.gravidity}</td>
-                <td className="default-width">{dataItem.parity}</td>
-                <td className="default-width">{dataItem.health_worker_location_name}</td>
-                <td className="default-width">{dataItem.lmp_edd}</td>
+                <td className="default-width">{dataItem.age}</td>
+                <td className="default-width">{dataItem.location}</td>
+                <td className="default-width">{dataItem.mother_symptoms}</td>
                 <td className="default-width">{dataItem.previous_risks}</td>
+                <td className="default-width">{dataItem.lmp_edd}</td>
+                <td className="default-width">{dataItem.planned_delivery_location}</td>
                 <td className="default-width">
                     <RiskColoring {...{ risk: dataItem.logface_risk }} />
                 </td>

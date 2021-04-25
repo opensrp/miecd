@@ -33,6 +33,8 @@ export interface SmsData {
     nutrition_status: string;
     growth_status: string;
     feeding_category: string;
+    planned_delivery_location: string;
+    location: string;
 }
 
 // actions
