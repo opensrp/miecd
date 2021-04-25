@@ -2,7 +2,7 @@ import React from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardTitle, Row, Table } from 'reactstrap';
-import { NBC_AND_PNC_CHILD, NUTRITION, PREGNANCY } from '../../constants';
+import { NBC_AND_PNC_CHILD, NBC_AND_PNC_WOMAN, NUTRITION, PREGNANCY } from '../../constants';
 import { getModuleLink, getNumberOfDaysSinceDate } from '../../helpers/utils';
 import { SmsData } from '../../store/ducks/sms_events';
 import { PaginationData, Paginator, PaginatorProps } from '../Paginator';
@@ -67,6 +67,7 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                                 <CardBody>
                                     <Table striped borderless>
                                         <thead id="header">
+                                            {/* For pregnancy */}
                                             {this.props.module === PREGNANCY ? (
                                                 <tr>
                                                     <th className="default-width">{t('Patient ID')}</th>
@@ -74,22 +75,26 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                                                     <th className="default-width">{t('Location Of Residence')}</th>
                                                     <th className="default-width">{t('Current Symptoms')}</th>
                                                     <th className="default-width">
-                                                        {t('Previous Pregnancy Risk / Existing Medical Condition')}
+                                                        {t('Previous Risks / Existing Medical Conditions')}
                                                     </th>
                                                     <th className="default-width">{t('EDD')}</th>
                                                     <th className="default-width">{t('Planned Delivery Location')}</th>
                                                     <th className="default-width">{t('Risk category')}</th>
                                                 </tr>
-                                            ) : this.props.module === NUTRITION ? (
+                                            ) : null}
+
+                                            {/* For nutrition */}
+                                            {this.props.module === NUTRITION ? (
                                                 <tr>
                                                     <th className="default-width">{t('Patient ID')}</th>
-                                                    <th className="default-width">{t('Days since birth')}</th>
+                                                    <th className="default-width">{t('Age')}</th>
                                                     <th className="default-width">{t('Location of Residence')}</th>
-                                                    <th className="default-width">{t('Current weight')}</th>
-                                                    <th className="default-width">{t('Location of birth')}</th>
                                                     <th className="default-width">{t('Risk category')}</th>
                                                 </tr>
-                                            ) : (
+                                            ) : null}
+
+                                            {/* For NBC */}
+                                            {this.props.module === NBC_AND_PNC_CHILD ? (
                                                 <tr>
                                                     <th className="default-width">{t('Patient ID')}</th>
                                                     <th className="default-width">{t('Days since birth')}</th>
@@ -98,7 +103,22 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                                                     <th className="default-width">{t('Location of birth')}</th>
                                                     <th className="default-width">{t('Risk category')}</th>
                                                 </tr>
-                                            )}
+                                            ) : null}
+
+                                            {/* For PNC */}
+                                            {this.props.module === NBC_AND_PNC_WOMAN ? (
+                                                <tr>
+                                                    <th className="default-width">{t('Patient ID')}</th>
+                                                    <th className="default-width">{t('Age')}</th>
+                                                    <th className="default-width">{t('Location of Residence')}</th>
+                                                    <th className="default-width">{t('Current symptoms')}</th>
+                                                    <th className="default-width">
+                                                        {t('Previous Risks / Existing Medical Conditions')}
+                                                    </th>
+                                                    <th className="default-width">{t('Location of birth')}</th>
+                                                    <th className="default-width">{t('Risk category')}</th>
+                                                </tr>
+                                            ) : null}
                                         </thead>
                                         <tbody id="body">
                                             {this.props.smsData.length
@@ -111,10 +131,10 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                                                       .map(
                                                           this.props.module === PREGNANCY
                                                               ? this.pregnancyMapFunction
-                                                              : this.props.module === NBC_AND_PNC_CHILD
-                                                              ? this.nbcAndPncChildMapFunction
                                                               : this.props.module === NUTRITION
                                                               ? this.nutritionMapFunction
+                                                              : this.props.module === NBC_AND_PNC_CHILD
+                                                              ? this.nbcAndPncChildMapFunction
                                                               : this.nbcAndPncMotherMapFunction,
                                                       )
                                                 : null}
@@ -131,58 +151,6 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
             </>
         );
     }
-
-    /**
-     * Returns a <tr></tr> for an SmsData object passed to it
-     * which is used to build the table above.
-     * for the NBC & PNC_MOTHER module
-     * @param {SmsData} dataItem - an SmsData object used to generate a table row
-     * @return {JSX.Element} table row
-     */
-    public nbcAndPncMotherMapFunction = (dataItem: SmsData): JSX.Element => {
-        return (
-            <tr key={dataItem.event_id}>
-                <td className="default-width">
-                    <Link to={`${getModuleLink(this.props.module)}/patient_detail/${dataItem.anc_id}`}>
-                        {dataItem.anc_id}
-                    </Link>
-                </td>
-                <td className="default-width">{getNumberOfDaysSinceDate(dataItem.EventDate)}</td>
-                <td className="default-width">{dataItem.health_worker_location_name}</td>
-                <td className="default-width">{dataItem.mother_symptoms}</td>
-                <td className="default-width">{dataItem.health_worker_location_name}</td>
-                <td className="default-width">
-                    <RiskColoring {...{ risk: dataItem.logface_risk }} />
-                </td>
-            </tr>
-        );
-    };
-
-    /**
-     * Returns a <tr></tr> for an SmsData object passed to it
-     * which is used to build the table above.
-     * for the NBC & PNC_CHILD module
-     * @param {SmsData} dataItem - an SmsData object used to generate a table row
-     * @return {JSX.Element} table row
-     */
-    public nbcAndPncChildMapFunction = (dataItem: SmsData): JSX.Element => {
-        return (
-            <tr key={dataItem.event_id}>
-                <td className="default-width">
-                    <Link to={`${getModuleLink(this.props.module)}/child_patient_detail/${dataItem.anc_id}`}>
-                        {dataItem.anc_id}
-                    </Link>
-                </td>
-                <td className="default-width">{getNumberOfDaysSinceDate(dataItem.EventDate)}</td>
-                <td className="default-width">{dataItem.health_worker_location_name}</td>
-                <td className="default-width">{dataItem.child_symptoms}</td>
-                <td className="default-width">{dataItem.health_worker_location_name}</td>
-                <td className="default-width">
-                    <RiskColoring {...{ risk: dataItem.logface_risk }} />
-                </td>
-            </tr>
-        );
-    };
 
     /**
      * Returns a <tr></tr> for an SmsData object passed to it
@@ -227,10 +195,61 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                         {dataItem.anc_id}
                     </Link>
                 </td>
-                <td className="default-width">{getNumberOfDaysSinceDate(dataItem.EventDate)}</td>
-                <td className="default-width">{dataItem.health_worker_location_name}</td>
-                <td className="default-width">{dataItem.weight}</td>
-                <td className="default-width">{dataItem.health_worker_location_name}</td>
+                <td className="default-width">{dataItem.age}</td>
+                <td className="default-width">{dataItem.location}</td>
+                <td className="default-width">
+                    <RiskColoring {...{ risk: dataItem.logface_risk }} />
+                </td>
+            </tr>
+        );
+    };
+
+    /**
+     * Returns a <tr></tr> for an SmsData object passed to it
+     * which is used to build the table above.
+     * for the NBC & PNC_CHILD module
+     * @param {SmsData} dataItem - an SmsData object used to generate a table row
+     * @return {JSX.Element} table row
+     */
+    public nbcAndPncChildMapFunction = (dataItem: SmsData): JSX.Element => {
+        return (
+            <tr key={dataItem.event_id}>
+                <td className="default-width">
+                    <Link to={`${getModuleLink(this.props.module)}/child_patient_detail/${dataItem.anc_id}`}>
+                        {dataItem.anc_id}
+                    </Link>
+                </td>
+                <td className="default-width">{getNumberOfDaysSinceDate(dataItem.date_of_birth)}</td>
+                <td className="default-width">{dataItem.location}</td>
+                <td className="default-width">{dataItem.child_symptoms}</td>
+                <td className="default-width">{dataItem.delivery_location}</td>
+                <td className="default-width">
+                    <RiskColoring {...{ risk: dataItem.logface_risk }} />
+                </td>
+            </tr>
+        );
+    };
+
+    /**
+     * Returns a <tr></tr> for an SmsData object passed to it
+     * which is used to build the table above.
+     * for the NBC & PNC_MOTHER module
+     * @param {SmsData} dataItem - an SmsData object used to generate a table row
+     * @return {JSX.Element} table row
+     */
+    public nbcAndPncMotherMapFunction = (dataItem: SmsData): JSX.Element => {
+        return (
+            <tr key={dataItem.event_id}>
+                <td className="default-width">
+                    <Link to={`${getModuleLink(this.props.module)}/patient_detail/${dataItem.anc_id}`}>
+                        {dataItem.anc_id}
+                    </Link>
+                </td>
+                <td className="default-width">{dataItem.age}</td>
+                <td className="default-width">{dataItem.location}</td>
+                <td className="default-width">{dataItem.mother_symptoms}</td>
+                <td className="default-width">{dataItem.previous_risks}</td>
+                <td className="default-width">{dataItem.delivery_location}</td>
                 <td className="default-width">
                     <RiskColoring {...{ risk: dataItem.logface_risk }} />
                 </td>

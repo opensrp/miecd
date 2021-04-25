@@ -35,6 +35,7 @@ export interface SmsData {
     feeding_category: string;
     planned_delivery_location: string;
     location: string;
+    delivery_location: string;
 }
 
 // actions
