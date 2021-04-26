@@ -1,6 +1,5 @@
-import { Dictionary, getNumberSuffix, oAuthUserInfoGetter } from '../utils';
+import { getNumberSuffix, oAuthUserInfoGetter, parseMessage } from '../utils';
 import { OpenSRPAPIResponse } from './fixtures';
-import * as gatekeeper from '@onaio/gatekeeper';
 
 jest.mock('@onaio/gatekeeper', () => {
     const actual = jest.requireActual('@onaio/gatekeeper');
@@ -42,5 +41,17 @@ describe('src/helpers', () => {
 
         response = getNumberSuffix(45);
         expect(response).toEqual('th');
+    });
+
+    it('able to reformat dates in smsEvent.message', () => {
+        const message = 'Date of death = 23-04-2021 Location of Death = District hospitals/CDC Contact = ';
+        const result = parseMessage(message);
+        expect(result).toMatchInlineSnapshot(`
+            <ul>
+              <li>
+                Date of death : 23/04/2021 Location of Death = District hospitals/CDC Contact =
+              </li>
+            </ul>
+        `);
     });
 });

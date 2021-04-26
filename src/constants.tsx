@@ -108,17 +108,19 @@ export const monthNames = [
     'December',
 ];
 
-// operational
+// operational constants
 export const DEFAULT_NUMBER_OF_LOGFACE_ROWS = 5;
 export const EN_LANGUAGE_CODE = 'en' as const;
 export const VI_LANGUAGE_CODE = 'vi' as const;
-export const DATE_FORMAT = 'dd/MM/yy';
 
-// export const
 export const ALL_LANGUAGE_OPTIONS = {
     [EN_LANGUAGE_CODE]: 'English',
     [VI_LANGUAGE_CODE]: 'Vietnamese',
 };
+
+export const DATE_FORMAT = 'dd/MM/yyyy';
+export const EVENT_DATE_DATE_FORMAT = 'yyyy-MM-dd';
+export const SMS_MESSAGE_DATE_DATE_FORMAT = 'dd-MM-yyyy';
 export const LOCATION_FILTER_PARAM = 'locationSearch';
 export const RISK_CATEGORY_FILTER_PARAM = 'riskCategory';
 export const SMS_TYPE_FILTER_PARAM = 'smsType';
