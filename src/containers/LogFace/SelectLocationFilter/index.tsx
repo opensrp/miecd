@@ -1,6 +1,6 @@
 /** select dropdown that allows user to filter by location,
  * some constraints applied:
- * - user can only filter for locations that they have jurisdiction in,
+ * - user can only filter for locations that they have been allowed access to,
  * we determine this by using the locationHierarchy of the user returned from security authenticate
  */
 import React, { useState } from 'react';
@@ -36,15 +36,16 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
     }));
     const [options, setOptions] = useState(initialSelectOptions);
     const [hierarchy, setHierarchy] = useState<TreeNode[]>([]);
-    const [parentNode, setParentNode] = useState<TreeNode | undefined>();
+    const [selectedNode, setSelectedNode] = useState<TreeNode | undefined>();
     const [closeMenuOnSelect, setMenuToClose] = useState<boolean>(false);
 
+    /** handles a location selection */
     const changeHandler = (value: string) => {
-        // update parentNode and hierarchy
         if (value) {
+            // update parentNode and hierarchy
             const thisNode = userLocationTree?.first((node) => node.model.id === value);
-            // selected value, need to update the currentNode
-            setParentNode(thisNode);
+            setSelectedNode(thisNode);
+            // set options to be children of currently selected node, where selected node is a leaf node, the siblings will be the options
             setOptions(
                 (thisNode?.hasChildren() ? thisNode?.children : thisNode?.parent?.children ?? []).map(
                     (node: TreeNode) => ({
@@ -62,13 +63,15 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
             path.pop();
             setHierarchy(path);
         } else {
+            //reset node selection-related state variables
             setHierarchy([]);
-            setParentNode(undefined);
+            setSelectedNode(undefined);
         }
 
         onLocationChange(value);
     };
 
+    /** Defines filter/search behavior as user types a location name  */
     const customOnInputFilter = (input: string) => {
         if (input) {
             const matchedLocations = userLocationTree?.all((node) =>
@@ -88,9 +91,10 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
 
             setOptions(matchedOptions);
         } else {
-            if (parentNode) {
+            if (selectedNode) {
+                // set options to be children of currently selected node, where selected node is a leaf node, the siblings will be the options
                 setOptions(
-                    (parentNode?.hasChildren() ? parentNode?.children : parentNode?.parent?.children ?? []).map(
+                    (selectedNode?.hasChildren() ? selectedNode?.children : selectedNode?.parent?.children ?? []).map(
                         (node: TreeNode) => ({
                             value: node.model.id,
                             label: node.model.label,
@@ -103,6 +107,7 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
         }
     };
 
+    /** render a breadCrumb-ish text showing a hierarchy of the current selected node */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const Menu = (props: any) => {
         return (
