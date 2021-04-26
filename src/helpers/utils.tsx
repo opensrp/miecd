@@ -53,7 +53,7 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { format, parse } from 'date-fns';
 import { fetchTree } from '../store/ducks/locationHierarchy';
-import { split, trim, replace } from 'lodash';
+import { split, trim, replace, keys } from 'lodash';
 import * as React from 'react';
 export type { Dictionary };
 
@@ -610,11 +610,33 @@ export const parseMessage = (message: string) => {
     }
     const propValues = split(cleanedMessage, '\n');
     const replacedEquals = propValues.map(trim).map((entry) => replace(entry, / =\s*/, ' : '));
+    const addedUnits = AddUnitsToMessageValues(replacedEquals);
     return (
         <ul>
-            {replacedEquals.map((value, index) => {
+            {addedUnits.map((value, index) => {
                 return <li key={`${value}-${index}`}>{value}</li>;
             })}
         </ul>
     );
+};
+
+/** adds units to values in smsEvents.message */
+const AddUnitsToMessageValues = (parsedMessage: string[]) => {
+    return parsedMessage.map((each) => {
+        const [property, ...value] = split(each, ':');
+        let valueWithUnit = value.join(':');
+        const trimmedPropName = trim(property);
+        if (trimmedPropName.toLowerCase().includes('weight')) {
+            valueWithUnit = `${value.join(':')}kg`;
+        }
+        if (
+            trimmedPropName.toLowerCase().includes('height') ||
+            trimmedPropName.toLowerCase().includes('muac') ||
+            trimmedPropName.toLowerCase().includes('length')
+        ) {
+            valueWithUnit = `${value.join(':')}cm`;
+        }
+
+        return [property, valueWithUnit].join(':');
+    });
 };
