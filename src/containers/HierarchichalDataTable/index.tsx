@@ -273,130 +273,119 @@ function getTotal(riskTotals: Totals, module: string) {
         (riskTotals as any).wasting
     );
 }
+
+type locationKeys = 'communes' | 'districts' | 'provinces' | 'villages';
+
 function addDataToLocations(
     locations: {
-        [key: string]: Location[];
+        [key in locationKeys]: Location[];
     },
     smsData: SmsData[],
     module: string,
-    riskHighlighter: any,
-): { [key: string]: LocationWithData[] } {
+    riskHighlighter: RiskHighlighterType,
+): { [key in locationKeys]: LocationWithData[] } {
     const villagesWithData: LocationWithData[] = [];
-    // eslint-disable-next-line no-restricted-syntax
-    for (const village in locations.villages) {
-        if (locations.villages[village]) {
-            const villageRiskTotals: Totals = getVillageRiskTotals(
-                locations.villages[village],
-                smsData,
-                module,
-                riskHighlighter,
-            );
-            const totalRisk = getTotal(villageRiskTotals, module);
-            if (module !== NUTRITION) {
-                villagesWithData.push({
-                    ...locations.villages[village],
-                    no_risk: villageRiskTotals.no_risk,
-                    redAlert: villageRiskTotals.redAlert,
-                    risk: villageRiskTotals.risk,
-                    total: totalRisk,
-                });
-            } else {
-                villagesWithData.push({
-                    inappropriateFeeding: villageRiskTotals.inappropriateFeeding,
-                    ...locations.villages[village],
-                    overweight: villageRiskTotals.overweight,
-                    stunting: villageRiskTotals.stunting,
-                    total: totalRisk,
-                    wasting: villageRiskTotals.wasting,
-                });
-            }
+    for (const village of locations.villages) {
+        const villageRiskTotals: Totals = getVillageRiskTotals(village, smsData, module, riskHighlighter);
+        const totalRisk = getTotal(villageRiskTotals, module);
+        if (module !== NUTRITION) {
+            villagesWithData.push({
+                ...village,
+                no_risk: villageRiskTotals.no_risk,
+                redAlert: villageRiskTotals.redAlert,
+                risk: villageRiskTotals.risk,
+                total: totalRisk,
+            });
+        } else {
+            villagesWithData.push({
+                inappropriateFeeding: villageRiskTotals.inappropriateFeeding,
+                ...village,
+                overweight: villageRiskTotals.overweight,
+                stunting: villageRiskTotals.stunting,
+                total: totalRisk,
+                wasting: villageRiskTotals.wasting,
+            });
         }
     }
 
     const communesWithData: LocationWithData[] = [];
-    for (const commune in locations.communes) {
-        if (locations.communes[commune]) {
-            const villagesInThisCommune = villagesWithData.filter(
-                (village: LocationWithData) => village.parent_id === locations.communes[commune].location_id,
-            );
-            const communeRisktotals = getRiskTotals(villagesInThisCommune, module);
-            const totalRisk = getTotal(communeRisktotals, module);
-            if (module !== NUTRITION) {
-                communesWithData.push({
-                    ...locations.communes[commune],
-                    no_risk: communeRisktotals.no_risk,
-                    redAlert: communeRisktotals.redAlert,
-                    risk: communeRisktotals.risk,
-                    total: totalRisk,
-                });
-            } else {
-                communesWithData.push({
-                    ...locations.communes[commune],
-                    inappropriateFeeding: communeRisktotals.inappropriateFeeding,
-                    overweight: communeRisktotals.overweight,
-                    stunting: communeRisktotals.stunting,
-                    total: totalRisk,
-                    wasting: communeRisktotals.wasting,
-                });
-            }
+    for (const commune of locations.communes) {
+        const villagesInThisCommune = villagesWithData.filter(
+            (village: LocationWithData) => village.parent_id === commune.location_id,
+        );
+        const communeRisktotals = getRiskTotals(villagesInThisCommune, module);
+        const totalRisk = getTotal(communeRisktotals, module);
+        if (module !== NUTRITION) {
+            communesWithData.push({
+                ...commune,
+                no_risk: communeRisktotals.no_risk,
+                redAlert: communeRisktotals.redAlert,
+                risk: communeRisktotals.risk,
+                total: totalRisk,
+            });
+        } else {
+            communesWithData.push({
+                ...commune,
+                inappropriateFeeding: communeRisktotals.inappropriateFeeding,
+                overweight: communeRisktotals.overweight,
+                stunting: communeRisktotals.stunting,
+                total: totalRisk,
+                wasting: communeRisktotals.wasting,
+            });
         }
     }
 
     const districtsWithData: LocationWithData[] = [];
-    for (const district in locations.districts) {
-        if (locations.districts[district]) {
-            const communesInThisDistrict = communesWithData.filter(
-                (commune: LocationWithData) => commune.parent_id === locations.districts[district].location_id,
-            );
-            const districtRisktotals = getRiskTotals(communesInThisDistrict, module);
-            const totalRisk = getTotal(districtRisktotals, module);
-            if (module !== NUTRITION) {
-                districtsWithData.push({
-                    ...locations.districts[district],
-                    no_risk: districtRisktotals.no_risk,
-                    redAlert: districtRisktotals.redAlert,
-                    risk: districtRisktotals.risk,
-                    total: totalRisk,
-                });
-            } else {
-                districtsWithData.push({
-                    ...locations.districts[district],
-                    inappropriateFeeding: districtRisktotals.inappropriateFeeding,
-                    overweight: districtRisktotals.overweight,
-                    stunting: districtRisktotals.stunting,
-                    total: totalRisk,
-                    wasting: districtRisktotals.wasting,
-                });
-            }
+    for (const district of locations.districts) {
+        const communesInThisDistrict = communesWithData.filter(
+            (commune: LocationWithData) => commune.parent_id === district.location_id,
+        );
+        const districtRisktotals = getRiskTotals(communesInThisDistrict, module);
+        const totalRisk = getTotal(districtRisktotals, module);
+        if (module !== NUTRITION) {
+            districtsWithData.push({
+                ...district,
+                no_risk: districtRisktotals.no_risk,
+                redAlert: districtRisktotals.redAlert,
+                risk: districtRisktotals.risk,
+                total: totalRisk,
+            });
+        } else {
+            districtsWithData.push({
+                ...district,
+                inappropriateFeeding: districtRisktotals.inappropriateFeeding,
+                overweight: districtRisktotals.overweight,
+                stunting: districtRisktotals.stunting,
+                total: totalRisk,
+                wasting: districtRisktotals.wasting,
+            });
         }
     }
 
     const provincesWithData: LocationWithData[] = [];
-    for (const province in locations.provinces) {
-        if (locations.provinces[province]) {
-            const districtsInThisProvince = districtsWithData.filter(
-                (district: LocationWithData) => district.parent_id === locations.provinces[province].location_id,
-            );
-            const provinceRisktotals = getRiskTotals(districtsInThisProvince, module);
-            const totalRisk = getTotal(provinceRisktotals, module);
-            if (module !== NUTRITION) {
-                provincesWithData.push({
-                    ...locations.provinces[province],
-                    no_risk: provinceRisktotals.no_risk,
-                    redAlert: provinceRisktotals.redAlert,
-                    risk: provinceRisktotals.risk,
-                    total: totalRisk,
-                });
-            } else {
-                provincesWithData.push({
-                    ...locations.provinces[province],
-                    inappropriateFeeding: provinceRisktotals.inappropriateFeeding,
-                    overweight: provinceRisktotals.overweight,
-                    stunting: provinceRisktotals.stunting,
-                    total: totalRisk,
-                    wasting: provinceRisktotals.wasting,
-                });
-            }
+    for (const province of locations.provinces) {
+        const districtsInThisProvince = districtsWithData.filter(
+            (district: LocationWithData) => district.parent_id === province.location_id,
+        );
+        const provinceRisktotals = getRiskTotals(districtsInThisProvince, module);
+        const totalRisk = getTotal(provinceRisktotals, module);
+        if (module !== NUTRITION) {
+            provincesWithData.push({
+                ...province,
+                no_risk: provinceRisktotals.no_risk,
+                redAlert: provinceRisktotals.redAlert,
+                risk: provinceRisktotals.risk,
+                total: totalRisk,
+            });
+        } else {
+            provincesWithData.push({
+                ...province,
+                inappropriateFeeding: provinceRisktotals.inappropriateFeeding,
+                overweight: provinceRisktotals.overweight,
+                stunting: provinceRisktotals.stunting,
+                total: totalRisk,
+                wasting: provinceRisktotals.wasting,
+            });
         }
     }
 
@@ -423,7 +412,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
             },
             nextProps.smsData,
             nextProps.module,
-            nextProps.risk_highligter,
+            nextProps.risk_highligter || '',
         );
         let dataToShow: LocationWithData[] = [];
         if ((nextProps.direction === UP && nextProps.current_level === 0) || !nextProps.node_id) {
@@ -529,9 +518,9 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                 this.props.provinces,
             )
         ) {
-            for (const slice in LOCATION_SLICES) {
+            for (const slice of LOCATION_SLICES) {
                 if (slice) {
-                    supersetFetch(LOCATION_SLICES[slice]).then((result: Location[]) => {
+                    supersetFetch(slice).then((result: Location[]) => {
                         fetchLocationsActionCreator(result);
                     });
                 }
