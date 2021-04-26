@@ -55,6 +55,7 @@ import { format, parse } from 'date-fns';
 import { fetchTree } from '../store/ducks/locationHierarchy';
 import { split, trim, replace, keys } from 'lodash';
 import * as React from 'react';
+import { TFunction } from 'i18next';
 export type { Dictionary };
 
 /** Custom function to get oAuth user info depending on the oAuth2 provider
@@ -639,4 +640,44 @@ const AddUnitsToMessageValues = (parsedMessage: string[]) => {
 
         return [property, valueWithUnit].join(':');
     });
+};
+
+/** help extract an easily parseable age object from sms.age value */
+export const getAndParseAge = (ageString: string) => {
+    // sample ageString raw format: "2y 1m 0d "
+    const yearRegex = /\d{1,3}(?=y)/;
+    const monthRegex = /\d{1,2}(?=m)/;
+    const dayRegex = /\d{1,2}(?=d)/;
+    let years = 0,
+        months = 0,
+        days = 0;
+
+    const hasYear = yearRegex.test(ageString);
+    if (hasYear) {
+        const foundYears = ageString.match(yearRegex) ?? [];
+        years = Number(foundYears[0]) ?? 0;
+    }
+    const hasMonth = monthRegex.test(ageString);
+    if (hasMonth) {
+        const foundMonths = ageString.match(monthRegex) ?? [];
+        months = Number(foundMonths[0]) ?? 0;
+    }
+    const hasDay = dayRegex.test(ageString);
+    if (hasDay) {
+        const foundDays = ageString.match(dayRegex) ?? [];
+        days = Number(foundDays[0]) ?? 0;
+    }
+    return { years, months, days };
+};
+
+/** parse the date and return it as required here: https://github.com/opensrp/miecd/issues/13 */
+export const formatAge = (ageString: string, t: TFunction) => {
+    const age = getAndParseAge(ageString);
+    if (age.years === 0 && age.months === 0 && age.days > 0) {
+        return `${age.months} ${t('age.days')}`;
+    }
+    if (age.years < 2 || age.months < 24) {
+        return `${age.months} ${t('age.months')}`;
+    }
+    return `${age.years} ${t('age.years')}`;
 };
