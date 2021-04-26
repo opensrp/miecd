@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { keyBy, values } from 'lodash';
 import { AnyAction, Store } from 'redux';
-import { EVENT_ID } from '../../constants';
+import { EVENT_DATE_DATE_FORMAT, EVENT_ID } from '../../constants';
 import { groupBy, formatDateStrings, sortFunction } from '../../helpers/utils';
 import { SmsFilterFunction } from '../../types';
 import { Dictionary } from '@onaio/utils';
@@ -86,7 +86,10 @@ export type SmsActionTypes = FetchSmsAction | AddFilterArgsAction | RemoveSmsAct
  * @return {FetchSmsAction} - an action to add SmsData to redux store
  */
 export const fetchSms = (smsDataList: SmsData[] = []): FetchSmsAction => {
-    const cleanedSms = smsDataList.map((smsData) => ({ ...smsData, EventDate: formatDateStrings(smsData.EventDate) }));
+    const cleanedSms = smsDataList.map((smsData) => ({
+        ...smsData,
+        EventDate: formatDateStrings(smsData.EventDate, EVENT_DATE_DATE_FORMAT),
+    }));
     return {
         smsData: groupBy(cleanedSms, EVENT_ID),
         type: FETCHED_SMS as typeof FETCHED_SMS,

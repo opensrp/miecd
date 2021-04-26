@@ -30,6 +30,7 @@ import {
     PREGNANCY,
     PREGNANCY_COMPARTMENTS_URL,
     PROVINCE,
+    SMS_MESSAGE_DATE_DATE_FORMAT,
     VIETNAM,
     VIETNAM_COUNTRY_LOCATION_ID,
     VILLAGE,
@@ -50,7 +51,7 @@ import { fetchSms, SmsData, smsDataFetched } from '../store/ducks/sms_events';
 import { Dictionary } from '@onaio/utils';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import { fetchTree } from '../store/ducks/locationHierarchy';
 import { split, trim, replace } from 'lodash';
 import * as React from 'react';
@@ -576,9 +577,10 @@ export const useHandleBrokenPage = () => {
 /** formats dates strings in a globally set format
  *
  * @param dateString - the date as a string
+ * @param currentFormat - describe how date is formatted, refer https://date-fns.org/v2.21.1/docs/parse#description
  */
-export const formatDateStrings = (dateString: string) => {
-    return format(new Date(dateString), DATE_FORMAT);
+export const formatDateStrings = (dateString: string, currentFormat: string) => {
+    return format(parse(dateString, currentFormat, new Date()), DATE_FORMAT);
 };
 
 /** convert the smsData message field from prose to more easily readable
@@ -587,7 +589,19 @@ export const formatDateStrings = (dateString: string) => {
  * @param message - the message prose.
  */
 export const parseMessage = (message: string) => {
-    const propValues = split(message, '\n');
+    const dateRegexInMessage = /\d{2}-\d{2}-\d{4}/;
+    let cleanedMessage = message;
+    const hasDate = dateRegexInMessage.test(message);
+    if (hasDate) {
+        const foundDates = message.match(dateRegexInMessage) ?? [];
+        const newDateStrings = foundDates?.map((dateString) =>
+            formatDateStrings(dateString, SMS_MESSAGE_DATE_DATE_FORMAT),
+        );
+        foundDates.forEach((dateString, index) => {
+            cleanedMessage = replace(cleanedMessage, RegExp(dateString), newDateStrings[index]);
+        });
+    }
+    const propValues = split(cleanedMessage, '\n');
     const replacedEquals = propValues.map(trim).map((entry) => replace(entry, / =\s*/, ' : '));
     return (
         <ul>

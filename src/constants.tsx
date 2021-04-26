@@ -188,7 +188,9 @@ export const monthNames = [
 ];
 
 // operational constants
-export const DATE_FORMAT = 'dd/MM/yy';
+export const DATE_FORMAT = 'dd/MM/yyyy';
+export const EVENT_DATE_DATE_FORMAT = 'yyyy-MM-dd';
+export const SMS_MESSAGE_DATE_DATE_FORMAT = 'dd-MM-yyyy';
 export const LOCATION_FILTER_PARAM = 'locationSearch';
 export const RISK_CATEGORY_FILTER_PARAM = 'riskCategory';
 export const SMS_TYPE_FILTER_PARAM = 'smsType';
