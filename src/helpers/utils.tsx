@@ -666,11 +666,12 @@ export const getAndParseAge = (ageString: string) => {
 /** parse the date and return it as required here: https://github.com/opensrp/miecd/issues/13 */
 export const formatAge = (ageString: string, t: TFunction) => {
     const age = getAndParseAge(ageString);
-    if (age.years === 0 && age.months === 0 && age.days > 0) {
-        return `${age.months} ${t('age.days')}`;
+    if (age.years === 0 && age.months === 0) {
+        return `${age.days} ${t('age.days')}`;
     }
-    if (age.years < 2 || age.months < 24) {
-        return `${age.months} ${t('age.months')}`;
+    const sumMonthsAge = age.years * 12 + age.months;
+    if (sumMonthsAge <= 24) {
+        return `${sumMonthsAge} ${t('age.months')}`;
     }
     return `${age.years} ${t('age.years')}`;
 };
