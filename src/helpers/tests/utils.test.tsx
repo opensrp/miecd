@@ -1,4 +1,4 @@
-import { getNumberSuffix, oAuthUserInfoGetter, parseMessage } from '../utils';
+import { formatAge, getNumberSuffix, oAuthUserInfoGetter, parseMessage } from '../utils';
 import { OpenSRPAPIResponse } from './fixtures';
 
 jest.mock('@onaio/gatekeeper', () => {
@@ -64,5 +64,10 @@ describe('src/helpers', () => {
         const result2 = parseMessage(message2);
         expect(result1).toMatchSnapshot('Add units');
         expect(result2).toMatchSnapshot('Add units');
+    });
+
+    it('gets and formats age correctly', () => {
+        const response = formatAge('1m 29d', (t: string) => t);
+        expect(response).toEqual('1 age.months');
     });
 });

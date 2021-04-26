@@ -41,6 +41,7 @@ import {
     toastToError,
     useHandleBrokenPage,
     parseMessage,
+    formatAge,
 } from '../../helpers/utils';
 import supersetFetch from '../../services/superset';
 import {
@@ -311,7 +312,7 @@ const LogFace = (props: LogFacePropsType) => {
                                                     {dataObj.anc_id}
                                                 </Link>
                                             </td>
-                                            <td className="small-width">{dataObj.age}</td>
+                                            <td className="small-width">{formatAge(dataObj.age, t)}</td>
                                             <td className="large-width">{parseMessage(dataObj.message)}</td>
                                             <td className="default-width">
                                                 <Link
