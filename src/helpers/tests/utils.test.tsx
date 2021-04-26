@@ -67,7 +67,15 @@ describe('src/helpers', () => {
     });
 
     it('gets and formats age correctly', () => {
-        const response = formatAge('1m 29d', (t: string) => t);
+        let response = formatAge('1m 29d', (t: string) => t);
         expect(response).toEqual('1 age.months');
+        response = formatAge('0m 29d', (t: string) => t);
+        expect(response).toEqual('29 age.days');
+        response = formatAge('0m 0d', (t: string) => t);
+        expect(response).toEqual('0 age.days');
+        response = formatAge('2y 0m 0d', (t: string) => t);
+        expect(response).toEqual('24 age.months');
+        response = formatAge('3y 9m 0d', (t: string) => t);
+        expect(response).toEqual('3 age.years');
     });
 });
