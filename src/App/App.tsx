@@ -12,6 +12,7 @@ import ConnectedRoutes from './Routes';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../mls';
 import { Toaster } from 'react-hot-toast';
+import * as React from 'react';
 
 library.add(faUser, faChartLine, faCog, faHome, faArrowLeft, faGlobe);
 
