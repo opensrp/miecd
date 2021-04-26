@@ -54,4 +54,15 @@ describe('src/helpers', () => {
             </ul>
         `);
     });
+
+    it('able to add units when parsing smsEvent.message', () => {
+        const message1 =
+            'Child DOB = 23-04-2021 \nChild Gender = NU \nDelivery Location =  \nNewborn Symptoms = Lack of movement \nChild Weight = 4.9 \nChild Length = 50 \nChild Risk =  \nBreastfeeding = No breastfeeding within 1 hour\nMother Symptoms = Bu00ecnh thu01b0u1eddng';
+        const message2 =
+            'MUAC = 6.7 \nWeight = 27 \nHeight = 40 \nFeeding Status =  \nSupplements = Micronutrients Supplement: Yes\nMUAC Classification = Severe Acute Malnutrition';
+        const result1 = parseMessage(message1);
+        const result2 = parseMessage(message2);
+        expect(result1).toMatchSnapshot('Add units');
+        expect(result2).toMatchSnapshot('Add units');
+    });
 });
