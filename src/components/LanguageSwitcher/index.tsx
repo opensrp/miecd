@@ -3,8 +3,9 @@ import React from 'react';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fragment } from 'react';
+import { EN_LANGUAGE_CODE, VI_LANGUAGE_CODE } from '../../constants';
 
-export type LanguageCode = 'en' | 'vi';
+export type LanguageCode = typeof EN_LANGUAGE_CODE | typeof VI_LANGUAGE_CODE;
 
 /** describes object representation of language options */
 export type LanguageOptions = {

@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { User } from '@onaio/session-reducer';
-import { LanguageCode, LanguageOptions, LanguageSwitcher } from 'components/LanguageSwitcher';
+import { LanguageCode, LanguageSwitcher } from 'components/LanguageSwitcher';
 import * as React from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
     Collapse,
     DropdownItem,
@@ -19,7 +19,14 @@ import {
 import logo from '../../../assets/images/logo.png';
 import logo2 from '../../../assets/images/vietnam-moh.png';
 import { WEBSITE_NAME } from '../../../configs/env';
-import { HOME_URL, LOGIN_URL, LOGOUT_URL } from '../../../constants';
+import {
+    ALL_LANGUAGE_OPTIONS,
+    EN_LANGUAGE_CODE,
+    HOME_URL,
+    LOGIN_URL,
+    LOGOUT_URL,
+    VI_LANGUAGE_CODE,
+} from '../../../constants';
 import { headerShouldRender } from '../../../helpers/utils';
 import { Dictionary } from '@onaio/utils';
 import './Header.css';
@@ -66,11 +73,6 @@ export class HeaderComponent extends React.Component<HeaderPropTypes, State> {
         const { i18n, t } = this.props;
         const { authenticated, user } = this.props;
 
-        const languageOptions: LanguageOptions = {
-            en: 'English',
-            vi: 'Vietnamese',
-        };
-
         /** handler called when language is changed
          *
          * @param languageCode - contains the languageOption.key of the selected language option
@@ -81,8 +83,8 @@ export class HeaderComponent extends React.Component<HeaderPropTypes, State> {
 
         const languageSwitcherProps = {
             onLanguageChange: languageChangeHandler,
-            allLanguageOptions: languageOptions,
-            supportedLanguages: ['en', 'vi'] as LanguageCode[],
+            allLanguageOptions: ALL_LANGUAGE_OPTIONS,
+            supportedLanguages: [EN_LANGUAGE_CODE, VI_LANGUAGE_CODE],
         };
 
         if (!headerShouldRender()) {

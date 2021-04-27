@@ -185,3 +185,13 @@ export const monthNames = [
     'November',
     'December',
 ];
+
+// operational
+export const EN_LANGUAGE_CODE = 'en' as const;
+export const VI_LANGUAGE_CODE = 'vi' as const;
+
+// export const
+export const ALL_LANGUAGE_OPTIONS = {
+    [EN_LANGUAGE_CODE]: 'English',
+    [VI_LANGUAGE_CODE]: 'Vietnamese',
+};
