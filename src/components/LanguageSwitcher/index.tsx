@@ -34,12 +34,13 @@ function getSupportedLanguageOptions(languageOptions: LanguageOptions, supported
     if (!supportedLangIsDefined) {
         return supported;
     }
-    Object.keys(languageOptions).forEach((languageCode) => {
+    for (const languageCode in languageOptions) {
         if (supportedLanguages?.includes(languageCode as LanguageCode)) {
             const code = languageCode as LanguageCode;
             supported[code] = languageOptions[code];
         }
-    });
+    }
+
     return supported;
 }
 
