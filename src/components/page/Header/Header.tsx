@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { User } from '@onaio/session-reducer';
-import { LanguageCode, LanguageSwitcher } from 'components/LanguageSwitcher';
+import { LanguageSwitcher } from 'components/LanguageSwitcher';
 import * as React from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -55,6 +55,7 @@ const defaultHeaderProps: Partial<HeaderProps> = {
 };
 
 export type HeaderPropTypes = HeaderProps & WithTranslation;
+export type LanguageCode = typeof EN_LANGUAGE_CODE | typeof VI_LANGUAGE_CODE;
 
 /** The Header component */
 export class HeaderComponent extends React.Component<HeaderPropTypes, State> {
@@ -118,7 +119,7 @@ export class HeaderComponent extends React.Component<HeaderPropTypes, State> {
                                 {t('Login')}
                             </NavLink>
                         )}
-                        <LanguageSwitcher {...languageSwitcherProps} />
+                        <LanguageSwitcher<LanguageCode> {...languageSwitcherProps} />
                     </Nav>
                 </Collapse>
             </Navbar>

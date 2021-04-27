@@ -3,19 +3,16 @@ import React from 'react';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fragment } from 'react';
-import { EN_LANGUAGE_CODE, VI_LANGUAGE_CODE } from '../../constants';
-
-export type LanguageCode = typeof EN_LANGUAGE_CODE | typeof VI_LANGUAGE_CODE;
 
 /** describes object representation of language options */
-export type LanguageOptions = {
-    [key in LanguageCode]?: string;
+export type LanguageOptions<LanguageCodes extends string> = {
+    [key in LanguageCodes]?: string;
 };
 
-interface LanguageSwitcherProps {
-    allLanguageOptions: LanguageOptions;
-    supportedLanguages: LanguageCode[];
-    onLanguageChange?: (languageOptionKey: LanguageCode) => void;
+interface LanguageSwitcherProps<LanguageCodes extends string> {
+    allLanguageOptions: LanguageOptions<LanguageCodes>;
+    supportedLanguages: LanguageCodes[];
+    onLanguageChange?: (languageOptionKey: LanguageCodes) => void;
 }
 
 const defaultProps = {
@@ -28,15 +25,18 @@ const defaultProps = {
  * @param languageOptions - a map of all allowed language options
  * @param supportedLanguages - an array of the keys for options that will be displayed
  */
-function getSupportedLanguageOptions(languageOptions: LanguageOptions, supportedLanguages?: LanguageCode[]) {
-    const supported: LanguageOptions = {};
+function getSupportedLanguageOptions<LanguageCodes extends string>(
+    languageOptions: LanguageOptions<LanguageCodes>,
+    supportedLanguages?: LanguageCodes[],
+) {
+    const supported: LanguageOptions<LanguageCodes> = {};
     const supportedLangIsDefined = supportedLanguages && supportedLanguages.length > 0;
     if (!supportedLangIsDefined) {
         return supported;
     }
     for (const languageCode in languageOptions) {
-        if (supportedLanguages?.includes(languageCode as LanguageCode)) {
-            const code = languageCode as LanguageCode;
+        if (supportedLanguages?.includes(languageCode)) {
+            const code = languageCode;
             supported[code] = languageOptions[code];
         }
     }
@@ -48,13 +48,16 @@ function getSupportedLanguageOptions(languageOptions: LanguageOptions, supported
  *
  * @param props - component props
  */
-const LanguageSwitcher = (props: LanguageSwitcherProps) => {
+const LanguageSwitcher = <LanguageCodes extends string = ''>(props: LanguageSwitcherProps<LanguageCodes>) => {
     const { onLanguageChange, allLanguageOptions: fullLanguageOptions, supportedLanguages } = props;
 
-    const supportedLanguageOptions = getSupportedLanguageOptions(fullLanguageOptions, supportedLanguages);
+    const supportedLanguageOptions = getSupportedLanguageOptions<LanguageCodes>(
+        fullLanguageOptions,
+        supportedLanguages,
+    );
 
     const languageChangeHandler: React.MouseEventHandler<HTMLElement> = (event) => {
-        const key = event?.currentTarget?.getAttribute('data-key') as LanguageCode | null;
+        const key = event?.currentTarget?.getAttribute('data-key') as LanguageCodes | null;
         if (key) {
             onLanguageChange?.(key);
         }
@@ -65,7 +68,7 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
             {Object.entries(supportedLanguageOptions).map(([languageCode, label]) => {
                 return (
                     <DropdownItem data-key={languageCode} key={languageCode} onClick={languageChangeHandler}>
-                        {label}
+                        {label as string}
                     </DropdownItem>
                 );
             })}
