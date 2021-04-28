@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import { Component } from 'react';
 import 'react-table/react-table.css';
 import { Card, CardBody, CardTitle, Container, Row, Table } from 'reactstrap';
@@ -8,7 +5,7 @@ import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import NoRecord from '../../components/NoRecord';
 import Loading from '../../components/page/Loading/index';
@@ -58,6 +55,7 @@ import smsReducer, {
 } from '../../store/ducks/sms_events';
 import { SmsFilterFunction } from '../../types';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { history } from '@onaio/connected-reducer-registry';
 
 reducerRegistry.register(reducerName, locationsReducer);
 reducerRegistry.register(smsReducerName, smsReducer);
@@ -109,7 +107,7 @@ interface Props {
     compartMentUrl: string;
     module: string;
     permissionLevel: number;
-    history: any;
+    history: typeof history;
 }
 
 const defaultProps: Props = {
@@ -119,7 +117,7 @@ const defaultProps: Props = {
     direction: 'down',
     districts: [],
     fetchLocationsActionCreator: fetchLocations,
-    history: null,
+    history: history,
     module: '',
     permissionLevel: 3,
     provinces: [],
@@ -129,149 +127,183 @@ const defaultProps: Props = {
     villages: [],
 };
 
-interface Totals {
-    redAlert?: number;
-    risk?: number;
-    no_risk?: number;
-    inappropriateFeeding?: number;
-    overweight?: number;
-    stunting?: number;
-    wasting?: number;
+interface NutritionTotals {
+    inappropriateFeeding: number;
+    overweight: number;
+    stunting: number;
+    wasting: number;
+    total: number;
 }
 
-function getVillageRiskTotals(location: Location, smsData: SmsData[], module: string, riskHighlighter: any): Totals {
+interface PregnancyNpcPncTotals {
+    no_risk: number;
+    redAlert: number;
+    risk: number;
+    total: number;
+}
+
+type Totals = NutritionTotals | PregnancyNpcPncTotals;
+
+export interface RouteParams {
+    current_level: string;
+    direction: string;
+    from_level: string;
+    module: string;
+    permission_level: string;
+    node_id: string;
+    title: string;
+    risk_highlighter: string;
+}
+
+type RouterProps = RouteComponentProps<RouteParams>;
+
+export type HierarchicalDataTableType = Props & WithTranslation & RouterProps;
+
+function getVillageRiskTotals(smsData: SmsData[], module: string, riskHighlighter: RiskHighlighterType): Totals {
     const nutritionStatusConstants = [SEVERE_WASTING, OVERWEIGHT];
     const growthStatusConstants = [STUNTED];
     const feedingCategoryConstants = [INAPPROPRIATELY_FED];
-    let field: string;
+
+    let field: NUTRITION_STATUS | GROWTH_STATUS | FEEDING_CATEGORY | LOGFACE_RISK = LOGFACE_RISK;
+
     if (nutritionStatusConstants.includes(riskHighlighter)) {
         field = NUTRITION_STATUS;
     } else if (growthStatusConstants.includes(riskHighlighter)) {
         field = GROWTH_STATUS;
     } else if (feedingCategoryConstants.includes(riskHighlighter)) {
         field = FEEDING_CATEGORY;
-    } else {
-        field = LOGFACE_RISK;
     }
-    let reducer = null;
+
+    let reducer: (accumulator: Totals, dataItem: SmsData) => Totals;
+
     if (module === NUTRITION) {
         reducer = (accumulator: Totals, dataItem: SmsData) => {
             if (dataItem[NUTRITION_STATUS] === SEVERE_WASTING) {
                 return {
                     ...accumulator,
-                    wasting: (accumulator as any).wasting + 1,
+                    wasting: (accumulator as NutritionTotals).wasting + 1,
+                    total: accumulator.total + 1,
                 };
             }
             if (dataItem[NUTRITION_STATUS] === OVERWEIGHT) {
                 return {
                     ...accumulator,
-                    overweight: (accumulator as any).overweight + 1,
+                    overweight: (accumulator as NutritionTotals).overweight + 1,
+                    total: accumulator.total + 1,
                 };
             }
             if (dataItem[GROWTH_STATUS] === STUNTED) {
                 return {
                     ...accumulator,
-                    stunting: (accumulator as any).stunting + 1,
+                    stunting: (accumulator as NutritionTotals).stunting + 1,
+                    total: accumulator.total + 1,
                 };
             }
             if (dataItem[FEEDING_CATEGORY] === INAPPROPRIATELY_FED) {
                 return {
                     ...accumulator,
-                    inappropriateFeeding: (accumulator as any).inappropriateFeeding + 1,
+                    inappropriateFeeding: (accumulator as NutritionTotals).inappropriateFeeding + 1,
+                    total: accumulator.total + 1,
                 };
             }
             return accumulator;
         };
     } else {
         reducer = (accumulator: Totals, dataItem: SmsData) => {
-            switch ((dataItem as any)[field]) {
+            switch (dataItem[field]) {
                 case RED:
                     return {
                         ...accumulator,
-                        redAlert: (accumulator as any).redAlert + 1,
+                        redAlert: (accumulator as PregnancyNpcPncTotals).redAlert + 1,
+                        total: accumulator.total + 1,
                     };
                 case HIGH:
                     return {
                         ...accumulator,
-                        risk: (accumulator as any).risk + 1,
+                        risk: (accumulator as PregnancyNpcPncTotals).risk + 1,
+                        total: accumulator.total + 1,
                     };
                 case LOW:
                     return {
                         ...accumulator,
-                        risk: (accumulator as any).risk + 1,
+                        risk: (accumulator as PregnancyNpcPncTotals).risk + 1,
+                        total: accumulator.total + 1,
                     };
                 case NO_RISK_LOWERCASE:
                     return {
                         ...accumulator,
-                        no_risk: (accumulator as any).no_risk + 1,
+                        no_risk: (accumulator as PregnancyNpcPncTotals).no_risk + 1,
+                        total: accumulator.total + 1,
                     };
                 default:
-                    return accumulator as any;
+                    return accumulator;
             }
         };
     }
-    let totalsMap: Totals;
-    if (module !== NUTRITION) {
-        totalsMap = {
-            no_risk: 0,
-            redAlert: 0,
-            risk: 0,
-        };
-    } else {
-        totalsMap = {
-            inappropriateFeeding: 0,
-            overweight: 0,
-            stunting: 0,
-            wasting: 0,
-        };
-    }
-    return smsData
-        .filter((dataItem: SmsData) => dataItem.location_id === location.location_id)
-        .reduce(reducer, totalsMap);
+
+    const totalsMap: Totals =
+        module !== NUTRITION
+            ? {
+                  no_risk: 0,
+                  redAlert: 0,
+                  risk: 0,
+                  total: 0,
+              }
+            : {
+                  inappropriateFeeding: 0,
+                  overweight: 0,
+                  stunting: 0,
+                  wasting: 0,
+                  total: 0,
+              };
+
+    return smsData.reduce(reducer, totalsMap);
 }
+
 function getRiskTotals(locations: LocationWithData[], module: string) {
-    const reducer = (accumulator: Totals, location: LocationWithData): Totals => {
-        if (module !== NUTRITION) {
+    let reducer: (accumulator: Totals, location: LocationWithData) => Totals;
+
+    if (module === NUTRITION) {
+        reducer = (accumulator: Totals, location: LocationWithData) => {
             return {
-                no_risk: (accumulator as any).no_risk + location.no_risk,
-                redAlert: (accumulator as any).redAlert + location.redAlert,
-                risk: (accumulator as any).risk + location.risk,
+                inappropriateFeeding:
+                    (accumulator as NutritionTotals).inappropriateFeeding +
+                    (location as NutritionTotals).inappropriateFeeding,
+                overweight: (accumulator as NutritionTotals).overweight + (location as NutritionTotals).overweight,
+                stunting: (accumulator as NutritionTotals).stunting + (location as NutritionTotals).stunting,
+                wasting: (accumulator as NutritionTotals).wasting + (location as NutritionTotals).wasting,
+                total: accumulator.total + location.total,
             };
-        }
-        return {
-            inappropriateFeeding: (accumulator as any).inappropriateFeeding + location.inappropriateFeeding,
-            overweight: (accumulator as any).overweight + location.overweight,
-            stunting: (accumulator as any).stunting + location.stunting,
-            wasting: (accumulator as any).wasting + location.wasting,
-        };
-    };
-    let totalsMap: Totals;
-    if (module !== NUTRITION) {
-        totalsMap = {
-            no_risk: 0,
-            redAlert: 0,
-            risk: 0,
         };
     } else {
-        totalsMap = {
-            inappropriateFeeding: 0,
-            overweight: 0,
-            stunting: 0,
-            wasting: 0,
+        reducer = (accumulator: Totals, location: LocationWithData) => {
+            return {
+                no_risk: (accumulator as PregnancyNpcPncTotals).no_risk + (location as PregnancyNpcPncTotals).no_risk,
+                redAlert:
+                    (accumulator as PregnancyNpcPncTotals).redAlert + (location as PregnancyNpcPncTotals).redAlert,
+                risk: (accumulator as PregnancyNpcPncTotals).risk + (location as PregnancyNpcPncTotals).risk,
+                total: (accumulator as PregnancyNpcPncTotals).total + (location as PregnancyNpcPncTotals).total,
+            };
         };
     }
+
+    const totalsMap: Totals =
+        module !== NUTRITION
+            ? {
+                  no_risk: 0,
+                  redAlert: 0,
+                  risk: 0,
+                  total: 0,
+              }
+            : {
+                  inappropriateFeeding: 0,
+                  overweight: 0,
+                  stunting: 0,
+                  wasting: 0,
+                  total: 0,
+              };
+
     return locations.reduce(reducer, totalsMap);
-}
-function getTotal(riskTotals: Totals, module: string) {
-    if (module !== NUTRITION) {
-        return (riskTotals as any).redAlert + riskTotals.risk + riskTotals.no_risk;
-    }
-    return (
-        (riskTotals as any).overweight +
-        (riskTotals as any).stunting +
-        (riskTotals as any).inappropriateFeeding +
-        (riskTotals as any).wasting
-    );
 }
 
 type locationKeys = 'communes' | 'districts' | 'provinces' | 'villages';
@@ -286,23 +318,29 @@ function addDataToLocations(
 ): { [key in locationKeys]: LocationWithData[] } {
     const villagesWithData: LocationWithData[] = [];
     for (const village of locations.villages) {
-        const villageRiskTotals: Totals = getVillageRiskTotals(village, smsData, module, riskHighlighter);
-        const totalRisk = getTotal(villageRiskTotals, module);
-        if (module !== NUTRITION) {
+        // filter sms data for data matching village
+        const villageSmsData = smsData.filter((dataItem: SmsData) => dataItem.location_id === village.location_id);
+        // get risk totals for that village
+        const villageRiskTotals = getVillageRiskTotals(villageSmsData, module, riskHighlighter);
+
+        // infer type PregnancyNpcPncTotals
+        if ('no_risk' in villageRiskTotals) {
             villagesWithData.push({
                 ...village,
                 no_risk: villageRiskTotals.no_risk,
                 redAlert: villageRiskTotals.redAlert,
                 risk: villageRiskTotals.risk,
-                total: totalRisk,
+                total: villageRiskTotals.total,
             });
-        } else {
+        }
+        // infer type NutritionTotals
+        else {
             villagesWithData.push({
                 inappropriateFeeding: villageRiskTotals.inappropriateFeeding,
                 ...village,
                 overweight: villageRiskTotals.overweight,
                 stunting: villageRiskTotals.stunting,
-                total: totalRisk,
+                total: villageRiskTotals.total,
                 wasting: villageRiskTotals.wasting,
             });
         }
@@ -313,24 +351,23 @@ function addDataToLocations(
         const villagesInThisCommune = villagesWithData.filter(
             (village: LocationWithData) => village.parent_id === commune.location_id,
         );
-        const communeRisktotals = getRiskTotals(villagesInThisCommune, module);
-        const totalRisk = getTotal(communeRisktotals, module);
-        if (module !== NUTRITION) {
+        const communeRiskTotals = getRiskTotals(villagesInThisCommune, module);
+        if ('no_risk' in communeRiskTotals) {
             communesWithData.push({
                 ...commune,
-                no_risk: communeRisktotals.no_risk,
-                redAlert: communeRisktotals.redAlert,
-                risk: communeRisktotals.risk,
-                total: totalRisk,
+                no_risk: communeRiskTotals.no_risk,
+                redAlert: communeRiskTotals.redAlert,
+                risk: communeRiskTotals.risk,
+                total: communeRiskTotals.total,
             });
         } else {
             communesWithData.push({
                 ...commune,
-                inappropriateFeeding: communeRisktotals.inappropriateFeeding,
-                overweight: communeRisktotals.overweight,
-                stunting: communeRisktotals.stunting,
-                total: totalRisk,
-                wasting: communeRisktotals.wasting,
+                inappropriateFeeding: communeRiskTotals.inappropriateFeeding,
+                overweight: communeRiskTotals.overweight,
+                stunting: communeRiskTotals.stunting,
+                total: communeRiskTotals.total,
+                wasting: communeRiskTotals.wasting,
             });
         }
     }
@@ -340,24 +377,23 @@ function addDataToLocations(
         const communesInThisDistrict = communesWithData.filter(
             (commune: LocationWithData) => commune.parent_id === district.location_id,
         );
-        const districtRisktotals = getRiskTotals(communesInThisDistrict, module);
-        const totalRisk = getTotal(districtRisktotals, module);
-        if (module !== NUTRITION) {
+        const districtRiskTotals = getRiskTotals(communesInThisDistrict, module);
+        if ('no_risk' in districtRiskTotals) {
             districtsWithData.push({
                 ...district,
-                no_risk: districtRisktotals.no_risk,
-                redAlert: districtRisktotals.redAlert,
-                risk: districtRisktotals.risk,
-                total: totalRisk,
+                no_risk: districtRiskTotals.no_risk,
+                redAlert: districtRiskTotals.redAlert,
+                risk: districtRiskTotals.risk,
+                total: districtRiskTotals.total,
             });
         } else {
             districtsWithData.push({
                 ...district,
-                inappropriateFeeding: districtRisktotals.inappropriateFeeding,
-                overweight: districtRisktotals.overweight,
-                stunting: districtRisktotals.stunting,
-                total: totalRisk,
-                wasting: districtRisktotals.wasting,
+                inappropriateFeeding: districtRiskTotals.inappropriateFeeding,
+                overweight: districtRiskTotals.overweight,
+                stunting: districtRiskTotals.stunting,
+                total: districtRiskTotals.total,
+                wasting: districtRiskTotals.wasting,
             });
         }
     }
@@ -367,24 +403,23 @@ function addDataToLocations(
         const districtsInThisProvince = districtsWithData.filter(
             (district: LocationWithData) => district.parent_id === province.location_id,
         );
-        const provinceRisktotals = getRiskTotals(districtsInThisProvince, module);
-        const totalRisk = getTotal(provinceRisktotals, module);
-        if (module !== NUTRITION) {
+        const provinceRiskTotals = getRiskTotals(districtsInThisProvince, module);
+        if ('no_risk' in provinceRiskTotals) {
             provincesWithData.push({
                 ...province,
-                no_risk: provinceRisktotals.no_risk,
-                redAlert: provinceRisktotals.redAlert,
-                risk: provinceRisktotals.risk,
-                total: totalRisk,
+                no_risk: provinceRiskTotals.no_risk,
+                redAlert: provinceRiskTotals.redAlert,
+                risk: provinceRiskTotals.risk,
+                total: provinceRiskTotals.total,
             });
         } else {
             provincesWithData.push({
                 ...province,
-                inappropriateFeeding: provinceRisktotals.inappropriateFeeding,
-                overweight: provinceRisktotals.overweight,
-                stunting: provinceRisktotals.stunting,
-                total: totalRisk,
-                wasting: provinceRisktotals.wasting,
+                inappropriateFeeding: provinceRiskTotals.inappropriateFeeding,
+                overweight: provinceRiskTotals.overweight,
+                stunting: provinceRiskTotals.stunting,
+                total: provinceRiskTotals.total,
+                wasting: provinceRiskTotals.wasting,
             });
         }
     }
@@ -396,8 +431,6 @@ function addDataToLocations(
         villages: villagesWithData,
     };
 }
-
-export type HierarchicalDataTableType = Props & WithTranslation;
 
 class HierarchichalDataTable extends Component<HierarchicalDataTableType, State> {
     public static defaultProps = defaultProps;
@@ -414,7 +447,9 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
             nextProps.module,
             nextProps.risk_highligter || '',
         );
+
         let dataToShow: LocationWithData[] = [];
+
         if ((nextProps.direction === UP && nextProps.current_level === 0) || !nextProps.node_id) {
             dataToShow = locationsWithData.provinces;
         } else if (nextProps.direction === UP && nextProps.current_level === 1) {
@@ -455,6 +490,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                     : nextProps.current_level === 2
                     ? locationsWithData.communes
                     : locationsWithData.villages;
+
             dataToShow = nextProps.node_id
                 ? dataToShow.filter((dataItem: LocationWithData) => dataItem.parent_id === nextProps.node_id)
                 : dataToShow;
@@ -465,21 +501,24 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
         const nutritionStatusConstants = [SEVERE_WASTING, OVERWEIGHT];
         const growthStatusConstants = [STUNTED];
         const feedingCategoryConstants = [INAPPROPRIATELY_FED];
-        let field: string;
-        if (nutritionStatusConstants.includes((nextProps as any).risk_highligter)) {
-            field = NUTRITION_STATUS;
-        } else if (growthStatusConstants.includes((nextProps as any).risk_highligter)) {
-            field = GROWTH_STATUS;
-        } else if (feedingCategoryConstants.includes((nextProps as any).risk_highligter)) {
-            field = FEEDING_CATEGORY;
-        } else {
-            field = LOGFACE_RISK;
+
+        let field: NUTRITION_STATUS | GROWTH_STATUS | FEEDING_CATEGORY | LOGFACE_RISK = LOGFACE_RISK;
+
+        if (nextProps.risk_highligter) {
+            if (nutritionStatusConstants.includes(nextProps.risk_highligter)) {
+                field = NUTRITION_STATUS;
+            } else if (growthStatusConstants.includes(nextProps.risk_highligter)) {
+                field = GROWTH_STATUS;
+            } else if (feedingCategoryConstants.includes(nextProps.risk_highligter)) {
+                field = FEEDING_CATEGORY;
+            }
         }
+
         const villageData = nextProps.smsData.filter((dataItem: SmsData) => {
             if (nextProps.risk_highligter === RISK) {
                 return (
-                    (locationIds.includes(dataItem.location_id) && (dataItem as any)[field].includes(HIGH)) ||
-                    (dataItem as any)[field].includes(LOW)
+                    (locationIds.includes(dataItem.location_id) && dataItem[field].includes(HIGH)) ||
+                    dataItem[field].includes(LOW)
                 );
             }
             return (
@@ -487,7 +526,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                 (nextProps.risk_highligter === ALL
                     ? true
                     : nextProps.risk_highligter
-                    ? (dataItem as any)[field].includes(nextProps.risk_highligter ? nextProps.risk_highligter : '')
+                    ? dataItem[field].includes(nextProps.risk_highligter ? nextProps.risk_highligter : '')
                     : true)
             );
         });
@@ -705,7 +744,8 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                             </tr>
                                         )}
                                         {(() => {
-                                            return this.props.module !== NUTRITION ? (
+                                            // inferred type PregnancyNpcPncTotals
+                                            return 'no_risk' in element ? (
                                                 <tr key="total" className="totals-row">
                                                     <td className="default-width" id="total">
                                                         {t(`Total (${this.getLevelString()})`)}
@@ -873,44 +913,52 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
 }
 
 const getTotals = (dataToShow: LocationWithData[], module: string) => {
-    const reducer = (accumulator: Partial<LocationWithData>, currentValue: any) => {
-        if (module !== NUTRITION) {
+    let reducer: (accumulator: Totals, currentValue: LocationWithData) => Totals;
+
+    if (module === NUTRITION) {
+        reducer = (accumulator: Totals, currentValue: LocationWithData) => {
             return {
-                no_risk: accumulator.no_risk + currentValue.no_risk,
-                redAlert: accumulator.redAlert + currentValue.redAlert,
-                risk: accumulator.risk + currentValue.risk,
+                inappropriateFeeding:
+                    (accumulator as NutritionTotals).inappropriateFeeding +
+                    (currentValue as NutritionTotals).inappropriateFeeding,
+                overweight: (accumulator as NutritionTotals).overweight + (currentValue as NutritionTotals).overweight,
+                stunting: (accumulator as NutritionTotals).stunting + (currentValue as NutritionTotals).stunting,
                 total: accumulator.total + currentValue.total,
+                wasting: (accumulator as NutritionTotals).wasting + (currentValue as NutritionTotals).wasting,
             };
-        }
-        return {
-            inappropriateFeeding: accumulator.inappropriateFeeding + currentValue.inappropriateFeeding,
-            overweight: accumulator.overweight + currentValue.overweight,
-            stunting: accumulator.stunting + currentValue.stunting,
-            total: accumulator.total + currentValue.total,
-            wasting: accumulator.wasting + currentValue.wasting,
-        };
-    };
-    let totalsMap: { [key: string]: number };
-    if (module !== NUTRITION) {
-        totalsMap = {
-            no_risk: 0,
-            redAlert: 0,
-            risk: 0,
-            total: 0,
         };
     } else {
-        totalsMap = {
-            inappropriateFeeding: 0,
-            overweight: 0,
-            stunting: 0,
-            total: 0,
-            wasting: 0,
+        reducer = (accumulator: Totals, currentValue: LocationWithData) => {
+            return {
+                no_risk:
+                    (accumulator as PregnancyNpcPncTotals).no_risk + (currentValue as PregnancyNpcPncTotals).no_risk,
+                redAlert:
+                    (accumulator as PregnancyNpcPncTotals).redAlert + (currentValue as PregnancyNpcPncTotals).redAlert,
+                risk: (accumulator as PregnancyNpcPncTotals).risk + (currentValue as PregnancyNpcPncTotals).risk,
+                total: accumulator.total + currentValue.total,
+            };
         };
     }
+    const totalsMap =
+        module !== NUTRITION
+            ? {
+                  no_risk: 0,
+                  redAlert: 0,
+                  risk: 0,
+                  total: 0,
+              }
+            : {
+                  inappropriateFeeding: 0,
+                  overweight: 0,
+                  stunting: 0,
+                  total: 0,
+                  wasting: 0,
+              };
+
     return dataToShow.reduce(reducer, totalsMap);
 };
 
-const mapStateToProps = (state: Partial<Store>, ownProps: any): any => {
+const mapStateToProps = (state: Partial<Store>, ownProps: HierarchicalDataTableType) => {
     return {
         communes: getLocationsOfLevel(state, 'Commune'),
         current_level: parseInt(ownProps.match.params.current_level, 10),
@@ -919,9 +967,9 @@ const mapStateToProps = (state: Partial<Store>, ownProps: any): any => {
         from_level: ownProps.match.params.from_level,
         module: ownProps.match.params.module,
         node_id: ownProps.match.params.node_id,
-        permissionLevel: ownProps.match.params.permission_level,
+        permissionLevel: parseInt(ownProps.match.params.permission_level),
         provinces: getLocationsOfLevel(state, 'Province'),
-        risk_highligter: ownProps.match.params.risk_highlighter,
+        risk_highligter: ownProps.match.params.risk_highlighter as RiskHighlighterType,
         smsData: getFilterArgs(state)
             ? getFilteredSmsData(state, getFilterArgs(state) as SmsFilterFunction[])
             : getSmsData(state),
@@ -932,8 +980,6 @@ const mapStateToProps = (state: Partial<Store>, ownProps: any): any => {
 
 const mapDispatchToProps = { fetchLocationsActionCreator: fetchLocations };
 
-const ConnectedHierarchicalDataTable = withTranslation()(
-    withRouter(connect(mapStateToProps, mapDispatchToProps)(HierarchichalDataTable)),
-);
+const ConnectedHierarchicalDataTable = connect(mapStateToProps, mapDispatchToProps)(withRouter(HierarchichalDataTable));
 
-export default ConnectedHierarchicalDataTable;
+export default withTranslation()(ConnectedHierarchicalDataTable);
