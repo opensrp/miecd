@@ -3,7 +3,7 @@
  * - user can only filter for locations that they have been allowed access to,
  * we determine this by using the locationHierarchy of the user returned from security authenticate
  */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select, { components } from 'react-select';
@@ -39,6 +39,15 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
     const [selectedNode, setSelectedNode] = useState<TreeNode | undefined>();
     const [closeMenuOnSelect, setMenuToClose] = useState<boolean>(false);
 
+    useEffect(() => {
+        // don't close dropdown after user makes selection if selected node has children
+        if (selectedNode?.hasChildren()) {
+            setMenuToClose(false);
+        } else {
+            setMenuToClose(true);
+        }
+    }, [selectedNode]);
+
     /** handles a location selection */
     const changeHandler = (value: string) => {
         if (value) {
@@ -54,11 +63,6 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
                     }),
                 ),
             );
-            if (thisNode?.hasChildren()) {
-                setMenuToClose(false);
-            } else {
-                setMenuToClose(true);
-            }
             const path: TreeNode[] = thisNode?.getPath() as TreeNode[];
             path.pop();
             setHierarchy(path);
