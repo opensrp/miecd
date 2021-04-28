@@ -1,5 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`containers/LogFace extended filters work correctly: risk filter 1`] = `
+<select
+  data-testid="select"
+  onChange={[Function]}
+>
+  <option
+    key="red_alert"
+    value="red_alert"
+  >
+    Red alert
+  </option>
+  <option
+    key="risk"
+    value="risk"
+  >
+    Risk
+  </option>
+  <option
+    key="no_risk"
+    value="no_risk"
+  >
+    No risk
+  </option>
+</select>
+`;
+
 exports[`containers/LogFace renders correctly: filter div 1`] = `
 Array [
   <div
@@ -8,68 +34,53 @@ Array [
     <span>
       Risk Level
     </span>
-    <SelectComponent
+    <Component
       classNamePrefix="logface-filters"
-      disabled={false}
+      id="risk-filter"
+      isClearable={true}
       onChange={[Function]}
       options={
         Array [
           Object {
-            "label": "red",
-            "value": "red",
+            "label": "Red alert",
+            "value": "red_alert",
           },
           Object {
-            "label": "high",
-            "value": "high",
+            "label": "Risk",
+            "value": "risk",
           },
           Object {
-            "label": "low",
-            "value": "low",
-          },
-          Object {
-            "label": "no risk",
-            "value": "no risk",
-          },
-          Object {
-            "label": "all",
-            "value": "all",
+            "label": "No risk",
+            "value": "no_risk",
           },
         ]
       }
       placeholder="Select risk"
     >
       <select
-        className="mock-select undefined"
-        classNamePrefix="logface-filters"
-        disabled={false}
+        data-testid="select"
         onChange={[Function]}
-        options={
-          Array [
-            Object {
-              "label": "red",
-              "value": "red",
-            },
-            Object {
-              "label": "high",
-              "value": "high",
-            },
-            Object {
-              "label": "low",
-              "value": "low",
-            },
-            Object {
-              "label": "no risk",
-              "value": "no risk",
-            },
-            Object {
-              "label": "all",
-              "value": "all",
-            },
-          ]
-        }
-        placeholder="Select risk"
-      />
-    </SelectComponent>
+      >
+        <option
+          key="red_alert"
+          value="red_alert"
+        >
+          Red alert
+        </option>
+        <option
+          key="risk"
+          value="risk"
+        >
+          Risk
+        </option>
+        <option
+          key="no_risk"
+          value="no_risk"
+        >
+          No risk
+        </option>
+      </select>
+    </Component>
   </div>,
   <div
     className="logface-page-filter"
@@ -77,44 +88,33 @@ Array [
     <span>
       Select Location
     </span>
-    <SelectComponent
-      classNamePrefix="logface-filters"
+    <SelectLocationFilter
       disabled={false}
-      onChange={[Function]}
-      options={
-        Array [
-          Object {
-            "label": "Yen Phu Village",
-            "value": "Yen Phu Village",
-          },
-          Object {
-            "label": "all",
-            "value": "all",
-          },
-        ]
-      }
-      placeholder="Select location"
+      onLocationChange={[Function]}
+      userLocationId="d1865325-11e6-4e39-817b-e676c1affecf"
     >
-      <select
-        className="mock-select undefined"
+      <Component
         classNamePrefix="logface-filters"
-        disabled={false}
-        onChange={[Function]}
-        options={
-          Array [
-            Object {
-              "label": "Yen Phu Village",
-              "value": "Yen Phu Village",
-            },
-            Object {
-              "label": "all",
-              "value": "all",
-            },
-          ]
+        closeMenuOnSelect={false}
+        components={
+          Object {
+            "Menu": [Function],
+          }
         }
+        disabled={false}
+        isClearable={true}
+        isSearchable={true}
+        onChange={[Function]}
+        onInputChange={[Function]}
+        options={Array []}
         placeholder="Select location"
-      />
-    </SelectComponent>
+      >
+        <select
+          data-testid="select"
+          onChange={[Function]}
+        />
+      </Component>
+    </SelectLocationFilter>
   </div>,
   <div
     className="logface-page-filter"
@@ -122,9 +122,10 @@ Array [
     <span>
       Type
     </span>
-    <SelectComponent
+    <Component
       classNamePrefix="logface-filters"
-      disabled={false}
+      id="sms-type-filter"
+      isClearable={true}
       onChange={[Function]}
       options={
         Array [
@@ -209,93 +210,125 @@ Array [
       placeholder="Select type"
     >
       <select
-        className="mock-select undefined"
-        classNamePrefix="logface-filters"
-        disabled={false}
+        data-testid="select"
         onChange={[Function]}
-        options={
-          Array [
-            Object {
-              "label": "Response Report",
-              "value": "Response Report",
-            },
-            Object {
-              "label": "Red Alert Report",
-              "value": "Red Alert Report",
-            },
-            Object {
-              "label": "Social Determinants",
-              "value": "Social Determinants",
-            },
-            Object {
-              "label": "ANC Visit",
-              "value": "ANC Visit",
-            },
-            Object {
-              "label": "Delivery Planning",
-              "value": "Delivery Planning",
-            },
-            Object {
-              "label": "Pregnancy Detection",
-              "value": "Pregnancy Detection",
-            },
-            Object {
-              "label": "Pregnancy Identification",
-              "value": "Pregnancy Identification",
-            },
-            Object {
-              "label": "Pregnancy registration",
-              "value": "Pregnancy registration",
-            },
-            Object {
-              "label": "ANC Report",
-              "value": "ANC Report",
-            },
-            Object {
-              "label": "Home Visit Report",
-              "value": "Home Visit Report",
-            },
-            Object {
-              "label": "Birth Report",
-              "value": "Birth Report",
-            },
-            Object {
-              "label": "Death Report",
-              "value": "Death Report",
-            },
-            Object {
-              "label": "Postnatal and Newborn Care",
-              "value": "Postnatal and Newborn Care",
-            },
-            Object {
-              "label": "Nutrition Registration",
-              "value": "Nutrition Registration",
-            },
-            Object {
-              "label": "Nutrition Report",
-              "value": "Nutrition Report",
-            },
-            Object {
-              "label": "Monthly Nutrition Report",
-              "value": "Monthly Nutrition Report",
-            },
-            Object {
-              "label": "Departure Code",
-              "value": "Departure Code",
-            },
-            Object {
-              "label": "Refusal Code",
-              "value": "Refusal Code",
-            },
-            Object {
-              "label": "Account Check",
-              "value": "Account Check",
-            },
-          ]
-        }
-        placeholder="Select type"
-      />
-    </SelectComponent>
+      >
+        <option
+          key="Response Report"
+          value="Response Report"
+        >
+          Response Report
+        </option>
+        <option
+          key="Red Alert Report"
+          value="Red Alert Report"
+        >
+          Red Alert Report
+        </option>
+        <option
+          key="Social Determinants"
+          value="Social Determinants"
+        >
+          Social Determinants
+        </option>
+        <option
+          key="ANC Visit"
+          value="ANC Visit"
+        >
+          ANC Visit
+        </option>
+        <option
+          key="Delivery Planning"
+          value="Delivery Planning"
+        >
+          Delivery Planning
+        </option>
+        <option
+          key="Pregnancy Detection"
+          value="Pregnancy Detection"
+        >
+          Pregnancy Detection
+        </option>
+        <option
+          key="Pregnancy Identification"
+          value="Pregnancy Identification"
+        >
+          Pregnancy Identification
+        </option>
+        <option
+          key="Pregnancy registration"
+          value="Pregnancy registration"
+        >
+          Pregnancy registration
+        </option>
+        <option
+          key="ANC Report"
+          value="ANC Report"
+        >
+          ANC Report
+        </option>
+        <option
+          key="Home Visit Report"
+          value="Home Visit Report"
+        >
+          Home Visit Report
+        </option>
+        <option
+          key="Birth Report"
+          value="Birth Report"
+        >
+          Birth Report
+        </option>
+        <option
+          key="Death Report"
+          value="Death Report"
+        >
+          Death Report
+        </option>
+        <option
+          key="Postnatal and Newborn Care"
+          value="Postnatal and Newborn Care"
+        >
+          Postnatal and Newborn Care
+        </option>
+        <option
+          key="Nutrition Registration"
+          value="Nutrition Registration"
+        >
+          Nutrition Registration
+        </option>
+        <option
+          key="Nutrition Report"
+          value="Nutrition Report"
+        >
+          Nutrition Report
+        </option>
+        <option
+          key="Monthly Nutrition Report"
+          value="Monthly Nutrition Report"
+        >
+          Monthly Nutrition Report
+        </option>
+        <option
+          key="Departure Code"
+          value="Departure Code"
+        >
+          Departure Code
+        </option>
+        <option
+          key="Refusal Code"
+          value="Refusal Code"
+        >
+          Refusal Code
+        </option>
+        <option
+          key="Account Check"
+          value="Account Check"
+        >
+          Account Check
+        </option>
+      </select>
+    </Component>
   </div>,
 ]
 `;
@@ -592,10 +625,8 @@ exports[`containers/LogFace renders correctly: paginator 1`] = `
 exports[`containers/LogFace renders correctly: search div 1`] = `
 <input
   className="form-control logface-search"
-  disabled={false}
-  id="input"
+  id="search"
   name="input"
-  onBlur={[Function]}
   onChange={[Function]}
   placeholder="Search ID, Reporter, Patients"
   type="text"
@@ -656,12 +687,12 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
     id="body"
   >
     <tr
-      key="1570173602178"
+      key="1570170995321"
     >
       <td
         className="default-width"
       >
-        04/10/19
+        04/10/2019
       </td>
       <td
         className="default-width"
@@ -671,28 +702,28 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       <td
         className="default-width"
       >
-        Response Report
+        Pregnancy Detection
       </td>
       <td
         className="default-width"
       >
-        Husna Hariz
+        HMN
       </td>
       <td
         className="default-width"
       >
         <Link
-          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+          to="/pregnancy_log_face/patient_detail/100PAH"
         >
           <LinkAnchor
-            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+            href="/pregnancy_log_face/patient_detail/100PAH"
             navigate={[Function]}
           >
             <a
-              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+              href="/pregnancy_log_face/patient_detail/100PAH"
               onClick={[Function]}
             >
-              100P9K-20191001-01
+              100PAH
             </a>
           </LinkAnchor>
         </Link>
@@ -700,26 +731,26 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       <td
         className="small-width"
       >
-        3d
+        30 years
       </td>
       <td
         className="large-width"
       >
         <ul>
           <li
-            key="Symptoms : No symptoms-0"
+            key="Name : Joy Loiuse-0"
           >
-            Symptoms : No symptoms
+            Name : Joy Loiuse
           </li>
           <li
-            key="Intervention : Ambulance On Time-1"
+            key="Phone Number : +84983105510-1"
           >
-            Intervention : Ambulance On Time
+            Phone Number : +84983105510
           </li>
           <li
-            key="Health Status : -2"
+            key="Health Insurance : NA-2"
           >
-            Health Status : 
+            Health Insurance : NA
           </li>
         </ul>
       </td>
@@ -727,127 +758,30 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
         className="default-width"
       >
         <Link
-          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+          to="/pregnancy_log_face/patient_detail/100PAH"
         >
           <LinkAnchor
-            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+            href="/pregnancy_log_face/patient_detail/100PAH"
             navigate={[Function]}
           >
             <a
-              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+              href="/pregnancy_log_face/patient_detail/100PAH"
               onClick={[Function]}
             >
               <RiskColoring
-                risk="no risk"
+                risk=" NULL"
               >
                 <span
-                  className="badge badge-success"
-                  id="default-width"
+                  className="badge"
+                  style={
+                    Object {
+                      "backgroundColor": "#6c757d",
+                    }
+                  }
                 >
                   <div>
                     <p>
-                      No Risk
-                    </p>
-                  </div>
-                </span>
-              </RiskColoring>
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-    </tr>
-    <tr
-      key="1570173399115"
-    >
-      <td
-        className="default-width"
-      >
-        04/10/19
-      </td>
-      <td
-        className="default-width"
-      >
-        Yen Phu Village
-      </td>
-      <td
-        className="default-width"
-      >
-        Red Alert Report
-      </td>
-      <td
-        className="default-width"
-      >
-        Husna Hariz
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
-              onClick={[Function]}
-            >
-              100P9K-20191001-01
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-      <td
-        className="small-width"
-      >
-        3d
-      </td>
-      <td
-        className="large-width"
-      >
-        <ul>
-          <li
-            key="Symptoms : Coughing, Fever-0"
-          >
-            Symptoms : Coughing, Fever
-          </li>
-          <li
-            key="Location : At home-1"
-          >
-            Location : At home
-          </li>
-          <li
-            key="Interventions : -2"
-          >
-            Interventions : 
-          </li>
-        </ul>
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
-              onClick={[Function]}
-            >
-              <RiskColoring
-                risk="red"
-              >
-                <span
-                  className="badge badge-danger"
-                  id="default-width"
-                >
-                  <div>
-                    <p>
-                      Red Alert
+                      Not set
                     </p>
                   </div>
                 </span>
@@ -863,7 +797,7 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       <td
         className="default-width"
       >
-        04/10/19
+        04/10/2019
       </td>
       <td
         className="default-width"
@@ -902,16 +836,16 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       <td
         className="small-width"
       >
-        30y 9m
+        30 years
       </td>
       <td
         className="large-width"
       >
         <ul>
           <li
-            key="EDD : 09-10-2019-0"
+            key="EDD : 09/10/2019-0"
           >
-            EDD : 09-10-2019
+            EDD : 09/10/2019
           </li>
           <li
             key="Gravidity : 3-1"
@@ -924,14 +858,14 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
             Parity : 1
           </li>
           <li
-            key="Weight : 55-3"
+            key="Weight : 55kg-3"
           >
-            Weight : 55
+            Weight : 55kg
           </li>
           <li
-            key="Height : 145-4"
+            key="Height : 145cm-4"
           >
-            Height : 145
+            Height : 145cm
           </li>
           <li
             key="BMI : 26-5"
@@ -965,15 +899,364 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
               onClick={[Function]}
             >
               <RiskColoring
-                risk="red"
+                risk="red_alert"
               >
                 <span
-                  className="badge badge-danger"
-                  id="default-width"
+                  className="badge"
+                  style={
+                    Object {
+                      "backgroundColor": "#dc3545",
+                    }
+                  }
                 >
                   <div>
                     <p>
-                      Red Alert
+                      Red alert
+                    </p>
+                  </div>
+                </span>
+              </RiskColoring>
+            </a>
+          </LinkAnchor>
+        </Link>
+      </td>
+    </tr>
+    <tr
+      key="1570173399115"
+    >
+      <td
+        className="default-width"
+      >
+        04/10/2019
+      </td>
+      <td
+        className="default-width"
+      >
+        Yen Phu Village
+      </td>
+      <td
+        className="default-width"
+      >
+        Red Alert Report
+      </td>
+      <td
+        className="default-width"
+      >
+        Husna Hariz
+      </td>
+      <td
+        className="default-width"
+      >
+        <Link
+          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+        >
+          <LinkAnchor
+            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+            navigate={[Function]}
+          >
+            <a
+              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+              onClick={[Function]}
+            >
+              100P9K-20191001-01
+            </a>
+          </LinkAnchor>
+        </Link>
+      </td>
+      <td
+        className="small-width"
+      >
+        3 days
+      </td>
+      <td
+        className="large-width"
+      >
+        <ul>
+          <li
+            key="Symptoms : Coughing, Fever-0"
+          >
+            Symptoms : Coughing, Fever
+          </li>
+          <li
+            key="Location : At home-1"
+          >
+            Location : At home
+          </li>
+          <li
+            key="Interventions : -2"
+          >
+            Interventions : 
+          </li>
+        </ul>
+      </td>
+      <td
+        className="default-width"
+      >
+        <Link
+          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+        >
+          <LinkAnchor
+            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+            navigate={[Function]}
+          >
+            <a
+              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+              onClick={[Function]}
+            >
+              <RiskColoring
+                risk="red_alert"
+              >
+                <span
+                  className="badge"
+                  style={
+                    Object {
+                      "backgroundColor": "#dc3545",
+                    }
+                  }
+                >
+                  <div>
+                    <p>
+                      Red alert
+                    </p>
+                  </div>
+                </span>
+              </RiskColoring>
+            </a>
+          </LinkAnchor>
+        </Link>
+      </td>
+    </tr>
+    <tr
+      key="1570173602178"
+    >
+      <td
+        className="default-width"
+      >
+        04/10/2019
+      </td>
+      <td
+        className="default-width"
+      >
+        Yen Phu Village
+      </td>
+      <td
+        className="default-width"
+      >
+        Response Report
+      </td>
+      <td
+        className="default-width"
+      >
+        Husna Hariz
+      </td>
+      <td
+        className="default-width"
+      >
+        <Link
+          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+        >
+          <LinkAnchor
+            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+            navigate={[Function]}
+          >
+            <a
+              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+              onClick={[Function]}
+            >
+              100P9K-20191001-01
+            </a>
+          </LinkAnchor>
+        </Link>
+      </td>
+      <td
+        className="small-width"
+      >
+        3 days
+      </td>
+      <td
+        className="large-width"
+      >
+        <ul>
+          <li
+            key="Symptoms : No symptoms-0"
+          >
+            Symptoms : No symptoms
+          </li>
+          <li
+            key="Intervention : Ambulance On Time-1"
+          >
+            Intervention : Ambulance On Time
+          </li>
+          <li
+            key="Health Status : -2"
+          >
+            Health Status : 
+          </li>
+        </ul>
+      </td>
+      <td
+        className="default-width"
+      >
+        <Link
+          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+        >
+          <LinkAnchor
+            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+            navigate={[Function]}
+          >
+            <a
+              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+              onClick={[Function]}
+            >
+              <RiskColoring
+                risk="no_risk"
+              >
+                <span
+                  className="badge"
+                  style={
+                    Object {
+                      "backgroundColor": "#28a745",
+                    }
+                  }
+                >
+                  <div>
+                    <p>
+                      No risk
+                    </p>
+                  </div>
+                </span>
+              </RiskColoring>
+            </a>
+          </LinkAnchor>
+        </Link>
+      </td>
+    </tr>
+    <tr
+      key="1570085373297"
+    >
+      <td
+        className="default-width"
+      >
+        03/10/2019
+      </td>
+      <td
+        className="default-width"
+      >
+        Yen Phu Village
+      </td>
+      <td
+        className="default-width"
+      >
+        Birth Report
+      </td>
+      <td
+        className="default-width"
+      >
+        Husna Hariz
+      </td>
+      <td
+        className="default-width"
+      >
+        <Link
+          to="/pregnancy_log_face/patient_detail/100P7P"
+        >
+          <LinkAnchor
+            href="/pregnancy_log_face/patient_detail/100P7P"
+            navigate={[Function]}
+          >
+            <a
+              href="/pregnancy_log_face/patient_detail/100P7P"
+              onClick={[Function]}
+            >
+              100P7P
+            </a>
+          </LinkAnchor>
+        </Link>
+      </td>
+      <td
+        className="small-width"
+      >
+        36 years
+      </td>
+      <td
+        className="large-width"
+      >
+        <ul>
+          <li
+            key="Child DOB : 20/12/2020-0"
+          >
+            Child DOB : 20/12/2020
+          </li>
+          <li
+            key="Child Gender : NU-1"
+          >
+            Child Gender : NU
+          </li>
+          <li
+            key="Delivery Location : At home-2"
+          >
+            Delivery Location : At home
+          </li>
+          <li
+            key="Newborn Symptoms : No symptoms, Hemorrhage/persistent bleeding-3"
+          >
+            Newborn Symptoms : No symptoms, Hemorrhage/persistent bleeding
+          </li>
+          <li
+            key="Child Weight : 2.2kg-4"
+          >
+            Child Weight : 2.2kg
+          </li>
+          <li
+            key="Child Length : 48cm-5"
+          >
+            Child Length : 48cm
+          </li>
+          <li
+            key="Child Risk : red_alert-6"
+          >
+            Child Risk : red_alert
+          </li>
+          <li
+            key="Breastfeeding : Breastfeeding during 1st hour-7"
+          >
+            Breastfeeding : Breastfeeding during 1st hour
+          </li>
+          <li
+            key="Mother Symptoms : No symptoms, Hemorrhage/persistent bleeding-8"
+          >
+            Mother Symptoms : No symptoms, Hemorrhage/persistent bleeding
+          </li>
+        </ul>
+      </td>
+      <td
+        className="default-width"
+      >
+        <Link
+          to="/pregnancy_log_face/patient_detail/100P7P"
+        >
+          <LinkAnchor
+            href="/pregnancy_log_face/patient_detail/100P7P"
+            navigate={[Function]}
+          >
+            <a
+              href="/pregnancy_log_face/patient_detail/100P7P"
+              onClick={[Function]}
+            >
+              <RiskColoring
+                risk="red_alert"
+              >
+                <span
+                  className="badge"
+                  style={
+                    Object {
+                      "backgroundColor": "#dc3545",
+                    }
+                  }
+                >
+                  <div>
+                    <p>
+                      Red alert
                     </p>
                   </div>
                 </span>
