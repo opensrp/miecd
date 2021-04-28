@@ -5,8 +5,8 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import { Provider } from 'react-redux';
-import ConnectedLogFace from '..';
-import { DEFAULT_NUMBER_OF_LOGFACE_ROWS, PREGNANCY } from '../../../constants';
+import ConnectedLogFace, { LogFacePropsType } from '..';
+import { DEFAULT_NUMBER_OF_LOGFACE_ROWS, PREGNANCY, PREGNANCY_LOGFACE_URL } from '../../../constants';
 import { mountWithTranslations } from '../../../helpers/testUtils';
 import store from '../../../store';
 import reducer, {
@@ -21,6 +21,10 @@ import { communes, districts, provinces, villages } from '../../HierarchichalDat
 import { smsSlice } from './fixtures';
 import { userLocations } from './userLocationFixtures';
 import { act } from 'react-dom/test-utils';
+import * as securityAuthenticate from '../../../store/ducks/tests/fixtures/securityAuthenticate.json';
+import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom';
+import { smsDataFixture } from 'store/ducks/tests/fixtures';
+import { Dictionary } from '@onaio/utils/dist/types/index';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -40,8 +44,24 @@ jest.mock('react-select', () => {
     return SelectComponent;
 });
 
+const locationProps = {
+    history,
+    location: {
+        hash: '',
+        pathname: `${PREGNANCY_LOGFACE_URL}`,
+        search: '',
+        state: {},
+    },
+    match: {
+        isExact: true,
+        params: {},
+        path: `${PREGNANCY_LOGFACE_URL}`,
+        url: `${PREGNANCY_LOGFACE_URL}`,
+    },
+};
+
 describe('containers/LogFace', () => {
-    const commonProps = { module: PREGNANCY };
+    const commonProps = { module: PREGNANCY, ...locationProps };
     afterEach(() => {
         store.dispatch(removeSms);
         fetch.resetMocks();
@@ -90,7 +110,7 @@ describe('containers/LogFace', () => {
 
         expect(toJson(wrapper.find('table'))).toMatchSnapshot('table snapshot');
         expect(toJson(wrapper.find('.logface-page-filter'))).toMatchSnapshot('filter div');
-        expect(toJson(wrapper.find('input#input'))).toMatchSnapshot('search div');
+        expect(toJson(wrapper.find('input#search'))).toMatchSnapshot('search div');
         expect(toJson(wrapper.find('#logface_title'))).toMatchSnapshot('logface title');
         expect(toJson(wrapper.find('.paginator'))).toMatchSnapshot('paginator');
 
@@ -148,6 +168,23 @@ describe('containers/LogFace', () => {
     });
 });
 
+jest.mock('react-select', () => ({ options, onChange }: Dictionary) => {
+    function handleChange(event: Dictionary) {
+        const option = options.find((option: Dictionary) => option.value === event.target?.value);
+        onChange(option);
+    }
+
+    return (
+        <select data-testid="select" onChange={handleChange}>
+            {options.map(({ label, value }: Dictionary) => (
+                <option key={value} value={value}>
+                    {label}
+                </option>
+            ))}
+        </select>
+    );
+});
+
 describe('containers/LogFace extended', () => {
     const commonProps = { module: PREGNANCY };
 
@@ -163,6 +200,7 @@ describe('containers/LogFace extended', () => {
         fetch.mockResponse(JSON.stringify([]));
         const props = {
             ...commonProps,
+            ...locationProps,
             supersetService: supersetFetchMock,
         };
         const wrapper = mountWithTranslations(
@@ -188,7 +226,7 @@ describe('containers/LogFace extended', () => {
         // showing broken page due to error
         expect(wrapper.text()).toMatchInlineSnapshot(`"An error occurredErrorcoughid"`);
         // and finally check the requests made
-        expect(supersetFetchMock.mock.calls).toEqual([['0'], ['0'], ['0'], ['0'], ['0'], ['0']]);
+        expect(supersetFetchMock.mock.calls).toEqual([['userLocation'], ['smsData']]);
         expect(fetch.mock.calls).toEqual([
             [
                 'https://test.smartregister.org/opensrp/rest//security/authenticate/',
@@ -203,6 +241,89 @@ describe('containers/LogFace extended', () => {
             ],
         ]);
 
+        wrapper.unmount();
+    });
+
+    it('filters work correctly', async () => {
+        const supersetFetchMock = jest.fn().mockResolvedValueOnce(userLocations).mockResolvedValueOnce(smsDataFixture);
+        fetch.mockResponse(JSON.stringify(securityAuthenticate));
+        const props = {
+            ...commonProps,
+            supersetService: supersetFetchMock,
+        };
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const wrapper = mountWithTranslations(
+            <Provider store={store}>
+                <MemoryRouter initialEntries={[PREGNANCY_LOGFACE_URL]}>
+                    <Route
+                        path={PREGNANCY_LOGFACE_URL}
+                        render={(routeProps: RouteComponentProps) => {
+                            return <ConnectedLogFace {...{ ...routeProps, ...props }} />;
+                        }}
+                    ></Route>
+                </MemoryRouter>
+            </Provider>,
+            { attachTo: container },
+        );
+
+        expect(wrapper.find('Ripple')).toHaveLength(1);
+
+        await act(async () => {
+            await new Promise((resolve) => setImmediate(resolve));
+            wrapper.update();
+        });
+
+        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(533);
+
+        // start with search field
+        wrapper.find('#search').simulate('change', { target: { value: '100' } });
+        wrapper.update();
+
+        // check url changed correctly
+        expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual('?search=100');
+
+        // just checking that there were some events filtered out.
+        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(516);
+
+        expect(toJson(wrapper.find('#risk-filter select'))).toMatchSnapshot('risk filter');
+
+        // change risk level
+        wrapper.find('#risk-filter select').simulate('change', { target: { value: 'red_alert', name: 'Red alert' } });
+        wrapper.update();
+
+        // check url changed correctly
+        expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
+            '?search=100&riskCategory=red_alert',
+        );
+
+        // just checking that there were some events filtered out.
+        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(36);
+
+        // change sms type level
+        wrapper
+            .find('#sms-type-filter select')
+            .simulate('change', { target: { value: 'Birth Report', name: 'Birth Report' } });
+        wrapper.update();
+
+        // check url changed correctly
+        expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
+            '?search=100&riskCategory=red_alert&smsType=Birth%20Report',
+        );
+
+        // just checking that there were some events filtered out.
+        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(26);
+
+        // play with locations
+        wrapper
+            .find('SelectLocationFilter select')
+            .simulate('change', { target: { value: 'eccfe905-0e03-4188-98bc-22f141cccd0e', label: 'Kon Tum' } });
+
+        // check url changed correctly
+        expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
+            '?search=100&riskCategory=red_alert&smsType=Birth%20Report&locationSearch=eccfe905-0e03-4188-98bc-22f141cccd0e',
+        );
         wrapper.unmount();
     });
 });
