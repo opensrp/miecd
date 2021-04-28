@@ -1,5 +1,5 @@
 import { authenticateUser } from '@onaio/session-reducer';
-import { mount } from 'enzyme';
+import { mountWithTranslations } from 'helpers/testUtils';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
@@ -10,7 +10,7 @@ jest.mock('../../../configs/env');
 
 describe('components/ConnectedHeader', () => {
     it('renders the ConnectedHeader component', () => {
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <MemoryRouter>
                     <ConnectedHeader />
@@ -29,7 +29,7 @@ describe('components/ConnectedHeader', () => {
                 username: 'RobertBaratheon',
             }),
         );
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <MemoryRouter>
                     <ConnectedHeader />
