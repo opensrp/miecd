@@ -27,6 +27,7 @@ import {
     NBC_AND_PNC_LOGFACE_URL,
     NUTRITION,
     NUTRITION_LOGFACE_URL,
+    NUTRITION_MODULE,
     PREGNANCY,
     PREGNANCY_LOGFACE_URL,
     PREGNANCY_MODULE,
@@ -156,7 +157,7 @@ const LogFace = (props: LogFacePropsType) => {
 
     useEffect(() => {
         removeFilterArgs();
-        fetchData(supersetService)
+        fetchData(supersetService, true, true, false, true)
             .catch((err) => {
                 handleBrokenPage(err);
             })
@@ -229,7 +230,7 @@ const LogFace = (props: LogFacePropsType) => {
                     <input
                         type="text"
                         name="input"
-                        id="input"
+                        id="search"
                         placeholder={t('Search ID, Reporter, Patients')}
                         className={`form-control logface-search`}
                         onChange={handleTermChange}
@@ -246,6 +247,7 @@ const LogFace = (props: LogFacePropsType) => {
                             onChange={(val) => updateUrlWithFilter(RISK_CATEGORY_FILTER_PARAM, props, val?.value)}
                             classNamePrefix="logface-filters"
                             isClearable={true}
+                            id="risk-filter"
                         />
                     </div>
                     <div className="logface-page-filter">
@@ -266,6 +268,7 @@ const LogFace = (props: LogFacePropsType) => {
                             onChange={(val) => updateUrlWithFilter(SMS_TYPE_FILTER_PARAM, props, val?.value)}
                             classNamePrefix="logface-filters"
                             isClearable={true}
+                            id="sms-type-filter"
                         />
                     </div>
                     <a id="export-button" href={SUPERSET_PREGNANCY_DATA_EXPORT} download={true}>
@@ -385,6 +388,8 @@ const nodeSelector = getNodesByNameOrId();
 const userHierarchySelector = getTreesByIds();
 
 const mapStateToProps = (state: Partial<Store>, ownProps: LogFacePropsType): MapStateToProps => {
+    const riskAccessor = ownProps.module === NUTRITION_MODULE ? 'nutrition_status' : 'risk_level';
+
     const userLocationIdFilter = getQueryParams(ownProps.location)[LOCATION_FILTER_PARAM] as string;
     const riskCategoryFilter = getQueryParams(ownProps.location)[RISK_CATEGORY_FILTER_PARAM] as string;
     const smsTypeFilter = getQueryParams(ownProps.location)[SMS_TYPE_FILTER_PARAM] as string;
@@ -392,7 +397,7 @@ const mapStateToProps = (state: Partial<Store>, ownProps: LogFacePropsType): Map
     const userLocationNode = nodeSelector(state, { searchQuery: userLocationIdFilter })[0] as TreeNode | undefined;
     const filteredSmsData = selectSmsData(state, {
         locationNode: userLocationNode,
-        riskCategory: riskCategoryFilter,
+        riskCategory: { accessor: riskAccessor, filterValue: riskCategoryFilter },
         smsType: smsTypeFilter,
         searchFilter,
     });
