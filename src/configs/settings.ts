@@ -79,7 +79,7 @@ export const toastConfig = {
 // Risk categories in the logface component
 export const riskCategories = (t: TFunction) => ({
     [PREGNANCY_MODULE]: [
-        { label: t('Red Alert'), value: 'red_alert', color: RED },
+        { label: t('Red alert'), value: 'red_alert', color: RED },
         { label: t('Risk'), value: 'risk', color: YELLOW },
         { label: t('No risk'), value: 'no_risk', color: GREEN },
     ],
