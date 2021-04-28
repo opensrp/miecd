@@ -113,16 +113,16 @@ export const SUPERSET_PREGNANCY_DATA_EXPORT =
     'https://discover.ona.io/superset/explore_json/?form_data={"slice_id":2263}&csv=true';
 
 // slice IDs
-export const PROVINCE_SLICE = '0';
+export const PROVINCE_SLICE = 'province';
 
-export const DISTRICT_SLICE = '0';
+export const DISTRICT_SLICE = 'district';
 
-export const COMMUNE_SLICE = '0';
+export const COMMUNE_SLICE = 'commune';
 
-export const VILLAGE_SLICE = '0';
+export const VILLAGE_SLICE = 'village';
 
 export const LOCATION_SLICES = [PROVINCE_SLICE, DISTRICT_SLICE, COMMUNE_SLICE, VILLAGE_SLICE];
 
-export const SUPERSET_SMS_DATA_SLICE = '0';
+export const SUPERSET_SMS_DATA_SLICE = 'smsData';
 
-export const USER_LOCATION_DATA_SLICE = '0';
+export const USER_LOCATION_DATA_SLICE = 'userLocation';
