@@ -305,16 +305,18 @@ export const filterByPatientId = (patientIdAndSmsData: PatientIDAndSmsData): Sms
 };
 
 /**
- * sort SmsData[] by EventDate in ascending order
+ * sort SmsData[] by EventDate in descending order(i.e. the most recent events come first)
  * @param {SmsData[]} smsData an array of smsData objects to sort by event date
  */
 export const sortByEventDate = (smsData: SmsData[]) => {
-    return [...smsData].sort((event1: SmsData, event2: SmsData): number => {
-        if (event1.EventDate < event2.EventDate) {
-            return -1;
-        }
-        if (event1.EventDate > event2.EventDate) {
+    return smsData.sort((event1: SmsData, event2: SmsData): number => {
+        const date1 = new Date(event1.EventDate);
+        const date2 = new Date(event2.EventDate);
+        if (date1 < date2) {
             return 1;
+        }
+        if (date1 > date2) {
+            return -1;
         }
         return 0;
     });
