@@ -1,7 +1,6 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
-import { faArrowLeft, faChartLine, faCog, faHome } from '@fortawesome/free-solid-svg-icons';
-import React from 'react';
+import { faArrowLeft, faChartLine, faCog, faHome, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { Route } from 'react-router';
 import { providers } from '../configs/settings';
 import { LOGIN_URL } from '../constants';
@@ -13,8 +12,9 @@ import ConnectedRoutes from './Routes';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../mls';
 import { Toaster } from 'react-hot-toast';
+import * as React from 'react';
 
-library.add(faUser, faChartLine, faCog, faHome, faArrowLeft);
+library.add(faUser, faChartLine, faCog, faHome, faArrowLeft, faGlobe);
 
 /** Main App component */
 export const App = () => {
