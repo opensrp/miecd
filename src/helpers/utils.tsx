@@ -496,9 +496,15 @@ export function getLinkToPatientDetail(smsData: SmsData, prependWith: string) {
  * d. SUPERSET_SMS_DATA_SLICE
  * @param supersetFetchMethod - optional method to fetch data from superset
  */
-export async function fetchData(supersetFetchMethod: typeof supersetFetch = supersetFetch) {
+export async function fetchData(
+    supersetFetchMethod: typeof supersetFetch = supersetFetch,
+    toFetchUserHierarchy = true,
+    toFetchUserLocation = true,
+    toFetchLocations = true,
+    toFetchSms = true,
+) {
     const promises = [];
-    if (!userIdFetched(store.getState())) {
+    if (!userIdFetched(store.getState()) && toFetchUserHierarchy) {
         const opensrpService = new OpenSRPService(OPENSRP_SECURITY_AUTHENTICATE);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -512,7 +518,7 @@ export async function fetchData(supersetFetchMethod: typeof supersetFetch = supe
     }
 
     // fetch user location details
-    if (!userLocationDataFetched(store.getState())) {
+    if (!userLocationDataFetched(store.getState()) && toFetchUserLocation) {
         const locationDataPromise = supersetFetchMethod(USER_LOCATION_DATA_SLICE).then((result: UserLocation[]) => {
             store.dispatch(fetchUserLocations(result));
         });
@@ -521,7 +527,7 @@ export async function fetchData(supersetFetchMethod: typeof supersetFetch = supe
 
     // fetch all location slices
     for (const slice in LOCATION_SLICES) {
-        if (slice) {
+        if (slice && toFetchLocations) {
             const locationPromise = supersetFetchMethod(LOCATION_SLICES[slice]).then((result: Location[]) => {
                 store.dispatch(fetchLocations(result));
             });
@@ -530,7 +536,7 @@ export async function fetchData(supersetFetchMethod: typeof supersetFetch = supe
     }
 
     // check if sms data is fetched and then fetch if not fetched already
-    if (!smsDataFetched(store.getState())) {
+    if (!smsDataFetched(store.getState()) && toFetchSms) {
         const smsDataPromise = supersetFetchMethod(SUPERSET_SMS_DATA_SLICE).then((result: SmsData[]) => {
             store.dispatch(fetchSms(result));
         });
