@@ -213,7 +213,7 @@ const LogFace = (props: LogFacePropsType) => {
     };
 
     if (broken) {
-        return <ErrorPage title={error?.name} message={error?.message} />; // TODO
+        return <ErrorPage title={error?.name} message={error?.message} />;
     }
 
     if (loading) {
@@ -398,7 +398,7 @@ const mapStateToProps = (state: Partial<Store>, ownProps: LogFacePropsType): Map
     const filteredSmsData = selectSmsData(state, {
         locationNode: userLocationNode,
         riskCategory: { accessor: riskAccessor, filterValue: riskCategoryFilter },
-        smsType: smsTypeFilter,
+        smsTypes: [smsTypeFilter],
         searchFilter,
     });
     const userUUID = getUserId(state);
