@@ -1,5 +1,8 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
+// openSRP api endpoints
+export const OPENSRP_SECURITY_AUTHENTICATE = '/security/authenticate';
+
 // internal urls
 export const CHILD_PATIENT_DETAIL = 'child_patient_detail';
 export const PATIENT_DETAIL = 'patient_detail';

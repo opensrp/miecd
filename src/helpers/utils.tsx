@@ -24,6 +24,7 @@ import {
     NBC_AND_PNC_WOMAN,
     NUTRITION,
     NUTRITION_COMPARTMENTS_URL,
+    OPENSRP_SECURITY_AUTHENTICATE,
     PATIENT_DETAIL,
     PREGNANCY,
     PREGNANCY_COMPARTMENTS_URL,
@@ -489,7 +490,7 @@ export function getLinkToPatientDetail(smsData: SmsData, prependWith: string) {
 export async function fetchData(supersetFetchMethod: typeof supersetFetch = supersetFetch) {
     const promises = [];
     if (!userIdFetched(store.getState())) {
-        const opensrpService = new OpenSRPService('/security/authenticate');
+        const opensrpService = new OpenSRPService(OPENSRP_SECURITY_AUTHENTICATE);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const userIdPromise = opensrpService.read('').then((response: any) => {
