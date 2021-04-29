@@ -15,7 +15,7 @@ import {
     OPENSRP_LOGOUT_URL,
     SUPERSET_PREGNANCY_ANALYSIS_ENDPOINT,
 } from '../configs/env';
-import { providers } from '../configs/settings';
+import { providers, SMS_TYPES } from '../configs/settings';
 import {
     CHILD_PATIENT_DETAIL_URL,
     HIERARCHICAL_DATA_URL,
@@ -33,6 +33,10 @@ import {
     PREGNANCY_COMPARTMENTS_URL,
     PREGNANCY_LOGFACE_URL,
     PREGNANCY_URL,
+    PREGNANCY_MODULE,
+    NBC_MODULE,
+    PNC_MODULE,
+    NUTRITION_MODULE,
 } from '../constants';
 import Compartments from '../containers/Compartments';
 import ConnectedHierarchicalDataTable from '../containers/HierarchichalDataTable';
@@ -41,7 +45,7 @@ import Analysis from '../containers/pages/Analysis';
 import Home from '../containers/pages/Home';
 import ModuleHome from '../containers/pages/ModuleHome';
 import ConnectedPatientDetails from '../containers/PatientDetails';
-import { headerShouldRender, oAuthUserInfoGetter } from '../helpers/utils';
+import { headerShouldRender, oAuthUserInfoGetter, smsModuleType } from '../helpers/utils';
 import { SmsData } from '../store/ducks/sms_events';
 import './App.css';
 import { SmsFilterFunction } from '../types';
@@ -64,11 +68,8 @@ export const Routes = (props: RoutesProps) => {
     const { t } = useTranslation();
     const NBC_AND_PNC = t('NBC & PNC');
     const NBC_AND_PNC_DASHBOARD_WELCOME = t('Welcome to Newborn and Postnatal Care');
-    const NEWBORN_REPORT = t('Newborn Report');
     const NUTRITION = t('Nutrition');
     const NUTRITION_DASHBOARD_WELCOME = t('Welcome to Nutrition Care');
-    const NUTRITION_REGISTRATION = t('Nutrition Registration');
-    const NUTRITION_REPORT = t('Nutrition Report');
     const PREGNANCY = t('Pregnancy');
     const PREGNANCY_DASHBOARD_WELCOME = t('Welcome to the pregnancy dashboard');
     const PREGNANCY_DESCRIPTION = (
@@ -81,7 +82,6 @@ export const Routes = (props: RoutesProps) => {
             </p>
         </Trans>
     );
-    const PREGNANCY_REGISTRATION = t('Pregnancy Registration');
 
     return (
         <div className={`${authenticated && headerShouldRender() ? 'main-container' : 'hidden-container'}`}>
@@ -144,9 +144,8 @@ export const Routes = (props: RoutesProps) => {
                                 <Compartments
                                     filterArgs={
                                         [
-                                            (smsData: SmsData) => {
-                                                return smsData.sms_type === PREGNANCY_REGISTRATION;
-                                            },
+                                            (smsData: SmsData) =>
+                                                smsModuleType(smsData.sms_type as SMS_TYPES) === PREGNANCY_MODULE,
                                         ] as SmsFilterFunction[]
                                     }
                                     module={PREGNANCY}
@@ -162,9 +161,9 @@ export const Routes = (props: RoutesProps) => {
                                 <Compartments
                                     filterArgs={
                                         [
-                                            (smsData: SmsData) => {
-                                                return smsData.sms_type === NEWBORN_REPORT;
-                                            },
+                                            (smsData: SmsData) =>
+                                                smsModuleType(smsData.sms_type as SMS_TYPES) === NBC_MODULE ||
+                                                smsModuleType(smsData.sms_type as SMS_TYPES) === PNC_MODULE,
                                         ] as SmsFilterFunction[]
                                     }
                                     module={NBC_AND_PNC}
@@ -180,12 +179,8 @@ export const Routes = (props: RoutesProps) => {
                                 <Compartments
                                     filterArgs={
                                         [
-                                            (smsData: SmsData) => {
-                                                return (
-                                                    smsData.sms_type === NUTRITION_REPORT ||
-                                                    smsData.sms_type === NUTRITION_REGISTRATION
-                                                );
-                                            },
+                                            (smsData: SmsData) =>
+                                                smsModuleType(smsData.sms_type as SMS_TYPES) === NUTRITION_MODULE,
                                         ] as SmsFilterFunction[]
                                     }
                                     module={NUTRITION}
