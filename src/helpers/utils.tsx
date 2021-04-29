@@ -9,7 +9,7 @@ import {
     SUPERSET_SMS_DATA_SLICE,
     USER_LOCATION_DATA_SLICE,
 } from '../configs/env';
-import { toastConfig, URLS_TO_HIDE_HEADER } from '../configs/settings';
+import { toastConfig, URLS_TO_HIDE_HEADER, SMS_TYPES } from '../configs/settings';
 import {
     CHILD_PATIENT_DETAIL,
     COMMUNE,
@@ -32,6 +32,13 @@ import {
     VIETNAM,
     VIETNAM_COUNTRY_LOCATION_ID,
     VILLAGE,
+    PREGNANCY_MODULE,
+    NBC_MODULE,
+    PNC_MODULE,
+    NUTRITION_MODULE,
+    GENERAL_MODULE,
+    UN_CATEGORIZED_MODULE,
+    MODULE_TYPES,
 } from '../constants';
 import { OpenSRPService } from '../services/opensrp';
 import supersetFetch from '../services/superset';
@@ -49,6 +56,7 @@ import { fetchSms, SmsData, smsDataFetched } from '../store/ducks/sms_events';
 import { Dictionary } from '@onaio/utils';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
+
 export type { Dictionary };
 
 /** Custom function to get oAuth user info depending on the oAuth2 provider
@@ -567,3 +575,77 @@ export const useHandleBrokenPage = () => {
 
     return { broken, error, handleBrokenPage };
 };
+
+/**
+ * Get which MIECD module the sms record object corresponds to
+ * @param smsType string of type smsData.sms_type
+ * @returns {MODULE_TYPES} a string of type MODULE_TYPES
+ */
+export function smsModuleType(smsType: SMS_TYPES): MODULE_TYPES {
+    const lowerCaseSmsType = smsType.toLowerCase();
+
+    // sms types that match module pregnancy
+    const pregnancySmsTypes = [
+        'pregnancy detection',
+        'pregnancy identification',
+        'pregnancy registration',
+        'anc report',
+        'home visit report',
+        'social determinants',
+        'delivery planning',
+        'birth report', // (with patient id column displaying mother’s id)
+        'death report',
+        'red alert report',
+        'response report',
+        'refusal report',
+        'departure code',
+    ];
+    // sms types that match module nbc
+    const nbcSmsTypes = [
+        'birth report', // (with patient id column displaying newborn’s id)
+        'death report', // (code for newborn/child mortality and if dod – dob ≤ 28 days)
+        'postnatal and newborn care',
+        'red alert report', //(with code for newborns)
+        'response report', // (response reported for risks(resulting from other reports under this category) as outlined in syntax classification doc)
+        'refusal report',
+        'departure code',
+        // idk if should be here
+        'newborn report',
+    ];
+    // sms types that match module pnc
+    const pncSmsTypes = [
+        'death report', // (code for mother mortality and received after a birth report)
+        'red alert report', //(with code for mothers and are received after birth report)
+        'response report', // (response reported for risks(resulting from other reports under this category) as outlined in syntax classification doc)
+        'refusal report',
+        'departure code',
+    ];
+    // sms types that match module nutrition
+    const nutritionSmsTypes = ['monthly nutrition report', 'nutrition registration', 'nutrition report'];
+    // sms types for general enquiries
+    const generalSmsTypes = ['departure code', 'refusal code', 'account check'];
+
+    // un-categorized
+    // 'anc visit', 'home anc visit', 'newborn report', ''?
+
+    switch (true) {
+        case pregnancySmsTypes.includes(lowerCaseSmsType):
+            return PREGNANCY_MODULE;
+
+        case nbcSmsTypes.includes(lowerCaseSmsType):
+            return NBC_MODULE;
+
+        case pncSmsTypes.includes(lowerCaseSmsType):
+            return PNC_MODULE;
+
+        case nutritionSmsTypes.includes(lowerCaseSmsType):
+            return NUTRITION_MODULE;
+
+        case generalSmsTypes.includes(lowerCaseSmsType):
+            return GENERAL_MODULE;
+
+        default:
+            // console.error(`${lowerCaseSmsType} smsType does not match any module`);
+            return UN_CATEGORIZED_MODULE;
+    }
+}

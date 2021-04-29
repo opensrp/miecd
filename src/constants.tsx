@@ -120,3 +120,19 @@ export const ALL_LANGUAGE_OPTIONS = {
     [EN_LANGUAGE_CODE]: 'English',
     [VI_LANGUAGE_CODE]: 'Vietnamese',
 };
+// available modules
+export const PREGNANCY_MODULE = 'PREGNANCY_MODULE' as const;
+export const NBC_MODULE = 'NBC_MODULE' as const;
+export const PNC_MODULE = 'PNC_MODULE' as const;
+export const NUTRITION_MODULE = 'NUTRITION_MODULE' as const;
+export const GENERAL_MODULE = 'GENERAL' as const;
+export const UN_CATEGORIZED_MODULE = 'GENERAL' as const;
+
+// modules union type
+export type MODULE_TYPES =
+    | typeof PREGNANCY_MODULE
+    | typeof NBC_MODULE
+    | typeof PNC_MODULE
+    | typeof NUTRITION_MODULE
+    | typeof GENERAL_MODULE
+    | typeof UN_CATEGORIZED_MODULE;

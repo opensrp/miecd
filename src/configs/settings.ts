@@ -62,7 +62,14 @@ export const SmsTypes = [
     'Departure Code',
     'Refusal Code',
     'Account Check',
+    'Anc Visit',
+    'Home Anc Visit',
+    'Newborn Report',
 ] as const;
+
+// generate sms_type union type from array
+export type SMS_TYPES = typeof SmsTypes[number];
+
 export const URLS_TO_HIDE_HEADER: string[] = ['login', 'home'];
 
 /** constant react-hot-toast config */
