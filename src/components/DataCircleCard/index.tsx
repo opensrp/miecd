@@ -41,7 +41,7 @@ interface Props extends RouteComponentProps {
     title: string;
     addFilterArgsActionCreator?: typeof addFilterArgs;
     filterArgs?: SmsFilterFunction[];
-    module: PREGNANCY | NBC_AND_PNC_CHILD | NBC_AND_PNC_WOMAN | NUTRITION | '';
+    module: typeof PREGNANCY | typeof NBC_AND_PNC_CHILD | typeof NBC_AND_PNC_WOMAN | typeof NUTRITION | '';
     className?: string;
     userLocationId: string;
     permissionLevel: number;

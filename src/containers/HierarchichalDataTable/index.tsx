@@ -79,16 +79,16 @@ interface State {
 }
 
 type RiskHighlighterType =
-    | RED
-    | RISK
-    | HIGH
-    | LOW
-    | NO
-    | STUNTED
-    | INAPPROPRIATELY_FED
-    | OVERWEIGHT
-    | SEVERE_WASTING
-    | ALL
+    | typeof RED
+    | typeof RISK
+    | typeof HIGH
+    | typeof LOW
+    | typeof NO
+    | typeof STUNTED
+    | typeof INAPPROPRIATELY_FED
+    | typeof OVERWEIGHT
+    | typeof SEVERE_WASTING
+    | typeof ALL
     | '';
 
 interface Props {

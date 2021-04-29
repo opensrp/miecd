@@ -1,22 +1,21 @@
-#image-settings {
+.custom-navbar {
     height: 100%;
+    padding: 0 !important;
 }
 
-#image-settings a {
+.custom-navbar__brand a {
     display: flex;
     flex-direction: row;
     height: 100%;
     background: #001429;
-    padding: 0px 55px 0px 20px;
 }
 
-#image-settings a img {
-    height: 40px;
-    margin-top: 10px;
+.custom-navbar__brand img:nth-child(2) {
+    padding: 10px;
 }
 
-#image-settings a img:nth-child(2) {
-    width: 40px;
+.custom-navbar__brand img {
+    max-height: 56px;
 }
 
 .main-app-container .main-container .sidebar {
@@ -36,15 +35,6 @@
 .nav-link {
     color: white;
     padding: 5px;
-}
-
-.main-app-container .collapse {
-    padding: 0;
-}
-
-.main-app-container .navbar-collapse ul li {
-    padding: 12px 20px;
-    background: #001429;
 }
 
 .main-app-container .navbar .navbar-collapse ul li.dropdown a:hover {
