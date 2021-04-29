@@ -11,7 +11,7 @@ export const reducerName = 'LocationReducer';
 export interface Location {
     location_id: string;
     location_name: string;
-    level: VILLAGE | COMMUNE | DISTRICT | PROVINCE;
+    level: typeof VILLAGE | typeof COMMUNE | typeof DISTRICT | typeof PROVINCE;
     parent_id: string;
 }
 
