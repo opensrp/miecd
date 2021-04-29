@@ -141,13 +141,8 @@ export const Compartments = ({
 
         if (
             locationFilterFunction &&
-            !(
-                filterArgsInStore
-                    .map((element) => {
-                        return element.toString();
-                    })
-                    .indexOf(locationFilterFunction.toString()) > -1
-            )
+            // if locationFilterFunction is not already in store
+            !filterArgsInStore.find((element) => element.toString() === locationFilterFunction.toString())
         ) {
             removeFilterArgs();
             addFilterArgs(filterArgs);
