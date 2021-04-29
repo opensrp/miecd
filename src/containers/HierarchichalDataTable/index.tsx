@@ -164,7 +164,11 @@ function getVillageRiskTotals(smsData: SmsData[], module: string, riskHighlighte
     const growthStatusConstants = [STUNTED];
     const feedingCategoryConstants = [INAPPROPRIATELY_FED];
 
-    let field: NUTRITION_STATUS | GROWTH_STATUS | FEEDING_CATEGORY | LOGFACE_RISK = LOGFACE_RISK;
+    let field:
+        | typeof NUTRITION_STATUS
+        | typeof GROWTH_STATUS
+        | typeof FEEDING_CATEGORY
+        | typeof LOGFACE_RISK = LOGFACE_RISK;
 
     if (nutritionStatusConstants.includes(riskHighlighter)) {
         field = NUTRITION_STATUS;
@@ -502,7 +506,11 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
         const growthStatusConstants = [STUNTED];
         const feedingCategoryConstants = [INAPPROPRIATELY_FED];
 
-        let field: NUTRITION_STATUS | GROWTH_STATUS | FEEDING_CATEGORY | LOGFACE_RISK = LOGFACE_RISK;
+        let field:
+            | typeof NUTRITION_STATUS
+            | typeof GROWTH_STATUS
+            | typeof FEEDING_CATEGORY
+            | typeof LOGFACE_RISK = LOGFACE_RISK;
 
         if (nextProps.risk_highligter) {
             if (nutritionStatusConstants.includes(nextProps.risk_highligter)) {
