@@ -126,7 +126,7 @@ export const Compartments = ({
         fetchData();
     }, [removeFilterArgs]);
 
-    // update state when some props change
+    // update userLocationId if UUID of logged in user changes
     useEffect(() => {
         setUserLocationId(getLocationId(userLocationData, userUUID));
     }, [userUUID, userLocationData]);
@@ -174,60 +174,50 @@ export const Compartments = ({
     ]);
 
     useEffect(() => {
-        const birthsInTheFuture = module === PREGNANCY ? smsData.filter(filterByDateInTheFuture) : [];
-        setallPregnanciesProps(
-            module === PREGNANCY
-                ? ({
-                      filterArgs: [filterByDateInTheFuture] as SmsFilterFunction[],
-                      module: PREGNANCY,
-                      noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, birthsInTheFuture, 'logface_risk'),
-                      permissionLevel: userLocationLevel,
-                      redAlert: getNumberOfSmsWithRisk(RED, birthsInTheFuture, 'logface_risk'),
-                      risk:
-                          getNumberOfSmsWithRisk(LOW, birthsInTheFuture, 'logface_risk') +
-                          getNumberOfSmsWithRisk(HIGH, birthsInTheFuture, 'logface_risk'),
-                      title: 'Total Pregnancies',
-                      totalNumber: birthsInTheFuture.length,
-                  } as PregnancyAndNBCDataCircleCardProps)
-                : null,
-        );
+        if (module === PREGNANCY) {
+            const birthsInTheFuture = smsData.filter(filterByDateInTheFuture);
+            const filterByDateInNext2Weeks = filterByDateInNextNWeeks(2);
+            const filterByDateInNext1Week = filterByDateInNextNWeeks(1);
+            const last2WeeksSmsData = smsData.filter(filterByDateInNext2Weeks);
+            const last1WeekSmsData = smsData.filter(filterByDateInNext1Week);
 
-        const filterByDateInNext2Weeks = filterByDateInNextNWeeks(2);
-        const filterByDateInNext1Week = filterByDateInNextNWeeks(1);
+            setallPregnanciesProps({
+                filterArgs: [filterByDateInTheFuture] as SmsFilterFunction[],
+                module: PREGNANCY,
+                noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, birthsInTheFuture, 'logface_risk'),
+                permissionLevel: userLocationLevel,
+                redAlert: getNumberOfSmsWithRisk(RED, birthsInTheFuture, 'logface_risk'),
+                risk:
+                    getNumberOfSmsWithRisk(LOW, birthsInTheFuture, 'logface_risk') +
+                    getNumberOfSmsWithRisk(HIGH, birthsInTheFuture, 'logface_risk'),
+                title: 'Total Pregnancies',
+                totalNumber: birthsInTheFuture.length,
+            } as PregnancyAndNBCDataCircleCardProps);
 
-        const last2WeeksSmsData = module === PREGNANCY ? smsData.filter(filterByDateInNext2Weeks) : [];
-        setpregnaciesDueIn2WeeksProps(
-            module === PREGNANCY
-                ? {
-                      filterArgs: [filterByDateInNext2Weeks] as SmsFilterFunction[],
-                      module: PREGNANCY,
-                      noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, last2WeeksSmsData || [], 'logface_risk'),
-                      permissionLevel: userLocationLevel,
-                      redAlert: getNumberOfSmsWithRisk(RED, last2WeeksSmsData || [], 'logface_risk'),
-                      risk:
-                          getNumberOfSmsWithRisk(LOW, last2WeeksSmsData || [], 'logface_risk') +
-                          getNumberOfSmsWithRisk(HIGH, last2WeeksSmsData || [], 'logface_risk'),
-                      title: 'Total Pregnancies due in 2 weeks',
-                      totalNumber: last2WeeksSmsData.length,
-                  }
-                : null,
-        );
+            setpregnaciesDueIn2WeeksProps({
+                filterArgs: [filterByDateInNext2Weeks] as SmsFilterFunction[],
+                module: PREGNANCY,
+                noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, last2WeeksSmsData || [], 'logface_risk'),
+                permissionLevel: userLocationLevel,
+                redAlert: getNumberOfSmsWithRisk(RED, last2WeeksSmsData || [], 'logface_risk'),
+                risk:
+                    getNumberOfSmsWithRisk(LOW, last2WeeksSmsData || [], 'logface_risk') +
+                    getNumberOfSmsWithRisk(HIGH, last2WeeksSmsData || [], 'logface_risk'),
+                title: 'Total Pregnancies due in 2 weeks',
+                totalNumber: last2WeeksSmsData.length,
+            });
 
-        const last1WeekSmsData = module === PREGNANCY ? smsData.filter(filterByDateInNext1Week) : [];
-        setpregnanciesDueIn1WeekProps(
-            module === PREGNANCY
-                ? {
-                      filterArgs: [filterByDateInNext1Week] as SmsFilterFunction[],
-                      module: PREGNANCY,
-                      noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, last1WeekSmsData || [], 'logface_risk'),
-                      permissionLevel: userLocationLevel,
-                      redAlert: getNumberOfSmsWithRisk(HIGH, last1WeekSmsData || [], 'logface_risk'),
-                      risk: getNumberOfSmsWithRisk(LOW, last1WeekSmsData || [], 'logface_risk'),
-                      title: 'Total Pregnancies due in 1 week',
-                      totalNumber: last1WeekSmsData.length,
-                  }
-                : null,
-        );
+            setpregnanciesDueIn1WeekProps({
+                filterArgs: [filterByDateInNext1Week] as SmsFilterFunction[],
+                module: PREGNANCY,
+                noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, last1WeekSmsData || [], 'logface_risk'),
+                permissionLevel: userLocationLevel,
+                redAlert: getNumberOfSmsWithRisk(HIGH, last1WeekSmsData || [], 'logface_risk'),
+                risk: getNumberOfSmsWithRisk(LOW, last1WeekSmsData || [], 'logface_risk'),
+                title: 'Total Pregnancies due in 1 week',
+                totalNumber: last1WeekSmsData.length,
+            });
+        }
     }, [filteredData, module, smsData, userLocationId, userLocationLevel]);
 
     const [dataCircleCardChildData, setDataCircleCardChildData] = useState<null | PregnancyAndNBCDataCircleCardProps>(
@@ -239,100 +229,78 @@ export const Compartments = ({
 
     // this should only run when the module is NBC & PNC
     useEffect(() => {
-        const newBorn: SmsData[] = module === NBC_AND_PNC ? filteredData.filter(filterByEcChild) : [];
+        if (module === NBC_AND_PNC) {
+            const newBorn: SmsData[] = filteredData.filter(filterByEcChild);
+            const woman: SmsData[] = filteredData.filter((dataItem: SmsData) => {
+                return dataItem.client_type === EC_WOMAN || dataItem.client_type === EC_FAMILY_MEMBER;
+            });
 
-        setDataCircleCardChildData(
-            module === NBC_AND_PNC
-                ? {
-                      filterArgs: [filterByEcChild] as SmsFilterFunction[],
-                      module: NBC_AND_PNC_CHILD,
-                      noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, newBorn, 'logface_risk'),
-                      permissionLevel: userLocationLevel,
-                      redAlert: getNumberOfSmsWithRisk(RED, newBorn, 'logface_risk'),
-                      risk:
-                          getNumberOfSmsWithRisk(LOW, newBorn, 'logface_risk') +
-                          getNumberOfSmsWithRisk(HIGH, newBorn, 'logface_risk'),
-                      title: `Total Newborn${newBorn.length > 1 ? 's' : ''}`,
-                      totalNumber: newBorn.length,
-                  }
-                : null,
-        );
+            setDataCircleCardChildData({
+                filterArgs: [filterByEcChild] as SmsFilterFunction[],
+                module: NBC_AND_PNC_CHILD,
+                noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, newBorn, 'logface_risk'),
+                permissionLevel: userLocationLevel,
+                redAlert: getNumberOfSmsWithRisk(RED, newBorn, 'logface_risk'),
+                risk:
+                    getNumberOfSmsWithRisk(LOW, newBorn, 'logface_risk') +
+                    getNumberOfSmsWithRisk(HIGH, newBorn, 'logface_risk'),
+                title: `Total Newborn${newBorn.length > 1 ? 's' : ''}`,
+                totalNumber: newBorn.length,
+            });
 
-        const woman: SmsData[] = filteredData.filter((dataItem: SmsData) => {
-            return dataItem.client_type === EC_WOMAN || dataItem.client_type === EC_FAMILY_MEMBER;
-        });
-
-        setDataCircleCardWomanData(
-            module === NBC_AND_PNC
-                ? {
-                      filterArgs: [
-                          (dataItem: SmsData) => {
-                              return dataItem.client_type === EC_WOMAN || dataItem.client_type === EC_FAMILY_MEMBER;
-                          },
-                      ] as SmsFilterFunction[],
-                      module: NBC_AND_PNC_WOMAN,
-                      noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, woman, 'logface_risk'),
-                      permissionLevel: userLocationLevel,
-                      redAlert: getNumberOfSmsWithRisk(RED, woman, 'logface_risk'),
-                      risk:
-                          getNumberOfSmsWithRisk(LOW, woman, 'logface_risk') +
-                          getNumberOfSmsWithRisk(HIGH, woman, 'logface_risk'),
-                      title: `Total Mother${woman.length > 1 ? 's' : ''} in PNC`,
-                      totalNumber: woman.length,
-                  }
-                : null,
-        );
+            setDataCircleCardWomanData({
+                filterArgs: [
+                    (dataItem: SmsData) => {
+                        return dataItem.client_type === EC_WOMAN || dataItem.client_type === EC_FAMILY_MEMBER;
+                    },
+                ] as SmsFilterFunction[],
+                module: NBC_AND_PNC_WOMAN,
+                noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, woman, 'logface_risk'),
+                permissionLevel: userLocationLevel,
+                redAlert: getNumberOfSmsWithRisk(RED, woman, 'logface_risk'),
+                risk:
+                    getNumberOfSmsWithRisk(LOW, woman, 'logface_risk') +
+                    getNumberOfSmsWithRisk(HIGH, woman, 'logface_risk'),
+                title: `Total Mother${woman.length > 1 ? 's' : ''} in PNC`,
+                totalNumber: woman.length,
+            });
+        }
     }, [filteredData, module, userLocationLevel]);
 
     const [dataCircleCardNutrition1, setDataCircleCardNutrition1] = useState<null | NutritionDataCircleCardProps>(null);
     const [dataCircleCardNutrition2, setDataCircleCardNutrition2] = useState<null | NutritionDataCircleCardProps>(null);
 
     useEffect(() => {
-        const childrenBetween0And2FilterFunction = childrenAgeRangeFilterFunction(0, 2);
-        const childrenBetween2And5FilterFuction = childrenAgeRangeFilterFunction(2, 5);
-        const childrenUnder2 = filteredData.filter(childrenBetween0And2FilterFunction);
+        if (module === NUTRITION) {
+            const childrenBetween0And2FilterFunction = childrenAgeRangeFilterFunction(0, 2);
+            const childrenBetween2And5FilterFuction = childrenAgeRangeFilterFunction(2, 5);
+            const childrenUnder2 = filteredData.filter(childrenBetween0And2FilterFunction);
+            const childrenUnder5 = filteredData.filter(childrenBetween2And5FilterFuction);
 
-        const childrenUnder5 = filteredData.filter(childrenBetween2And5FilterFuction);
+            setDataCircleCardNutrition1({
+                filterArgs: [childrenBetween2And5FilterFuction],
+                inappropriateFeeding: getNumberOfSmsWithRisk('inappropriately fed', childrenUnder5, 'feeding_category'),
+                module: NUTRITION,
+                overweight: getNumberOfSmsWithRisk('overweight', childrenUnder5, 'nutrition_status'),
+                permissionLevel: userLocationLevel,
+                stunting: getNumberOfSmsWithRisk('stunted', childrenUnder5, 'growth_status'),
+                title: 'Total Children Under 5',
+                totalChildren: 0,
+                wasting: getNumberOfSmsWithRisk('severe wasting', childrenUnder5, 'nutrition_status'),
+            });
 
-        setDataCircleCardNutrition1(
-            module === NUTRITION
-                ? {
-                      filterArgs: [childrenBetween2And5FilterFuction],
-                      inappropriateFeeding: getNumberOfSmsWithRisk(
-                          'inappropriately fed',
-                          childrenUnder5,
-                          'feeding_category',
-                      ),
-                      module: NUTRITION,
-                      overweight: getNumberOfSmsWithRisk('overweight', childrenUnder5, 'nutrition_status'),
-                      permissionLevel: userLocationLevel,
-                      stunting: getNumberOfSmsWithRisk('stunted', childrenUnder5, 'growth_status'),
-                      title: 'Total Children Under 5',
-                      totalChildren: 0,
-                      wasting: getNumberOfSmsWithRisk('severe wasting', childrenUnder5, 'nutrition_status'),
-                  }
-                : null,
-        );
-
-        setDataCircleCardNutrition2(
-            module === NUTRITION
-                ? {
-                      filterArgs: [childrenBetween0And2FilterFunction],
-                      inappropriateFeeding: getNumberOfSmsWithRisk(
-                          'inappropriately fed',
-                          childrenUnder2,
-                          'feeding_category',
-                      ),
-                      module: NUTRITION,
-                      overweight: getNumberOfSmsWithRisk('overweight', childrenUnder2, 'nutrition_status'),
-                      permissionLevel: userLocationLevel,
-                      stunting: getNumberOfSmsWithRisk('stunted', childrenUnder2, 'growth_status'),
-                      title: 'Total Children Under 2',
-                      totalChildren: 0,
-                      wasting: getNumberOfSmsWithRisk('severe wasting', childrenUnder2, 'nutrition_status'),
-                  }
-                : null,
-        );
+            setDataCircleCardNutrition2({
+                filterArgs: [childrenBetween0And2FilterFunction],
+                inappropriateFeeding: getNumberOfSmsWithRisk('inappropriately fed', childrenUnder2, 'feeding_category'),
+                module: NUTRITION,
+                overweight: getNumberOfSmsWithRisk('overweight', childrenUnder2, 'nutrition_status'),
+                permissionLevel: userLocationLevel,
+                stunting: getNumberOfSmsWithRisk('stunted', childrenUnder2, 'growth_status'),
+                title: 'Total Children Under 2',
+                totalChildren: 0,
+                wasting: getNumberOfSmsWithRisk('severe wasting', childrenUnder2, 'nutrition_status'),
+            });
+        }
     }, [filteredData, module, userLocationLevel]);
 
     const [circleCardComponent, setCircleCardComponent] = useState<ReactNodeArray>([]);
