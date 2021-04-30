@@ -175,11 +175,11 @@ export const Compartments = ({
 
     useEffect(() => {
         if (module === PREGNANCY) {
-            const birthsInTheFuture = smsData.filter(filterByDateInTheFuture);
+            const birthsInTheFuture = filteredData.filter(filterByDateInTheFuture);
             const filterByDateInNext2Weeks = filterByDateInNextNWeeks(2);
             const filterByDateInNext1Week = filterByDateInNextNWeeks(1);
-            const last2WeeksSmsData = smsData.filter(filterByDateInNext2Weeks);
-            const last1WeekSmsData = smsData.filter(filterByDateInNext1Week);
+            const last2WeeksSmsData = filteredData.filter(filterByDateInNext2Weeks);
+            const last1WeekSmsData = filteredData.filter(filterByDateInNext1Week);
 
             setallPregnanciesProps({
                 filterArgs: [filterByDateInTheFuture] as SmsFilterFunction[],
@@ -218,7 +218,7 @@ export const Compartments = ({
                 totalNumber: last1WeekSmsData.length,
             });
         }
-    }, [filteredData, module, smsData, userLocationId, userLocationLevel]);
+    }, [filteredData, module, userLocationLevel]);
 
     const [dataCircleCardChildData, setDataCircleCardChildData] = useState<null | PregnancyAndNBCDataCircleCardProps>(
         null,
