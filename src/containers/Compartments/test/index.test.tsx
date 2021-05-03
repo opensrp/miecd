@@ -149,7 +149,6 @@ describe('Compartments', () => {
 
         expect(wrapper.find('DataCircleCard').at(0).props()).toMatchSnapshot();
         expect(wrapper.find('DataCircleCard').at(1).props()).toMatchSnapshot();
-        expect(wrapper.find('DataCircleCard').at(2).props()).toMatchSnapshot();
     });
 
     it('must render correctly for NBC_AND_PNC module', () => {

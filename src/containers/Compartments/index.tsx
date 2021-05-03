@@ -284,9 +284,6 @@ export const Compartments = ({
 
     const [dataCircleCardNutrition1, setDataCircleCardNutrition1] = useState<null | NutritionDataCircleCardProps>(null);
     const [dataCircleCardNutrition2, setDataCircleCardNutrition2] = useState<null | NutritionDataCircleCardProps>(null);
-    const [dataCircleCardAllNutrition, setDataCircleCardAllNutrition] = useState<null | NutritionDataCircleCardProps>(
-        null,
-    );
 
     useEffect(() => {
         const childrenBetween0And2FilterFunction = childrenAgeRangeFilterFunction(0, 2);
@@ -331,25 +328,6 @@ export const Compartments = ({
                   }
                 : null,
         );
-
-        setDataCircleCardAllNutrition(
-            module === NUTRITION
-                ? {
-                      filterArgs: [],
-                      inappropriateFeeding: getNumberOfSmsWithRisk(
-                          'inappropriately fed',
-                          filteredData,
-                          'feeding_category',
-                      ),
-                      module: NUTRITION,
-                      overweight: getNumberOfSmsWithRisk('overweight', filteredData, 'nutrition_status'),
-                      permissionLevel: userLocationLevel,
-                      stunting: getNumberOfSmsWithRisk('stunted', filteredData, 'growth_status'),
-                      title: `${filteredData.length} Total Children`,
-                      wasting: getNumberOfSmsWithRisk('severe wasting', filteredData, 'nutrition_status'),
-                  }
-                : null,
-        );
     }, [filteredData, module, userLocationLevel]);
 
     const [circleCardComponent, setCircleCardComponent] = useState<ReactNodeArray>([]);
@@ -358,7 +336,7 @@ export const Compartments = ({
         const circleCardProps: Dictionary = {
             [PREGNANCY]: [pregnanciesDueIn1WeekProps, pregnaciesDueIn2WeeksProps, allPregnanciesProps],
             [NBC_AND_PNC]: [dataCircleCardChildData, dataCircleCardWomanData],
-            [NUTRITION]: [dataCircleCardNutrition1, dataCircleCardNutrition2, dataCircleCardAllNutrition],
+            [NUTRITION]: [dataCircleCardNutrition1, dataCircleCardNutrition2],
         };
 
         const componentArray: ReactNodeArray = [];
@@ -388,7 +366,6 @@ export const Compartments = ({
         pregnanciesDueIn1WeekProps,
         module,
         userLocationId,
-        dataCircleCardAllNutrition,
     ]);
 
     const { t } = useTranslation();
