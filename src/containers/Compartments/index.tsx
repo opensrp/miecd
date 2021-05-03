@@ -388,6 +388,7 @@ export const Compartments = ({
         pregnanciesDueIn1WeekProps,
         module,
         userLocationId,
+        dataCircleCardAllNutrition,
     ]);
 
     const { t } = useTranslation();
