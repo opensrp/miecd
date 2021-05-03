@@ -1,21 +1,20 @@
-import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
-import { ConnectedLogout, ConnectedOauthCallback, LogoutProps } from '@onaio/gatekeeper';
+import { ConnectedOauthCallback, getOpenSRPUserInfo, RouteParams, useOAuthLogin } from '@onaio/gatekeeper';
 import { isAuthenticated } from '@onaio/session-reducer';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LastLocationProvider } from 'react-router-last-location';
-import Loading from '../components/page/Loading';
 import SideMenu from '../components/page/SideMenu';
 import {
+    BACKEND_ACTIVE,
+    DISABLE_LOGIN_PROTECTION,
     NBC_AND_PNC_ANALYSIS_ENDPOINT,
-    OPENSRP_LOGOUT_URL,
     SUPERSET_PREGNANCY_ANALYSIS_ENDPOINT,
 } from '../configs/env';
-import { providers } from '../configs/settings';
+import { APP_CALLBACK_PATH, APP_CALLBACK_URL, APP_LOGIN_URL, AuthGrantType, providers } from '../configs/settings';
 import {
     CHILD_PATIENT_DETAIL_URL,
     HIERARCHICAL_DATA_URL,
@@ -51,11 +50,15 @@ import Analysis from '../containers/pages/Analysis';
 import Home from '../containers/pages/Home';
 import ModuleHome from '../containers/pages/ModuleHome';
 import ConnectedPatientDetails from '../containers/PatientDetails';
-import { headerShouldRender, oAuthUserInfoGetter } from '../helpers/utils';
+import { headerShouldRender } from '../helpers/utils';
 import { SmsData } from '../store/ducks/sms_events';
 import './App.css';
 import { SmsFilterFunction } from '../types';
 import { Trans, useTranslation } from 'react-i18next';
+import { CustomLogout } from 'components/Logout';
+import CustomConnectedAPICallBack, { SuccessfulLoginComponent } from 'components/CustomCallback';
+import Ripple from '../components/page/Loading';
+import React from 'react';
 
 library.add(faUser);
 
@@ -68,6 +71,22 @@ const mapStateToProps = (state: Partial<Store>) => {
 export interface RoutesProps {
     authenticated: boolean;
 }
+
+export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
+    if (BACKEND_ACTIVE) {
+        return <CustomConnectedAPICallBack {...routeProps} />;
+    }
+
+    return (
+        <ConnectedOauthCallback
+            SuccessfulLoginComponent={SuccessfulLoginComponent}
+            LoadingComponent={Ripple}
+            providers={providers}
+            oAuthUserInfoGetter={getOpenSRPUserInfo}
+            {...routeProps}
+        />
+    );
+};
 
 export const Routes = (props: RoutesProps) => {
     const { authenticated } = props;
@@ -86,15 +105,22 @@ export const Routes = (props: RoutesProps) => {
         </Trans>
     );
 
+    const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
+
     return (
         <div className={`${authenticated && headerShouldRender() ? 'main-container' : 'hidden-container'}`}>
             <SideMenu authenticated={authenticated} />
             <div className="content">
                 <Switch>
                     <LastLocationProvider>
-                        <ConnectedPrivateRoute disableLoginProtection={false} exact path="/" component={Home} />
                         <ConnectedPrivateRoute
-                            disableLoginProtection={false}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path="/"
+                            component={Home}
+                        />
+                        <ConnectedPrivateRoute
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={PREGNANCY_URL}
                             // tslint:disable-next-line: jsx-no-lambda
@@ -109,7 +135,7 @@ export const Routes = (props: RoutesProps) => {
                             )}
                         />
                         <ConnectedPrivateRoute
-                            disableLoginProtection={false}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={NBC_AND_PNC_URL}
                             // tslint:disable-next-line: jsx-no-lambda
@@ -124,7 +150,7 @@ export const Routes = (props: RoutesProps) => {
                             )}
                         />
                         <ConnectedPrivateRoute
-                            disableLoginProtection={false}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={NUTRITION_URL}
                             // tslint:disable-next-line: jsx-no-lambda
@@ -139,7 +165,7 @@ export const Routes = (props: RoutesProps) => {
                             )}
                         />
                         <ConnectedPrivateRoute
-                            disableLoginProtection={false}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={PREGNANCY_COMPARTMENTS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
@@ -157,7 +183,7 @@ export const Routes = (props: RoutesProps) => {
                             )}
                         />
                         <ConnectedPrivateRoute
-                            disableLoginProtection={false}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={NBC_AND_PNC_COMPARTMENTS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
@@ -175,7 +201,7 @@ export const Routes = (props: RoutesProps) => {
                             )}
                         />
                         <ConnectedPrivateRoute
-                            disableLoginProtection={false}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={NUTRITION_COMPARTMENTS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
@@ -196,7 +222,7 @@ export const Routes = (props: RoutesProps) => {
                             )}
                         />
                         <ConnectedPrivateRoute
-                            disableLoginProtection={false}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={(() => {
                                 return [
@@ -211,7 +237,7 @@ export const Routes = (props: RoutesProps) => {
                             component={ConnectedHierarchicalDataTable}
                         />
                         <ConnectedPrivateRoute
-                            disableLoginProtection={false}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={PREGNANCY_ANALYSIS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
@@ -220,14 +246,14 @@ export const Routes = (props: RoutesProps) => {
                             )}
                         />
                         <ConnectedPrivateRoute
-                            disableLoginProtection={false}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={NBC_AND_PNC_ANALYSIS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={() => <Analysis endpoint={NBC_AND_PNC_ANALYSIS_ENDPOINT} module={NBC_AND_PNC} />}
                         />
                         <ConnectedPrivateRoute
-                            disableLoginProtection={false}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={NUTRITION_ANALYSIS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
@@ -236,7 +262,7 @@ export const Routes = (props: RoutesProps) => {
                             )}
                         />
                         <ConnectedPrivateRoute
-                            disableLoginProtection={false}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={(() => {
                                 return [
@@ -248,7 +274,7 @@ export const Routes = (props: RoutesProps) => {
                             component={ConnectedPatientDetails}
                         />
                         <ConnectedPrivateRoute
-                            disableLoginProtection={false}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={(() => {
                                 return [
@@ -262,7 +288,7 @@ export const Routes = (props: RoutesProps) => {
                             component={(routeProps: any) => <ConnectedPatientDetails isChild {...routeProps} />}
                         />
                         <ConnectedPrivateRoute
-                            disableLoginProtection={false}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={(() => {
                                 return [NUTRITION_LOGFACE_URL, NBC_AND_PNC_LOGFACE_URL, PREGNANCY_LOGFACE_URL].map(
@@ -272,7 +298,7 @@ export const Routes = (props: RoutesProps) => {
                             component={ConnectedPatientDetails}
                         />
                         <ConnectedPrivateRoute
-                            disableLoginProtection={false}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={(() => {
                                 return [NUTRITION_LOGFACE_URL, NBC_AND_PNC_LOGFACE_URL, PREGNANCY_LOGFACE_URL].map(
@@ -283,16 +309,6 @@ export const Routes = (props: RoutesProps) => {
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             component={(routeProps: any) => <ConnectedPatientDetails isChild {...routeProps} />}
                         />
-                        <ConnectedPrivateRoute
-                            disableLoginProtection={false}
-                            exact
-                            path={LOGOUT_URL}
-                            // tslint:disable-next-line: jsx-no-lambda
-                            component={() => (
-                                <ConnectedLogout {...({ logoutURL: OPENSRP_LOGOUT_URL } as Partial<LogoutProps>)} />
-                            )}
-                        />
-
                         <ConnectedPrivateRoute
                             exact
                             path={PREGNANCY_LOGFACE_URL}
@@ -317,21 +333,22 @@ export const Routes = (props: RoutesProps) => {
                                 <ConnectedLogFace module={NUTRITION_MODULE} {...routeProps} />
                             )}
                         />
-                        {/* tslint:disable jsx-no-lambda */}
                         <Route
                             exact
-                            path="/oauth/callback/:id"
-                            render={(routeProps) => (
-                                <ConnectedOauthCallback
-                                    LoadingComponent={Loading}
-                                    providers={providers}
-                                    oAuthUserInfoGetter={oAuthUserInfoGetter}
-                                    SuccessfulLoginComponent={Home}
-                                    {...routeProps}
-                                />
-                            )}
+                            path={APP_LOGIN_URL}
+                            render={() => {
+                                window.location.href = OpenSRP;
+                                return <></>;
+                            }}
                         />
-                        {/* tslint:enable jsx-no-lambda */}
+                        <Route exact path={APP_CALLBACK_PATH} component={CallbackComponent} />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact={true}
+                            path={LOGOUT_URL}
+                            component={CustomLogout}
+                        />
                     </LastLocationProvider>
                 </Switch>
             </div>
