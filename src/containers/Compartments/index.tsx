@@ -335,8 +335,7 @@ export const Compartments = ({
         setDataCircleCardAllNutrition(
             module === NUTRITION
                 ? {
-                      // for totals, the filter fn returns true for all (equivalent to not filtering)
-                      filterArgs: [() => true],
+                      filterArgs: [],
                       inappropriateFeeding: getNumberOfSmsWithRisk(
                           'inappropriately fed',
                           filteredData,
