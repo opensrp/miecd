@@ -307,7 +307,7 @@ export const Compartments = ({
                       overweight: getNumberOfSmsWithRisk('overweight', childrenUnder5, 'nutrition_status'),
                       permissionLevel: userLocationLevel,
                       stunting: getNumberOfSmsWithRisk('stunted', childrenUnder5, 'growth_status'),
-                      title: 'Children Under 5',
+                      title: `${childrenUnder5.length} Children Under 5`,
                       wasting: getNumberOfSmsWithRisk('severe wasting', childrenUnder5, 'nutrition_status'),
                   }
                 : null,
@@ -326,7 +326,7 @@ export const Compartments = ({
                       overweight: getNumberOfSmsWithRisk('overweight', childrenUnder2, 'nutrition_status'),
                       permissionLevel: userLocationLevel,
                       stunting: getNumberOfSmsWithRisk('stunted', childrenUnder2, 'growth_status'),
-                      title: 'Children Under 2',
+                      title: `${childrenUnder2.length} Children Under 2`,
                       wasting: getNumberOfSmsWithRisk('severe wasting', childrenUnder2, 'nutrition_status'),
                   }
                 : null,
@@ -346,7 +346,7 @@ export const Compartments = ({
                       overweight: getNumberOfSmsWithRisk('overweight', filteredData, 'nutrition_status'),
                       permissionLevel: userLocationLevel,
                       stunting: getNumberOfSmsWithRisk('stunted', filteredData, 'growth_status'),
-                      title: 'Total Children',
+                      title: `${filteredData.length} Total Children`,
                       wasting: getNumberOfSmsWithRisk('severe wasting', filteredData, 'nutrition_status'),
                   }
                 : null,
