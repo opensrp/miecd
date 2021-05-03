@@ -33,7 +33,6 @@ interface Props extends RouteComponentProps {
     redAlert?: number;
     risk?: number;
     noRisk?: number;
-    totalChildren?: number;
     stunting?: number;
     wasting?: number;
     overweight?: number;

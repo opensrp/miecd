@@ -80,7 +80,6 @@ interface NutritionDataCircleCardProps {
     permissionLevel: number;
     stunting: number;
     title: string;
-    totalChildren: number;
     wasting: number;
 }
 
@@ -309,7 +308,6 @@ export const Compartments = ({
                       permissionLevel: userLocationLevel,
                       stunting: getNumberOfSmsWithRisk('stunted', childrenUnder5, 'growth_status'),
                       title: 'Children Under 5',
-                      totalChildren: 0,
                       wasting: getNumberOfSmsWithRisk('severe wasting', childrenUnder5, 'nutrition_status'),
                   }
                 : null,
@@ -329,7 +327,6 @@ export const Compartments = ({
                       permissionLevel: userLocationLevel,
                       stunting: getNumberOfSmsWithRisk('stunted', childrenUnder2, 'growth_status'),
                       title: 'Children Under 2',
-                      totalChildren: 0,
                       wasting: getNumberOfSmsWithRisk('severe wasting', childrenUnder2, 'nutrition_status'),
                   }
                 : null,
@@ -350,7 +347,6 @@ export const Compartments = ({
                       permissionLevel: userLocationLevel,
                       stunting: getNumberOfSmsWithRisk('stunted', filteredData, 'growth_status'),
                       title: 'Total Children',
-                      totalChildren: 0,
                       wasting: getNumberOfSmsWithRisk('severe wasting', filteredData, 'nutrition_status'),
                   }
                 : null,
