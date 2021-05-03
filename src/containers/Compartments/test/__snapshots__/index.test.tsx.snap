@@ -277,8 +277,7 @@ Object {
   "permissionLevel": 0,
   "staticContext": undefined,
   "stunting": 0,
-  "title": "Children Under 5",
-  "totalChildren": 0,
+  "title": "0 Children Under 5",
   "userLocationId": "d1865325-11e6-4e39-817b-e676c1affecf",
   "wasting": 0,
 }
@@ -326,8 +325,7 @@ Object {
   "permissionLevel": 0,
   "staticContext": undefined,
   "stunting": 0,
-  "title": "Children Under 2",
-  "totalChildren": 0,
+  "title": "0 Children Under 2",
   "userLocationId": "d1865325-11e6-4e39-817b-e676c1affecf",
   "wasting": 0,
 }
@@ -336,9 +334,7 @@ Object {
 exports[`Compartments must render correctly for Nutrition module 3`] = `
 Object {
   "addFilterArgsActionCreator": [Function],
-  "filterArgs": Array [
-    [Function],
-  ],
+  "filterArgs": Array [],
   "history": Object {
     "action": "POP",
     "block": [Function],
@@ -375,8 +371,7 @@ Object {
   "permissionLevel": 0,
   "staticContext": undefined,
   "stunting": 0,
-  "title": "Total Children",
-  "totalChildren": 0,
+  "title": "2 Total Children",
   "userLocationId": "d1865325-11e6-4e39-817b-e676c1affecf",
   "wasting": 0,
 }
