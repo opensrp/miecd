@@ -175,9 +175,7 @@ describe('containers/LogFace extended', () => {
         expect(wrapper.find('Ripple')).toHaveLength(0);
 
         // showing broken page due to error
-        expect(wrapper.text()).toMatchInlineSnapshot(
-            `"An error occurredTypeErrorCannot read property 'attributes' of undefined"`,
-        );
+        expect(wrapper.text()).toMatchInlineSnapshot(`"An error occurredErrorcoughid"`);
         // and finally check the requests made
         expect(supersetFetchMock.mock.calls).toEqual([['0'], ['0'], ['0'], ['0'], ['0'], ['0']]);
         expect(fetch.mock.calls).toEqual([
@@ -186,7 +184,7 @@ describe('containers/LogFace extended', () => {
                 {
                     headers: {
                         accept: 'application/json',
-                        authorization: 'Bearer null',
+                        authorization: 'Bearer ',
                         'content-type': 'application/json;charset=UTF-8',
                     },
                     method: 'GET',

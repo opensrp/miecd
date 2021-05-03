@@ -1,5 +1,6 @@
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import { mountWithTranslations } from 'helpers/testUtils';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { Router } from 'react-router';
@@ -39,20 +40,19 @@ describe('components/page/Header', () => {
                 username: '',
             },
         };
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Router history={history}>
                 <HeaderComponent {...props} />
             </Router>,
         );
-        // snapshot for the first col; should have the brand-image
-        // const brandWrapper = wrapper.find('a.navbar-brand');
-        // expect(brandWrapper.length).toEqual(1);
-        // expect(toJson(brandWrapper)).toMatchSnapshot('Brand-image');
 
         // the login/logout
         const accntMgmtWrapper = wrapper.find('NavLink');
         expect(toJson(accntMgmtWrapper)).toMatchSnapshot('Login');
         expect(accntMgmtWrapper.text()).toEqual('Login');
+
+        // has a language switcher component
+        expect(wrapper.find('LanguageSwitcher')).toHaveLength(1);
 
         wrapper.unmount();
     });
@@ -66,7 +66,7 @@ describe('components/page/Header', () => {
                 username: 'RobertBaratheon',
             },
         };
-        const wrapper = mount(
+        const wrapper = mountWithTranslations(
             <Router history={history}>
                 <HeaderComponent {...props} />
             </Router>,

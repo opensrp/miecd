@@ -24,6 +24,7 @@ import {
     NBC_AND_PNC_WOMAN,
     NUTRITION,
     NUTRITION_COMPARTMENTS_URL,
+    OPENSRP_SECURITY_AUTHENTICATE,
     PATIENT_DETAIL,
     PREGNANCY,
     PREGNANCY_COMPARTMENTS_URL,
@@ -192,7 +193,9 @@ export function getFilterFunctionAndLocationLevel(
                 return location.location_id === smsData.location_id;
             });
             if (village) {
-                return userLocationId === getProvince(village as Location & { level: VILLAGE }, districts, communes);
+                return (
+                    userLocationId === getProvince(village as Location & { level: typeof VILLAGE }, districts, communes)
+                );
             }
             return false;
         };
@@ -206,7 +209,7 @@ export function getFilterFunctionAndLocationLevel(
                 return location.location_id === smsData.location_id;
             });
             if (village) {
-                return userLocationId === getDistrict(village as Location & { level: VILLAGE }, communes);
+                return userLocationId === getDistrict(village as Location & { level: typeof VILLAGE }, communes);
             }
             return false;
         };
@@ -220,7 +223,7 @@ export function getFilterFunctionAndLocationLevel(
                 return location.location_id === smsData.location_id;
             });
             if (village) {
-                return userLocationId === getCommune(village as Location & { level: VILLAGE });
+                return userLocationId === getCommune(village as Location & { level: typeof VILLAGE });
             }
             return false;
         };
@@ -243,7 +246,7 @@ export function getFilterFunctionAndLocationLevel(
  * Given a village return it's commune's location ID
  * @param {Location} village - village Location to find commune
  */
-export const getCommune = (village: Location & { level: VILLAGE }): string => {
+export const getCommune = (village: Location & { level: typeof VILLAGE }): string => {
     return village.parent_id;
 };
 
@@ -252,7 +255,7 @@ export const getCommune = (village: Location & { level: VILLAGE }): string => {
  * @param {Location} village - village Location for which we want to find a District.
  * @param communes
  */
-export const getDistrict = (village: Location & { level: VILLAGE }, communes: Location[]): string | null => {
+export const getDistrict = (village: Location & { level: typeof VILLAGE }, communes: Location[]): string | null => {
     const communeId = getCommune(village);
     const commune = communes.find((location: Location) => location.location_id === communeId);
     return commune ? commune.parent_id : null;
@@ -265,7 +268,7 @@ export const getDistrict = (village: Location & { level: VILLAGE }, communes: Lo
  * @param communes
  */
 export const getProvince = (
-    village: Location & { level: VILLAGE },
+    village: Location & { level: typeof VILLAGE },
     districts: Location[],
     communes: Location[],
 ): string | null => {
@@ -422,7 +425,7 @@ export function buildHeaderBreadCrumb(
  */
 export function getModuleLink(
     module: string,
-): PREGNANCY_COMPARTMENTS_URL | NUTRITION_COMPARTMENTS_URL | NBC_AND_PNC_COMPARTMENTS_URL | '' {
+): typeof PREGNANCY_COMPARTMENTS_URL | typeof NUTRITION_COMPARTMENTS_URL | typeof NBC_AND_PNC_COMPARTMENTS_URL | '' {
     switch (module) {
         case PREGNANCY:
             return PREGNANCY_COMPARTMENTS_URL;
@@ -487,7 +490,7 @@ export function getLinkToPatientDetail(smsData: SmsData, prependWith: string) {
 export async function fetchData(supersetFetchMethod: typeof supersetFetch = supersetFetch) {
     const promises = [];
     if (!userIdFetched(store.getState())) {
-        const opensrpService = new OpenSRPService('/security/authenticate');
+        const opensrpService = new OpenSRPService(OPENSRP_SECURITY_AUTHENTICATE);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const userIdPromise = opensrpService.read('').then((response: any) => {
