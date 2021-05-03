@@ -287,7 +287,7 @@ export const Compartments = ({
 
     useEffect(() => {
         const childrenBetween0And2FilterFunction = childrenAgeRangeFilterFunction(0, 2);
-        const childrenBetween2And5FilterFuction = childrenAgeRangeFilterFunction(2, 5);
+        const childrenBetween2And5FilterFuction = childrenAgeRangeFilterFunction(0, 5);
         const childrenUnder2 = filteredData.filter(childrenBetween0And2FilterFunction);
         const childrenUnder5 = filteredData.filter(childrenBetween2And5FilterFuction);
 
