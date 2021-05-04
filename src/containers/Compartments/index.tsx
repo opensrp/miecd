@@ -69,7 +69,6 @@ interface PregnancyAndNBCDataCircleCardProps {
     redAlert: number;
     risk: number;
     title: string;
-    totalNumber?: number;
 }
 
 interface NutritionDataCircleCardProps {
@@ -207,8 +206,7 @@ export const Compartments = ({
                 risk:
                     getNumberOfSmsWithRisk(LOW, birthsInTheFuture, 'logface_risk') +
                     getNumberOfSmsWithRisk(HIGH, birthsInTheFuture, 'logface_risk'),
-                title: 'Total Pregnancies',
-                totalNumber: birthsInTheFuture.length,
+                title: `${birthsInTheFuture.length} Total Pregnancies`,
             } as PregnancyAndNBCDataCircleCardProps);
 
             setpregnaciesDueIn2WeeksProps({
@@ -220,8 +218,7 @@ export const Compartments = ({
                 risk:
                     getNumberOfSmsWithRisk(LOW, last2WeeksSmsData || [], 'logface_risk') +
                     getNumberOfSmsWithRisk(HIGH, last2WeeksSmsData || [], 'logface_risk'),
-                title: 'Total Pregnancies due in 2 weeks',
-                totalNumber: last2WeeksSmsData.length,
+                title: `${last2WeeksSmsData.length} Total Pregnancies due in 2 weeks`,
             });
 
             setpregnanciesDueIn1WeekProps({
@@ -231,8 +228,7 @@ export const Compartments = ({
                 permissionLevel: userLocationLevel,
                 redAlert: getNumberOfSmsWithRisk(HIGH, last1WeekSmsData || [], 'logface_risk'),
                 risk: getNumberOfSmsWithRisk(LOW, last1WeekSmsData || [], 'logface_risk'),
-                title: 'Total Pregnancies due in 1 week',
-                totalNumber: last1WeekSmsData.length,
+                title: `${last1WeekSmsData.length} Total Pregnancies due in 1 week`,
             });
         }
     }, [filteredData, module, userLocationLevel]);
@@ -269,8 +265,7 @@ export const Compartments = ({
                 risk:
                     getNumberOfSmsWithRisk(LOW, newBorn, 'logface_risk') +
                     getNumberOfSmsWithRisk(HIGH, newBorn, 'logface_risk'),
-                title: `Total Newborn${newBorn.length > 1 ? 's' : ''}`,
-                totalNumber: newBorn.length,
+                title: `${newBorn.length} Total Newborns`,
             });
 
             setDataCircleCardWomanData({
@@ -282,8 +277,7 @@ export const Compartments = ({
                 risk:
                     getNumberOfSmsWithRisk(LOW, woman, 'logface_risk') +
                     getNumberOfSmsWithRisk(HIGH, woman, 'logface_risk'),
-                title: `Total Mother${woman.length > 1 ? 's' : ''} in PNC`,
-                totalNumber: woman.length,
+                title: `${woman.length} Total Mothers in PNC`,
             });
         }
     }, [filteredData, module, userLocationLevel]);
@@ -325,7 +319,7 @@ export const Compartments = ({
                 overweight: getNumberOfSmsWithRisk('overweight', childrenUnder5, 'nutrition_status'),
                 permissionLevel: userLocationLevel,
                 stunting: getNumberOfSmsWithRisk('stunted', childrenUnder5, 'growth_status'),
-                title: 'Total Children Under 5',
+                title: `${childrenUnder5.length} Total Children Under 5`,
                 totalChildren: 0,
                 wasting: getNumberOfSmsWithRisk('severe wasting', childrenUnder5, 'nutrition_status'),
             });
@@ -337,7 +331,7 @@ export const Compartments = ({
                 overweight: getNumberOfSmsWithRisk('overweight', childrenUnder2, 'nutrition_status'),
                 permissionLevel: userLocationLevel,
                 stunting: getNumberOfSmsWithRisk('stunted', childrenUnder2, 'growth_status'),
-                title: 'Total Children Under 2',
+                title: `${childrenUnder2.length} Total Children Under 2`,
                 totalChildren: 0,
                 wasting: getNumberOfSmsWithRisk('severe wasting', childrenUnder2, 'nutrition_status'),
             });
