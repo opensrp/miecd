@@ -75,8 +75,6 @@ export const providers: Providers = {
     }),
 };
 
-export const URLS_TO_HIDE_HEADER: string[] = ['login', 'home'];
-
 /** constant react-hot-toast config */
 export const toastConfig = {
     style: {

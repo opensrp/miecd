@@ -9,7 +9,7 @@ import {
     SUPERSET_SMS_DATA_SLICE,
     USER_LOCATION_DATA_SLICE,
 } from '../configs/env';
-import { toastConfig, URLS_TO_HIDE_HEADER } from '../configs/settings';
+import { toastConfig } from '../configs/settings';
 import {
     CHILD_PATIENT_DETAIL,
     COMMUNE,
