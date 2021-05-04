@@ -863,7 +863,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                             </CardBody>
                         </Card>
                     </Row>
-                    {this.props.current_level > 1 && this.state.villageData.length ? (
+                    {this.state.villageData.length ? (
                         <VillageData
                             {...{
                                 current_level: this.props.current_level,
