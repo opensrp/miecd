@@ -4,7 +4,7 @@ import { trimStart } from 'lodash';
 import querystring from 'querystring';
 import React from 'react';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router';
-import { LOGIN_URL, HOME_URL, LOGOUT_URL } from '../../constants';
+import { HOME_URL, LOGOUT_URL, EXPRESS_LOGIN_URL } from '../../constants';
 import { toastToSuccess } from 'helpers/utils';
 import Ripple from 'components/page/Loading';
 import store from 'store';
@@ -56,9 +56,9 @@ export const BaseSuccessfulLoginComponent: React.FC<RouteComponentProps> = (prop
 export const SuccessfulLoginComponent = withRouter(BaseSuccessfulLoginComponent);
 
 const BaseUnsuccessfulLogin: React.FC<RouteComponentProps> = (props: RouteComponentProps) => {
-    let redirectTo = `${LOGIN_URL}${props.location.search}`;
+    let redirectTo = `${EXPRESS_LOGIN_URL}${props.location.search}`;
     if (!nextIsValid(props)) {
-        redirectTo = LOGIN_URL;
+        redirectTo = EXPRESS_LOGIN_URL;
     }
 
     window.location.href = redirectTo;
@@ -71,7 +71,6 @@ const CustomConnectedAPICallBack: React.FC<RouteComponentProps<RouteParams>> = (
     return (
         <ConnectedAPICallback
             LoadingComponent={Ripple}
-            // tslint:disable-next-line: jsx-no-lambda
             UnSuccessfulLoginComponent={UnSuccessfulLogin}
             SuccessfulLoginComponent={SuccessfulLoginComponent}
             apiURL={EXPRESS_OAUTH_GET_STATE_URL}
