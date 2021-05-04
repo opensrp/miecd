@@ -31,7 +31,6 @@ import {
     getFilterFunctionAndLocationLevel,
     getLocationId,
     HeaderBreadCrumb,
-    Dictionary,
 } from '../../helpers/utils';
 
 import { getLocationsOfLevel, getUserId, getUserLocations, Location, UserLocation } from '../../store/ducks/locations';
@@ -348,38 +347,39 @@ export const Compartments = ({
     const [circleCardComponent, setCircleCardComponent] = useState<ReactNodeArray>([]);
 
     useEffect(() => {
-        const circleCardProps: Dictionary = {
+        // corresponds to the type of module circle data (e.g pregnanciesDueIn1WeekProps or dataCircleCardNutrition2)
+        type circleCardProps = PregnancyAndNBCDataCircleCardProps | NutritionDataCircleCardProps;
+
+        // Exclude the default blank module ('') from module type
+        type circleModule = Exclude<typeof module, ''>;
+
+        type circleCards = {
+            [key in circleModule]: circleCardProps[];
+        };
+
+        const circleCardData: circleCards = {
             [PREGNANCY]: [pregnanciesDueIn1WeekProps, pregnaciesDueIn2WeeksProps, allPregnanciesProps],
             [NBC_AND_PNC]: [dataCircleCardChildData, dataCircleCardWomanData],
             [NUTRITION]: [dataCircleCardNutrition1, dataCircleCardNutrition2],
         };
 
         const componentArray: ReactNodeArray = [];
-        Object.keys(circleCardProps).forEach((moduleElement: string) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            circleCardProps[moduleElement].forEach((prop: any, index: number) => {
-                if (module === moduleElement) {
-                    componentArray.push(
-                        <ConnectedDataCircleCard
-                            key={index}
-                            userLocationId={userLocationId}
-                            module={module}
-                            {...prop}
-                        />,
-                    );
-                }
-            });
+
+        // push data for current module
+        circleCardData[module as circleModule].forEach((prop: circleCardProps, index: number) => {
+            componentArray.push(<ConnectedDataCircleCard key={index} userLocationId={userLocationId} {...prop} />);
         });
+
         setCircleCardComponent(componentArray);
     }, [
+        allPregnanciesProps,
+        dataCircleCardChildData,
         dataCircleCardNutrition1,
         dataCircleCardNutrition2,
         dataCircleCardWomanData,
-        dataCircleCardChildData,
-        allPregnanciesProps,
+        module,
         pregnaciesDueIn2WeeksProps,
         pregnanciesDueIn1WeekProps,
-        module,
         userLocationId,
     ]);
 
