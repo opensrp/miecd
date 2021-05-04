@@ -33,6 +33,13 @@ import {
     PREGNANCY_COMPARTMENTS_URL,
     PREGNANCY_LOGFACE_URL,
     PREGNANCY_URL,
+    PREGNANCY,
+    NUTRITION,
+    NBC_AND_PNC,
+    NEWBORN_REPORT,
+    NUTRITION_REGISTRATION,
+    NUTRITION_REPORT,
+    PREGNANCY_REGISTRATION,
 } from '../constants';
 import Compartments from '../containers/Compartments';
 import ConnectedHierarchicalDataTable from '../containers/HierarchichalDataTable';
@@ -62,14 +69,8 @@ export interface RoutesProps {
 export const Routes = (props: RoutesProps) => {
     const { authenticated } = props;
     const { t } = useTranslation();
-    const NBC_AND_PNC = t('NBC & PNC');
     const NBC_AND_PNC_DASHBOARD_WELCOME = t('Welcome to Newborn and Postnatal Care');
-    const NEWBORN_REPORT = t('Newborn Report');
-    const NUTRITION = t('Nutrition');
     const NUTRITION_DASHBOARD_WELCOME = t('Welcome to Nutrition Care');
-    const NUTRITION_REGISTRATION = t('Nutrition Registration');
-    const NUTRITION_REPORT = t('Nutrition Report');
-    const PREGNANCY = t('Pregnancy');
     const PREGNANCY_DASHBOARD_WELCOME = t('Welcome to the pregnancy dashboard');
     const PREGNANCY_DESCRIPTION = (
         <Trans>
@@ -81,7 +82,6 @@ export const Routes = (props: RoutesProps) => {
             </p>
         </Trans>
     );
-    const PREGNANCY_REGISTRATION = t('Pregnancy Registration');
 
     return (
         <div className={`${authenticated && headerShouldRender() ? 'main-container' : 'hidden-container'}`}>
