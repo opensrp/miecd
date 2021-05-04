@@ -2,7 +2,6 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { faArrowLeft, faChartLine, faCog, faHome, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import ConnectedHeader from '../containers/ConnectedHeader';
-import { headerShouldRender } from '../helpers/utils';
 import './App.css';
 import ConnectedRoutes from './Routes';
 import { I18nextProvider } from 'react-i18next';
@@ -18,7 +17,7 @@ export const App = () => {
         <I18nextProvider i18n={i18n}>
             <div className="main-app-container">
                 <ConnectedHeader />
-                {headerShouldRender() && <ConnectedRoutes />}
+                <ConnectedRoutes />
                 <Toaster />
             </div>
         </I18nextProvider>
