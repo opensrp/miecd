@@ -2,14 +2,15 @@
 import { values } from 'lodash';
 import { AnyAction, Store } from 'redux';
 import { EVENT_ID } from '../../constants';
-import { groupBy } from '../../helpers/utils';
+import { groupBy, formatDateStrings } from '../../helpers/utils';
 import { SmsFilterFunction } from '../../types';
+import { Dictionary } from '@onaio/utils';
 
 /** The reducer name */
 export const reducerName = 'SmsReducer';
 
 /** Interface for SMS record object as received from discover */
-export interface SmsData {
+export interface SmsData extends Dictionary {
     age: string;
     EventDate: string;
     event_id: string;
@@ -33,6 +34,8 @@ export interface SmsData {
     nutrition_status: string;
     growth_status: string;
     feeding_category: string;
+    event_date: string;
+    intervention: string;
 }
 
 // actions
@@ -80,8 +83,9 @@ export type SmsActionTypes = FetchSmsAction | AddFilterArgsAction | RemoveSmsAct
  * @return {FetchSmsAction} - an action to add SmsData to redux store
  */
 export const fetchSms = (smsDataList: SmsData[] = []): FetchSmsAction => {
+    const cleanedSms = smsDataList.map((smsData) => ({ ...smsData, EventDate: formatDateStrings(smsData.EventDate) }));
     return {
-        smsData: groupBy(smsDataList, EVENT_ID),
+        smsData: groupBy(cleanedSms, EVENT_ID),
         type: FETCHED_SMS as typeof FETCHED_SMS,
     };
 };

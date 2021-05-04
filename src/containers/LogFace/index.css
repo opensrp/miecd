@@ -70,7 +70,7 @@ td {
     padding: 0px 0px 10px;
 }
 
-.logface-content .filter-panel .filters .location-type-filter {
+.logface-content .filter-panel .filters .logface-page-filter {
     display: block;
     padding: 10px 20px;
 }
@@ -171,7 +171,7 @@ td {
     background: #0189cb;
 }
 
-.filters .location-type-filter .dropdown button {
+.filters .logface-page-filter .dropdown button {
     background-color: #ffffff;
     border: 0.5px solid #bababa;
     border-radius: 2px;
@@ -184,11 +184,11 @@ td {
     text-align: left;
 }
 
-.filters .location-type-filter .dropdown button {
+.filters .logface-page-filter .dropdown button {
     color: #676767;
 }
 
-.filters .location-type-filter .dropdown button:focus {
+.filters .logface-page-filter .dropdown button:focus {
     background-color: inherit;
 }
 
@@ -199,7 +199,7 @@ td {
     font-weight: 500;
 }
 
-.filters .location-type-filter span {
+.filters .logface-page-filter span {
     color: #212121;
     font-family: Roboto;
     font-size: 14px;
@@ -242,4 +242,9 @@ td {
     border-radius: 2px;
     width: 120px;
     height: 32px;
+}
+
+.logface-filters__control {
+    min-width: 200px;
+    border-radius: 0 !important;
 }
