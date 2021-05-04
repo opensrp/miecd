@@ -42,7 +42,6 @@ interface Props extends RouteComponentProps {
     addFilterArgsActionCreator?: typeof addFilterArgs;
     filterArgs?: SmsFilterFunction[];
     module: typeof PREGNANCY | typeof NBC_AND_PNC_CHILD | typeof NBC_AND_PNC_WOMAN | typeof NUTRITION | '';
-    className?: string;
     userLocationId: string;
     permissionLevel: number;
     totalNumber?: number;
@@ -71,7 +70,6 @@ function DataCircleCard({
     addFilterArgsActionCreator = addFilterArgs,
     filterArgs,
     module,
-    className = '',
     userLocationId,
     permissionLevel,
     totalNumber,
@@ -126,7 +124,7 @@ function DataCircleCard({
     ];
 
     return (
-        <Card className={`dataCircleCard ${className}`}>
+        <Card className="dataCircleCard">
             <CardTitle>
                 <Link
                     to={getLinkToHierarchicalDataTable(ALL, module, title, permissionLevel, userLocationId)}
