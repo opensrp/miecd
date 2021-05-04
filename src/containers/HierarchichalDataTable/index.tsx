@@ -94,7 +94,7 @@ type RiskHighlighterType =
 interface Props {
     current_level: number;
     node_id?: string;
-    direction: string; // this can be down or up
+    direction: 'down' | 'up';
     from_level?: string;
     risk_highligter?: RiskHighlighterType;
     title: string;
@@ -997,7 +997,7 @@ const mapStateToProps = (state: Partial<Store>, ownProps: HierarchicalDataTableT
     return {
         communes: getLocationsOfLevel(state, 'Commune'),
         current_level: parseInt(ownProps.match.params.current_level, 10),
-        direction: ownProps.match.params.direction,
+        direction: ownProps.match.params.direction as Props['direction'],
         districts: getLocationsOfLevel(state, 'District'),
         from_level: ownProps.match.params.from_level,
         module: ownProps.match.params.module,
