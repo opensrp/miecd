@@ -55,7 +55,7 @@ interface Props {
     addFilterArgs: typeof addFilterArgsActionCreator;
     removeFilterArgs: typeof removeFilterArgsActionCreator;
     filterArgs: SmsFilterFunction[];
-    module: string;
+    module: typeof PREGNANCY | typeof NBC_AND_PNC | typeof NUTRITION | '';
     provinces: Location[];
     districts: Location[];
     communes: Location[];
@@ -66,7 +66,7 @@ interface PregnancyAndNBCDataCircleCardProps {
     filterArgs?: SmsFilterFunction[];
     noRisk: number;
     permissionLevel: number;
-    module: string;
+    module: typeof PREGNANCY | typeof NBC_AND_PNC_CHILD | typeof NBC_AND_PNC_WOMAN | typeof NUTRITION | '';
     redAlert: number;
     risk: number;
     title: string;
@@ -76,7 +76,7 @@ interface PregnancyAndNBCDataCircleCardProps {
 interface NutritionDataCircleCardProps {
     filterArgs: SmsFilterFunction[];
     inappropriateFeeding: number;
-    module: string;
+    module: typeof PREGNANCY | typeof NBC_AND_PNC_CHILD | typeof NBC_AND_PNC_WOMAN | typeof NUTRITION | '';
     overweight: number;
     permissionLevel: number;
     stunting: number;
