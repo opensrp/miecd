@@ -264,7 +264,7 @@ function getLocationRiskTotals(smsData: SmsData[], module: string, riskHighlight
     return smsData.reduce(reducer, totalsMap);
 }
 
-function getRiskTotals(locations: LocationWithData[], module: string) {
+function getRiskTotals(locations: LocationWithData[], module: string): Totals {
     let reducer: (accumulator: Totals, location: LocationWithData) => Totals;
 
     if (module === NUTRITION) {
@@ -1005,7 +1005,7 @@ const mapStateToProps = (state: Partial<Store>, ownProps: HierarchicalDataTableT
         permissionLevel: parseInt(ownProps.match.params.permission_level),
         provinces: getLocationsOfLevel(state, 'Province'),
         risk_highligter: ownProps.match.params.risk_highlighter as RiskHighlighterType,
-        smsData: getFilterArgs(state)
+        smsData: getFilterArgs(state).length
             ? getFilteredSmsData(state, getFilterArgs(state) as SmsFilterFunction[])
             : getSmsData(state),
         title: ownProps.match.params.title,
