@@ -398,15 +398,6 @@ export const Compartments = ({
                     <div className="cards-row">
                         <CardGroup>{circleCardComponent[2] ? circleCardComponent[2] : null}</CardGroup>
                     </div>
-                    {(module === PREGNANCY || module === NUTRITION) && smsData.length ? (
-                        <VillageData
-                            {...{
-                                current_level: userLocationLevel,
-                                module,
-                                smsData: filteredData,
-                            }}
-                        />
-                    ) : null}
                 </>
             ) : (
                 <Ripple />

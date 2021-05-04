@@ -59,95 +59,91 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
 
         return (
             <>
-                {this.props.current_level >= 3 ? (
-                    <>
-                        <Row className="village villageDataRow">
-                            <Card className="table-card">
-                                <CardTitle className="commune-name">{t(this.props.communeName)}</CardTitle>
-                                <CardBody>
-                                    <Table striped borderless>
-                                        <thead id="header">
-                                            {/* For pregnancy */}
-                                            {this.props.module === PREGNANCY ? (
-                                                <tr>
-                                                    <th className="default-width">{t('Patient ID')}</th>
-                                                    <th className="default-width">{t('Age')}</th>
-                                                    <th className="default-width">{t('Location Of Residence')}</th>
-                                                    <th className="default-width">{t('Current Symptoms')}</th>
-                                                    <th className="default-width">
-                                                        {t('Previous Risks / Existing Medical Conditions')}
-                                                    </th>
-                                                    <th className="default-width">{t('EDD')}</th>
-                                                    <th className="default-width">{t('Planned Delivery Location')}</th>
-                                                    <th className="default-width">{t('Risk category')}</th>
-                                                </tr>
-                                            ) : null}
+                <Row className="village villageDataRow">
+                    <Card className="table-card">
+                        <CardTitle className="commune-name">{t(this.props.communeName)}</CardTitle>
+                        <CardBody>
+                            <Table striped borderless>
+                                <thead id="header">
+                                    {/* For pregnancy */}
+                                    {this.props.module === PREGNANCY ? (
+                                        <tr>
+                                            <th className="default-width">{t('Patient ID')}</th>
+                                            <th className="default-width">{t('Age')}</th>
+                                            <th className="default-width">{t('Location Of Residence')}</th>
+                                            <th className="default-width">{t('Current Symptoms')}</th>
+                                            <th className="default-width">
+                                                {t('Previous Risks / Existing Medical Conditions')}
+                                            </th>
+                                            <th className="default-width">{t('EDD')}</th>
+                                            <th className="default-width">{t('Planned Delivery Location')}</th>
+                                            <th className="default-width">{t('Risk category')}</th>
+                                        </tr>
+                                    ) : null}
 
-                                            {/* For nutrition */}
-                                            {this.props.module === NUTRITION ? (
-                                                <tr>
-                                                    <th className="default-width">{t('Patient ID')}</th>
-                                                    <th className="default-width">{t('Age')}</th>
-                                                    <th className="default-width">{t('Location of Residence')}</th>
-                                                    <th className="default-width">{t('Risk category')}</th>
-                                                </tr>
-                                            ) : null}
+                                    {/* For nutrition */}
+                                    {this.props.module === NUTRITION ? (
+                                        <tr>
+                                            <th className="default-width">{t('Patient ID')}</th>
+                                            <th className="default-width">{t('Age')}</th>
+                                            <th className="default-width">{t('Location of Residence')}</th>
+                                            <th className="default-width">{t('Risk category')}</th>
+                                        </tr>
+                                    ) : null}
 
-                                            {/* For NBC */}
-                                            {this.props.module === NBC_AND_PNC_CHILD ? (
-                                                <tr>
-                                                    <th className="default-width">{t('Patient ID')}</th>
-                                                    <th className="default-width">{t('Days since birth')}</th>
-                                                    <th className="default-width">{t('Location of Residence')}</th>
-                                                    <th className="default-width">{t('Current symptoms')}</th>
-                                                    <th className="default-width">{t('Location of birth')}</th>
-                                                    <th className="default-width">{t('Risk category')}</th>
-                                                </tr>
-                                            ) : null}
+                                    {/* For NBC */}
+                                    {this.props.module === NBC_AND_PNC_CHILD ? (
+                                        <tr>
+                                            <th className="default-width">{t('Patient ID')}</th>
+                                            <th className="default-width">{t('Days since birth')}</th>
+                                            <th className="default-width">{t('Location of Residence')}</th>
+                                            <th className="default-width">{t('Current symptoms')}</th>
+                                            <th className="default-width">{t('Location of birth')}</th>
+                                            <th className="default-width">{t('Risk category')}</th>
+                                        </tr>
+                                    ) : null}
 
-                                            {/* For PNC */}
-                                            {this.props.module === NBC_AND_PNC_WOMAN ? (
-                                                <tr>
-                                                    <th className="default-width">{t('Patient ID')}</th>
-                                                    <th className="default-width">{t('Age')}</th>
-                                                    <th className="default-width">{t('Location of Residence')}</th>
-                                                    <th className="default-width">{t('Current symptoms')}</th>
-                                                    <th className="default-width">
-                                                        {t('Previous Risks / Existing Medical Conditions')}
-                                                    </th>
-                                                    <th className="default-width">{t('Location of birth')}</th>
-                                                    <th className="default-width">{t('Risk category')}</th>
-                                                </tr>
-                                            ) : null}
-                                        </thead>
-                                        <tbody id="body">
-                                            {this.props.smsData.length
-                                                ? this.props.smsData
-                                                      .slice(
-                                                          (this.state.currentPage - 1) * routePaginatorProps.pageLimit,
-                                                          (this.state.currentPage - 1) * routePaginatorProps.pageLimit +
-                                                              routePaginatorProps.pageLimit,
-                                                      )
-                                                      .map(
-                                                          this.props.module === PREGNANCY
-                                                              ? this.pregnancyMapFunction
-                                                              : this.props.module === NUTRITION
-                                                              ? this.nutritionMapFunction
-                                                              : this.props.module === NBC_AND_PNC_CHILD
-                                                              ? this.nbcAndPncChildMapFunction
-                                                              : this.nbcAndPncMotherMapFunction,
-                                                      )
-                                                : null}
-                                        </tbody>
-                                    </Table>
-                                </CardBody>
-                            </Card>
-                        </Row>
-                        <Row id="navrow" className="villageDataRow">
-                            <Paginator {...routePaginatorProps} />
-                        </Row>
-                    </>
-                ) : null}
+                                    {/* For PNC */}
+                                    {this.props.module === NBC_AND_PNC_WOMAN ? (
+                                        <tr>
+                                            <th className="default-width">{t('Patient ID')}</th>
+                                            <th className="default-width">{t('Age')}</th>
+                                            <th className="default-width">{t('Location of Residence')}</th>
+                                            <th className="default-width">{t('Current symptoms')}</th>
+                                            <th className="default-width">
+                                                {t('Previous Risks / Existing Medical Conditions')}
+                                            </th>
+                                            <th className="default-width">{t('Location of birth')}</th>
+                                            <th className="default-width">{t('Risk category')}</th>
+                                        </tr>
+                                    ) : null}
+                                </thead>
+                                <tbody id="body">
+                                    {this.props.smsData.length
+                                        ? this.props.smsData
+                                              .slice(
+                                                  (this.state.currentPage - 1) * routePaginatorProps.pageLimit,
+                                                  (this.state.currentPage - 1) * routePaginatorProps.pageLimit +
+                                                      routePaginatorProps.pageLimit,
+                                              )
+                                              .map(
+                                                  this.props.module === PREGNANCY
+                                                      ? this.pregnancyMapFunction
+                                                      : this.props.module === NUTRITION
+                                                      ? this.nutritionMapFunction
+                                                      : this.props.module === NBC_AND_PNC_CHILD
+                                                      ? this.nbcAndPncChildMapFunction
+                                                      : this.nbcAndPncMotherMapFunction,
+                                              )
+                                        : null}
+                                </tbody>
+                            </Table>
+                        </CardBody>
+                    </Card>
+                </Row>
+                <Row id="navrow" className="villageDataRow">
+                    <Paginator {...routePaginatorProps} />
+                </Row>
             </>
         );
     }
