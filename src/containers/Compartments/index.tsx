@@ -460,7 +460,7 @@ export const filterByDateInNextNWeeks = (n: number) => {
     return (dataItem: SmsData) => {
         return (
             Date.parse(dataItem.lmp_edd.toString()) - Date.now() > 0 &&
-            Date.parse(dataItem.lmp_edd.toString()) - Date.now() < n * MICROSECONDS_IN_A_WEEK
+            Date.parse(dataItem.lmp_edd.toString()) - Date.now() <= n * MICROSECONDS_IN_A_WEEK
         );
     };
 };
