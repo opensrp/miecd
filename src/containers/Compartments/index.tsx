@@ -190,9 +190,12 @@ export const Compartments = ({
 
     useEffect(() => {
         if (module === PREGNANCY) {
-            const birthsInTheFuture = filteredData.filter(filterByDateInTheFuture);
+            // filter functions
             const filterByDateInNext2Weeks = filterByDateInNextNWeeks(2);
             const filterByDateInNext1Week = filterByDateInNextNWeeks(1);
+
+            // filtered data
+            const birthsInTheFuture = filteredData.filter(filterByDateInTheFuture);
             const last2WeeksSmsData = filteredData.filter(filterByDateInNext2Weeks);
             const last1WeekSmsData = filteredData.filter(filterByDateInNext1Week);
 
@@ -256,9 +259,7 @@ export const Compartments = ({
     useEffect(() => {
         if (module === NBC_AND_PNC) {
             const newBorn: SmsData[] = filteredData.filter(filterByEcChild);
-            const woman: SmsData[] = filteredData.filter((dataItem: SmsData) => {
-                return dataItem.client_type === EC_WOMAN || dataItem.client_type === EC_FAMILY_MEMBER;
-            });
+            const woman: SmsData[] = filteredData.filter(filterByEcWomanOrFamilyMember);
 
             setDataCircleCardChildData({
                 filterArgs: [filterByEcChild] as SmsFilterFunction[],
@@ -274,11 +275,7 @@ export const Compartments = ({
             });
 
             setDataCircleCardWomanData({
-                filterArgs: [
-                    (dataItem: SmsData) => {
-                        return dataItem.client_type === EC_WOMAN || dataItem.client_type === EC_FAMILY_MEMBER;
-                    },
-                ] as SmsFilterFunction[],
+                filterArgs: [filterByEcWomanOrFamilyMember] as SmsFilterFunction[],
                 module: NBC_AND_PNC_WOMAN,
                 noRisk: getNumberOfSmsWithRisk(NO_RISK_LOWERCASE, woman, 'logface_risk'),
                 permissionLevel: userLocationLevel,
@@ -478,11 +475,20 @@ const filterByDateInTheFuture = (dataItem: SmsData): boolean => {
 };
 
 /**
- * @param {SmsData} dataItem an SmsData item to be filtered out or in.
- * @return {boolean} should the dataItem be filtered in or out.
+ * @param {SmsData} dataItem an SmsData item to be filtered in/out.
+ * @return {boolean} should the dataItem be filtered in/out.
  */
-const filterByEcChild: (smsData: SmsData) => boolean = (dataItem: SmsData) => {
+const filterByEcChild: SmsFilterFunction = (dataItem: SmsData): boolean => {
     return dataItem.client_type === EC_CHILD;
+};
+
+/**
+ *
+ * @param {SmsData} dataItem an SmsData item to be filtered in/out.
+ * @return {boolean} should the dataItem be filtered in/out.
+ */
+const filterByEcWomanOrFamilyMember: SmsFilterFunction = (dataItem: SmsData): boolean => {
+    return dataItem.client_type === EC_WOMAN || dataItem.client_type === EC_FAMILY_MEMBER;
 };
 
 const mapStateToprops = (state: Partial<Store>) => {
