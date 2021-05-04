@@ -29,6 +29,17 @@ const fetch = require('jest-fetch-mock');
 
 jest.mock('../../../configs/env');
 
+jest.mock('react-select', () => {
+    const SelectComponent = (argProps: Record<string, unknown>) => {
+        const props = {
+            ...argProps,
+            className: `mock-select ${argProps.className}`,
+        };
+        return <select {...props}></select>;
+    };
+    return SelectComponent;
+});
+
 describe('containers/LogFace', () => {
     const commonProps = { module: PREGNANCY };
     afterEach(() => {
@@ -78,7 +89,7 @@ describe('containers/LogFace', () => {
         });
 
         expect(toJson(wrapper.find('table'))).toMatchSnapshot('table snapshot');
-        expect(toJson(wrapper.find('.location-type-filter'))).toMatchSnapshot('filter div');
+        expect(toJson(wrapper.find('.logface-page-filter'))).toMatchSnapshot('filter div');
         expect(toJson(wrapper.find('input#input'))).toMatchSnapshot('search div');
         expect(toJson(wrapper.find('#logface_title'))).toMatchSnapshot('logface title');
         expect(toJson(wrapper.find('.paginator'))).toMatchSnapshot('paginator');
