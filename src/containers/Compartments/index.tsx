@@ -110,15 +110,30 @@ export const Compartments = ({
     const [userLocationId, setUserLocationId] = useState<string>('');
     const [userLocationLevel, setUserLocationLevel] = useState<number>(4);
 
-    const [allPregnanciesProps, setallPregnanciesProps] = useState<null | PregnancyAndNBCDataCircleCardProps>(null);
-    const [
-        pregnaciesDueIn2WeeksProps,
-        setpregnaciesDueIn2WeeksProps,
-    ] = useState<null | PregnancyAndNBCDataCircleCardProps>(null);
-    const [
-        pregnanciesDueIn1WeekProps,
-        setpregnanciesDueIn1WeekProps,
-    ] = useState<null | PregnancyAndNBCDataCircleCardProps>(null);
+    const [allPregnanciesProps, setallPregnanciesProps] = useState<PregnancyAndNBCDataCircleCardProps>({
+        noRisk: 0,
+        permissionLevel: 0,
+        module: '',
+        redAlert: 0,
+        risk: 0,
+        title: '',
+    });
+    const [pregnaciesDueIn2WeeksProps, setpregnaciesDueIn2WeeksProps] = useState<PregnancyAndNBCDataCircleCardProps>({
+        noRisk: 0,
+        permissionLevel: 0,
+        module: '',
+        redAlert: 0,
+        risk: 0,
+        title: '',
+    });
+    const [pregnanciesDueIn1WeekProps, setpregnanciesDueIn1WeekProps] = useState<PregnancyAndNBCDataCircleCardProps>({
+        noRisk: 0,
+        permissionLevel: 0,
+        module: '',
+        redAlert: 0,
+        risk: 0,
+        title: '',
+    });
 
     // fetch data and add to store when the component mounts
     useEffect(() => {
@@ -220,12 +235,22 @@ export const Compartments = ({
         }
     }, [filteredData, module, userLocationLevel]);
 
-    const [dataCircleCardChildData, setDataCircleCardChildData] = useState<null | PregnancyAndNBCDataCircleCardProps>(
-        null,
-    );
-    const [dataCircleCardWomanData, setDataCircleCardWomanData] = useState<null | PregnancyAndNBCDataCircleCardProps>(
-        null,
-    );
+    const [dataCircleCardChildData, setDataCircleCardChildData] = useState<PregnancyAndNBCDataCircleCardProps>({
+        noRisk: 0,
+        permissionLevel: 0,
+        module: '',
+        redAlert: 0,
+        risk: 0,
+        title: '',
+    });
+    const [dataCircleCardWomanData, setDataCircleCardWomanData] = useState<PregnancyAndNBCDataCircleCardProps>({
+        noRisk: 0,
+        permissionLevel: 0,
+        module: '',
+        redAlert: 0,
+        risk: 0,
+        title: '',
+    });
 
     // this should only run when the module is NBC & PNC
     useEffect(() => {
@@ -267,8 +292,28 @@ export const Compartments = ({
         }
     }, [filteredData, module, userLocationLevel]);
 
-    const [dataCircleCardNutrition1, setDataCircleCardNutrition1] = useState<null | NutritionDataCircleCardProps>(null);
-    const [dataCircleCardNutrition2, setDataCircleCardNutrition2] = useState<null | NutritionDataCircleCardProps>(null);
+    const [dataCircleCardNutrition1, setDataCircleCardNutrition1] = useState<NutritionDataCircleCardProps>({
+        filterArgs: [],
+        inappropriateFeeding: 0,
+        module: '',
+        overweight: 0,
+        permissionLevel: 0,
+        stunting: 0,
+        title: '',
+        totalChildren: 0,
+        wasting: 0,
+    });
+    const [dataCircleCardNutrition2, setDataCircleCardNutrition2] = useState<NutritionDataCircleCardProps>({
+        filterArgs: [],
+        inappropriateFeeding: 0,
+        module: '',
+        overweight: 0,
+        permissionLevel: 0,
+        stunting: 0,
+        title: '',
+        totalChildren: 0,
+        wasting: 0,
+    });
 
     useEffect(() => {
         if (module === NUTRITION) {
