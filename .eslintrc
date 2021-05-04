@@ -34,6 +34,8 @@
             }
         ],
         "react-hooks/rules-of-hooks": "error", // Checks Hooks rules
-        "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
+        "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
+        "jest/no-conditional-expect": "warn"
+
     }
 }
