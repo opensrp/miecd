@@ -1540,12 +1540,12 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@onaio/connected-private-route@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@onaio/connected-private-route/-/connected-private-route-0.0.12.tgz#35b11cb3cdb65136d7695ff22c3990252f45f40b"
-  integrity sha512-odqfsG+8LPLjnOPP+FgRsMMVYX+sdBoh2fvuXxywNK6Osire+cvHpXKcJTCDaJjTlRDW9fuSzV5hJXQqrNbbVg==
+"@onaio/connected-private-route@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@onaio/connected-private-route/-/connected-private-route-0.0.11.tgz#c7c721cdb01e972a147a4a60eff93a4ef8148289"
+  integrity sha512-YACSSoTpdjRUVdwSB0qcr5kiv2MuhfMesZZIRU6u1NGeAfPD+lEHR6dfJT3sCd7H0TYyFqcP2FgrqVOODkVB2Q==
   dependencies:
-    "@onaio/session-reducer" "^0.0.12"
+    "@onaio/session-reducer" "^0.0.11"
 
 "@onaio/connected-reducer-registry@^0.0.3":
   version "0.0.3"
@@ -1590,19 +1590,17 @@
   resolved "https://registry.yarnpkg.com/@onaio/loaders/-/loaders-0.0.1.tgz#bccf621fd1e2842f962220a570d0898965765db9"
   integrity sha512-EJZQ9dXnKI2dATXtRnEIe/zzAvrtXhT0DTIylLLT5ihq/kyM2PxjjFcNgrlsBHhxVs/7+OkKg2IoXfSUzfA4ng==
 
-"@onaio/redux-reducer-registry@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@onaio/redux-reducer-registry/-/redux-reducer-registry-0.0.8.tgz#53433bc95c271fe1f77e5632ec324af6825f56e7"
-  integrity sha512-GyM9D5mZHAtTv2HL8MB3zZyO1y2gJH+iIbctxP6Z+5NWKowxjr/VLbv6O7fEECwRZgQKzSeE/eqKNYaPGSrWEQ==
-  dependencies:
-    redux "^4.0.1"
-
 "@onaio/redux-reducer-registry@^0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@onaio/redux-reducer-registry/-/redux-reducer-registry-0.0.9.tgz#513bac5c9838ca3bcf60f0963a6824a88b9694b7"
   integrity sha512-XNBLsWFjDijEr/0ejzi5AzsKvUiJBt4xrmRpWHMWUPkY9Lfo+pfLCxLB8n4qDO30Dt/UYuHOSX1dgXAlsvcuPg==
   dependencies:
     redux "^4.0.1"
+
+"@onaio/session-reducer@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@onaio/session-reducer/-/session-reducer-0.0.11.tgz#4e8384ef3fc48d0bb697d698b115e8fc541100ed"
+  integrity sha512-vjesMXOggnFgJAwlUSFgGfU95TepDL/JwRo9mUPxqvlkQRT296xMbm62RZdvUMwzi4StdXXH/3Vyv3emMuWeqA==
 
 "@onaio/session-reducer@^0.0.12":
   version "0.0.12"
