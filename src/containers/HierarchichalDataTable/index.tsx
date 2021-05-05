@@ -643,7 +643,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                                 <th className="default-width">{t('Red Alert')}</th>
                                                 <th className="default-width">{t('risk')}</th>
                                                 <th className="default-width">{t('No Risk')}</th>
-                                                <th className="default-width">{t('Total')}</th>
+                                                <th className="default-width totals">{t('Total')}</th>
                                             </tr>
                                         ) : (
                                             <tr>
@@ -652,7 +652,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                                 <th className="default-width">{t('Severe Wasting')}</th>
                                                 <th className="default-width">{t('Overweight')}</th>
                                                 <th className="default-width">{t('Inappropriately Fed')}</th>
-                                                <th className="default-width">{t('Total')}</th>
+                                                <th className="default-width totals">{t('Total')}</th>
                                             </tr>
                                         )}
                                     </thead>
@@ -715,7 +715,9 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                                                 >
                                                                     {element.no_risk}
                                                                 </td>
-                                                                <td className="default-width">{element.total}</td>
+                                                                <td className="default-width totals">
+                                                                    {element.total}
+                                                                </td>
                                                             </>
                                                         ) : (
                                                             <>
@@ -767,7 +769,9 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                                                 >
                                                                     {element.inappropriateFeeding}
                                                                 </td>
-                                                                <td className="default-width">{element.total}</td>
+                                                                <td className="default-width totals">
+                                                                    {element.total}
+                                                                </td>
                                                             </>
                                                         )}
                                                     </tr>

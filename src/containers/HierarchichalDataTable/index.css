@@ -190,7 +190,8 @@
     color: #0292d3 !important;
 }
 .totals-row > .default-width,
-.totals-row > #total {
+.totals-row > #total,
+.default-width.totals {
     color: #3a484f;
     font-size: 1rem;
     font-weight: bolder;
