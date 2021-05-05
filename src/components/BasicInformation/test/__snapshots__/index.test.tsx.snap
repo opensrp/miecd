@@ -31,184 +31,134 @@ exports[`BasicInformation must render correctly 1`] = `
     ]
   }
 >
-  <Row
+  <div
     id="detailsRow"
-    tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
   >
-    <div
-      className="row"
-      id="detailsRow"
+    <Card
+      id="detailsCard"
+      tag="div"
     >
-      <Card
+      <div
+        className="card"
         id="detailsCard"
-        tag="div"
       >
-        <div
-          className="card"
-          id="detailsCard"
+        <CardTitle
+          tag="div"
         >
-          <CardTitle
-            tag="div"
+          <div
+            className="card-title"
           >
-            <div
-              className="card-title"
-            >
-              Basic Information
-            </div>
-          </CardTitle>
-          <Row
-            tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
+            Basic Information
+          </div>
+        </CardTitle>
+        <div
+          className="d-flex justify-content-between p-3 flex-wrap information__card_body"
+        >
+          <div
+            className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
+            key="currentEdd-test edd"
           >
-            <div
-              className="row"
+            <span
+              className="prop"
             >
-              <Col
-                className="detailsColumn"
-                lg="6"
-                sm="12"
-                tag="div"
-                widths={
-                  Array [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
-              >
-                <div
-                  className="detailsColumn col-sm-12 col-lg-6"
-                >
-                  <Table
-                    borderless={true}
-                    responsiveTag="div"
-                    tag="table"
-                  >
-                    <table
-                      className="table table-borderless"
-                    >
-                      <tbody>
-                        <tr
-                          key="1"
-                        >
-                          <td>
-                            currentGravidity
-                          </td>
-                          <td>
-                            20
-                          </td>
-                        </tr>
-                        <tr
-                          key="3"
-                        >
-                          <td>
-                            id
-                          </td>
-                          <td>
-                            test
-                          </td>
-                        </tr>
-                        <tr
-                          key="5"
-                        >
-                          <td>
-                            previousPregnancyRisk
-                          </td>
-                          <td>
-                            no risk
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </Table>
-                </div>
-              </Col>
-              <Col
-                className="detailsColumn"
-                lg="6"
-                sm="12"
-                tag="div"
-                widths={
-                  Array [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
-              >
-                <div
-                  className="detailsColumn col-sm-12 col-lg-6"
-                >
-                  <Table
-                    borderless={true}
-                    responsiveTag="div"
-                    tag="table"
-                  >
-                    <table
-                      className="table table-borderless"
-                    >
-                      <tbody>
-                        <tr
-                          key="0"
-                        >
-                          <td>
-                            currentEdd
-                          </td>
-                          <td>
-                            test edd
-                          </td>
-                        </tr>
-                        <tr
-                          key="2"
-                        >
-                          <td>
-                            currentParity
-                          </td>
-                          <td>
-                            20
-                          </td>
-                        </tr>
-                        <tr
-                          key="4"
-                        >
-                          <td>
-                            location
-                          </td>
-                          <td>
-                            Test Location
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </Table>
-                </div>
-              </Col>
-            </div>
-          </Row>
+               
+              currentEdd
+              :
+            </span>
+            <span
+              className="value"
+            >
+              test edd
+            </span>
+          </div>
+          <div
+            className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
+            key="currentGravidity-20"
+          >
+            <span
+              className="prop"
+            >
+               
+              currentGravidity
+              :
+            </span>
+            <span
+              className="value"
+            >
+              20
+            </span>
+          </div>
+          <div
+            className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
+            key="currentParity-20"
+          >
+            <span
+              className="prop"
+            >
+               
+              currentParity
+              :
+            </span>
+            <span
+              className="value"
+            >
+              20
+            </span>
+          </div>
+          <div
+            className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
+            key="id-test"
+          >
+            <span
+              className="prop"
+            >
+               
+              id
+              :
+            </span>
+            <span
+              className="value"
+            >
+              test
+            </span>
+          </div>
+          <div
+            className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
+            key="location-Test Location"
+          >
+            <span
+              className="prop"
+            >
+               
+              location
+              :
+            </span>
+            <span
+              className="value"
+            >
+              Test Location
+            </span>
+          </div>
+          <div
+            className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
+            key="previousPregnancyRisk-no risk"
+          >
+            <span
+              className="prop"
+            >
+               
+              previousPregnancyRisk
+              :
+            </span>
+            <span
+              className="value"
+            >
+              no risk
+            </span>
+          </div>
         </div>
-      </Card>
-    </div>
-  </Row>
+      </div>
+    </Card>
+  </div>
 </BasicInformation>
 `;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardTitle, Col, Row, Table } from 'reactstrap';
+import { Card, CardTitle } from 'reactstrap';
 import './index.css';
 
 export interface LabelValuePair {
@@ -18,42 +18,19 @@ export default function BasicInformation({ labelValuePairs = [] }: Props) {
         <div id="detailsRow">
             <Card id="detailsCard">
                 <CardTitle>{t('Basic Information')}</CardTitle>
-                <Row>
-                    <Col className="detailsColumn" sm="12" lg="6">
-                        <Table borderless>
-                            <tbody>
-                                {labelValuePairs.map((labelValuePair: LabelValuePair, index: number) => {
-                                    if (index % 2) {
-                                        return (
-                                            <tr key={index}>
-                                                <td>{labelValuePair.label}</td>
-                                                <td>{labelValuePair.value}</td>
-                                            </tr>
-                                        );
-                                    }
-                                    return null;
-                                })}
-                            </tbody>
-                        </Table>
-                    </Col>
-                    <Col className="detailsColumn" sm="12" lg="6">
-                        <Table borderless>
-                            <tbody>
-                                {labelValuePairs.map((labelValuePair: LabelValuePair, index: number) => {
-                                    if (!(index % 2)) {
-                                        return (
-                                            <tr key={index}>
-                                                <td>{labelValuePair.label}</td>
-                                                <td>{labelValuePair.value}</td>
-                                            </tr>
-                                        );
-                                    }
-                                    return null;
-                                })}
-                            </tbody>
-                        </Table>
-                    </Col>
-                </Row>
+                <div className="d-flex justify-content-between p-3 flex-wrap information__card_body">
+                    {labelValuePairs.map((pair) => {
+                        return (
+                            <div
+                                key={`${pair.label}-${pair.value}`}
+                                className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
+                            >
+                                <span className="prop"> {pair.label}:</span>
+                                <span className="value">{pair.value}</span>
+                            </div>
+                        );
+                    })}
+                </div>
             </Card>
         </div>
     );
