@@ -175,7 +175,7 @@ describe('Compartments', () => {
 });
 
 describe('components/Compartments/childrenAgeRangeFilterFunction', () => {
-    it('returns the correct sms data items within range', () => {
+    it('returns the correct sms data items within range childrenAgeRangeFilterFunction', () => {
         MockDate.set(new Date('01/01/2020').getTime());
         const smsData = ([
             { date_of_birth: new Date('01/01/2019').getTime() },
@@ -192,25 +192,25 @@ describe('components/Compartments/childrenAgeRangeFilterFunction', () => {
 });
 
 describe('components/Copartments/filterByDateInNextNWeeks', () => {
-    it('returns the correct sms data items within range', () => {
+    it('returns the correct sms data items within range filterByDateInNextNWeeks', () => {
         MockDate.set(new Date('01/01/2020').getTime());
         const smsData = ([
             { lmp_edd: '01/02/2020' },
             { lmp_edd: '01/03/2020' },
             { lmp_edd: '01/05/2020' },
-            { lmp_edd: '01/15/2020' },
             { lmp_edd: '01/08/2020' },
             { lmp_edd: '01/09/2020' },
             { lmp_edd: '01/12/2020' },
+            { lmp_edd: '01/15/2020' },
+            { lmp_edd: '02/09/2020' },
             { lmp_edd: '04/08/2020' },
             { lmp_edd: '04/09/2020' },
             { lmp_edd: '05/12/2020' },
             { lmp_edd: '07/08/2020' },
-            { lmp_edd: '02/09/2020' },
             { lmp_edd: '10/12/2020' },
         ] as unknown) as SmsData[];
-        expect(smsData.filter(filterByDateInNextNWeeks(1)).length).toEqual(3);
-        expect(smsData.filter(filterByDateInNextNWeeks(2)).length).toEqual(6);
+        expect(smsData.filter(filterByDateInNextNWeeks(1)).length).toEqual(4);
+        expect(smsData.filter(filterByDateInNextNWeeks(2)).length).toEqual(7);
         expect(smsData.filter(filterByDateInNextNWeeks(3)).length).toEqual(7);
         expect(smsData.filter(filterByDateInNextNWeeks(6)).length).toEqual(8);
         expect(smsData.filter(filterByDateInNextNWeeks(15)).length).toEqual(10);
