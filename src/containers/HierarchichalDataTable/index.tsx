@@ -616,6 +616,8 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                 this.props.risk_highligter
             }/${this.props.title}/${this.props.current_level ? this.props.current_level + 1 : 1}/down/`;
 
+            const element = getTotals(this.state.data, this.props.module);
+
             return (
                 <Container fluid className="compartment-data-table">
                     <span
@@ -628,7 +630,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                         <FontAwesomeIcon icon={BACKPAGE_ICON} size="lg" />
                         <span>{t('Back')}</span>
                     </span>
-                    <h1>{t(this.props.title)}</h1>
+                    <h1>{t(`${element.total} ${this.props.title}`)}</h1>
                     <Row className="villageDataRow">
                         <Card className="table-card">
                             <CardTitle>{this.header()}</CardTitle>
@@ -777,7 +779,6 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                             </tr>
                                         )}
                                         {(() => {
-                                            const element = getTotals(this.state.data, this.props.module);
                                             // inferred type PregnancyNpcPncTotals
                                             return 'no_risk' in element ? (
                                                 <tr key="total" className="totals-row">
