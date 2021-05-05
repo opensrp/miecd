@@ -53,6 +53,7 @@ export const NBC_AND_PNC_WOMAN = 'NBC & PNC_WOMAN';
 export const NUTRITION = 'Nutrition';
 export const PREGNANCY_MODULE = 'Pregnancy';
 export const NUTRITION_MODULE = 'Nutrition';
+export const NBC_AND_PNC_MODULE = 'NBC & PNC';
 
 export const ALL = 'all';
 export const UP = 'up';
