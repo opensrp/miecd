@@ -26,12 +26,6 @@ describe('components/VillageData', () => {
         shallow(<VillageData />);
     });
 
-    it('must render correctly with no data', () => {
-        const wrapper = mountWithTranslations(<VillageData />);
-        expect(toJson(wrapper.find('VillageData Row'))).toMatchSnapshot('Village data with no data');
-        wrapper.unmount();
-    });
-
     it('must render correctly with data', () => {
         const wrapper = mountWithTranslations(
             <Provider store={store}>
