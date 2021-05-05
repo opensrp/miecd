@@ -182,14 +182,6 @@ td {
     text-align: left;
 }
 
-.filters .logface-page-filter .dropdown button {
-    color: #676767;
-}
-
-.filters .logface-page-filter .dropdown button:focus {
-    background-color: inherit;
-}
-
 .dropdown button span {
     padding-right: 35px;
     color: #666666;
