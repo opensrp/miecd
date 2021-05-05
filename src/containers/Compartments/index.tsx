@@ -318,12 +318,12 @@ export const Compartments = ({
     useEffect(() => {
         if (module === NUTRITION) {
             const childrenBetween0And2FilterFunction = childrenAgeRangeFilterFunction(0, 2);
-            const childrenBetween2And5FilterFuction = childrenAgeRangeFilterFunction(0, 5);
+            const childrenBetween0And5FilterFunction = childrenAgeRangeFilterFunction(0, 5);
             const childrenUnder2 = filteredData.filter(childrenBetween0And2FilterFunction);
-            const childrenUnder5 = filteredData.filter(childrenBetween2And5FilterFuction);
+            const childrenUnder5 = filteredData.filter(childrenBetween0And5FilterFunction);
 
             setDataCircleCardNutrition1({
-                filterArgs: [childrenBetween2And5FilterFuction],
+                filterArgs: [childrenBetween0And5FilterFunction],
                 inappropriateFeeding: getNumberOfSmsWithRisk('inappropriately fed', childrenUnder5, 'feeding_category'),
                 module: NUTRITION,
                 overweight: getNumberOfSmsWithRisk('overweight', childrenUnder5, 'nutrition_status'),
