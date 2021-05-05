@@ -114,6 +114,7 @@ export const monthNames = [
 // operational
 export const EN_LANGUAGE_CODE = 'en' as const;
 export const VI_LANGUAGE_CODE = 'vi' as const;
+export const DATE_FORMAT = 'dd/MM/yy';
 
 // export const
 export const ALL_LANGUAGE_OPTIONS = {

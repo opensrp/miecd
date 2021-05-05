@@ -14,6 +14,7 @@ import {
     CHILD_PATIENT_DETAIL,
     COMMUNE,
     COUNTRY,
+    DATE_FORMAT,
     DISTRICT,
     EC_CHILD,
     EC_FAMILY_MEMBER,
@@ -49,6 +50,7 @@ import { fetchSms, SmsData, smsDataFetched } from '../store/ducks/sms_events';
 import { Dictionary } from '@onaio/utils';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
+import { format } from 'date-fns';
 export type { Dictionary };
 
 /** Custom function to get oAuth user info depending on the oAuth2 provider
@@ -531,8 +533,13 @@ export async function fetchData(supersetFetchMethod: typeof supersetFetch = supe
     });
 }
 
+/** convert milliseconds to years (rounded off to two decimal places)
+ * @param mSeconds - time in milliseconds
+ */
 export const convertMillisecondsToYear = (mSeconds: number) => {
-    return Math.floor(mSeconds / (365 * 24 * 60 * 60 * 1000));
+    const years = mSeconds / (365 * 24 * 60 * 60 * 1000);
+    const yearsRounded = Math.round((years + Number.EPSILON) * 100) / 100;
+    return yearsRounded;
 };
 
 /** facade to display a success toast
@@ -566,4 +573,12 @@ export const useHandleBrokenPage = () => {
     }
 
     return { broken, error, handleBrokenPage };
+};
+
+/** formats dates strings in a globally set format
+ *
+ * @param dateString - the date as a string
+ */
+export const formatDateStrings = (dateString: string) => {
+    return format(new Date(dateString), DATE_FORMAT);
 };

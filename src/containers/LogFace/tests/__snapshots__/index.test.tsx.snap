@@ -3,679 +3,299 @@
 exports[`containers/LogFace renders correctly: filter div 1`] = `
 Array [
   <div
-    className="location-type-filter"
+    className="logface-page-filter"
   >
     <span>
       Risk Level
     </span>
-    <Dropdown
-      a11y={true}
-      active={false}
-      addonType={false}
-      direction="down"
-      inNavbar={false}
-      isOpen={false}
-      nav={false}
-      setActiveFromChild={false}
-      toggle={[Function]}
+    <SelectComponent
+      classNamePrefix="logface-filters"
+      disabled={false}
+      onChange={[Function]}
+      options={
+        Array [
+          Object {
+            "label": "red",
+            "value": "red",
+          },
+          Object {
+            "label": "high",
+            "value": "high",
+          },
+          Object {
+            "label": "low",
+            "value": "low",
+          },
+          Object {
+            "label": "no risk",
+            "value": "no risk",
+          },
+          Object {
+            "label": "all",
+            "value": "all",
+          },
+        ]
+      }
+      placeholder="Select risk"
     >
-      <Manager>
-        <div
-          className="dropdown"
-          onKeyDown={[Function]}
-        >
-          <DropdownToggle
-            aria-haspopup={true}
-            caret={true}
-            color="secondary"
-            disabled={false}
-            id="dropdown-basic"
-            variant="success"
-          >
-            <Reference>
-              <InnerReference
-                setReferenceNode={[Function]}
-              >
-                <Button
-                  aria-expanded={false}
-                  aria-haspopup={true}
-                  className="dropdown-toggle"
-                  color="secondary"
-                  disabled={false}
-                  id="dropdown-basic"
-                  innerRef={[Function]}
-                  onClick={[Function]}
-                  tag="button"
-                  variant="success"
-                >
-                  <button
-                    aria-expanded={false}
-                    aria-haspopup={true}
-                    aria-label={null}
-                    className="dropdown-toggle btn btn-secondary"
-                    disabled={false}
-                    id="dropdown-basic"
-                    onClick={[Function]}
-                    type="button"
-                    variant="success"
-                  >
-                    <span>
-                      Select risk
-                    </span>
-                  </button>
-                </Button>
-              </InnerReference>
-            </Reference>
-          </DropdownToggle>
-          <DropdownMenu
-            flip={true}
-            tag="div"
-          >
-            <div
-              aria-hidden={true}
-              className="dropdown-menu"
-              role="menu"
-              tabIndex="-1"
-            >
-              <DropdownItem
-                key="red"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  red
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="high"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  high
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="low"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  low
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="no risk"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  no risk
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="all"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  all
-                </button>
-              </DropdownItem>
-            </div>
-          </DropdownMenu>
-        </div>
-      </Manager>
-    </Dropdown>
+      <select
+        className="mock-select undefined"
+        classNamePrefix="logface-filters"
+        disabled={false}
+        onChange={[Function]}
+        options={
+          Array [
+            Object {
+              "label": "red",
+              "value": "red",
+            },
+            Object {
+              "label": "high",
+              "value": "high",
+            },
+            Object {
+              "label": "low",
+              "value": "low",
+            },
+            Object {
+              "label": "no risk",
+              "value": "no risk",
+            },
+            Object {
+              "label": "all",
+              "value": "all",
+            },
+          ]
+        }
+        placeholder="Select risk"
+      />
+    </SelectComponent>
   </div>,
   <div
-    className="location-type-filter"
+    className="logface-page-filter"
   >
     <span>
       Select Location
     </span>
-    <Dropdown
-      a11y={true}
-      active={false}
-      addonType={false}
-      direction="down"
-      inNavbar={false}
-      isOpen={false}
-      nav={false}
-      setActiveFromChild={false}
-      toggle={[Function]}
+    <SelectComponent
+      classNamePrefix="logface-filters"
+      disabled={false}
+      onChange={[Function]}
+      options={
+        Array [
+          Object {
+            "label": "Yen Phu Village",
+            "value": "Yen Phu Village",
+          },
+          Object {
+            "label": "all",
+            "value": "all",
+          },
+        ]
+      }
+      placeholder="Select location"
     >
-      <Manager>
-        <div
-          className="dropdown"
-          onKeyDown={[Function]}
-        >
-          <DropdownToggle
-            aria-haspopup={true}
-            caret={true}
-            color="secondary"
-            disabled={false}
-            id="dropdown-basic"
-            variant="success"
-          >
-            <Reference>
-              <InnerReference
-                setReferenceNode={[Function]}
-              >
-                <Button
-                  aria-expanded={false}
-                  aria-haspopup={true}
-                  className="dropdown-toggle"
-                  color="secondary"
-                  disabled={false}
-                  id="dropdown-basic"
-                  innerRef={[Function]}
-                  onClick={[Function]}
-                  tag="button"
-                  variant="success"
-                >
-                  <button
-                    aria-expanded={false}
-                    aria-haspopup={true}
-                    aria-label={null}
-                    className="dropdown-toggle btn btn-secondary"
-                    disabled={false}
-                    id="dropdown-basic"
-                    onClick={[Function]}
-                    type="button"
-                    variant="success"
-                  >
-                    <span>
-                      Select Location
-                    </span>
-                  </button>
-                </Button>
-              </InnerReference>
-            </Reference>
-          </DropdownToggle>
-          <DropdownMenu
-            flip={true}
-            tag="div"
-          >
-            <div
-              aria-hidden={true}
-              className="dropdown-menu"
-              role="menu"
-              tabIndex="-1"
-            >
-              <DropdownItem
-                key="Yen Phu Village"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Yen Phu Village
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="all"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  all
-                </button>
-              </DropdownItem>
-            </div>
-          </DropdownMenu>
-        </div>
-      </Manager>
-    </Dropdown>
+      <select
+        className="mock-select undefined"
+        classNamePrefix="logface-filters"
+        disabled={false}
+        onChange={[Function]}
+        options={
+          Array [
+            Object {
+              "label": "Yen Phu Village",
+              "value": "Yen Phu Village",
+            },
+            Object {
+              "label": "all",
+              "value": "all",
+            },
+          ]
+        }
+        placeholder="Select location"
+      />
+    </SelectComponent>
   </div>,
   <div
-    className="location-type-filter"
+    className="logface-page-filter"
   >
     <span>
       Type
     </span>
-    <Dropdown
-      a11y={true}
-      active={false}
-      addonType={false}
-      direction="down"
-      inNavbar={false}
-      isOpen={false}
-      nav={false}
-      setActiveFromChild={false}
-      toggle={[Function]}
+    <SelectComponent
+      classNamePrefix="logface-filters"
+      disabled={false}
+      onChange={[Function]}
+      options={
+        Array [
+          Object {
+            "label": "Response Report",
+            "value": "Response Report",
+          },
+          Object {
+            "label": "Red Alert Report",
+            "value": "Red Alert Report",
+          },
+          Object {
+            "label": "Social Determinants",
+            "value": "Social Determinants",
+          },
+          Object {
+            "label": "ANC Visit",
+            "value": "ANC Visit",
+          },
+          Object {
+            "label": "Delivery Planning",
+            "value": "Delivery Planning",
+          },
+          Object {
+            "label": "Pregnancy Detection",
+            "value": "Pregnancy Detection",
+          },
+          Object {
+            "label": "Pregnancy Identification",
+            "value": "Pregnancy Identification",
+          },
+          Object {
+            "label": "Pregnancy registration",
+            "value": "Pregnancy registration",
+          },
+          Object {
+            "label": "ANC Report",
+            "value": "ANC Report",
+          },
+          Object {
+            "label": "Home Visit Report",
+            "value": "Home Visit Report",
+          },
+          Object {
+            "label": "Birth Report",
+            "value": "Birth Report",
+          },
+          Object {
+            "label": "Death Report",
+            "value": "Death Report",
+          },
+          Object {
+            "label": "Postnatal and Newborn Care",
+            "value": "Postnatal and Newborn Care",
+          },
+          Object {
+            "label": "Nutrition Registration",
+            "value": "Nutrition Registration",
+          },
+          Object {
+            "label": "Nutrition Report",
+            "value": "Nutrition Report",
+          },
+          Object {
+            "label": "Monthly Nutrition Report",
+            "value": "Monthly Nutrition Report",
+          },
+          Object {
+            "label": "Departure Code",
+            "value": "Departure Code",
+          },
+          Object {
+            "label": "Refusal Code",
+            "value": "Refusal Code",
+          },
+          Object {
+            "label": "Account Check",
+            "value": "Account Check",
+          },
+        ]
+      }
+      placeholder="Select type"
     >
-      <Manager>
-        <div
-          className="dropdown"
-          onKeyDown={[Function]}
-        >
-          <DropdownToggle
-            aria-haspopup={true}
-            caret={true}
-            color="secondary"
-            disabled={false}
-            id="dropdown-basic"
-            variant="success"
-          >
-            <Reference>
-              <InnerReference
-                setReferenceNode={[Function]}
-              >
-                <Button
-                  aria-expanded={false}
-                  aria-haspopup={true}
-                  className="dropdown-toggle"
-                  color="secondary"
-                  disabled={false}
-                  id="dropdown-basic"
-                  innerRef={[Function]}
-                  onClick={[Function]}
-                  tag="button"
-                  variant="success"
-                >
-                  <button
-                    aria-expanded={false}
-                    aria-haspopup={true}
-                    aria-label={null}
-                    className="dropdown-toggle btn btn-secondary"
-                    disabled={false}
-                    id="dropdown-basic"
-                    onClick={[Function]}
-                    type="button"
-                    variant="success"
-                  >
-                    <span>
-                      Select Type
-                    </span>
-                  </button>
-                </Button>
-              </InnerReference>
-            </Reference>
-          </DropdownToggle>
-          <DropdownMenu
-            flip={true}
-            tag="div"
-          >
-            <div
-              aria-hidden={true}
-              className="dropdown-menu"
-              role="menu"
-              tabIndex="-1"
-            >
-              <DropdownItem
-                key="Response Report"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Response Report
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Red Alert Report"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Red Alert Report
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Social Determinants"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Social Determinants
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="ANC Visit"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  ANC Visit
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Delivery Planning"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Delivery Planning
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Pregnancy Detection"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Pregnancy Detection
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Pregnancy Identification"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Pregnancy Identification
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Pregnancy registration"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Pregnancy registration
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="ANC Report"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  ANC Report
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Home Visit Report"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Home Visit Report
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Birth Report"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Birth Report
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Death Report"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Death Report
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Postnatal and Newborn Care"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Postnatal and Newborn Care
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Nutrition Registration"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Nutrition Registration
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Nutrition Report"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Nutrition Report
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Monthly Nutrition Report"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Monthly Nutrition Report
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Departure Code"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Departure Code
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Refusal Code"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Refusal Code
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="Account Check"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  Account Check
-                </button>
-              </DropdownItem>
-              <DropdownItem
-                key="all"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={[Function]}
-                  role="menuitem"
-                  tabIndex="0"
-                  type="button"
-                >
-                  all
-                </button>
-              </DropdownItem>
-            </div>
-          </DropdownMenu>
-        </div>
-      </Manager>
-    </Dropdown>
+      <select
+        className="mock-select undefined"
+        classNamePrefix="logface-filters"
+        disabled={false}
+        onChange={[Function]}
+        options={
+          Array [
+            Object {
+              "label": "Response Report",
+              "value": "Response Report",
+            },
+            Object {
+              "label": "Red Alert Report",
+              "value": "Red Alert Report",
+            },
+            Object {
+              "label": "Social Determinants",
+              "value": "Social Determinants",
+            },
+            Object {
+              "label": "ANC Visit",
+              "value": "ANC Visit",
+            },
+            Object {
+              "label": "Delivery Planning",
+              "value": "Delivery Planning",
+            },
+            Object {
+              "label": "Pregnancy Detection",
+              "value": "Pregnancy Detection",
+            },
+            Object {
+              "label": "Pregnancy Identification",
+              "value": "Pregnancy Identification",
+            },
+            Object {
+              "label": "Pregnancy registration",
+              "value": "Pregnancy registration",
+            },
+            Object {
+              "label": "ANC Report",
+              "value": "ANC Report",
+            },
+            Object {
+              "label": "Home Visit Report",
+              "value": "Home Visit Report",
+            },
+            Object {
+              "label": "Birth Report",
+              "value": "Birth Report",
+            },
+            Object {
+              "label": "Death Report",
+              "value": "Death Report",
+            },
+            Object {
+              "label": "Postnatal and Newborn Care",
+              "value": "Postnatal and Newborn Care",
+            },
+            Object {
+              "label": "Nutrition Registration",
+              "value": "Nutrition Registration",
+            },
+            Object {
+              "label": "Nutrition Report",
+              "value": "Nutrition Report",
+            },
+            Object {
+              "label": "Monthly Nutrition Report",
+              "value": "Monthly Nutrition Report",
+            },
+            Object {
+              "label": "Departure Code",
+              "value": "Departure Code",
+            },
+            Object {
+              "label": "Refusal Code",
+              "value": "Refusal Code",
+            },
+            Object {
+              "label": "Account Check",
+              "value": "Account Check",
+            },
+          ]
+        }
+        placeholder="Select type"
+      />
+    </SelectComponent>
   </div>,
 ]
 `;
@@ -1041,7 +661,7 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       <td
         className="default-width"
       >
-        2019-10-04
+        04/10/19
       </td>
       <td
         className="default-width"
@@ -1128,7 +748,7 @@ Health Status =
       <td
         className="default-width"
       >
-        2019-10-04
+        04/10/19
       </td>
       <td
         className="default-width"
@@ -1215,7 +835,7 @@ Interventions =
       <td
         className="default-width"
       >
-        2019-10-04
+        04/10/19
       </td>
       <td
         className="default-width"

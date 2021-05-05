@@ -1,8 +1,8 @@
-import { SmsData } from '../../../store/ducks/sms_events';
+import { SmsData } from '../../sms_events';
 
-export const smsDataFixtures: SmsData[] = [
+export const expectedSmsData: SmsData[] = [
     {
-        EventDate: '2020-03-03',
+        EventDate: '03/03/20',
         sms_type: 'Pregnancy Registration',
         anc_id: '1002LJ',
         age: '31y ',
@@ -72,7 +72,7 @@ export const smsDataFixtures: SmsData[] = [
         feeding_category: ' NULL',
     } as unknown,
     {
-        EventDate: '2020-03-03',
+        EventDate: '03/03/20',
         sms_type: 'Pregnancy Registration',
         anc_id: '1002LJ',
         age: '31y ',
@@ -142,7 +142,7 @@ export const smsDataFixtures: SmsData[] = [
         feeding_category: ' NULL',
     } as unknown,
     {
-        EventDate: '2019-12-16',
+        EventDate: '16/12/19',
         sms_type: 'Newborn Report',
         anc_id: '100U4U',
         age: '28y ',
@@ -212,7 +212,7 @@ export const smsDataFixtures: SmsData[] = [
         feeding_category: ' NULL',
     } as unknown,
     {
-        EventDate: '2019-12-15',
+        EventDate: '15/12/19',
         sms_type: 'Newborn Report',
         anc_id: '100VNL',
         age: '30y ',
@@ -282,7 +282,7 @@ export const smsDataFixtures: SmsData[] = [
         feeding_category: ' NULL',
     } as unknown,
     {
-        EventDate: '2019-11-23',
+        EventDate: '23/11/19',
         sms_type: 'Nutrition Report',
         anc_id: '100RH2-20190601-03',
         age: '6m 13d',
@@ -352,7 +352,7 @@ export const smsDataFixtures: SmsData[] = [
         feeding_category: 'inappropriately fed',
     } as unknown,
     {
-        EventDate: '2019-11-23',
+        EventDate: '23/11/19',
         sms_type: 'Nutrition Report',
         anc_id: '100TNN',
         age: '9m 21d',
@@ -422,7 +422,7 @@ export const smsDataFixtures: SmsData[] = [
         feeding_category: ' NULL',
     } as unknown,
     {
-        EventDate: '2019-11-23',
+        EventDate: '23/11/19',
         sms_type: 'Nutrition Registration',
         anc_id: '100TPL',
         age: '2m 19d',
@@ -492,7 +492,7 @@ export const smsDataFixtures: SmsData[] = [
         feeding_category: 'inappropriately fed',
     } as unknown,
     {
-        EventDate: '2019-11-23',
+        EventDate: '23/11/19',
         sms_type: 'Nutrition Registration',
         anc_id: '100TRJ',
         age: '4m 21d',
