@@ -93,9 +93,19 @@ Array [
         risk=""
       >
         <span
-          className="badge badge-info"
-          id="default-width"
-        />
+          className="badge"
+          style={
+            Object {
+              "backgroundColor": "#6c757d",
+            }
+          }
+        >
+          <div>
+            <p>
+              Not set
+            </p>
+          </div>
+        </span>
       </RiskColoring>
     </td>
   </tr>,
@@ -153,12 +163,16 @@ Array [
         risk="no risk"
       >
         <span
-          className="badge badge-success"
-          id="default-width"
+          className="badge"
+          style={
+            Object {
+              "backgroundColor": "#6c757d",
+            }
+          }
         >
           <div>
             <p>
-              No Risk
+              Not set
             </p>
           </div>
         </span>
@@ -219,12 +233,16 @@ Array [
         risk="low"
       >
         <span
-          className="badge badge-warning"
-          id="default-width"
+          className="badge"
+          style={
+            Object {
+              "backgroundColor": "#6c757d",
+            }
+          }
         >
           <div>
             <p>
-              Low Risk
+              Not set
             </p>
           </div>
         </span>
@@ -285,12 +303,16 @@ Array [
         risk="low"
       >
         <span
-          className="badge badge-warning"
-          id="default-width"
+          className="badge"
+          style={
+            Object {
+              "backgroundColor": "#6c757d",
+            }
+          }
         >
           <div>
             <p>
-              Low Risk
+              Not set
             </p>
           </div>
         </span>
@@ -351,12 +373,16 @@ Array [
         risk="Not Set"
       >
         <span
-          className="badge badge-info"
-          id="default-width"
+          className="badge"
+          style={
+            Object {
+              "backgroundColor": "#6c757d",
+            }
+          }
         >
           <div>
             <p>
-              Not Set
+              Not set
             </p>
           </div>
         </span>
@@ -368,15 +394,15 @@ Array [
 
 exports[`components/VillageData must render correctly with no data: Village data with no data 1`] = `null`;
 
-exports[`components/VillageData pagination works correctly: first Page 1`] = `"100RH2515Thôn 10Thôn 1"`;
+exports[`components/VillageData pagination works correctly: first Page 1`] = `"100RH2515Thôn 10Thôn 1Not set"`;
 
-exports[`components/VillageData pagination works correctly: first Page 2`] = `"100RJ0515Thôn 10Thôn 1No Risk"`;
+exports[`components/VillageData pagination works correctly: first Page 2`] = `"100RJ0515Thôn 10Thôn 1Not set"`;
 
-exports[`components/VillageData pagination works correctly: first Page 3`] = `"100RKX515Thôn 10Thôn 1Low Risk"`;
+exports[`components/VillageData pagination works correctly: first Page 3`] = `"100RKX515Thôn 10Thôn 1Not set"`;
 
-exports[`components/VillageData pagination works correctly: first Page 4`] = `"100RMT515Đăk Tờ Re0Đăk Tờ ReLow Risk"`;
+exports[`components/VillageData pagination works correctly: first Page 4`] = `"100RMT515Đăk Tờ Re0Đăk Tờ ReNot set"`;
 
-exports[`components/VillageData pagination works correctly: first Page 5`] = `"100RNP515Đăk Tờ Re0Đăk Tờ ReNot Set"`;
+exports[`components/VillageData pagination works correctly: first Page 5`] = `"100RNP515Đăk Tờ Re0Đăk Tờ ReNot set"`;
 
 exports[`components/VillageData pagination works correctly: paginationItem for page 2 1`] = `
 <PaginationLink
@@ -395,36 +421,36 @@ exports[`components/VillageData pagination works correctly: paginationItem for p
 </PaginationLink>
 `;
 
-exports[`components/VillageData pagination works correctly: second Page 1`] = `"100RKX515Thôn 150Thôn 1Low Risk"`;
+exports[`components/VillageData pagination works correctly: second Page 1`] = `"100RKX515Thôn 150Thôn 1Not set"`;
 
-exports[`components/VillageData pagination works correctly: second Page 2`] = `"100RH2515Thôn 10Thôn 1"`;
+exports[`components/VillageData pagination works correctly: second Page 2`] = `"100RH2515Thôn 10Thôn 1Not set"`;
 
-exports[`components/VillageData pagination works correctly: second Page 3`] = `"100RH2515Thôn 10Thôn 1"`;
+exports[`components/VillageData pagination works correctly: second Page 3`] = `"100RH2515Thôn 10Thôn 1Not set"`;
 
-exports[`components/VillageData pagination works correctly: second Page 4`] = `"100RJ0515Thôn 10Thôn 1No Risk"`;
+exports[`components/VillageData pagination works correctly: second Page 4`] = `"100RJ0515Thôn 10Thôn 1Not set"`;
 
-exports[`components/VillageData pagination works correctly: second Page 5`] = `"100RH2515Thôn 180Thôn 1"`;
+exports[`components/VillageData pagination works correctly: second Page 5`] = `"100RH2515Thôn 180Thôn 1Not set"`;
 
 exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 1`] = `"Patient IDDays since birthLocation of ResidenceCurrent symptomsLocation of birthRisk category"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 2`] = `"100RH2515Thôn 1 NULLThôn 1"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 2`] = `"100RH2515Thôn 1 NULLThôn 1Not set"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 3`] = `"100RJ0515Thôn 1 NULLThôn 1No Risk"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 3`] = `"100RJ0515Thôn 1 NULLThôn 1Not set"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 4`] = `"100RKX515Thôn 1 NULLThôn 1Low Risk"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 4`] = `"100RKX515Thôn 1 NULLThôn 1Not set"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 5`] = `"100RMT515Đăk Tờ Re NULLĐăk Tờ ReLow Risk"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 5`] = `"100RMT515Đăk Tờ Re NULLĐăk Tờ ReNot set"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 6`] = `"100RNP515Đăk Tờ Re NULLĐăk Tờ ReNot Set"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 6`] = `"100RNP515Đăk Tờ Re NULLĐăk Tờ ReNot set"`;
 
 exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 1`] = `"Patient IDDays since birthLocation of ResidenceCurrent symptomsLocation of birthRisk category"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 2`] = `"100RH2515Thôn 1 NULLThôn 1"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 2`] = `"100RH2515Thôn 1 NULLThôn 1Not set"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 3`] = `"100RJ0515Thôn 1 NULLThôn 1No Risk"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 3`] = `"100RJ0515Thôn 1 NULLThôn 1Not set"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 4`] = `"100RKX515Thôn 1 NULLThôn 1Low Risk"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 4`] = `"100RKX515Thôn 1 NULLThôn 1Not set"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 5`] = `"100RMT515Đăk Tờ Re NULLĐăk Tờ ReLow Risk"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 5`] = `"100RMT515Đăk Tờ Re NULLĐăk Tờ ReNot set"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 6`] = `"100RNP515Đăk Tờ Re NULLĐăk Tờ ReNot Set"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 6`] = `"100RNP515Đăk Tờ Re NULLĐăk Tờ ReNot set"`;
