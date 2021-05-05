@@ -43,7 +43,7 @@ interface Props extends RouteComponentProps {
     module: typeof PREGNANCY | typeof NBC_AND_PNC_CHILD | typeof NBC_AND_PNC_WOMAN | typeof NUTRITION | '';
     userLocationId: string;
     permissionLevel: number;
-    totalNumber?: number;
+    totalNumber: number;
 }
 
 /**
@@ -134,7 +134,7 @@ function DataCircleCard({
                         }
                     }}
                 >
-                    <h5 className="card_title"> {t(`${totalNumber ?? ''} ${title}`)}</h5>
+                    <h5 className="card_title">{t(`${totalNumber} ${title}`)}</h5>
                 </Link>
             </CardTitle>
             <CardBody className="circlesRow">
