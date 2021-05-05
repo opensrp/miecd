@@ -210,13 +210,13 @@ export interface RiskCategoryFilter {
 export interface SMSSelectorsFilters {
     locationNode?: TreeNode;
     riskCategory?: RiskCategoryFilter;
-    smsType?: string;
+    smsTypes?: string[];
     searchFilter?: string;
 }
 
 export const getLocationNodeFilter = (_: Partial<Store>, props: SMSSelectorsFilters) => props.locationNode;
 export const getRiskCat = (_: Partial<Store>, props: SMSSelectorsFilters) => props.riskCategory;
-export const getSmsType = (_: Partial<Store>, props: SMSSelectorsFilters) => props.smsType;
+export const getSmsTypes = (_: Partial<Store>, props: SMSSelectorsFilters) => props.smsTypes;
 export const getSearch = (_: Partial<Store>, props: SMSSelectorsFilters) => props.searchFilter;
 
 /** filter smsData by user's location, will return all smsEvents in locations where the user
@@ -251,8 +251,8 @@ export const getSmsDataByRiskCat = () =>
 
 /** filter sms' by their types */
 export const getSmsDataBySmsType = () =>
-    createSelector(getSmsData, getSmsType, (smsData, smsType) => {
-        if (smsType === undefined) {
+    createSelector(getSmsData, getSmsTypes, (smsData, smsTypes) => {
+        if (smsTypes === undefined) {
             return smsData;
         }
         return smsData.filter((sms) => smsTypes.map((type) => type.toLowerCase()).includes(sms.sms_type.toLowerCase()));
