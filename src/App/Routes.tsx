@@ -23,15 +23,18 @@ import {
     NBC_AND_PNC_ANALYSIS_URL,
     NBC_AND_PNC_COMPARTMENTS_URL,
     NBC_AND_PNC_LOGFACE_URL,
+    NBC_AND_PNC_MODULE,
     NBC_AND_PNC_URL,
     NUTRITION_ANALYSIS_URL,
     NUTRITION_COMPARTMENTS_URL,
     NUTRITION_LOGFACE_URL,
+    NUTRITION_MODULE,
     NUTRITION_URL,
     PATIENT_DETAIL_URL,
     PREGNANCY_ANALYSIS_URL,
     PREGNANCY_COMPARTMENTS_URL,
     PREGNANCY_LOGFACE_URL,
+    PREGNANCY_MODULE,
     PREGNANCY_URL,
 } from '../constants';
 import Compartments from '../containers/Compartments';
@@ -149,7 +152,7 @@ export const Routes = (props: RoutesProps) => {
                                             },
                                         ] as SmsFilterFunction[]
                                     }
-                                    module={PREGNANCY}
+                                    module={PREGNANCY_MODULE}
                                 />
                             )}
                         />
@@ -167,7 +170,7 @@ export const Routes = (props: RoutesProps) => {
                                             },
                                         ] as SmsFilterFunction[]
                                     }
-                                    module={NBC_AND_PNC}
+                                    module={NBC_AND_PNC_MODULE}
                                 />
                             )}
                         />
@@ -188,7 +191,7 @@ export const Routes = (props: RoutesProps) => {
                                             },
                                         ] as SmsFilterFunction[]
                                     }
-                                    module={NUTRITION}
+                                    module={NUTRITION_MODULE}
                                 />
                             )}
                         />
@@ -295,7 +298,7 @@ export const Routes = (props: RoutesProps) => {
                             path={PREGNANCY_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={(routeProps: RouteComponentProps) => (
-                                <ConnectedLogFace module={PREGNANCY} {...routeProps} />
+                                <ConnectedLogFace module={PREGNANCY_MODULE} {...routeProps} />
                             )}
                         />
                         <ConnectedPrivateRoute
@@ -303,7 +306,7 @@ export const Routes = (props: RoutesProps) => {
                             path={NBC_AND_PNC_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={(routeProps: RouteComponentProps) => (
-                                <ConnectedLogFace module={NBC_AND_PNC} {...routeProps} />
+                                <ConnectedLogFace module={NBC_AND_PNC_MODULE} {...routeProps} />
                             )}
                         />
                         <ConnectedPrivateRoute
@@ -311,7 +314,7 @@ export const Routes = (props: RoutesProps) => {
                             path={NUTRITION_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={(routeProps: RouteComponentProps) => (
-                                <ConnectedLogFace module={NUTRITION} {...routeProps} />
+                                <ConnectedLogFace module={NUTRITION_MODULE} {...routeProps} />
                             )}
                         />
                         {/* tslint:disable jsx-no-lambda */}
