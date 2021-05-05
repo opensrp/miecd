@@ -687,7 +687,7 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
     id="body"
   >
     <tr
-      key="1570170995321"
+      key="1570173602178"
     >
       <td
         className="default-width"
@@ -702,28 +702,28 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       <td
         className="default-width"
       >
-        Pregnancy Detection
+        Response Report
       </td>
       <td
         className="default-width"
       >
-        HMN
+        Husna Hariz
       </td>
       <td
         className="default-width"
       >
         <Link
-          to="/pregnancy_log_face/patient_detail/100PAH"
+          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
         >
           <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/100PAH"
+            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
             navigate={[Function]}
           >
             <a
-              href="/pregnancy_log_face/patient_detail/100PAH"
+              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
               onClick={[Function]}
             >
-              100PAH
+              100P9K-20191001-01
             </a>
           </LinkAnchor>
         </Link>
@@ -731,26 +731,26 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       <td
         className="small-width"
       >
-        30 years
+        3 days
       </td>
       <td
         className="large-width"
       >
         <ul>
           <li
-            key="Name : Joy Loiuse-0"
+            key="Symptoms : No symptoms-0"
           >
-            Name : Joy Loiuse
+            Symptoms : No symptoms
           </li>
           <li
-            key="Phone Number : +84983105510-1"
+            key="Intervention : Ambulance On Time-1"
           >
-            Phone Number : +84983105510
+            Intervention : Ambulance On Time
           </li>
           <li
-            key="Health Insurance : NA-2"
+            key="Health Status : -2"
           >
-            Health Insurance : NA
+            Health Status : 
           </li>
         </ul>
       </td>
@@ -758,30 +758,135 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
         className="default-width"
       >
         <Link
-          to="/pregnancy_log_face/patient_detail/100PAH"
+          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
         >
           <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/100PAH"
+            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
             navigate={[Function]}
           >
             <a
-              href="/pregnancy_log_face/patient_detail/100PAH"
+              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
               onClick={[Function]}
             >
               <RiskColoring
-                risk=" NULL"
+                risk="no_risk"
               >
                 <span
                   className="badge"
                   style={
                     Object {
-                      "backgroundColor": "#6c757d",
+                      "backgroundColor": "#28a745",
                     }
                   }
                 >
                   <div>
                     <p>
-                      Not set
+                      No risk
+                    </p>
+                  </div>
+                </span>
+              </RiskColoring>
+            </a>
+          </LinkAnchor>
+        </Link>
+      </td>
+    </tr>
+    <tr
+      key="1570173399115"
+    >
+      <td
+        className="default-width"
+      >
+        04/10/2019
+      </td>
+      <td
+        className="default-width"
+      >
+        Yen Phu Village
+      </td>
+      <td
+        className="default-width"
+      >
+        Red Alert Report
+      </td>
+      <td
+        className="default-width"
+      >
+        Husna Hariz
+      </td>
+      <td
+        className="default-width"
+      >
+        <Link
+          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+        >
+          <LinkAnchor
+            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+            navigate={[Function]}
+          >
+            <a
+              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+              onClick={[Function]}
+            >
+              100P9K-20191001-01
+            </a>
+          </LinkAnchor>
+        </Link>
+      </td>
+      <td
+        className="small-width"
+      >
+        3 days
+      </td>
+      <td
+        className="large-width"
+      >
+        <ul>
+          <li
+            key="Symptoms : Coughing, Fever-0"
+          >
+            Symptoms : Coughing, Fever
+          </li>
+          <li
+            key="Location : At home-1"
+          >
+            Location : At home
+          </li>
+          <li
+            key="Interventions : -2"
+          >
+            Interventions : 
+          </li>
+        </ul>
+      </td>
+      <td
+        className="default-width"
+      >
+        <Link
+          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+        >
+          <LinkAnchor
+            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+            navigate={[Function]}
+          >
+            <a
+              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+              onClick={[Function]}
+            >
+              <RiskColoring
+                risk="red_alert"
+              >
+                <span
+                  className="badge"
+                  style={
+                    Object {
+                      "backgroundColor": "#dc3545",
+                    }
+                  }
+                >
+                  <div>
+                    <p>
+                      Red alert
                     </p>
                   </div>
                 </span>
@@ -922,12 +1027,117 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       </td>
     </tr>
     <tr
-      key="1570173399115"
+      key="1570170995321"
     >
       <td
         className="default-width"
       >
         04/10/2019
+      </td>
+      <td
+        className="default-width"
+      >
+        Yen Phu Village
+      </td>
+      <td
+        className="default-width"
+      >
+        Pregnancy Detection
+      </td>
+      <td
+        className="default-width"
+      >
+        HMN
+      </td>
+      <td
+        className="default-width"
+      >
+        <Link
+          to="/pregnancy_log_face/patient_detail/100PAH"
+        >
+          <LinkAnchor
+            href="/pregnancy_log_face/patient_detail/100PAH"
+            navigate={[Function]}
+          >
+            <a
+              href="/pregnancy_log_face/patient_detail/100PAH"
+              onClick={[Function]}
+            >
+              100PAH
+            </a>
+          </LinkAnchor>
+        </Link>
+      </td>
+      <td
+        className="small-width"
+      >
+        30 years
+      </td>
+      <td
+        className="large-width"
+      >
+        <ul>
+          <li
+            key="Name : Joy Loiuse-0"
+          >
+            Name : Joy Loiuse
+          </li>
+          <li
+            key="Phone Number : +84983105510-1"
+          >
+            Phone Number : +84983105510
+          </li>
+          <li
+            key="Health Insurance : NA-2"
+          >
+            Health Insurance : NA
+          </li>
+        </ul>
+      </td>
+      <td
+        className="default-width"
+      >
+        <Link
+          to="/pregnancy_log_face/patient_detail/100PAH"
+        >
+          <LinkAnchor
+            href="/pregnancy_log_face/patient_detail/100PAH"
+            navigate={[Function]}
+          >
+            <a
+              href="/pregnancy_log_face/patient_detail/100PAH"
+              onClick={[Function]}
+            >
+              <RiskColoring
+                risk=" NULL"
+              >
+                <span
+                  className="badge"
+                  style={
+                    Object {
+                      "backgroundColor": "#6c757d",
+                    }
+                  }
+                >
+                  <div>
+                    <p>
+                      Not set
+                    </p>
+                  </div>
+                </span>
+              </RiskColoring>
+            </a>
+          </LinkAnchor>
+        </Link>
+      </td>
+    </tr>
+    <tr
+      key="1570089812157"
+    >
+      <td
+        className="default-width"
+      >
+        03/10/2019
       </td>
       <td
         className="default-width"
@@ -966,7 +1176,7 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       <td
         className="small-width"
       >
-        3 days
+        0 days
       </td>
       <td
         className="large-width"
@@ -1001,246 +1211,6 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
           >
             <a
               href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
-              onClick={[Function]}
-            >
-              <RiskColoring
-                risk="red_alert"
-              >
-                <span
-                  className="badge"
-                  style={
-                    Object {
-                      "backgroundColor": "#dc3545",
-                    }
-                  }
-                >
-                  <div>
-                    <p>
-                      Red alert
-                    </p>
-                  </div>
-                </span>
-              </RiskColoring>
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-    </tr>
-    <tr
-      key="1570173602178"
-    >
-      <td
-        className="default-width"
-      >
-        04/10/2019
-      </td>
-      <td
-        className="default-width"
-      >
-        Yen Phu Village
-      </td>
-      <td
-        className="default-width"
-      >
-        Response Report
-      </td>
-      <td
-        className="default-width"
-      >
-        Husna Hariz
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
-              onClick={[Function]}
-            >
-              100P9K-20191001-01
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-      <td
-        className="small-width"
-      >
-        3 days
-      </td>
-      <td
-        className="large-width"
-      >
-        <ul>
-          <li
-            key="Symptoms : No symptoms-0"
-          >
-            Symptoms : No symptoms
-          </li>
-          <li
-            key="Intervention : Ambulance On Time-1"
-          >
-            Intervention : Ambulance On Time
-          </li>
-          <li
-            key="Health Status : -2"
-          >
-            Health Status : 
-          </li>
-        </ul>
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
-              onClick={[Function]}
-            >
-              <RiskColoring
-                risk="no_risk"
-              >
-                <span
-                  className="badge"
-                  style={
-                    Object {
-                      "backgroundColor": "#28a745",
-                    }
-                  }
-                >
-                  <div>
-                    <p>
-                      No risk
-                    </p>
-                  </div>
-                </span>
-              </RiskColoring>
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-    </tr>
-    <tr
-      key="1570085373297"
-    >
-      <td
-        className="default-width"
-      >
-        03/10/2019
-      </td>
-      <td
-        className="default-width"
-      >
-        Yen Phu Village
-      </td>
-      <td
-        className="default-width"
-      >
-        Birth Report
-      </td>
-      <td
-        className="default-width"
-      >
-        Husna Hariz
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/patient_detail/100P7P"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/100P7P"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/patient_detail/100P7P"
-              onClick={[Function]}
-            >
-              100P7P
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-      <td
-        className="small-width"
-      >
-        36 years
-      </td>
-      <td
-        className="large-width"
-      >
-        <ul>
-          <li
-            key="Child DOB : 20/12/2020-0"
-          >
-            Child DOB : 20/12/2020
-          </li>
-          <li
-            key="Child Gender : NU-1"
-          >
-            Child Gender : NU
-          </li>
-          <li
-            key="Delivery Location : At home-2"
-          >
-            Delivery Location : At home
-          </li>
-          <li
-            key="Newborn Symptoms : No symptoms, Hemorrhage/persistent bleeding-3"
-          >
-            Newborn Symptoms : No symptoms, Hemorrhage/persistent bleeding
-          </li>
-          <li
-            key="Child Weight : 2.2kg-4"
-          >
-            Child Weight : 2.2kg
-          </li>
-          <li
-            key="Child Length : 48cm-5"
-          >
-            Child Length : 48cm
-          </li>
-          <li
-            key="Child Risk : red_alert-6"
-          >
-            Child Risk : red_alert
-          </li>
-          <li
-            key="Breastfeeding : Breastfeeding during 1st hour-7"
-          >
-            Breastfeeding : Breastfeeding during 1st hour
-          </li>
-          <li
-            key="Mother Symptoms : No symptoms, Hemorrhage/persistent bleeding-8"
-          >
-            Mother Symptoms : No symptoms, Hemorrhage/persistent bleeding
-          </li>
-        </ul>
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/patient_detail/100P7P"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/100P7P"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/patient_detail/100P7P"
               onClick={[Function]}
             >
               <RiskColoring
