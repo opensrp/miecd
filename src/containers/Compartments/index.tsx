@@ -80,7 +80,6 @@ interface NutritionDataCircleCardProps {
     permissionLevel: number;
     stunting: number;
     title: string;
-    totalChildren: number;
     wasting: number;
 }
 
@@ -288,9 +287,8 @@ export const Compartments = ({
 
     useEffect(() => {
         const childrenBetween0And2FilterFunction = childrenAgeRangeFilterFunction(0, 2);
-        const childrenBetween2And5FilterFuction = childrenAgeRangeFilterFunction(2, 5);
+        const childrenBetween2And5FilterFuction = childrenAgeRangeFilterFunction(0, 5);
         const childrenUnder2 = filteredData.filter(childrenBetween0And2FilterFunction);
-
         const childrenUnder5 = filteredData.filter(childrenBetween2And5FilterFuction);
 
         setDataCircleCardNutrition1(
@@ -306,8 +304,7 @@ export const Compartments = ({
                       overweight: getNumberOfSmsWithRisk('overweight', childrenUnder5, 'nutrition_status'),
                       permissionLevel: userLocationLevel,
                       stunting: getNumberOfSmsWithRisk('stunted', childrenUnder5, 'growth_status'),
-                      title: 'Children Under 5',
-                      totalChildren: 0,
+                      title: `${childrenUnder5.length} Children Under 5`,
                       wasting: getNumberOfSmsWithRisk('severe wasting', childrenUnder5, 'nutrition_status'),
                   }
                 : null,
@@ -326,8 +323,7 @@ export const Compartments = ({
                       overweight: getNumberOfSmsWithRisk('overweight', childrenUnder2, 'nutrition_status'),
                       permissionLevel: userLocationLevel,
                       stunting: getNumberOfSmsWithRisk('stunted', childrenUnder2, 'growth_status'),
-                      title: 'Children Under 2',
-                      totalChildren: 0,
+                      title: `${childrenUnder2.length} Children Under 2`,
                       wasting: getNumberOfSmsWithRisk('severe wasting', childrenUnder2, 'nutrition_status'),
                   }
                 : null,
@@ -388,11 +384,13 @@ export const Compartments = ({
             {dataFetched && filteredData.length ? (
                 <>
                     <div className="cards-row">
-                        <CardGroup>{circleCardComponent.slice(0, 2)}</CardGroup>
+                        <CardGroup>
+                            {circleCardComponent.map((item, index) => (
+                                <React.Fragment key={index}>{item}</React.Fragment>
+                            ))}
+                        </CardGroup>
                     </div>
-                    <div className="cards-row">
-                        <CardGroup>{circleCardComponent[2] ? circleCardComponent[2] : null}</CardGroup>
-                    </div>
+
                     {(module === PREGNANCY || module === NUTRITION) && smsData.length ? (
                         <VillageData
                             {...{
@@ -413,13 +411,17 @@ export const Compartments = ({
 /**
  * filter function for smsData based on date_of_birth field
  * @param {SmsData} dataItem - SmsData item
- * @param {number} startAge - the begining of age range we are filtering for.
+ * @param {number} startAge - the beginning of age range we are filtering for.
  * @returns filterFunction  - the ending of age range we are filtering for.
  */
 export const childrenAgeRangeFilterFunction = (startAge: number, endAge: number) => {
     return (dataItem: SmsData) => {
         const ageInYears = convertMillisecondsToYear(new Date().getTime() - new Date(dataItem.date_of_birth).getTime());
-        return ageInYears < endAge && ageInYears > startAge;
+        // when startAge = 0 and endAge > 0, the age range is: startAge ≤ ageInYears ≤ endAge (i.e startAge and endAge are both inclusive)
+        // when startAge > 0 and endAge > 0, the range is startAge < ageInYears ≤ endAge (startAge exclusive)
+        return startAge === 0
+            ? ageInYears >= startAge && ageInYears <= endAge
+            : ageInYears > startAge && ageInYears <= endAge;
     };
 };
 

@@ -44,7 +44,11 @@ exports[`DataCircleCard card title link works: card title link 1`] = `
     <a
       href="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/undefined/undefined/down/undefined/undefined"
       onClick={[Function]}
-    />
+    >
+      <h5
+        className="card_title"
+      />
+    </a>
   </LinkAnchor>
 </Link>
 `;
@@ -76,7 +80,11 @@ exports[`DataCircleCard must render correctly 1`] = `
               href="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/test title/undefined/down/undefined/undefined"
               onClick={[Function]}
             >
-              test title
+              <h5
+                className="card_title"
+              >
+                test title
+              </h5>
             </a>
           </LinkAnchor>
         </Link>

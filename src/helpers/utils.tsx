@@ -533,8 +533,13 @@ export async function fetchData(supersetFetchMethod: typeof supersetFetch = supe
     });
 }
 
+/** convert milliseconds to years (rounded off to two decimal places)
+ * @param mSeconds - time in milliseconds
+ */
 export const convertMillisecondsToYear = (mSeconds: number) => {
-    return Math.floor(mSeconds / (365 * 24 * 60 * 60 * 1000));
+    const years = mSeconds / (365 * 24 * 60 * 60 * 1000);
+    const yearsRounded = Math.round((years + Number.EPSILON) * 100) / 100;
+    return yearsRounded;
 };
 
 /** facade to display a success toast

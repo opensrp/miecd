@@ -33,7 +33,6 @@ interface Props extends RouteComponentProps {
     redAlert?: number;
     risk?: number;
     noRisk?: number;
-    totalChildren?: number;
     stunting?: number;
     wasting?: number;
     overweight?: number;
@@ -135,7 +134,7 @@ function DataCircleCard({
                         }
                     }}
                 >
-                    {title}
+                    <h5 className="card_title">{title}</h5>
                 </Link>
             </CardTitle>
             <CardBody className="circlesRow">

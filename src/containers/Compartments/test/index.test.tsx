@@ -179,13 +179,14 @@ describe('components/Compartments/childrenAgeRangeFilterFunction', () => {
         MockDate.set(new Date('01/01/2020').getTime());
         const smsData = ([
             { date_of_birth: new Date('01/01/2019').getTime() },
-            { date_of_birth: new Date('01/01/2019').getTime() },
-            { date_of_birth: new Date('01/20/2019').getTime() },
-            { date_of_birth: new Date('01/20/2016').getTime() },
+            { date_of_birth: new Date('01/01/2018').getTime() },
+            { date_of_birth: new Date('01/20/2017').getTime() },
+            { date_of_birth: new Date('01/01/2016').getTime() },
+            { date_of_birth: new Date('01/01/2014').getTime() },
         ] as unknown) as SmsData[];
         expect(smsData.filter(childrenAgeRangeFilterFunction(0, 2)).length).toEqual(2);
-        expect(smsData.filter(childrenAgeRangeFilterFunction(0, 3)).length).toEqual(2);
-        expect(smsData.filter(childrenAgeRangeFilterFunction(0, 10)).length).toEqual(3);
+        expect(smsData.filter(childrenAgeRangeFilterFunction(2, 5)).length).toEqual(2);
+        expect(smsData.filter(childrenAgeRangeFilterFunction(0, 10)).length).toEqual(5);
         MockDate.reset();
     });
 });
