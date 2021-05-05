@@ -258,7 +258,7 @@ export const getSmsDataBySmsType = () =>
         if (smsTypes === undefined) {
             return smsData;
         }
-        return smsData.filter((sms) => smsTypes.includes(sms.sms_type));
+        return smsData.filter((sms) => smsTypes.map((type) => type.toLowerCase()).includes(sms.sms_type.toLowerCase()));
     });
 
 /** filter sms events from a search action, this will filter based on the event_id, health_worker_name and patient_id */

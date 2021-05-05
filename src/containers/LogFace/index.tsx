@@ -398,7 +398,7 @@ const mapStateToProps = (state: Partial<Store>, ownProps: LogFacePropsType): Map
     const filteredSmsData = selectSmsData(state, {
         locationNode: userLocationNode,
         riskCategory: { accessor: riskAccessor, filterValue: riskCategoryFilter },
-        smsTypes: [smsTypeFilter],
+        smsTypes: smsTypeFilter ? [smsTypeFilter] : undefined,
         searchFilter,
     });
     const userUUID = getUserId(state);
