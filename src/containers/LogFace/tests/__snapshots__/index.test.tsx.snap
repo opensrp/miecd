@@ -95,7 +95,7 @@ Array [
     >
       <Component
         classNamePrefix="logface-filters"
-        closeMenuOnSelect={false}
+        closeMenuOnSelect={true}
         components={
           Object {
             "Menu": [Function],
@@ -198,8 +198,8 @@ Array [
             "value": "Departure Code",
           },
           Object {
-            "label": "Refusal Code",
-            "value": "Refusal Code",
+            "label": "Refusal Report",
+            "value": "Refusal Report",
           },
           Object {
             "label": "Account Check",
@@ -316,10 +316,10 @@ Array [
           Departure Code
         </option>
         <option
-          key="Refusal Code"
-          value="Refusal Code"
+          key="Refusal Report"
+          value="Refusal Report"
         >
-          Refusal Code
+          Refusal Report
         </option>
         <option
           key="Account Check"
@@ -354,7 +354,7 @@ exports[`containers/LogFace renders correctly: paginator 1`] = `
     pageNeighbours={3}
     previousLabel="previous"
     startLabel="first"
-    totalRecords={32}
+    totalRecords={22}
   >
     <BasePaginator
       ariaLabel="page navigation"
@@ -367,7 +367,7 @@ exports[`containers/LogFace renders correctly: paginator 1`] = `
       pageNeighbours={3}
       previousLabel="previous"
       startLabel="first"
-      totalRecords={32}
+      totalRecords={22}
     >
       <Pagination
         aria-label="page navigation"
