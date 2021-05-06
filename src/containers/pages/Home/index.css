@@ -16,6 +16,11 @@
     margin-bottom: 2rem;
 }
 
+.welcome-text span {
+    font-family: inherit;
+    font-size: inherit;
+}
+
 .welcome-text h1 {
     color: #1b314b;
     font-size: 32px;

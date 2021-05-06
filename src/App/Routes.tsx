@@ -75,11 +75,11 @@ export const Routes = (props: RoutesProps) => {
     const PREGNANCY_DESCRIPTION = (
         <Trans>
             This dashboard displays information collected from MIECD Viet Nam Pregnancy Module for patients in your
-            geographical location.
-            <p className="font-italic">
-                The Module covers the whole pregnancy period from conception to delivery and includes Pregnancy
-                Registration, ANC visits, Birth reports/Death reports, Risk Reports, Risk alerts and ResponseReports.
-            </p>
+            geographical location.&nbsp;
+            <span className="font-italic">
+                The module covers the whole pregnancy period from conception to delivery and includes Pregnancy
+                Registration, ANC visits, Birth/Death reports, Risk Reports, Risk alerts and Response reports.
+            </span>
         </Trans>
     );
 
