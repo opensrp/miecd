@@ -1,6 +1,29 @@
 /** This is the main configuration module */
 import { Providers } from '@onaio/gatekeeper';
-import { PREGNANCY_MODULE, NUTRITION_MODULE, NBC_AND_PNC_MODULE, NUTRITION_REPORT } from '../constants';
+import {
+    PREGNANCY_MODULE,
+    NUTRITION_MODULE,
+    NBC_AND_PNC_MODULE,
+    NUTRITION_REPORT,
+    ACCOUNT_CHECK,
+    ANC_REPORT,
+    ANC_VISIT,
+    BIRTH_REPORT,
+    DEATH_REPORT,
+    DELIVERY_PLANNING,
+    DEPARTURE_CODE,
+    HOME_VISIT_REPORT,
+    MONTHLY_NUTRITION_REPORT,
+    NUTRITION_REGISTRATION,
+    POSTNATAL_AND_NEWBORN_CARE,
+    PREGNANCY_DETECTION,
+    PREGNANCY_IDENTIFICATION,
+    PREGNANCY_REGISTRATION,
+    RED_ALERT_REPORT,
+    REFUSAL_REPORT,
+    RESPONSE_REPORT,
+    SOCIAL_DETERMINANTS,
+} from '../constants';
 import { TFunction } from 'react-i18next';
 import { GREEN, RED, YELLOW } from './colors';
 import {
@@ -75,25 +98,6 @@ export const riskCategories = (t: TFunction) => {
         ],
     };
 };
-
-export const PREGNANCY_DETECTION = 'Pregnancy Detection';
-export const PREGNANCY_IDENTIFICATION = 'Pregnancy Identification';
-export const PREGNANCY_REGISTRATION = 'Pregnancy registration';
-export const ANC_REPORT = 'ANC Report';
-export const HOME_VISIT_REPORT = 'Home Visit Report';
-export const SOCIAL_DETERMINANTS = 'Social Determinants';
-export const DELIVERY_PLANNING = 'Delivery Planning';
-export const BIRTH_REPORT = 'Birth Report';
-export const DEATH_REPORT = 'Death Report';
-export const RED_ALERT_REPORT = 'Red Alert Report';
-export const RESPONSE_REPORT = 'Response Report';
-export const REFUSAL_REPORT = 'Refusal Report';
-export const DEPARTURE_CODE = 'Departure Code';
-export const POSTNATAL_AND_NEWBORN_CARE = 'Postnatal and Newborn Care';
-export const NUTRITION_REGISTRATION = 'Nutrition Registration';
-export const MONTHLY_NUTRITION_REPORT = 'Monthly Nutrition Report';
-export const ACCOUNT_CHECK = 'Account Check';
-export const ANC_VISIT = 'ANC Visit';
 
 export const SmsTypes = [
     RESPONSE_REPORT,

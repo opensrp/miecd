@@ -158,8 +158,8 @@ Array [
             "value": "Pregnancy Identification",
           },
           Object {
-            "label": "Pregnancy registration",
-            "value": "Pregnancy registration",
+            "label": "Pregnancy Registration",
+            "value": "Pregnancy Registration",
           },
           Object {
             "label": "ANC Report",
@@ -256,10 +256,10 @@ Array [
           Pregnancy Identification
         </option>
         <option
-          key="Pregnancy registration"
-          value="Pregnancy registration"
+          key="Pregnancy Registration"
+          value="Pregnancy Registration"
         >
-          Pregnancy registration
+          Pregnancy Registration
         </option>
         <option
           key="ANC Report"
