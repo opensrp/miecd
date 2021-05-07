@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { mount, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import * as Highcharts from 'highcharts';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -9,8 +8,8 @@ import { Router } from 'react-router';
 import { act } from 'react-dom/test-utils';
 import { Chart } from '..';
 import store from '../../../store/index';
+import * as Highcharts from 'highcharts';
 import { chartArgument } from './fixtures';
-
 const history = createBrowserHistory();
 
 const weights = {
