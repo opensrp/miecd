@@ -1135,17 +1135,17 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-<<<<<<< HEAD
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.6", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
-  version "7.13.10"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
-  integrity sha512-4QPkjJq6Ns3V/RgpEahRk+AGfL0eO6RHHtTWoNNr5mO49G6B5+X6d6THgWEAvTrznU5xYpbAlVKRYcsCgh/Akw==
-=======
 "@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.6", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
   version "7.14.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.0.tgz#46794bc20b612c5f75e62dd071e24dfd95f1cbe6"
   integrity sha512-JELkvo/DlpNdJ7dlyw/eY7E0suy5i5GQH+Vlxaq1nsNJ+H7f4Vtv3jMeCEgRhZZQFXTjldYfQgv2qmM6M1v5wA==
->>>>>>> Update packages
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
+"@babel/runtime@^7.8.7":
+  version "7.13.10"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
+  integrity sha512-4QPkjJq6Ns3V/RgpEahRk+AGfL0eO6RHHtTWoNNr5mO49G6B5+X6d6THgWEAvTrznU5xYpbAlVKRYcsCgh/Akw==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -1620,8 +1620,6 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
-<<<<<<< HEAD
-=======
 "@opensrp/server-logout@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@opensrp/server-logout/-/server-logout-0.0.1.tgz#82497960c1cc5d0f1da8e8aa4be9bedd6c32a5c0"
@@ -1629,7 +1627,6 @@
   dependencies:
     "@opensrp/server-service" "^0.0.4"
 
->>>>>>> Install a few npm packages to help with oauth
 "@opensrp/server-service@^0.0.17":
   version "0.0.17"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.17.tgz#6722bdb64f569db659e4d64227a7fc17d52d8527"
@@ -1637,14 +1634,11 @@
   dependencies:
     "@onaio/utils" "^0.0.1"
 
-<<<<<<< HEAD
-=======
 "@opensrp/server-service@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
 
->>>>>>> Install a few npm packages to help with oauth
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.1.tgz#a21117b19ee9be70c379ec1877537ef2e1c63301"
