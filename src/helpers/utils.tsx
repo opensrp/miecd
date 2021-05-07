@@ -498,7 +498,7 @@ export async function fetchData(
     toFetchSms = true,
 ) {
     const promises = [];
-    if (!userIdFetched(store.getState()) && toFetchUserHierarchy) {
+    if (toFetchUserHierarchy && !userIdFetched(store.getState())) {
         const opensrpService = new OpenSRPService(OPENSRP_SECURITY_AUTHENTICATE);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -512,7 +512,7 @@ export async function fetchData(
     }
 
     // fetch user location details
-    if (!userLocationDataFetched(store.getState()) && toFetchUserLocation) {
+    if (toFetchUserLocation && !userLocationDataFetched(store.getState())) {
         const locationDataPromise = supersetFetchMethod(USER_LOCATION_DATA_SLICE).then((result: UserLocation[]) => {
             store.dispatch(fetchUserLocations(result));
         });
@@ -521,7 +521,7 @@ export async function fetchData(
 
     // fetch all location slices
     for (const slice in LOCATION_SLICES) {
-        if (slice && toFetchLocations) {
+        if (toFetchLocations && slice) {
             const locationPromise = supersetFetchMethod(LOCATION_SLICES[slice]).then((result: Location[]) => {
                 store.dispatch(fetchLocations(result));
             });
@@ -530,7 +530,7 @@ export async function fetchData(
     }
 
     // check if sms data is fetched and then fetch if not fetched already
-    if (!smsDataFetched(store.getState()) && toFetchSms) {
+    if (toFetchSms && !smsDataFetched(store.getState())) {
         const smsDataPromise = supersetFetchMethod(SUPERSET_SMS_DATA_SLICE).then((result: SmsData[]) => {
             store.dispatch(fetchSms(result));
         });
