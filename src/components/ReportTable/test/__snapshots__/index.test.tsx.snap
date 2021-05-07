@@ -16,68 +16,13 @@ Current Symptoms = Coughing"
 exports[`ReportTable works okay: initial current pregnancies 1`] = `"ReportDateReporterMessage"`;
 
 exports[`ReportTable works okay: initial current pregnancies 2`] = `
-"Pregnancy Registration2019-09-25Husna HarizEDD = 2019-04-01
+"Pregnancy Registration2018-09-25Husna HarizEDD = 2019-04-01
 Gravidity = 3
 Parity = 2
 Weight = 54 
 Height = 160
 Previous Gynaecology History = Diabetes, High blood pressure
 Current Symptoms = Flaccid Paralysis"
-`;
-
-exports[`ReportTable works okay: initial current pregnancies 3`] = `
-"Birth Report2019-09-25Husna HarizChild DOB = 2020-01-01 
-Child Gender = M 
-Delivery Location = District hospitals/CDC 
-Newborn Symptoms = Hypothermia, Fever 
-Child Weight = 25 
-Child Length = 31 
-Child Risk = red_alert 
-Breastfeeding = Breastfeeding during 1st hour"
-`;
-
-exports[`ReportTable works okay: initial current pregnancies 4`] = `
-"Birth Report2019-09-25Husna HarizChild DOB = 2020-04-01 
-Child Gender = M 
-Delivery Location = District hospitals/CDC 
-Newborn Symptoms = Hypothermia, Fever 
-Child Weight = 25 
-Child Length = 31 
-Child Risk = red_alert 
-Breastfeeding = Breastfeeding during 1st hour"
-`;
-
-exports[`ReportTable works okay: initial current pregnancies 5`] = `
-"Birth Report2019-09-27Husna HarizChild DOB = 2020-04-01 
-Child Gender = M 
-Delivery Location = District hospitals/CDC 
-Newborn Symptoms = Hypothermia, Fever 
-Child Weight = 25 
-Child Length = 31 
-Child Risk = red_alert 
-Breastfeeding = Breastfeeding during 1st hour"
-`;
-
-exports[`ReportTable works okay: initial current pregnancies 6`] = `
-"Birth Report2019-09-27Husna HarizChild DOB = 2020-04-01 
-Child Gender = M 
-Delivery Location = District hospitals/CDC 
-Newborn Symptoms = Hypothermia, Fever 
-Child Weight = 25 
-Child Length = 31 
-Child Risk = red_alert 
-Breastfeeding = Breastfeeding during 1st hour"
-`;
-
-exports[`ReportTable works okay: initial current pregnancies 7`] = `
-"Birth Report2019-09-27Husna HarizChild DOB = 2020-04-01 
-Child Gender = M 
-Delivery Location = District hospitals/CDC 
-Newborn Symptoms = Hypothermia, Fever 
-Child Weight = 25 
-Child Length = 31 
-Child Risk = red_alert 
-Breastfeeding = Breastfeeding during 1st hour"
 `;
 
 exports[`ReportTable works okay: pregnancy filter 1`] = `
@@ -94,12 +39,6 @@ exports[`ReportTable works okay: pregnancy filter 1`] = `
   <option
     key="1"
     value={1}
-  >
-    pregnancy 2
-  </option>
-  <option
-    key="2"
-    value={2}
   >
     Current Pregnancy
   </option>

@@ -9,7 +9,7 @@ import ReportTable, {
     getWeightDataSeries,
 } from '..';
 import { mountWithTranslations } from '../../../helpers/testUtils';
-import { getEventsPregnancyArrayInput1, singlePatientEvents } from './fixtures';
+import { backDatedEvents, singlePatientEvents } from './fixtures';
 import { smsDataFixture } from '../../../store/ducks/tests/fixtures/index';
 import { Dictionary } from '@onaio/utils';
 import React from 'react';
@@ -44,7 +44,7 @@ describe('ReportTable', () => {
 
     it('works okay', () => {
         const smsDataProps = smsDataFixture.filter((sms) => sms.anc_id.toLowerCase() === '1002lj');
-        const smsData = [...smsDataProps, ...getEventsPregnancyArrayInput1];
+        const smsData = [...smsDataProps, ...backDatedEvents];
         const props = {
             singlePatientEvents: smsData,
             isChild: false,
@@ -56,17 +56,7 @@ describe('ReportTable', () => {
 
         expect(wrapper.find('Chart').at(0).props()).toEqual({
             chartWrapperId: 'weight-chart-1',
-            dataArray: {
-                categories: [
-                    'September/2019',
-                    'September/2019',
-                    'September/2019',
-                    'September/2019',
-                    'September/2019',
-                    'September/2019',
-                ],
-                dataSeries: [{ data: [25, 25, 54, 25, 25, 25], name: 'weight' }],
-            },
+            dataArray: { categories: ['September/2019'], dataSeries: [{ data: [54], name: 'weight' }] },
             legendString: 'Weight',
             title: 'Wight Monitoring',
             units: 'kg',
@@ -75,7 +65,7 @@ describe('ReportTable', () => {
         expect(wrapper.find('Chart').at(1).props()).toEqual({
             chartWrapperId: 'blood-pressure',
             dataArray: {
-                categories: ['September/2019'],
+                categories: ['September/2018'],
                 dataSeries: [
                     { data: [123], name: 'systolic' },
                     { data: [78], name: 'diastolic' },
@@ -90,7 +80,7 @@ describe('ReportTable', () => {
         expect(toJson(wrapper.find('select'))).toMatchSnapshot('pregnancy filter');
 
         // switch pregnancies
-        wrapper.find('select').simulate('change', { target: { value: 1, name: 'pregnancy 1' } });
+        wrapper.find('select').simulate('change', { target: { value: 0, name: 'pregnancy 1' } });
         wrapper.update();
 
         wrapper.find('table tr').forEach((tr) => {

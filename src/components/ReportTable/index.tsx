@@ -174,17 +174,18 @@ export const chunkByGravida = (smsEvents: SmsData[]) => {
     });
 
     // remove duplicate pregnancy registration chunks with respect to the gestation period
-    return uniqWith(smsChunks, (chunk1, chunk2) => {
+    const finalChunks = uniqWith(smsChunks, (chunk1, chunk2) => {
         const pregnancyRegTypeSms1 = chunk1.filter((sms) => sms.sms_type === PREGNANCY_REGISTRATION);
         const pregnancyRegTypeSms2 = chunk2.filter((sms) => sms.sms_type === PREGNANCY_REGISTRATION);
         if (pregnancyRegTypeSms1.length && pregnancyRegTypeSms2.length) {
             return (
                 GESTATION_PERIOD >
-                Math.abs(Date.parse(pregnancyRegTypeSms1[0].EventDate) - Date.parse(pregnancyRegTypeSms1[0].EventDate))
+                Math.abs(Date.parse(pregnancyRegTypeSms1[0].EventDate) - Date.parse(pregnancyRegTypeSms2[0].EventDate))
             );
         }
         return false;
     });
+    return finalChunks;
 };
 
 /** create a chart data series containing the weight and height data series from smsEvents */
