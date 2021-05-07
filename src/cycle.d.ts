@@ -1,6 +1,5 @@
 declare module 'cycle' {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    interface Dictionary<T = any> {
+    interface Dictionary<T> {
         [key: string]: T;
     }
 
