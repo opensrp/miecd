@@ -1,31 +1,37 @@
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import ReportTable, { convertToStringArray, getEventsPregnancyArray } from '..';
-import { WEIGHT } from '../../../constants';
+import ReportTable, {
+    chunkByGravida,
+    filterEventsByType,
+    getWeightHeightDataSeries,
+    getBloodPSeriesForChart,
+    pregnancyOptionsFilter,
+    getWeightDataSeries,
+} from '..';
 import { mountWithTranslations } from '../../../helpers/testUtils';
-import { SmsData } from '../../../store/ducks/sms_events';
-import {
-    convertToStringArrayInput,
-    convertToStringArrayInput2,
-    convertToStringArrayOutput,
-    convertToStringArrayOutput2,
-    getEventsPregnancyArrayInput1,
-    getEventsPregnancyArrayInput2,
-    getEventsPregnancyArrayOutput1,
-    getEventsPregnancyArrayOutput2,
-    getPregnancyStringsArrayInput,
-    getPregnancyStringsArrayOutput,
-    getWeightsArrayInput1,
-    getWeightsArrayInput2,
-    getWeightsArrayOutput1,
-    getWeightsArrayOutput2,
-    reportTableProps,
-    singlePatientEvents,
-} from './fixtures';
+import { getEventsPregnancyArrayInput1, singlePatientEvents } from './fixtures';
+import { smsDataFixture } from '../../../store/ducks/tests/fixtures/index';
+import { Dictionary } from '@onaio/utils';
 import React from 'react';
 
 jest.mock('highcharts');
 
+jest.mock('react-select', () => ({ options, onChange }: Dictionary) => {
+    function handleChange(event: Dictionary) {
+        const option = options.find((option: Dictionary) => option.value === event.target?.value);
+        onChange(option);
+    }
+
+    return (
+        <select data-testid="select" onChange={handleChange}>
+            {options.map(({ label, value }: Dictionary) => (
+                <option key={value} value={value}>
+                    {label}
+                </option>
+            ))}
+        </select>
+    );
+});
 describe('ReportTable', () => {
     beforeEach(() => {
         jest.resetAllMocks();
@@ -36,43 +42,125 @@ describe('ReportTable', () => {
         shallow(<ReportTable singlePatientEvents={[]} />);
     });
 
-    it('must render correctly', () => {
-        const wrapper = mountWithTranslations(<ReportTable singlePatientEvents={reportTableProps as SmsData[]} />);
-        expect(toJson(wrapper.find('tbody'))).toMatchSnapshot();
+    it('works okay', () => {
+        const smsDataProps = smsDataFixture.filter((sms) => sms.anc_id.toLowerCase() === '1002lj');
+        const smsData = [...smsDataProps, ...getEventsPregnancyArrayInput1];
+        const props = {
+            singlePatientEvents: smsData,
+            isChild: false,
+        };
+        const wrapper = mountWithTranslations(<ReportTable {...props} />);
+        wrapper.find('table tr').forEach((tr) => {
+            expect(tr.text()).toMatchSnapshot('initial current pregnancies');
+        });
+
+        expect(wrapper.find('Chart').at(0).props()).toEqual({
+            chartWrapperId: 'weight-chart-1',
+            dataArray: {
+                categories: [
+                    'September/2019',
+                    'September/2019',
+                    'September/2019',
+                    'September/2019',
+                    'September/2019',
+                    'September/2019',
+                ],
+                dataSeries: [{ data: [25, 25, 54, 25, 25, 25], name: 'weight' }],
+            },
+            legendString: 'Weight',
+            title: 'Wight Monitoring',
+            units: 'kg',
+            yAxisLabel: 'weight',
+        });
+        expect(wrapper.find('Chart').at(1).props()).toEqual({
+            chartWrapperId: 'blood-pressure',
+            dataArray: {
+                categories: ['September/2019'],
+                dataSeries: [
+                    { data: [123], name: 'systolic' },
+                    { data: [78], name: 'diastolic' },
+                ],
+            },
+            legendString: 'Blood pressure',
+            title: 'Blood Pressure',
+            units: '',
+            yAxisLabel: 'Blood Pressure',
+        });
+
+        expect(toJson(wrapper.find('select'))).toMatchSnapshot('pregnancy filter');
+
+        // switch pregnancies
+        wrapper.find('select').simulate('change', { target: { value: 1, name: 'pregnancy 1' } });
+        wrapper.update();
+
+        wrapper.find('table tr').forEach((tr) => {
+            expect(tr.text()).toMatchSnapshot('after filter pregnancies');
+        });
+        expect(wrapper.find('Chart').at(0).props()).toEqual({
+            chartWrapperId: 'weight-chart-1',
+            dataArray: { categories: ['March/2020'], dataSeries: [{ data: [78], name: 'weight' }] },
+            legendString: 'Weight',
+            title: 'Wight Monitoring',
+            units: 'kg',
+            yAxisLabel: 'weight',
+        });
+        expect(wrapper.find('Chart').at(1).props()).toEqual({
+            chartWrapperId: 'blood-pressure',
+            dataArray: {
+                categories: ['March/2020'],
+                dataSeries: [
+                    { data: [120], name: 'systolic' },
+                    { data: [80], name: 'diastolic' },
+                ],
+            },
+            legendString: 'Blood pressure',
+            title: 'Blood Pressure',
+            units: '',
+            yAxisLabel: 'Blood Pressure',
+        });
     });
 });
 
-describe('ReportTable.getPregnancyStringArray()', () => {
-    it('Must return the correct value given certain input and ReportTable having certain props', () => {
-        const wrapper = mountWithTranslations(<ReportTable singlePatientEvents={singlePatientEvents as SmsData[]} />);
-        const instance = wrapper.find('ReportTable').instance() as ReportTable;
-        expect(instance.getPregnancyStringArray(getPregnancyStringsArrayInput)).toEqual(getPregnancyStringsArrayOutput);
+describe('ReportTable utils', () => {
+    const sampleT = (t: string) => t;
+    it('filter events by type', () => {
+        let response = filterEventsByType(singlePatientEvents, true);
+        expect(response.map((x) => x.event_id)).toEqual(['1569576788502']);
+        response = filterEventsByType(singlePatientEvents, false);
+        expect(response.map((x) => x.event_id)).toEqual(['1569575715416', '1569575947489']);
     });
-});
 
-describe('ReportTable.getWeightsArray()', () => {
-    it('Must return the correct value given certain input and ReportTable having certain props', () => {
-        const wrapper = mountWithTranslations(<ReportTable singlePatientEvents={singlePatientEvents as SmsData[]} />);
-        const instance = wrapper.find('ReportTable').instance() as ReportTable;
-        expect(instance.getWeightsArray(getWeightsArrayInput1, WEIGHT)).toEqual(getWeightsArrayOutput1);
-        expect(instance.getWeightsArray(getWeightsArrayInput2, WEIGHT)).toEqual(getWeightsArrayOutput2);
+    it('get weight and height series', () => {
+        let response = getWeightHeightDataSeries(singlePatientEvents, sampleT);
+        expect(response).toEqual({
+            categories: ['September/2019', 'September/2019', 'September/2019'],
+            dataSeries: [
+                { data: [2, 2, 78], name: 'weight' },
+                { data: [48, 48, 165], name: 'height' },
+            ],
+        });
+        response = getWeightDataSeries(singlePatientEvents, sampleT);
+        expect(response).toEqual({
+            categories: ['September/2019', 'September/2019', 'September/2019'],
+            dataSeries: [{ data: [78, 2, 2], name: 'weight' }],
+        });
     });
-});
-
-describe('convertToStringArray()', () => {
-    it('must return the correct value for the provided input', () => {
-        expect(convertToStringArray(convertToStringArrayInput2)).toEqual(convertToStringArrayOutput2);
-        expect(convertToStringArray(convertToStringArrayInput)).toEqual(convertToStringArrayOutput);
+    it('get blood pressure data series', () => {
+        const response = getBloodPSeriesForChart(singlePatientEvents, sampleT);
+        expect(response).toEqual({
+            categories: ['September/2019', 'September/2019', 'September/2019'],
+            dataSeries: [
+                { data: [118, 118, 120], name: 'systolic' },
+                { data: [78, 78, 80], name: 'diastolic' },
+            ],
+        });
     });
-});
-
-describe('getEventsPregnancyArray()', () => {
-    it('must return the correct value for the provided input', () => {
-        expect(getEventsPregnancyArray(getEventsPregnancyArrayInput1 as SmsData[], false)).toEqual(
-            getEventsPregnancyArrayOutput1,
-        );
-        expect(getEventsPregnancyArray(getEventsPregnancyArrayInput2 as SmsData[], false)).toEqual(
-            getEventsPregnancyArrayOutput2,
-        );
+    it('pregnancyOptionsFilter', () => {
+        const chunkedSms = chunkByGravida(singlePatientEvents);
+        const response = pregnancyOptionsFilter(chunkedSms, sampleT);
+        expect(response).toEqual([
+            { label: 'pregnancy 0', value: 0 },
+            { label: 'Current Pregnancy', value: 1 },
+        ]);
     });
 });
