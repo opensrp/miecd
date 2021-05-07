@@ -1,7 +1,6 @@
 import ListView from '@onaio/list-view';
 import NoRecord from 'components/NoRecord';
-import NotFound from 'components/NotFound';
-import { keyBy, uniqWith } from 'lodash';
+import { keyBy } from 'lodash';
 import React, { useState } from 'react';
 import { TFunction, Trans, useTranslation } from 'react-i18next';
 import Select from 'react-select';
