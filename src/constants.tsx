@@ -51,6 +51,8 @@ export const NBC_AND_PNC = 'NBC & PNC';
 export const NBC_AND_PNC_CHILD = 'NBC & PNC_CHILD';
 export const NBC_AND_PNC_WOMAN = 'NBC & PNC_WOMAN';
 export const NUTRITION = 'Nutrition';
+
+// module string literals
 export const PREGNANCY_MODULE = 'Pregnancy';
 export const NUTRITION_MODULE = 'Nutrition';
 export const NBC_AND_PNC_MODULE = 'NBC & PNC';
