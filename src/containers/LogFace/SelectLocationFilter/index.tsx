@@ -17,8 +17,6 @@ interface SelectLocationFilterProps {
 
 const defaultProps = {
     disabled: false,
-    onLocationChange: () => void 0,
-    userLocationId: '',
 };
 
 const SelectLocationFilter = (props: SelectLocationFilterProps) => {
