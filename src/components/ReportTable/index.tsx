@@ -61,7 +61,6 @@ function ReportTable(props: ReportTableTypes) {
     const filterOptions = pregnancyOptionsFilter(smsChunks, t);
     const filterValue = keyBy(filterOptions, (x) => x.value)[currentSmsChunkIndex];
 
-    console.log('currentSmsChunk ==> ', currentSmsChunkIndex);
     return (
         <>
             <div id="filter-panel">
