@@ -255,7 +255,7 @@ export const pregnancyOptionsFilter = (chunkedSms: SmsData[][], t: TFunction) =>
     return chunkedSms.map((_, index) => {
         const thisOption = {
             value: index,
-            label: t(`pregnancy ${index}`),
+            label: t(`pregnancy ${index + 1}`),
         };
         if (index === chunkedSms.length - 1) {
             thisOption.label = t(`Current Pregnancy`);

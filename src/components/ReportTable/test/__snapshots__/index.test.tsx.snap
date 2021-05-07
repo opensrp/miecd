@@ -89,13 +89,13 @@ exports[`ReportTable works okay: pregnancy filter 1`] = `
     key="0"
     value={0}
   >
-    pregnancy 0
+    pregnancy 1
   </option>
   <option
     key="1"
     value={1}
   >
-    pregnancy 1
+    pregnancy 2
   </option>
   <option
     key="2"

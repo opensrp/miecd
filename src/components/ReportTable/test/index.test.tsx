@@ -159,7 +159,7 @@ describe('ReportTable utils', () => {
         const chunkedSms = chunkByGravida(singlePatientEvents);
         const response = pregnancyOptionsFilter(chunkedSms, sampleT);
         expect(response).toEqual([
-            { label: 'pregnancy 0', value: 0 },
+            { label: 'pregnancy 1', value: 0 },
             { label: 'Current Pregnancy', value: 1 },
         ]);
     });
