@@ -310,15 +310,9 @@ export const filterByPatientId = (patientIdAndSmsData: PatientIDAndSmsData): Sms
  */
 export const sortByEventDate = (smsData: SmsData[]) => {
     return smsData.sort((event1: SmsData, event2: SmsData): number => {
-        const date1 = new Date(event1.event_date);
-        const date2 = new Date(event2.event_date);
-        if (date1 < date2) {
-            return 1;
-        }
-        if (date1 > date2) {
-            return -1;
-        }
-        return 0;
+        const date1 = Date.parse(event1.event_date);
+        const date2 = Date.parse(event2.event_date);
+        return date2 - date1;
     });
 };
 

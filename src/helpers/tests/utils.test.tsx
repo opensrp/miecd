@@ -1,4 +1,4 @@
-import { formatAge, getNumberSuffix, oAuthUserInfoGetter, parseMessage } from '../utils';
+import { formatAge, getNumberSuffix, oAuthUserInfoGetter, parseMessage, sortByEventDate } from '../utils';
 import { OpenSRPAPIResponse } from './fixtures';
 
 jest.mock('@onaio/gatekeeper', () => {
@@ -77,5 +77,20 @@ describe('src/helpers', () => {
         expect(response).toEqual('24 age.months');
         response = formatAge('3y 9m 0d', (t: string) => t);
         expect(response).toEqual('3 age.years');
+    });
+
+    it('sorts by event dates correctly', () => {
+        const mockEvent1 = { event_date: '2021-04-27T15:19:04.173000' };
+        const mockEvent2 = { event_date: '2020-04-27T15:19:04.173000' };
+        const mockEvent3 = { event_date: '2022-04-27T15:19:04.173000' };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const events = [mockEvent1, mockEvent2, mockEvent3] as any;
+
+        const response = sortByEventDate(events);
+        expect(response).toEqual([
+            { event_date: '2022-04-27T15:19:04.173000' },
+            { event_date: '2021-04-27T15:19:04.173000' },
+            { event_date: '2020-04-27T15:19:04.173000' },
+        ]);
     });
 });
