@@ -130,7 +130,7 @@ function Chart(props: Props) {
                 clearTimeout(timeout);
             }
         };
-    }, []);
+    }, [chartWrapperId, dataArray, units, yAxisLabel]);
 
     return (
         <Card>

@@ -125,14 +125,14 @@ describe('ReportTable utils', () => {
         expect(response).toEqual({
             categories: ['September/2019', 'September/2019', 'September/2019'],
             dataSeries: [
-                { data: [2, 2, 78], name: 'weight' },
-                { data: [48, 48, 165], name: 'height' },
+                { data: [2, 78, 2], name: 'weight' },
+                { data: [48, 165, 48], name: 'height' },
             ],
         });
         response = getWeightDataSeries(singlePatientEvents, sampleT);
         expect(response).toEqual({
             categories: ['September/2019', 'September/2019', 'September/2019'],
-            dataSeries: [{ data: [78, 2, 2], name: 'weight' }],
+            dataSeries: [{ data: [2, 78, 2], name: 'weight' }],
         });
     });
     it('get blood pressure data series', () => {
@@ -140,8 +140,8 @@ describe('ReportTable utils', () => {
         expect(response).toEqual({
             categories: ['September/2019', 'September/2019', 'September/2019'],
             dataSeries: [
-                { data: [118, 118, 120], name: 'systolic' },
-                { data: [78, 78, 80], name: 'diastolic' },
+                { data: [120, 118, 118], name: 'systolic' },
+                { data: [80, 78, 78], name: 'diastolic' },
             ],
         });
     });

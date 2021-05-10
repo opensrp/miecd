@@ -1,6 +1,5 @@
 /** This is the main configuration module */
 import { Providers } from '@onaio/gatekeeper';
-import { PREGNANCY_MODULE, NUTRITION_MODULE } from '../constants';
 import { TFunction } from 'react-i18next';
 import { GREEN, RED, YELLOW } from './colors';
 import {
@@ -27,8 +26,6 @@ import {
     RESPONSE_REPORT,
     SOCIAL_DETERMINANTS,
 } from '../constants';
-import { TFunction } from 'react-i18next';
-import { GREEN, RED, YELLOW } from './colors';
 import {
     DOMAIN_NAME,
     ENABLE_ONADATA_OAUTH,
