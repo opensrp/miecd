@@ -53,9 +53,9 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { format, parse } from 'date-fns';
 import { fetchTree } from '../store/ducks/locationHierarchy';
-import { TFunction } from 'i18next';
-import * as React from 'react';
 import { split, trim, replace } from 'lodash';
+import * as React from 'react';
+import { TFunction } from 'i18next';
 export type { Dictionary };
 
 /** Custom function to get oAuth user info depending on the oAuth2 provider
@@ -200,7 +200,9 @@ export function getFilterFunctionAndLocationLevel(
                 return location.location_id === smsData.location_id;
             });
             if (village) {
-                return userLocationId === getProvince(village as Location & { level: VILLAGE }, districts, communes);
+                return (
+                    userLocationId === getProvince(village as Location & { level: typeof VILLAGE }, districts, communes)
+                );
             }
             return false;
         };
@@ -214,7 +216,7 @@ export function getFilterFunctionAndLocationLevel(
                 return location.location_id === smsData.location_id;
             });
             if (village) {
-                return userLocationId === getDistrict(village as Location & { level: VILLAGE }, communes);
+                return userLocationId === getDistrict(village as Location & { level: typeof VILLAGE }, communes);
             }
             return false;
         };
@@ -228,7 +230,7 @@ export function getFilterFunctionAndLocationLevel(
                 return location.location_id === smsData.location_id;
             });
             if (village) {
-                return userLocationId === getCommune(village as Location & { level: VILLAGE });
+                return userLocationId === getCommune(village as Location & { level: typeof VILLAGE });
             }
             return false;
         };
@@ -251,7 +253,7 @@ export function getFilterFunctionAndLocationLevel(
  * Given a village return it's commune's location ID
  * @param {Location} village - village Location to find commune
  */
-export const getCommune = (village: Location & { level: VILLAGE }): string => {
+export const getCommune = (village: Location & { level: typeof VILLAGE }): string => {
     return village.parent_id;
 };
 
@@ -260,7 +262,7 @@ export const getCommune = (village: Location & { level: VILLAGE }): string => {
  * @param {Location} village - village Location for which we want to find a District.
  * @param communes
  */
-export const getDistrict = (village: Location & { level: VILLAGE }, communes: Location[]): string | null => {
+export const getDistrict = (village: Location & { level: typeof VILLAGE }, communes: Location[]): string | null => {
     const communeId = getCommune(village);
     const commune = communes.find((location: Location) => location.location_id === communeId);
     return commune ? commune.parent_id : null;
@@ -273,7 +275,7 @@ export const getDistrict = (village: Location & { level: VILLAGE }, communes: Lo
  * @param communes
  */
 export const getProvince = (
-    village: Location & { level: VILLAGE },
+    village: Location & { level: typeof VILLAGE },
     districts: Location[],
     communes: Location[],
 ): string | null => {
@@ -308,15 +310,9 @@ export const filterByPatientId = (patientIdAndSmsData: PatientIDAndSmsData): Sms
  */
 export const sortByEventDate = (smsData: SmsData[]) => {
     return smsData.sort((event1: SmsData, event2: SmsData): number => {
-        const date1 = new Date(event1.EventDate);
-        const date2 = new Date(event2.EventDate);
-        if (date1 < date2) {
-            return 1;
-        }
-        if (date1 > date2) {
-            return -1;
-        }
-        return 0;
+        const date1 = Date.parse(event1.event_date);
+        const date2 = Date.parse(event2.event_date);
+        return date2 - date1;
     });
 };
 
@@ -432,7 +428,7 @@ export function buildHeaderBreadCrumb(
  */
 export function getModuleLink(
     module: string,
-): PREGNANCY_COMPARTMENTS_URL | NUTRITION_COMPARTMENTS_URL | NBC_AND_PNC_COMPARTMENTS_URL | '' {
+): typeof PREGNANCY_COMPARTMENTS_URL | typeof NUTRITION_COMPARTMENTS_URL | typeof NBC_AND_PNC_COMPARTMENTS_URL | '' {
     switch (module) {
         case PREGNANCY:
             return PREGNANCY_COMPARTMENTS_URL;
@@ -502,7 +498,7 @@ export async function fetchData(
     toFetchSms = true,
 ) {
     const promises = [];
-    if (!userIdFetched(store.getState()) && toFetchUserHierarchy) {
+    if (toFetchUserHierarchy && !userIdFetched(store.getState())) {
         const opensrpService = new OpenSRPService(OPENSRP_SECURITY_AUTHENTICATE);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -516,7 +512,7 @@ export async function fetchData(
     }
 
     // fetch user location details
-    if (!userLocationDataFetched(store.getState()) && toFetchUserLocation) {
+    if (toFetchUserLocation && !userLocationDataFetched(store.getState())) {
         const locationDataPromise = supersetFetchMethod(USER_LOCATION_DATA_SLICE).then((result: UserLocation[]) => {
             store.dispatch(fetchUserLocations(result));
         });
@@ -525,7 +521,7 @@ export async function fetchData(
 
     // fetch all location slices
     for (const slice in LOCATION_SLICES) {
-        if (slice && toFetchLocations) {
+        if (toFetchLocations && slice) {
             const locationPromise = supersetFetchMethod(LOCATION_SLICES[slice]).then((result: Location[]) => {
                 store.dispatch(fetchLocations(result));
             });
@@ -534,7 +530,7 @@ export async function fetchData(
     }
 
     // check if sms data is fetched and then fetch if not fetched already
-    if (!smsDataFetched(store.getState()) && toFetchSms) {
+    if (toFetchSms && !smsDataFetched(store.getState())) {
         const smsDataPromise = supersetFetchMethod(SUPERSET_SMS_DATA_SLICE).then((result: SmsData[]) => {
             store.dispatch(fetchSms(result));
         });
@@ -546,8 +542,13 @@ export async function fetchData(
     });
 }
 
+/** convert milliseconds to years (rounded off to two decimal places)
+ * @param mSeconds - time in milliseconds
+ */
 export const convertMillisecondsToYear = (mSeconds: number) => {
-    return Math.floor(mSeconds / (365 * 24 * 60 * 60 * 1000));
+    const years = mSeconds / (365 * 24 * 60 * 60 * 1000);
+    const yearsRounded = Math.round((years + Number.EPSILON) * 100) / 100;
+    return yearsRounded;
 };
 
 /** facade to display a success toast

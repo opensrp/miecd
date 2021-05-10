@@ -6,7 +6,7 @@ import './index.css';
 
 interface Props {
     title: string;
-    description: string | React.ReactNode;
+    description: React.ReactChild;
     deactivateLinks: boolean;
     logFaceUrl: string;
     compartmentUrl: string;

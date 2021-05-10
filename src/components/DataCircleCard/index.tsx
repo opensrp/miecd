@@ -33,7 +33,6 @@ interface Props extends RouteComponentProps {
     redAlert?: number;
     risk?: number;
     noRisk?: number;
-    totalChildren?: number;
     stunting?: number;
     wasting?: number;
     overweight?: number;
@@ -41,10 +40,10 @@ interface Props extends RouteComponentProps {
     title: string;
     addFilterArgsActionCreator?: typeof addFilterArgs;
     filterArgs?: SmsFilterFunction[];
-    module: PREGNANCY | NBC_AND_PNC_CHILD | NBC_AND_PNC_WOMAN | NUTRITION | '';
-    className?: string;
+    module: typeof PREGNANCY | typeof NBC_AND_PNC_CHILD | typeof NBC_AND_PNC_WOMAN | typeof NUTRITION | '';
     userLocationId: string;
     permissionLevel: number;
+    totalNumber: number;
 }
 
 /**
@@ -70,9 +69,9 @@ function DataCircleCard({
     addFilterArgsActionCreator = addFilterArgs,
     filterArgs,
     module,
-    className = '',
     userLocationId,
     permissionLevel,
+    totalNumber,
 }: Props) {
     const { t } = useTranslation();
     const pregnancyAndPncCircleSpec: CircleSpecProps[] = [
@@ -124,7 +123,7 @@ function DataCircleCard({
     ];
 
     return (
-        <Card className={`dataCircleCard ${className}`}>
+        <Card className="dataCircleCard">
             <CardTitle>
                 <Link
                     to={getLinkToHierarchicalDataTable(ALL, module, title, permissionLevel, userLocationId)}
@@ -135,7 +134,7 @@ function DataCircleCard({
                         }
                     }}
                 >
-                    {title}
+                    <h5 className="card_title">{t(`${totalNumber} ${title}`)}</h5>
                 </Link>
             </CardTitle>
             <CardBody className="circlesRow">

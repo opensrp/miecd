@@ -42,7 +42,8 @@ Object {
   "redAlert": 0,
   "risk": 0,
   "staticContext": undefined,
-  "title": "0 Total Pregnancies due in 1 week",
+  "title": "Total Pregnancies due in 1 week",
+  "totalNumber": 0,
   "userLocationId": "d1865325-11e6-4e39-817b-e676c1affecf",
 }
 `;
@@ -86,10 +87,11 @@ Object {
   "module": "Pregnancy",
   "noRisk": 0,
   "permissionLevel": 0,
-  "redAlert": 1,
-  "risk": 1,
+  "redAlert": 0,
+  "risk": 2,
   "staticContext": undefined,
-  "title": "2 Total Pregnancies due in 2 weeks",
+  "title": "Total Pregnancies due in 2 weeks",
+  "totalNumber": 2,
   "userLocationId": "d1865325-11e6-4e39-817b-e676c1affecf",
 }
 `;
@@ -133,10 +135,11 @@ Object {
   "module": "Pregnancy",
   "noRisk": 0,
   "permissionLevel": 0,
-  "redAlert": 1,
-  "risk": 1,
+  "redAlert": 0,
+  "risk": 2,
   "staticContext": undefined,
-  "title": "2 Total Pregnancies",
+  "title": "Total Pregnancies",
+  "totalNumber": 2,
   "userLocationId": "d1865325-11e6-4e39-817b-e676c1affecf",
 }
 `;
@@ -183,7 +186,8 @@ Object {
   "redAlert": 0,
   "risk": 0,
   "staticContext": undefined,
-  "title": "0 Total Newborn",
+  "title": "Total Newborn",
+  "totalNumber": 0,
   "userLocationId": "d1865325-11e6-4e39-817b-e676c1affecf",
 }
 `;
@@ -227,10 +231,11 @@ Object {
   "module": "NBC & PNC_WOMAN",
   "noRisk": 0,
   "permissionLevel": 0,
-  "redAlert": 1,
-  "risk": 1,
+  "redAlert": 0,
+  "risk": 2,
   "staticContext": undefined,
-  "title": "2 Total mother in PNC",
+  "title": "Total Mothers in PNC",
+  "totalNumber": 2,
   "userLocationId": "d1865325-11e6-4e39-817b-e676c1affecf",
 }
 `;
@@ -277,8 +282,8 @@ Object {
   "permissionLevel": 0,
   "staticContext": undefined,
   "stunting": 0,
-  "title": "Children Under 5",
-  "totalChildren": 0,
+  "title": "Total Children Under 5",
+  "totalNumber": 0,
   "userLocationId": "d1865325-11e6-4e39-817b-e676c1affecf",
   "wasting": 0,
 }
@@ -326,8 +331,8 @@ Object {
   "permissionLevel": 0,
   "staticContext": undefined,
   "stunting": 0,
-  "title": "Children Under 2",
-  "totalChildren": 0,
+  "title": "Total Children Under 2",
+  "totalNumber": 0,
   "userLocationId": "d1865325-11e6-4e39-817b-e676c1affecf",
   "wasting": 0,
 }

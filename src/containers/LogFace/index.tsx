@@ -18,7 +18,7 @@ import {
     SUPERSET_PREGNANCY_DATA_EXPORT,
     SUPERSET_SMS_DATA_SLICE,
 } from '../../configs/env';
-import { riskCategories, SmsTypes } from '../../configs/settings';
+import { logFaceSmsTypesByModule, riskCategories, SmsTypes } from '../../configs/settings';
 import {
     DEFAULT_NUMBER_OF_LOGFACE_ROWS,
     EVENT_ID,
@@ -162,7 +162,8 @@ const LogFace = (props: LogFacePropsType) => {
                 handleBrokenPage(err);
             })
             .finally(() => setLoading(false));
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [removeFilterArgs, supersetService]);
 
     useEffect(() => {
         const intervalId: NodeJS.Timeout = setInterval(() => {
@@ -188,7 +189,7 @@ const LogFace = (props: LogFacePropsType) => {
                 clearInterval(intervalId);
             }
         };
-    }, []);
+    }, [fetchSmsDataActionCreator, smsData, supersetService]);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const { t } = useTranslation();
@@ -389,6 +390,7 @@ const userHierarchySelector = getTreesByIds();
 
 const mapStateToProps = (state: Partial<Store>, ownProps: LogFacePropsType): MapStateToProps => {
     const riskAccessor = ownProps.module === NUTRITION_MODULE ? 'nutrition_status' : 'risk_level';
+    const thisPageDefaultSmsTypeFilters = logFaceSmsTypesByModule[ownProps.module as string];
 
     const userLocationIdFilter = getQueryParams(ownProps.location)[LOCATION_FILTER_PARAM] as string;
     const riskCategoryFilter = getQueryParams(ownProps.location)[RISK_CATEGORY_FILTER_PARAM] as string;
@@ -398,7 +400,7 @@ const mapStateToProps = (state: Partial<Store>, ownProps: LogFacePropsType): Map
     const filteredSmsData = selectSmsData(state, {
         locationNode: userLocationNode,
         riskCategory: { accessor: riskAccessor, filterValue: riskCategoryFilter },
-        smsTypes: smsTypeFilter ? [smsTypeFilter] : undefined,
+        smsTypes: smsTypeFilter ? [smsTypeFilter] : thisPageDefaultSmsTypeFilters,
         searchFilter,
     });
     const userUUID = getUserId(state);

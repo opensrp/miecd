@@ -23,16 +23,26 @@ import {
     NBC_AND_PNC_ANALYSIS_URL,
     NBC_AND_PNC_COMPARTMENTS_URL,
     NBC_AND_PNC_LOGFACE_URL,
+    NBC_AND_PNC_MODULE,
     NBC_AND_PNC_URL,
     NUTRITION_ANALYSIS_URL,
     NUTRITION_COMPARTMENTS_URL,
     NUTRITION_LOGFACE_URL,
+    NUTRITION_MODULE,
     NUTRITION_URL,
     PATIENT_DETAIL_URL,
     PREGNANCY_ANALYSIS_URL,
     PREGNANCY_COMPARTMENTS_URL,
     PREGNANCY_LOGFACE_URL,
+    PREGNANCY_MODULE,
     PREGNANCY_URL,
+    PREGNANCY,
+    NUTRITION,
+    NBC_AND_PNC,
+    NEWBORN_REPORT,
+    NUTRITION_REGISTRATION,
+    NUTRITION_REPORT,
+    PREGNANCY_REGISTRATION,
 } from '../constants';
 import Compartments from '../containers/Compartments';
 import ConnectedHierarchicalDataTable from '../containers/HierarchichalDataTable';
@@ -62,26 +72,19 @@ export interface RoutesProps {
 export const Routes = (props: RoutesProps) => {
     const { authenticated } = props;
     const { t } = useTranslation();
-    const NBC_AND_PNC = t('NBC & PNC');
     const NBC_AND_PNC_DASHBOARD_WELCOME = t('Welcome to Newborn and Postnatal Care');
-    const NEWBORN_REPORT = t('Newborn Report');
-    const NUTRITION = t('Nutrition');
     const NUTRITION_DASHBOARD_WELCOME = t('Welcome to Nutrition Care');
-    const NUTRITION_REGISTRATION = t('Nutrition Registration');
-    const NUTRITION_REPORT = t('Nutrition Report');
-    const PREGNANCY = t('Pregnancy');
     const PREGNANCY_DASHBOARD_WELCOME = t('Welcome to the pregnancy dashboard');
     const PREGNANCY_DESCRIPTION = (
         <Trans>
             This dashboard displays information collected from MIECD Viet Nam Pregnancy Module for patients in your
-            geographical location.
-            <p className="font-italic">
-                The Module covers the whole pregnancy period from conception to delivery and includes Pregnancy
-                Registration, ANC visits, Birth reports/Death reports, Risk Reports, Risk alerts and ResponseReports.
-            </p>
+            geographical location.&nbsp;
+            <span className="font-italic">
+                The module covers the whole pregnancy period from conception to delivery and includes Pregnancy
+                Registration, ANC visits, Birth/Death reports, Risk Reports, Risk alerts and Response reports.
+            </span>
         </Trans>
     );
-    const PREGNANCY_REGISTRATION = t('Pregnancy Registration');
 
     return (
         <div className={`${authenticated && headerShouldRender() ? 'main-container' : 'hidden-container'}`}>
@@ -149,7 +152,7 @@ export const Routes = (props: RoutesProps) => {
                                             },
                                         ] as SmsFilterFunction[]
                                     }
-                                    module={PREGNANCY}
+                                    module={PREGNANCY_MODULE}
                                 />
                             )}
                         />
@@ -167,7 +170,7 @@ export const Routes = (props: RoutesProps) => {
                                             },
                                         ] as SmsFilterFunction[]
                                     }
-                                    module={NBC_AND_PNC}
+                                    module={NBC_AND_PNC_MODULE}
                                 />
                             )}
                         />
@@ -188,7 +191,7 @@ export const Routes = (props: RoutesProps) => {
                                             },
                                         ] as SmsFilterFunction[]
                                     }
-                                    module={NUTRITION}
+                                    module={NUTRITION_MODULE}
                                 />
                             )}
                         />
@@ -295,7 +298,7 @@ export const Routes = (props: RoutesProps) => {
                             path={PREGNANCY_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={(routeProps: RouteComponentProps) => (
-                                <ConnectedLogFace module={PREGNANCY} {...routeProps} />
+                                <ConnectedLogFace module={PREGNANCY_MODULE} {...routeProps} />
                             )}
                         />
                         <ConnectedPrivateRoute
@@ -303,7 +306,7 @@ export const Routes = (props: RoutesProps) => {
                             path={NBC_AND_PNC_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={(routeProps: RouteComponentProps) => (
-                                <ConnectedLogFace module={NBC_AND_PNC} {...routeProps} />
+                                <ConnectedLogFace module={NBC_AND_PNC_MODULE} {...routeProps} />
                             )}
                         />
                         <ConnectedPrivateRoute
@@ -311,7 +314,7 @@ export const Routes = (props: RoutesProps) => {
                             path={NUTRITION_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={(routeProps: RouteComponentProps) => (
-                                <ConnectedLogFace module={NUTRITION} {...routeProps} />
+                                <ConnectedLogFace module={NUTRITION_MODULE} {...routeProps} />
                             )}
                         />
                         {/* tslint:disable jsx-no-lambda */}

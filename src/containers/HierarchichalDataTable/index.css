@@ -68,7 +68,6 @@
 .compartment-data-table table td:nth-child(1) {
     text-align: left;
     padding-left: 1%;
-    color: #0292d3;
     font-size: 15px;
     font-weight: 400;
     line-height: 18px;
@@ -88,6 +87,13 @@
 
 .compartment-data-table .table-container table #body {
     overflow: auto;
+}
+.color-blue td {
+    color: #0292d3 !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }
 
 .compartment-data-table > h1 {
@@ -129,7 +135,6 @@
     border-top: none;
 }
 
-.compartment-data-table td#total,
 .compartment-data-table #header {
     color: #3a484f;
     font-size: 0.875rem;
@@ -178,9 +183,16 @@
 }
 
 .compartment-data-table .inappropriately-fed {
-    background-color: #50c4f9;
+    background-color: #ffe9db;
 }
 
 .compartment-data-table span.divider {
     color: #0292d3 !important;
+}
+.totals-row > .default-width,
+.totals-row > #total,
+.default-width.totals {
+    color: #3a484f;
+    font-size: 1rem;
+    font-weight: bolder;
 }

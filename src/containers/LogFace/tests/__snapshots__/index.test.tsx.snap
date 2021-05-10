@@ -95,7 +95,11 @@ Array [
     >
       <Component
         classNamePrefix="logface-filters"
+<<<<<<< HEAD
         closeMenuOnSelect={false}
+=======
+        closeMenuOnSelect={true}
+>>>>>>> main
         components={
           Object {
             "Menu": [Function],
@@ -158,8 +162,13 @@ Array [
             "value": "Pregnancy Identification",
           },
           Object {
+<<<<<<< HEAD
             "label": "Pregnancy registration",
             "value": "Pregnancy registration",
+=======
+            "label": "Pregnancy Registration",
+            "value": "Pregnancy Registration",
+>>>>>>> main
           },
           Object {
             "label": "ANC Report",
@@ -198,8 +207,13 @@ Array [
             "value": "Departure Code",
           },
           Object {
+<<<<<<< HEAD
             "label": "Refusal Code",
             "value": "Refusal Code",
+=======
+            "label": "Refusal Report",
+            "value": "Refusal Report",
+>>>>>>> main
           },
           Object {
             "label": "Account Check",
@@ -256,10 +270,17 @@ Array [
           Pregnancy Identification
         </option>
         <option
+<<<<<<< HEAD
           key="Pregnancy registration"
           value="Pregnancy registration"
         >
           Pregnancy registration
+=======
+          key="Pregnancy Registration"
+          value="Pregnancy Registration"
+        >
+          Pregnancy Registration
+>>>>>>> main
         </option>
         <option
           key="ANC Report"
@@ -316,10 +337,17 @@ Array [
           Departure Code
         </option>
         <option
+<<<<<<< HEAD
           key="Refusal Code"
           value="Refusal Code"
         >
           Refusal Code
+=======
+          key="Refusal Report"
+          value="Refusal Report"
+        >
+          Refusal Report
+>>>>>>> main
         </option>
         <option
           key="Account Check"
@@ -354,7 +382,7 @@ exports[`containers/LogFace renders correctly: paginator 1`] = `
     pageNeighbours={3}
     previousLabel="previous"
     startLabel="first"
-    totalRecords={32}
+    totalRecords={22}
   >
     <BasePaginator
       ariaLabel="page navigation"
@@ -367,7 +395,7 @@ exports[`containers/LogFace renders correctly: paginator 1`] = `
       pageNeighbours={3}
       previousLabel="previous"
       startLabel="first"
-      totalRecords={32}
+      totalRecords={22}
     >
       <Pagination
         aria-label="page navigation"
@@ -973,6 +1001,7 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       >
         <ul>
           <li
+<<<<<<< HEAD
             key="Symptoms : Coughing, Fever-0"
           >
             Symptoms : Coughing, Fever
@@ -986,6 +1015,21 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
             key="Interventions : -2"
           >
             Interventions : 
+=======
+            key="Symptoms : No symptoms-0"
+          >
+            Symptoms : No symptoms
+          </li>
+          <li
+            key="Intervention : Ambulance On Time-1"
+          >
+            Intervention : Ambulance On Time
+          </li>
+          <li
+            key="Health Status : -2"
+          >
+            Health Status : 
+>>>>>>> main
           </li>
         </ul>
       </td>
@@ -1004,19 +1048,31 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
               onClick={[Function]}
             >
               <RiskColoring
+<<<<<<< HEAD
                 risk="red_alert"
+=======
+                risk="no_risk"
+>>>>>>> main
               >
                 <span
                   className="badge"
                   style={
                     Object {
+<<<<<<< HEAD
                       "backgroundColor": "#dc3545",
+=======
+                      "backgroundColor": "#28a745",
+>>>>>>> main
                     }
                   }
                 >
                   <div>
                     <p>
+<<<<<<< HEAD
                       Red alert
+=======
+                      No risk
+>>>>>>> main
                     </p>
                   </div>
                 </span>
@@ -1078,6 +1134,7 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       >
         <ul>
           <li
+<<<<<<< HEAD
             key="Symptoms : No symptoms-0"
           >
             Symptoms : No symptoms
@@ -1091,6 +1148,21 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
             key="Health Status : -2"
           >
             Health Status : 
+=======
+            key="Symptoms : Coughing, Fever-0"
+          >
+            Symptoms : Coughing, Fever
+          </li>
+          <li
+            key="Location : At home-1"
+          >
+            Location : At home
+          </li>
+          <li
+            key="Interventions : -2"
+          >
+            Interventions : 
+>>>>>>> main
           </li>
         </ul>
       </td>
@@ -1109,19 +1181,31 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
               onClick={[Function]}
             >
               <RiskColoring
+<<<<<<< HEAD
                 risk="no_risk"
+=======
+                risk="red_alert"
+>>>>>>> main
               >
                 <span
                   className="badge"
                   style={
                     Object {
+<<<<<<< HEAD
                       "backgroundColor": "#28a745",
+=======
+                      "backgroundColor": "#dc3545",
+>>>>>>> main
                     }
                   }
                 >
                   <div>
                     <p>
+<<<<<<< HEAD
                       No risk
+=======
+                      Red alert
+>>>>>>> main
                     </p>
                   </div>
                 </span>
@@ -1137,7 +1221,11 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       <td
         className="default-width"
       >
+<<<<<<< HEAD
         03/10/2019
+=======
+        04/10/2019
+>>>>>>> main
       </td>
       <td
         className="default-width"
@@ -1176,13 +1264,148 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
       <td
         className="small-width"
       >
+<<<<<<< HEAD
         36 years
+=======
+        30 years
       </td>
       <td
         className="large-width"
       >
         <ul>
           <li
+            key="EDD : 09/10/2019-0"
+          >
+            EDD : 09/10/2019
+          </li>
+          <li
+            key="Gravidity : 3-1"
+          >
+            Gravidity : 3
+          </li>
+          <li
+            key="Parity : 1-2"
+          >
+            Parity : 1
+          </li>
+          <li
+            key="Weight : 55kg-3"
+          >
+            Weight : 55kg
+          </li>
+          <li
+            key="Height : 145cm-4"
+          >
+            Height : 145cm
+          </li>
+          <li
+            key="BMI : 26-5"
+          >
+            BMI : 26
+          </li>
+          <li
+            key="Previous Gynaecology History : Previous pregnancy too close or too far, Home Delivery-6"
+          >
+            Previous Gynaecology History : Previous pregnancy too close or too far, Home Delivery
+          </li>
+          <li
+            key="Current Symptoms : Heavy sweating, Coughing-7"
+          >
+            Current Symptoms : Heavy sweating, Coughing
+          </li>
+        </ul>
+      </td>
+      <td
+        className="default-width"
+      >
+        <Link
+          to="/pregnancy_log_face/patient_detail/100PAH"
+        >
+          <LinkAnchor
+            href="/pregnancy_log_face/patient_detail/100PAH"
+            navigate={[Function]}
+          >
+            <a
+              href="/pregnancy_log_face/patient_detail/100PAH"
+              onClick={[Function]}
+            >
+              <RiskColoring
+                risk="red_alert"
+              >
+                <span
+                  className="badge"
+                  style={
+                    Object {
+                      "backgroundColor": "#dc3545",
+                    }
+                  }
+                >
+                  <div>
+                    <p>
+                      Red alert
+                    </p>
+                  </div>
+                </span>
+              </RiskColoring>
+            </a>
+          </LinkAnchor>
+        </Link>
+      </td>
+    </tr>
+    <tr
+      key="1570170995321"
+    >
+      <td
+        className="default-width"
+      >
+        04/10/2019
+      </td>
+      <td
+        className="default-width"
+      >
+        Yen Phu Village
+      </td>
+      <td
+        className="default-width"
+      >
+        Pregnancy Detection
+      </td>
+      <td
+        className="default-width"
+      >
+        HMN
+      </td>
+      <td
+        className="default-width"
+      >
+        <Link
+          to="/pregnancy_log_face/patient_detail/100PAH"
+        >
+          <LinkAnchor
+            href="/pregnancy_log_face/patient_detail/100PAH"
+            navigate={[Function]}
+          >
+            <a
+              href="/pregnancy_log_face/patient_detail/100PAH"
+              onClick={[Function]}
+            >
+              100PAH
+            </a>
+          </LinkAnchor>
+        </Link>
+      </td>
+      <td
+        className="small-width"
+      >
+        30 years
+>>>>>>> main
+      </td>
+      <td
+        className="large-width"
+      >
+        <ul>
+          <li
+<<<<<<< HEAD
             key="Child DOB : 20/12/2020-0"
           >
             Child DOB : 20/12/2020
@@ -1226,6 +1449,21 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
             key="Mother Symptoms : No symptoms, Hemorrhage/persistent bleeding-8"
           >
             Mother Symptoms : No symptoms, Hemorrhage/persistent bleeding
+=======
+            key="Name : Joy Loiuse-0"
+          >
+            Name : Joy Loiuse
+          </li>
+          <li
+            key="Phone Number : +84983105510-1"
+          >
+            Phone Number : +84983105510
+          </li>
+          <li
+            key="Health Insurance : NA-2"
+          >
+            Health Insurance : NA
+>>>>>>> main
           </li>
         </ul>
       </td>
@@ -1244,6 +1482,114 @@ exports[`containers/LogFace renders correctly: table snapshot 1`] = `
               onClick={[Function]}
             >
               <RiskColoring
+<<<<<<< HEAD
+=======
+                risk=" NULL"
+              >
+                <span
+                  className="badge"
+                  style={
+                    Object {
+                      "backgroundColor": "#6c757d",
+                    }
+                  }
+                >
+                  <div>
+                    <p>
+                      Not set
+                    </p>
+                  </div>
+                </span>
+              </RiskColoring>
+            </a>
+          </LinkAnchor>
+        </Link>
+      </td>
+    </tr>
+    <tr
+      key="1570089812157"
+    >
+      <td
+        className="default-width"
+      >
+        03/10/2019
+      </td>
+      <td
+        className="default-width"
+      >
+        Yen Phu Village
+      </td>
+      <td
+        className="default-width"
+      >
+        Red Alert Report
+      </td>
+      <td
+        className="default-width"
+      >
+        Husna Hariz
+      </td>
+      <td
+        className="default-width"
+      >
+        <Link
+          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+        >
+          <LinkAnchor
+            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+            navigate={[Function]}
+          >
+            <a
+              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+              onClick={[Function]}
+            >
+              100P9K-20191001-01
+            </a>
+          </LinkAnchor>
+        </Link>
+      </td>
+      <td
+        className="small-width"
+      >
+        0 days
+      </td>
+      <td
+        className="large-width"
+      >
+        <ul>
+          <li
+            key="Symptoms : Coughing, Fever-0"
+          >
+            Symptoms : Coughing, Fever
+          </li>
+          <li
+            key="Location : At home-1"
+          >
+            Location : At home
+          </li>
+          <li
+            key="Interventions : -2"
+          >
+            Interventions : 
+          </li>
+        </ul>
+      </td>
+      <td
+        className="default-width"
+      >
+        <Link
+          to="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+        >
+          <LinkAnchor
+            href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+            navigate={[Function]}
+          >
+            <a
+              href="/pregnancy_log_face/child_patient_detail/100P9K-20191001-01"
+              onClick={[Function]}
+            >
+              <RiskColoring
+>>>>>>> main
                 risk="red_alert"
               >
                 <span

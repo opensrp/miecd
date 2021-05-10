@@ -275,7 +275,7 @@ describe('containers/LogFace extended', () => {
             wrapper.update();
         });
 
-        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(533);
+        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(428);
 
         // start with search field
         wrapper.find('#search').simulate('change', { target: { value: '100' } });
@@ -285,7 +285,7 @@ describe('containers/LogFace extended', () => {
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual('?search=100');
 
         // just checking that there were some events filtered out.
-        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(516);
+        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(420);
 
         expect(toJson(wrapper.find('#risk-filter select'))).toMatchSnapshot('risk filter');
 

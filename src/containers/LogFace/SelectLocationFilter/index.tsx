@@ -3,8 +3,7 @@
  * - user can only filter for locations that they have been allowed access to,
  * we determine this by using the locationHierarchy of the user returned from security authenticate
  */
-import React, { useEffect, useState } from 'react';
-import { Fragment } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select, { components } from 'react-select';
 import { TreeNode } from 'store/ducks/locationHierarchy/types';
@@ -41,11 +40,8 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
 
     useEffect(() => {
         // don't close dropdown after user makes selection if selected node has children
-        if (selectedNode?.hasChildren()) {
-            setMenuToClose(false);
-        } else {
-            setMenuToClose(true);
-        }
+        const hasChildren = selectedNode?.hasChildren();
+        setMenuToClose(!hasChildren);
     }, [selectedNode]);
 
     /** handles a location selection */
@@ -55,14 +51,13 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
             const thisNode = userLocationTree?.first((node) => node.model.id === value);
             setSelectedNode(thisNode);
             // set options to be children of currently selected node, where selected node is a leaf node, the siblings will be the options
-            setOptions(
-                (thisNode?.hasChildren() ? thisNode?.children : thisNode?.parent?.children ?? []).map(
-                    (node: TreeNode) => ({
-                        value: node.model.id,
-                        label: node.model.label,
-                    }),
-                ),
+            const nextOptions = (thisNode?.hasChildren() ? thisNode?.children : thisNode?.parent?.children ?? []).map(
+                (node: TreeNode) => ({
+                    value: node.model.id,
+                    label: node.model.label,
+                }),
             );
+            setOptions(nextOptions);
             const path: TreeNode[] = thisNode?.getPath() as TreeNode[];
             path.pop();
             setHierarchy(path);
@@ -97,14 +92,14 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
         } else {
             if (selectedNode) {
                 // set options to be children of currently selected node, where selected node is a leaf node, the siblings will be the options
-                setOptions(
-                    (selectedNode?.hasChildren() ? selectedNode?.children : selectedNode?.parent?.children ?? []).map(
-                        (node: TreeNode) => ({
-                            value: node.model.id,
-                            label: node.model.label,
-                        }),
-                    ),
-                );
+                const nextOptions = (selectedNode?.hasChildren()
+                    ? selectedNode?.children
+                    : selectedNode?.parent?.children ?? []
+                ).map((node: TreeNode) => ({
+                    value: node.model.id,
+                    label: node.model.label,
+                }));
+                setOptions(nextOptions);
             } else {
                 setOptions(initialSelectOptions);
             }

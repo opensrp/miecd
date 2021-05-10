@@ -100,6 +100,7 @@ describe('selectLocationFilter', () => {
         const props = {
             userLocationTree,
             userLocationId: demoUserLocationId,
+            onLocationChange: () => void 0,
         };
         const wrapper = mountWithTranslations(<SelectLocationFilter {...props} />);
 

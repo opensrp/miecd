@@ -2,13 +2,21 @@
 
 exports[`RiskColoring must show correct Risk level depending on the string passed as a prop: default 1`] = `
 <RiskColoring
-  risk="red-alert"
+  risk=""
 >
   <span
-    className="badge badge-info"
-    id="default-width"
+    className="badge"
+    style={
+      Object {
+        "backgroundColor": "#6c757d",
+      }
+    }
   >
-    red-alert
+    <div>
+      <p>
+        Not set
+      </p>
+    </div>
   </span>
 </RiskColoring>
 `;
@@ -18,12 +26,16 @@ exports[`RiskColoring must show correct Risk level depending on the string passe
   risk="high"
 >
   <span
-    className="badge badge-danger"
-    id="default-width"
+    className="badge"
+    style={
+      Object {
+        "backgroundColor": "#6c757d",
+      }
+    }
   >
     <div>
       <p>
-        High Risk
+        Not set
       </p>
     </div>
   </span>
@@ -35,12 +47,16 @@ exports[`RiskColoring must show correct Risk level depending on the string passe
   risk="low"
 >
   <span
-    className="badge badge-warning"
-    id="default-width"
+    className="badge"
+    style={
+      Object {
+        "backgroundColor": "#6c757d",
+      }
+    }
   >
     <div>
       <p>
-        Low Risk
+        Not set
       </p>
     </div>
   </span>
@@ -52,12 +68,16 @@ exports[`RiskColoring must show correct Risk level depending on the string passe
   risk="not set"
 >
   <span
-    className="badge badge-info"
-    id="default-width"
+    className="badge"
+    style={
+      Object {
+        "backgroundColor": "#6c757d",
+      }
+    }
   >
     <div>
       <p>
-        Not Set
+        Not set
       </p>
     </div>
   </span>
@@ -69,12 +89,16 @@ exports[`RiskColoring must show correct Risk level depending on the string passe
   risk="red"
 >
   <span
-    className="badge badge-danger"
-    id="default-width"
+    className="badge"
+    style={
+      Object {
+        "backgroundColor": "#6c757d",
+      }
+    }
   >
     <div>
       <p>
-        Red Alert
+        Not set
       </p>
     </div>
   </span>

@@ -1,4 +1,4 @@
-import { NBC_AND_PNC_WOMAN, NUTRITION, NBC_AND_PNC_CHILD } from '../../../constants';
+import { NBC_AND_PNC_WOMAN, NUTRITION, NBC_AND_PNC_CHILD, PREGNANCY } from '../../../constants';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { createBrowserHistory } from 'history';
@@ -24,12 +24,6 @@ describe('components/VillageData', () => {
     // eslint-disable-next-line jest/expect-expect
     it('must render without crashing', () => {
         shallow(<VillageData />);
-    });
-
-    it('must render correctly with no data', () => {
-        const wrapper = mountWithTranslations(<VillageData />);
-        expect(toJson(wrapper.find('VillageData Row'))).toMatchSnapshot('Village data with no data');
-        wrapper.unmount();
     });
 
     it('must render correctly with data', () => {
@@ -80,10 +74,57 @@ describe('components/VillageData', () => {
         wrapper.unmount();
     });
 
+    it('works correctly for NUTRITION', () => {
+        const props = {
+            ...villageDataProps,
+            module: NUTRITION,
+        };
+        const wrapper = mountWithTranslations(
+            <Provider store={store}>
+                <Router history={history}>
+                    <VillageData {...props} />
+                </Router>
+            </Provider>,
+        );
+
+        expect(wrapper.find('#navrow Pagination').text()).toMatchInlineSnapshot(
+            `"firstfirstpreviousprevious1234nextnextlastlast"`,
+        );
+
+        wrapper.find('tr').forEach((tr) => {
+            expect(tr.text()).toMatchSnapshot('Nutrition Page');
+        });
+        wrapper.unmount();
+    });
+
+    it('works correctly for PREGNANCY', () => {
+        const props = {
+            ...villageDataProps,
+            module: PREGNANCY,
+        };
+        const wrapper = mountWithTranslations(
+            <Provider store={store}>
+                <Router history={history}>
+                    <VillageData {...props} />
+                </Router>
+            </Provider>,
+        );
+
+        expect(wrapper.find('#navrow Pagination').text()).toMatchInlineSnapshot(
+            `"firstfirstpreviousprevious1234nextnextlastlast"`,
+        );
+
+        wrapper.find('tr').forEach((tr) => {
+            expect(tr.text()).toMatchSnapshot('Pregnancy Page');
+        });
+        wrapper.unmount();
+    });
+
     it('works correctly for NBC_AND_PNC_CHILD', () => {
         const props = {
             ...villageDataProps,
             module: NBC_AND_PNC_CHILD,
+            current_level: 2,
         };
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -127,7 +168,7 @@ describe('components/VillageData', () => {
     });
 });
 
-describe('components/VillageData/nbcAndPncMotherMapFunction', () => {
+describe('components/VillageData/pregnancyMapFunction', () => {
     it('must return the correct value given specific input', () => {
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -136,9 +177,32 @@ describe('components/VillageData/nbcAndPncMotherMapFunction', () => {
                 </Router>
             </Provider>,
         );
-        const instance = wrapper.find('VillageData').instance() as VillageData;
-        const tableRows = shallow(instance.pregnancyMapFunction(villageDataProps.smsData[2]));
-        expect(tableRows.find('td[className="default-width"]').length).toEqual(7);
+        const instance = wrapper.find('VillageData').instance() as typeof VillageData;
+        const tableRows = shallow(instance.pregnancyMapFunction(villageDataProps.smsData[0]));
+        const tableData = tableRows.find('td[className="default-width"]');
+        expect(tableData.length).toEqual(8);
+        // expect Patient ID row to match Patient ID
+        const PatientIDRow = tableData.at(0).text();
+        expect(PatientIDRow).toBe('100RMT');
+    });
+});
+
+describe('components/VillageData/nutritionMapFunction', () => {
+    it('must return the correct value given specific input', () => {
+        const wrapper = mountWithTranslations(
+            <Provider store={store}>
+                <Router history={history}>
+                    <VillageData {...(villageDataProps as Props)} />
+                </Router>
+            </Provider>,
+        );
+        const instance = wrapper.find('VillageData').instance() as typeof VillageData;
+        const tableRows = shallow(instance.nutritionMapFunction(villageDataProps.smsData[1]));
+        const tableData = tableRows.find('td[className="default-width"]');
+        expect(tableData.length).toEqual(4);
+        // expect Patient ID row to match Patient ID
+        const PatientIDRow = tableData.at(0).text();
+        expect(PatientIDRow).toBe('100RRK');
     });
 });
 
@@ -151,13 +215,17 @@ describe('components/VillageData/nbcAndPncChildMapFunction', () => {
                 </Router>
             </Provider>,
         );
-        const instance = wrapper.find('VillageData').instance() as VillageData;
-        const tableRows = shallow(instance.pregnancyMapFunction(villageDataProps.smsData[2]));
-        expect(tableRows.find('td[className="default-width"]').length).toEqual(7);
+        const instance = wrapper.find('VillageData').instance() as typeof VillageData;
+        const tableRows = shallow(instance.nbcAndPncChildMapFunction(villageDataProps.smsData[2]));
+        const tableData = tableRows.find('td[className="default-width"]');
+        expect(tableData.length).toEqual(6);
+        // expect Patient ID row to match Patient ID
+        const PatientIDRow = tableData.at(0).text();
+        expect(PatientIDRow).toBe('100RH2-20190601-03');
     });
 });
 
-describe('components/VillageData/pregnancyMapFunction', () => {
+describe('components/VillageData/nbcAndPncMotherMapFunction', () => {
     it('must return the correct value given specific input', () => {
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -166,8 +234,12 @@ describe('components/VillageData/pregnancyMapFunction', () => {
                 </Router>
             </Provider>,
         );
-        const instance = wrapper.find('VillageData').instance() as VillageData;
-        const tableRows = shallow(instance.pregnancyMapFunction(villageDataProps.smsData[2]));
-        expect(tableRows.find('td[className="default-width"]').length).toEqual(7);
+        const instance = wrapper.find('VillageData').instance() as typeof VillageData;
+        const tableRows = shallow(instance.nbcAndPncMotherMapFunction(villageDataProps.smsData[3]));
+        const tableData = tableRows.find('td[className="default-width"]');
+        expect(tableData.length).toEqual(7);
+        // expect Patient ID row to match Patient ID
+        const PatientIDRow = tableData.at(0).text();
+        expect(PatientIDRow).toBe('1002LJ');
     });
 });

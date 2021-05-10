@@ -1,5 +1,6 @@
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import { mountWithTranslations } from 'helpers/testUtils';
 import React from 'react';
 import { ErrorPage } from '..';
 
@@ -16,9 +17,9 @@ describe('ErrorPage', () => {
             title: errorTitle,
             message: errorMessage,
         };
-        const wrapper = mount(<ErrorPage {...props} />);
+        const wrapper = mountWithTranslations(<ErrorPage {...props} />);
 
-        expect(toJson(wrapper)).toMatchSnapshot('full snapshot');
+        expect(toJson(wrapper.find('ErrorPage'))).toMatchSnapshot('full snapshot');
 
         expect(wrapper.text()).toMatchInlineSnapshot(`"An error occurredError TitleError Message"`);
 
