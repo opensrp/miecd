@@ -38,11 +38,8 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
 
     useEffect(() => {
         // don't close dropdown after user makes selection if selected node has children
-        if (selectedNode?.hasChildren()) {
-            setMenuToClose(false);
-        } else {
-            setMenuToClose(true);
-        }
+        const hasChildren: boolean = selectedNode?.hasChildren();
+        setMenuToClose(!hasChildren);
     }, [selectedNode]);
 
     /** handles a location selection */
