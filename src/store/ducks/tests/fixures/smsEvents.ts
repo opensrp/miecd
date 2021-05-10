@@ -1,8 +1,8 @@
 import { SmsData } from '../../sms_events';
 
-export const expectedSmsData: SmsData[] = [
+export const expectedSmsData = ([
     {
-        EventDate: '03/03/20',
+        EventDate: '03/03/2020',
         sms_type: 'Pregnancy Registration',
         anc_id: '1002LJ',
         age: '31y ',
@@ -15,7 +15,14 @@ export const expectedSmsData: SmsData[] = [
         parity: 3,
         gravidity: 4,
         message:
-            'EDD = 28-06-2020\nGravidity = 4\nParity = 3\nWeight = 78 \nHeight = 165\nBMI = 28\nPrevious Gynaecology History = Home Delivery, Previous convulsion\nCurrent Symptoms = Coughing',
+            'EDD = 28-06-2020\n' +
+            'Gravidity = 4\n' +
+            'Parity = 3\n' +
+            'Weight = 78 \n' +
+            'Height = 165\n' +
+            'BMI = 28\n' +
+            'Previous Gynaecology History = Home Delivery, Previous convulsion\n' +
+            'Current Symptoms = Coughing',
         event_date: '2020-03-03T08:38:42.955000',
         intervention: ' NULL',
         breastfeeding: ' NULL',
@@ -70,9 +77,9 @@ export const expectedSmsData: SmsData[] = [
         nutrition_status: ' NULL',
         growth_status: ' NULL',
         feeding_category: ' NULL',
-    } as unknown,
+    },
     {
-        EventDate: '03/03/20',
+        EventDate: '03/03/2020',
         sms_type: 'Pregnancy Registration',
         anc_id: '1002LJ',
         age: '31y ',
@@ -85,7 +92,14 @@ export const expectedSmsData: SmsData[] = [
         parity: 3,
         gravidity: 4,
         message:
-            'EDD = 28-06-2020\nGravidity = 4\nParity = 3\nWeight = 78 \nHeight = 165\nBMI = 28\nPrevious Gynaecology History = Home Delivery, Previous convulsion\nCurrent Symptoms = Coughing',
+            'EDD = 28-06-2020\n' +
+            'Gravidity = 4\n' +
+            'Parity = 3\n' +
+            'Weight = 78 \n' +
+            'Height = 165\n' +
+            'BMI = 28\n' +
+            'Previous Gynaecology History = Home Delivery, Previous convulsion\n' +
+            'Current Symptoms = Coughing',
         event_date: '2020-03-03T11:30:02.666000',
         intervention: ' NULL',
         breastfeeding: ' NULL',
@@ -140,9 +154,9 @@ export const expectedSmsData: SmsData[] = [
         nutrition_status: ' NULL',
         growth_status: ' NULL',
         feeding_category: ' NULL',
-    } as unknown,
+    },
     {
-        EventDate: '16/12/19',
+        EventDate: '16/12/2019',
         sms_type: 'Newborn Report',
         anc_id: '100U4U',
         age: '28y ',
@@ -155,7 +169,10 @@ export const expectedSmsData: SmsData[] = [
         parity: 0,
         gravidity: 0,
         message:
-            'Child Symptoms =  \nMother Symptoms = No symptoms, Fever, No symptoms, Fever \nIntervention = MIECD Resource Person Advice \nHealth Status = ',
+            'Child Symptoms =  \n' +
+            'Mother Symptoms = No symptoms, Fever, No symptoms, Fever \n' +
+            'Intervention = MIECD Resource Person Advice \n' +
+            'Health Status = ',
         event_date: '2019-12-16T07:16:18.958000',
         intervention: 'MIECD Resource Person Advice',
         breastfeeding: 'To be updated',
@@ -210,9 +227,9 @@ export const expectedSmsData: SmsData[] = [
         nutrition_status: ' NULL',
         growth_status: ' NULL',
         feeding_category: ' NULL',
-    } as unknown,
+    },
     {
-        EventDate: '15/12/19',
+        EventDate: '15/12/2019',
         sms_type: 'Newborn Report',
         anc_id: '100VNL',
         age: '30y ',
@@ -225,7 +242,10 @@ export const expectedSmsData: SmsData[] = [
         parity: 0,
         gravidity: 0,
         message:
-            'Child Symptoms =  \nMother Symptoms = Coughing, Coughing \nIntervention = MIECD Resource Person Advice \nHealth Status = ',
+            'Child Symptoms =  \n' +
+            'Mother Symptoms = Coughing, Coughing \n' +
+            'Intervention = MIECD Resource Person Advice \n' +
+            'Health Status = ',
         event_date: '2019-12-15T12:55:38.704000',
         intervention: 'MIECD Resource Person Advice',
         breastfeeding: 'To be updated',
@@ -280,9 +300,9 @@ export const expectedSmsData: SmsData[] = [
         nutrition_status: ' NULL',
         growth_status: ' NULL',
         feeding_category: ' NULL',
-    } as unknown,
+    },
     {
-        EventDate: '23/11/19',
+        EventDate: '23/11/2019',
         sms_type: 'Nutrition Report',
         anc_id: '100RH2-20190601-03',
         age: '6m 13d',
@@ -295,7 +315,12 @@ export const expectedSmsData: SmsData[] = [
         parity: 0,
         gravidity: 0,
         message:
-            'MUAC = 17 \nWeight = 3.8 \nHeight = 54 \nFeeding Status =  \nSupplements = Child Supplements\nMUAC Classification = Normal',
+            'MUAC = 17 \n' +
+            'Weight = 3.8 \n' +
+            'Height = 54 \n' +
+            'Feeding Status =  \n' +
+            'Supplements = Child Supplements\n' +
+            'MUAC Classification = Normal',
         event_date: '2019-11-23T07:46:46.653000',
         intervention: ' NULL',
         breastfeeding: 'Exclusive Breastfeeding',
@@ -350,9 +375,9 @@ export const expectedSmsData: SmsData[] = [
         nutrition_status: 'severe wasting',
         growth_status: 'stunted',
         feeding_category: 'inappropriately fed',
-    } as unknown,
+    },
     {
-        EventDate: '23/11/19',
+        EventDate: '23/11/2019',
         sms_type: 'Nutrition Report',
         anc_id: '100TNN',
         age: '9m 21d',
@@ -365,7 +390,12 @@ export const expectedSmsData: SmsData[] = [
         parity: 0,
         gravidity: 0,
         message:
-            'MUAC = 17 \nWeight = 3.8 \nHeight = 54 \nFeeding Status =  \nSupplements = Child Supplements\nMUAC Classification = Normal',
+            'MUAC = 17 \n' +
+            'Weight = 3.8 \n' +
+            'Height = 54 \n' +
+            'Feeding Status =  \n' +
+            'Supplements = Child Supplements\n' +
+            'MUAC Classification = Normal',
         event_date: '2019-11-23T08:01:17.596000',
         intervention: ' NULL',
         breastfeeding: 'Breastfeeding with complementary feeding',
@@ -420,9 +450,9 @@ export const expectedSmsData: SmsData[] = [
         nutrition_status: 'severe wasting',
         growth_status: 'stunted',
         feeding_category: ' NULL',
-    } as unknown,
+    },
     {
-        EventDate: '23/11/19',
+        EventDate: '23/11/2019',
         sms_type: 'Nutrition Registration',
         anc_id: '100TPL',
         age: '2m 19d',
@@ -435,7 +465,12 @@ export const expectedSmsData: SmsData[] = [
         parity: 0,
         gravidity: 0,
         message:
-            'Name = Jamila   abi \nPhone Number =  \nHealth Insurance = NA \nMUAC = 10 \nWeight = 4.9 \nHeight = 56',
+            'Name = Jamila   abi \n' +
+            'Phone Number =  \n' +
+            'Health Insurance = NA \n' +
+            'MUAC = 10 \n' +
+            'Weight = 4.9 \n' +
+            'Height = 56',
         event_date: '2019-11-23T08:11:47.627000',
         intervention: ' NULL',
         breastfeeding: ' NULL',
@@ -490,9 +525,9 @@ export const expectedSmsData: SmsData[] = [
         nutrition_status: 'normal',
         growth_status: 'normal',
         feeding_category: 'inappropriately fed',
-    } as unknown,
+    },
     {
-        EventDate: '23/11/19',
+        EventDate: '23/11/2019',
         sms_type: 'Nutrition Registration',
         anc_id: '100TRJ',
         age: '4m 21d',
@@ -505,7 +540,12 @@ export const expectedSmsData: SmsData[] = [
         parity: 0,
         gravidity: 0,
         message:
-            'Name = anlisa   abi \nPhone Number =  \nHealth Insurance = NA \nMUAC = 10 \nWeight = 5.9 \nHeight = 60',
+            'Name = anlisa   abi \n' +
+            'Phone Number =  \n' +
+            'Health Insurance = NA \n' +
+            'MUAC = 10 \n' +
+            'Weight = 5.9 \n' +
+            'Height = 60',
         event_date: '2019-11-23T08:11:35.068000',
         intervention: ' NULL',
         breastfeeding: ' NULL',
@@ -560,5 +600,5 @@ export const expectedSmsData: SmsData[] = [
         nutrition_status: 'normal',
         growth_status: 'normal',
         feeding_category: 'inappropriately fed',
-    } as unknown,
-] as SmsData[];
+    },
+] as unknown) as SmsData;

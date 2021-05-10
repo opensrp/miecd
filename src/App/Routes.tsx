@@ -6,7 +6,7 @@ import { ConnectedLogout, ConnectedOauthCallback, LogoutProps } from '@onaio/gat
 import { isAuthenticated } from '@onaio/session-reducer';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
-import { Route, Switch } from 'react-router';
+import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LastLocationProvider } from 'react-router-last-location';
 import Loading from '../components/page/Loading';
 import SideMenu from '../components/page/SideMenu';
@@ -23,15 +23,18 @@ import {
     NBC_AND_PNC_ANALYSIS_URL,
     NBC_AND_PNC_COMPARTMENTS_URL,
     NBC_AND_PNC_LOGFACE_URL,
+    NBC_AND_PNC_MODULE,
     NBC_AND_PNC_URL,
     NUTRITION_ANALYSIS_URL,
     NUTRITION_COMPARTMENTS_URL,
     NUTRITION_LOGFACE_URL,
+    NUTRITION_MODULE,
     NUTRITION_URL,
     PATIENT_DETAIL_URL,
     PREGNANCY_ANALYSIS_URL,
     PREGNANCY_COMPARTMENTS_URL,
     PREGNANCY_LOGFACE_URL,
+    PREGNANCY_MODULE,
     PREGNANCY_URL,
 } from '../constants';
 import Compartments from '../containers/Compartments';
@@ -149,7 +152,7 @@ export const Routes = (props: RoutesProps) => {
                                             },
                                         ] as SmsFilterFunction[]
                                     }
-                                    module={PREGNANCY}
+                                    module={PREGNANCY_MODULE}
                                 />
                             )}
                         />
@@ -167,7 +170,7 @@ export const Routes = (props: RoutesProps) => {
                                             },
                                         ] as SmsFilterFunction[]
                                     }
-                                    module={NBC_AND_PNC}
+                                    module={NBC_AND_PNC_MODULE}
                                 />
                             )}
                         />
@@ -188,7 +191,7 @@ export const Routes = (props: RoutesProps) => {
                                             },
                                         ] as SmsFilterFunction[]
                                     }
-                                    module={NUTRITION}
+                                    module={NUTRITION_MODULE}
                                 />
                             )}
                         />
@@ -294,19 +297,25 @@ export const Routes = (props: RoutesProps) => {
                             exact
                             path={PREGNANCY_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={() => <ConnectedLogFace module={PREGNANCY} />}
+                            component={(routeProps: RouteComponentProps) => (
+                                <ConnectedLogFace module={PREGNANCY_MODULE} {...routeProps} />
+                            )}
                         />
                         <ConnectedPrivateRoute
                             exact
                             path={NBC_AND_PNC_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={() => <ConnectedLogFace module={NBC_AND_PNC} />}
+                            component={(routeProps: RouteComponentProps) => (
+                                <ConnectedLogFace module={NBC_AND_PNC_MODULE} {...routeProps} />
+                            )}
                         />
                         <ConnectedPrivateRoute
                             exact
                             path={NUTRITION_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={() => <ConnectedLogFace module={NUTRITION} />}
+                            component={(routeProps: RouteComponentProps) => (
+                                <ConnectedLogFace module={NUTRITION_MODULE} {...routeProps} />
+                            )}
                         />
                         {/* tslint:disable jsx-no-lambda */}
                         <Route

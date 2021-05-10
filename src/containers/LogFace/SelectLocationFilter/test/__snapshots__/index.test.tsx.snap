@@ -1,0 +1,223 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`selectLocationFilter test input filter: and back to initial options 1`] = `
+<select
+  data-testid="select"
+  onChange={[Function]}
+  onInput={[Function]}
+>
+  <option
+    key="c8054fa5-2d63-4cb5-bc52-173a4eb367fd"
+    value="c8054fa5-2d63-4cb5-bc52-173a4eb367fd"
+  >
+    Gia Lai
+  </option>
+  <option
+    key="1b8b7a76-15e1-446b-9d1e-c8cc97777a28"
+    value="1b8b7a76-15e1-446b-9d1e-c8cc97777a28"
+  >
+    Điện Biên
+  </option>
+  <option
+    key="eccfe905-0e03-4188-98bc-22f141cccd0e"
+    value="eccfe905-0e03-4188-98bc-22f141cccd0e"
+  >
+    Kon Tum
+  </option>
+</select>
+`;
+
+exports[`selectLocationFilter test input filter: initial Options 1`] = `
+<select
+  data-testid="select"
+  onChange={[Function]}
+  onInput={[Function]}
+>
+  <option
+    key="c8054fa5-2d63-4cb5-bc52-173a4eb367fd"
+    value="c8054fa5-2d63-4cb5-bc52-173a4eb367fd"
+  >
+    Gia Lai
+  </option>
+  <option
+    key="1b8b7a76-15e1-446b-9d1e-c8cc97777a28"
+    value="1b8b7a76-15e1-446b-9d1e-c8cc97777a28"
+  >
+    Điện Biên
+  </option>
+  <option
+    key="eccfe905-0e03-4188-98bc-22f141cccd0e"
+    value="eccfe905-0e03-4188-98bc-22f141cccd0e"
+  >
+    Kon Tum
+  </option>
+</select>
+`;
+
+exports[`selectLocationFilter test input filter: options shown during search 1`] = `
+<select
+  data-testid="select"
+  onChange={[Function]}
+  onInput={[Function]}
+>
+  <option
+    key="020d8cfd-a843-4405-956a-24a778806bc9"
+    value="020d8cfd-a843-4405-956a-24a778806bc9"
+  >
+    Vietnam &gt; Kon Tum &gt; Đaklei &gt; Đăk Pek &gt; Thôn 14 A
+  </option>
+  <option
+    key="22cdc2ee-2137-47a7-8b85-9cd194b8bdfe"
+    value="22cdc2ee-2137-47a7-8b85-9cd194b8bdfe"
+  >
+    Vietnam &gt; Kon Tum &gt; Đaklei &gt; Đăk Pek &gt; Thôn 14 B
+  </option>
+</select>
+`;
+
+exports[`selectLocationFilter works correctly: commune Options 1`] = `
+<select
+  data-testid="select"
+  onChange={[Function]}
+  onInput={[Function]}
+>
+  <option
+    key="d114e2f4-d906-483c-b968-20557b19b738"
+    value="d114e2f4-d906-483c-b968-20557b19b738"
+  >
+    Thị trấn Đăklei
+  </option>
+  <option
+    key="d2c63216-ac3c-499c-9688-94ede9308275"
+    value="d2c63216-ac3c-499c-9688-94ede9308275"
+  >
+    Đăk Pek
+  </option>
+  <option
+    key="6b2265c5-6d34-4857-aa0d-69ea8fcfce85"
+    value="6b2265c5-6d34-4857-aa0d-69ea8fcfce85"
+  >
+    Đăk Choong
+  </option>
+</select>
+`;
+
+exports[`selectLocationFilter works correctly: district Options 1`] = `
+<select
+  data-testid="select"
+  onChange={[Function]}
+  onInput={[Function]}
+>
+  <option
+    key="66e45e03-be29-4a18-99d9-cb625347f2d9"
+    value="66e45e03-be29-4a18-99d9-cb625347f2d9"
+  >
+    Tu Mo Rông
+  </option>
+  <option
+    key="caf90e84-4d2f-42f5-b96c-081107b40558"
+    value="caf90e84-4d2f-42f5-b96c-081107b40558"
+  >
+    Kon Rẫy
+  </option>
+  <option
+    key="e1488a4b-d11f-463c-b20c-56d4fc190ab3"
+    value="e1488a4b-d11f-463c-b20c-56d4fc190ab3"
+  >
+    Đaklei
+  </option>
+</select>
+`;
+
+exports[`selectLocationFilter works correctly: initial Options 1`] = `
+<select
+  data-testid="select"
+  onChange={[Function]}
+  onInput={[Function]}
+>
+  <option
+    key="c8054fa5-2d63-4cb5-bc52-173a4eb367fd"
+    value="c8054fa5-2d63-4cb5-bc52-173a4eb367fd"
+  >
+    Gia Lai
+  </option>
+  <option
+    key="1b8b7a76-15e1-446b-9d1e-c8cc97777a28"
+    value="1b8b7a76-15e1-446b-9d1e-c8cc97777a28"
+  >
+    Điện Biên
+  </option>
+  <option
+    key="eccfe905-0e03-4188-98bc-22f141cccd0e"
+    value="eccfe905-0e03-4188-98bc-22f141cccd0e"
+  >
+    Kon Tum
+  </option>
+</select>
+`;
+
+exports[`selectLocationFilter works correctly: still showing village Options 1`] = `
+<select
+  data-testid="select"
+  onChange={[Function]}
+  onInput={[Function]}
+>
+  <option
+    key="28ebc596-bbf2-4c34-b879-6f9f5eff5b83"
+    value="28ebc596-bbf2-4c34-b879-6f9f5eff5b83"
+  >
+    Thôn Đăk Dền
+  </option>
+  <option
+    key="020d8cfd-a843-4405-956a-24a778806bc9"
+    value="020d8cfd-a843-4405-956a-24a778806bc9"
+  >
+    Thôn 14 A
+  </option>
+  <option
+    key="22cdc2ee-2137-47a7-8b85-9cd194b8bdfe"
+    value="22cdc2ee-2137-47a7-8b85-9cd194b8bdfe"
+  >
+    Thôn 14 B
+  </option>
+  <option
+    key="5649d82b-5357-4b7b-bdb6-618805cc68d3"
+    value="5649d82b-5357-4b7b-bdb6-618805cc68d3"
+  >
+    Thôn Đăk Trấp
+  </option>
+</select>
+`;
+
+exports[`selectLocationFilter works correctly: village Options 1`] = `
+<select
+  data-testid="select"
+  onChange={[Function]}
+  onInput={[Function]}
+>
+  <option
+    key="28ebc596-bbf2-4c34-b879-6f9f5eff5b83"
+    value="28ebc596-bbf2-4c34-b879-6f9f5eff5b83"
+  >
+    Thôn Đăk Dền
+  </option>
+  <option
+    key="020d8cfd-a843-4405-956a-24a778806bc9"
+    value="020d8cfd-a843-4405-956a-24a778806bc9"
+  >
+    Thôn 14 A
+  </option>
+  <option
+    key="22cdc2ee-2137-47a7-8b85-9cd194b8bdfe"
+    value="22cdc2ee-2137-47a7-8b85-9cd194b8bdfe"
+  >
+    Thôn 14 B
+  </option>
+  <option
+    key="5649d82b-5357-4b7b-bdb6-618805cc68d3"
+    value="5649d82b-5357-4b7b-bdb6-618805cc68d3"
+  >
+    Thôn Đăk Trấp
+  </option>
+</select>
+`;

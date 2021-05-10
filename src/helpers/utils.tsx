@@ -30,6 +30,7 @@ import {
     PREGNANCY,
     PREGNANCY_COMPARTMENTS_URL,
     PROVINCE,
+    SMS_MESSAGE_DATE_DATE_FORMAT,
     VIETNAM,
     VIETNAM_COUNTRY_LOCATION_ID,
     VILLAGE,
@@ -50,7 +51,11 @@ import { fetchSms, SmsData, smsDataFetched } from '../store/ducks/sms_events';
 import { Dictionary } from '@onaio/utils';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
+import { fetchTree } from '../store/ducks/locationHierarchy';
+import { split, trim, replace } from 'lodash';
+import * as React from 'react';
+import { TFunction } from 'i18next';
 export type { Dictionary };
 
 /** Custom function to get oAuth user info depending on the oAuth2 provider
@@ -300,18 +305,14 @@ export const filterByPatientId = (patientIdAndSmsData: PatientIDAndSmsData): Sms
 };
 
 /**
- * sort SmsData[] by EventDate in ascending order
+ * sort SmsData[] by EventDate in descending order(i.e. the most recent events come first)
  * @param {SmsData[]} smsData an array of smsData objects to sort by event date
  */
 export const sortByEventDate = (smsData: SmsData[]) => {
-    return [...smsData].sort((event1: SmsData, event2: SmsData): number => {
-        if (event1.EventDate < event2.EventDate) {
-            return -1;
-        }
-        if (event1.EventDate > event2.EventDate) {
-            return 1;
-        }
-        return 0;
+    return smsData.sort((event1: SmsData, event2: SmsData): number => {
+        const date1 = Date.parse(event1.event_date);
+        const date2 = Date.parse(event2.event_date);
+        return date2 - date1;
     });
 };
 
@@ -489,21 +490,29 @@ export function getLinkToPatientDetail(smsData: SmsData, prependWith: string) {
  * d. SUPERSET_SMS_DATA_SLICE
  * @param supersetFetchMethod - optional method to fetch data from superset
  */
-export async function fetchData(supersetFetchMethod: typeof supersetFetch = supersetFetch) {
+export async function fetchData(
+    supersetFetchMethod: typeof supersetFetch = supersetFetch,
+    toFetchUserHierarchy = true,
+    toFetchUserLocation = true,
+    toFetchLocations = true,
+    toFetchSms = true,
+) {
     const promises = [];
-    if (!userIdFetched(store.getState())) {
+    if (toFetchUserHierarchy && !userIdFetched(store.getState())) {
         const opensrpService = new OpenSRPService(OPENSRP_SECURITY_AUTHENTICATE);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const userIdPromise = opensrpService.read('').then((response: any) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            store.dispatch(fetchUserId((response as any).user.attributes._PERSON_UUID));
+            const userId = (response as any).user.attributes._PERSON_UUID;
+            store.dispatch(fetchUserId(userId));
+            store.dispatch(fetchTree(response.locations, userId));
         });
         promises.push(userIdPromise);
     }
 
     // fetch user location details
-    if (!userLocationDataFetched(store.getState())) {
+    if (toFetchUserLocation && !userLocationDataFetched(store.getState())) {
         const locationDataPromise = supersetFetchMethod(USER_LOCATION_DATA_SLICE).then((result: UserLocation[]) => {
             store.dispatch(fetchUserLocations(result));
         });
@@ -512,7 +521,7 @@ export async function fetchData(supersetFetchMethod: typeof supersetFetch = supe
 
     // fetch all location slices
     for (const slice in LOCATION_SLICES) {
-        if (slice) {
+        if (toFetchLocations && slice) {
             const locationPromise = supersetFetchMethod(LOCATION_SLICES[slice]).then((result: Location[]) => {
                 store.dispatch(fetchLocations(result));
             });
@@ -521,7 +530,7 @@ export async function fetchData(supersetFetchMethod: typeof supersetFetch = supe
     }
 
     // check if sms data is fetched and then fetch if not fetched already
-    if (!smsDataFetched(store.getState())) {
+    if (toFetchSms && !smsDataFetched(store.getState())) {
         const smsDataPromise = supersetFetchMethod(SUPERSET_SMS_DATA_SLICE).then((result: SmsData[]) => {
             store.dispatch(fetchSms(result));
         });
@@ -578,7 +587,100 @@ export const useHandleBrokenPage = () => {
 /** formats dates strings in a globally set format
  *
  * @param dateString - the date as a string
+ * @param currentFormat - describe how date is formatted, refer https://date-fns.org/v2.21.1/docs/parse#description
  */
-export const formatDateStrings = (dateString: string) => {
-    return format(new Date(dateString), DATE_FORMAT);
+export const formatDateStrings = (dateString: string, currentFormat: string) => {
+    return format(parse(dateString, currentFormat, new Date()), DATE_FORMAT);
+};
+
+/** convert the smsData message field from prose to more easily readable
+ * point format
+ *
+ * @param message - the message prose.
+ */
+export const parseMessage = (message: string) => {
+    const dateRegexInMessage = /\d{2}-\d{2}-\d{4}/;
+    let cleanedMessage = message;
+    const hasDate = dateRegexInMessage.test(message);
+    if (hasDate) {
+        const foundDates = message.match(dateRegexInMessage) ?? [];
+        const newDateStrings = foundDates?.map((dateString) =>
+            formatDateStrings(dateString, SMS_MESSAGE_DATE_DATE_FORMAT),
+        );
+        foundDates.forEach((dateString, index) => {
+            cleanedMessage = replace(cleanedMessage, RegExp(dateString), newDateStrings[index]);
+        });
+    }
+    const propValues = split(cleanedMessage, '\n');
+    const replacedEquals = propValues.map(trim).map((entry) => replace(entry, / =\s*/, ' : '));
+    const addedUnits = AddUnitsToMessageValues(replacedEquals);
+    return (
+        <ul>
+            {addedUnits.map((value, index) => {
+                return <li key={`${value}-${index}`}>{value}</li>;
+            })}
+        </ul>
+    );
+};
+
+/** adds units to values in smsEvents.message */
+const AddUnitsToMessageValues = (parsedMessage: string[]) => {
+    return parsedMessage.map((each) => {
+        const [property, ...value] = split(each, ':');
+        let valueWithUnit = value.join(':');
+        const trimmedPropName = trim(property);
+        if (trimmedPropName.toLowerCase().includes('weight')) {
+            valueWithUnit = `${value.join(':')}kg`;
+        }
+        if (
+            trimmedPropName.toLowerCase().includes('height') ||
+            trimmedPropName.toLowerCase().includes('muac') ||
+            trimmedPropName.toLowerCase().includes('length')
+        ) {
+            valueWithUnit = `${value.join(':')}cm`;
+        }
+
+        return [property, valueWithUnit].join(':');
+    });
+};
+
+/** help extract an easily parseable age object from sms.age value */
+export const getAndParseAge = (ageString: string) => {
+    // sample ageString raw format: "2y 1m 0d "
+    const yearRegex = /\d{1,3}(?=y)/;
+    const monthRegex = /\d{1,2}(?=m)/;
+    const dayRegex = /\d{1,2}(?=d)/;
+    let years = 0,
+        months = 0,
+        days = 0;
+
+    const hasYear = yearRegex.test(ageString);
+    if (hasYear) {
+        const foundYears = ageString.match(yearRegex) ?? [];
+        years = Number(foundYears[0]) ?? 0;
+    }
+    const hasMonth = monthRegex.test(ageString);
+    if (hasMonth) {
+        const foundMonths = ageString.match(monthRegex) ?? [];
+        months = Number(foundMonths[0]) ?? 0;
+    }
+    const hasDay = dayRegex.test(ageString);
+    if (hasDay) {
+        const foundDays = ageString.match(dayRegex) ?? [];
+        days = Number(foundDays[0]) ?? 0;
+    }
+    return { years, months, days };
+};
+
+/** parse the date and return it as required here: https://github.com/opensrp/miecd/issues/13 */
+export const formatAge = (ageString: string, t: TFunction) => {
+    const age = getAndParseAge(ageString);
+    if (age.years === 0 && age.months === 0) {
+        return `${age.days} ${t('age.days')}`;
+    }
+    const sumMonthsAge = age.years * 12 + age.months;
+    if (sumMonthsAge <= 24) {
+        return `${sumMonthsAge} ${t('age.months')}`;
+    }
+    return `${age.years} ${t('age.years')}`;
 };

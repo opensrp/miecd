@@ -15,19 +15,15 @@ thead tr {
 
 tbody tr {
     align-items: center;
-    /* display: flex; */
 }
 
 td {
     text-align: left;
     border: 1px solid rgba(0, 0, 0, 0.2);
     padding: 5px;
-    font-size: 10;
 }
 
 .table-container {
-    font-size: 11px;
-    height: 500px;
     box-shadow: 0 2px 4px 0 #d7d7e0;
     display: block;
 }
@@ -39,7 +35,10 @@ td {
 .table-container table {
     border: none !important;
     background: #fff;
-    height: 100%;
+}
+
+.table-container .card {
+    margin-bottom: 16px;
 }
 
 .table-container table th {
@@ -143,7 +142,6 @@ td {
 .paginator {
     display: flex;
     justify-content: center;
-    margin-top: 5%;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
@@ -184,14 +182,6 @@ td {
     text-align: left;
 }
 
-.filters .logface-page-filter .dropdown button {
-    color: #676767;
-}
-
-.filters .logface-page-filter .dropdown button:focus {
-    background-color: inherit;
-}
-
 .dropdown button span {
     padding-right: 35px;
     color: #666666;
@@ -211,7 +201,8 @@ td {
 .filter-panel input.logface-search {
     border-radius: 0;
     margin-top: 35px;
-    width: 25%;
+    min-width: 200px;
+    max-width: 300px;
     background: url(/static/media/search-icon.51c97554.svg) no-repeat;
     background-position: 16px 50%;
     padding-left: 40px;
@@ -247,4 +238,8 @@ td {
 .logface-filters__control {
     min-width: 200px;
     border-radius: 0 !important;
+}
+
+.hierarchy-actions {
+    padding: 5px;
 }

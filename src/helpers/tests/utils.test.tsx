@@ -1,6 +1,5 @@
-import { Dictionary, getNumberSuffix, oAuthUserInfoGetter } from '../utils';
+import { formatAge, getNumberSuffix, oAuthUserInfoGetter, parseMessage, sortByEventDate } from '../utils';
 import { OpenSRPAPIResponse } from './fixtures';
-import * as gatekeeper from '@onaio/gatekeeper';
 
 jest.mock('@onaio/gatekeeper', () => {
     const actual = jest.requireActual('@onaio/gatekeeper');
@@ -42,5 +41,56 @@ describe('src/helpers', () => {
 
         response = getNumberSuffix(45);
         expect(response).toEqual('th');
+    });
+
+    it('able to reformat dates in smsEvent.message', () => {
+        const message = 'Date of death = 23-04-2021 Location of Death = District hospitals/CDC Contact = ';
+        const result = parseMessage(message);
+        expect(result).toMatchInlineSnapshot(`
+            <ul>
+              <li>
+                Date of death : 23/04/2021 Location of Death = District hospitals/CDC Contact =
+              </li>
+            </ul>
+        `);
+    });
+
+    it('able to add units when parsing smsEvent.message', () => {
+        const message1 =
+            'Child DOB = 23-04-2021 \nChild Gender = NU \nDelivery Location =  \nNewborn Symptoms = Lack of movement \nChild Weight = 4.9 \nChild Length = 50 \nChild Risk =  \nBreastfeeding = No breastfeeding within 1 hour\nMother Symptoms = Bu00ecnh thu01b0u1eddng';
+        const message2 =
+            'MUAC = 6.7 \nWeight = 27 \nHeight = 40 \nFeeding Status =  \nSupplements = Micronutrients Supplement: Yes\nMUAC Classification = Severe Acute Malnutrition';
+        const result1 = parseMessage(message1);
+        const result2 = parseMessage(message2);
+        expect(result1).toMatchSnapshot('Add units');
+        expect(result2).toMatchSnapshot('Add units');
+    });
+
+    it('gets and formats age correctly', () => {
+        let response = formatAge('1m 29d', (t: string) => t);
+        expect(response).toEqual('1 age.months');
+        response = formatAge('0m 29d', (t: string) => t);
+        expect(response).toEqual('29 age.days');
+        response = formatAge('0m 0d', (t: string) => t);
+        expect(response).toEqual('0 age.days');
+        response = formatAge('2y 0m 0d', (t: string) => t);
+        expect(response).toEqual('24 age.months');
+        response = formatAge('3y 9m 0d', (t: string) => t);
+        expect(response).toEqual('3 age.years');
+    });
+
+    it('sorts by event dates correctly', () => {
+        const mockEvent1 = { event_date: '2021-04-27T15:19:04.173000' };
+        const mockEvent2 = { event_date: '2020-04-27T15:19:04.173000' };
+        const mockEvent3 = { event_date: '2022-04-27T15:19:04.173000' };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const events = [mockEvent1, mockEvent2, mockEvent3] as any;
+
+        const response = sortByEventDate(events);
+        expect(response).toEqual([
+            { event_date: '2022-04-27T15:19:04.173000' },
+            { event_date: '2021-04-27T15:19:04.173000' },
+            { event_date: '2020-04-27T15:19:04.173000' },
+        ]);
     });
 });

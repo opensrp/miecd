@@ -52,6 +52,11 @@ export const NBC_AND_PNC_CHILD = 'NBC & PNC_CHILD';
 export const NBC_AND_PNC_WOMAN = 'NBC & PNC_WOMAN';
 export const NUTRITION = 'Nutrition';
 
+// module string literals
+export const PREGNANCY_MODULE = 'Pregnancy';
+export const NUTRITION_MODULE = 'Nutrition';
+export const NBC_AND_PNC_MODULE = 'NBC & PNC';
+
 export const ALL = 'all';
 export const UP = 'up';
 export const NO_RISK_LOWERCASE = 'no risk';
@@ -68,6 +73,26 @@ export const EC_WOMAN = 'ec_woman';
 export const EC_FAMILY_MEMBER = 'ec_family_member';
 export const EC_CHILD = 'ec_child';
 
+// smsTypes
+export const PREGNANCY_DETECTION = 'Pregnancy Detection';
+export const PREGNANCY_IDENTIFICATION = 'Pregnancy Identification';
+export const PREGNANCY_REGISTRATION = 'Pregnancy Registration';
+export const ANC_REPORT = 'ANC Report';
+export const HOME_VISIT_REPORT = 'Home Visit Report';
+export const SOCIAL_DETERMINANTS = 'Social Determinants';
+export const DELIVERY_PLANNING = 'Delivery Planning';
+export const BIRTH_REPORT = 'Birth Report';
+export const DEATH_REPORT = 'Death Report';
+export const RED_ALERT_REPORT = 'Red Alert Report';
+export const RESPONSE_REPORT = 'Response Report';
+export const REFUSAL_REPORT = 'Refusal Report';
+export const DEPARTURE_CODE = 'Departure Code';
+export const POSTNATAL_AND_NEWBORN_CARE = 'Postnatal and Newborn Care';
+export const NUTRITION_REGISTRATION = 'Nutrition Registration';
+export const MONTHLY_NUTRITION_REPORT = 'Monthly Nutrition Report';
+export const ACCOUNT_CHECK = 'Account Check';
+export const ANC_VISIT = 'ANC Visit';
+
 // // sms events fields
 export const NUTRITION_STATUS = 'nutrition_status';
 export const GROWTH_STATUS = 'growth_status';
@@ -77,13 +102,7 @@ export const LOGFACE_RISK = 'logface_risk';
 export const HEIGHT = 'height';
 export const WEIGHT = 'weight';
 export const RISK = 'risk';
-export const PREGNANCY_REGISTRATION = 'Pregnancy Registration';
-export const ANC_REPORT = 'ANC Report';
-export const BIRTH_REPORT = 'Birth Report';
-export const NUTRITION_REGISTRATION = 'Nutrition Registration';
 export const NUTRITION_REPORT = 'Nutrition Report';
-
-export const DEFAULT_NUMBER_OF_LOGFACE_ROWS = 3;
 
 // TIME constants
 export const MICROSECONDS_IN_A_WEEK = 604800000;
@@ -91,9 +110,6 @@ export const GESTATION_PERIOD = 24192000000;
 
 // Back arrow constant
 export const BACKPAGE_ICON: IconProp = ['fas', 'arrow-left'];
-
-// Risk cartegories in the logface component
-export const RISK_LEVELS = ['red', 'high', 'low', 'no risk', 'all'];
 
 // monthNames
 export const monthNames = [
@@ -111,13 +127,20 @@ export const monthNames = [
     'December',
 ];
 
-// operational
+// operational constants
+export const DEFAULT_NUMBER_OF_LOGFACE_ROWS = 5;
 export const EN_LANGUAGE_CODE = 'en' as const;
 export const VI_LANGUAGE_CODE = 'vi' as const;
-export const DATE_FORMAT = 'dd/MM/yy';
 
-// export const
 export const ALL_LANGUAGE_OPTIONS = {
     [EN_LANGUAGE_CODE]: 'English',
     [VI_LANGUAGE_CODE]: 'Vietnamese',
 };
+
+export const DATE_FORMAT = 'dd/MM/yyyy';
+export const EVENT_DATE_DATE_FORMAT = 'yyyy-MM-dd';
+export const SMS_MESSAGE_DATE_DATE_FORMAT = 'dd-MM-yyyy';
+export const LOCATION_FILTER_PARAM = 'locationSearch';
+export const RISK_CATEGORY_FILTER_PARAM = 'riskCategory';
+export const SMS_TYPE_FILTER_PARAM = 'smsType';
+export const SEARCH_FILTER_PARAM = 'search';
