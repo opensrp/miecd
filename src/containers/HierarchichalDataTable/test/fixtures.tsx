@@ -1,5 +1,7 @@
 import { Location, UserLocation } from '../../../store/ducks/locations';
 
+export const countryId = 'eca48e41-8cbb-4cb2-ba15-5de0394416f6';
+
 export const districts: Location[] = [
     {
         level: 'District',
@@ -46,7 +48,7 @@ export const communes: Location[] = [
     {
         level: 'Commune',
         location_id: '46d98781-7cc4-4c28-8379-a3552a57acfe',
-        location_name: 'Yen Phu Ward',
+        location_name: 'Yen Phu Commune',
         parent_id: '623b644d-a1f2-4c5e-b065-d60c0ae6501f',
     },
     {
