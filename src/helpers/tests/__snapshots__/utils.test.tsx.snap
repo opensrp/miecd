@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`src/helpers able to add units when parsing smsEvent.message: Add units 1`] = `
+<ul>
+  <li>
+    Child DOB : 23/04/2021
+  </li>
+  <li>
+    Child Gender : NU
+  </li>
+  <li>
+    Delivery Location : 
+  </li>
+  <li>
+    Newborn Symptoms : Lack of movement
+  </li>
+  <li>
+    Child Weight : 4.9kg
+  </li>
+  <li>
+    Child Length : 50cm
+  </li>
+  <li>
+    Child Risk : 
+  </li>
+  <li>
+    Breastfeeding : No breastfeeding within 1 hour
+  </li>
+  <li>
+    Mother Symptoms : Bu00ecnh thu01b0u1eddng
+  </li>
+</ul>
+`;
+
+exports[`src/helpers able to add units when parsing smsEvent.message: Add units 2`] = `
+<ul>
+  <li>
+    MUAC : 6.7cm
+  </li>
+  <li>
+    Weight : 27kg
+  </li>
+  <li>
+    Height : 40cm
+  </li>
+  <li>
+    Feeding Status : 
+  </li>
+  <li>
+    Supplements : Micronutrients Supplement: Yes
+  </li>
+  <li>
+    MUAC Classification : Severe Acute Malnutritioncm
+  </li>
+</ul>
+`;
