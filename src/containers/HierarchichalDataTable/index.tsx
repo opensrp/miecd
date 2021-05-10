@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import { Component } from 'react';
 import 'react-table/react-table.css';
 import { Card, CardBody, CardTitle, Container, Row, Table } from 'reactstrap';
@@ -8,7 +5,7 @@ import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import NoRecord from '../../components/NoRecord';
 import Loading from '../../components/page/Loading/index';
@@ -58,6 +55,7 @@ import smsReducer, {
 } from '../../store/ducks/sms_events';
 import { SmsFilterFunction } from '../../types';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { history } from '@onaio/connected-reducer-registry';
 
 reducerRegistry.register(reducerName, locationsReducer);
 reducerRegistry.register(smsReducerName, smsReducer);
@@ -77,6 +75,7 @@ interface State {
     data: LocationWithData[];
     district: string;
     villageData: SmsData[];
+    headerTitle: string[];
 }
 
 type RiskHighlighterType =
@@ -95,7 +94,7 @@ type RiskHighlighterType =
 interface Props {
     current_level: number;
     node_id?: string;
-    direction: string; // this can be down or up
+    direction: 'down' | 'up';
     from_level?: string;
     risk_highligter?: RiskHighlighterType;
     title: string;
@@ -108,7 +107,7 @@ interface Props {
     compartMentUrl: string;
     module: string;
     permissionLevel: number;
-    history: any;
+    history: typeof history;
 }
 
 const defaultProps: Props = {
@@ -118,7 +117,7 @@ const defaultProps: Props = {
     direction: 'down',
     districts: [],
     fetchLocationsActionCreator: fetchLocations,
-    history: null,
+    history: history,
     module: '',
     permissionLevel: 3,
     provinces: [],
@@ -128,274 +127,331 @@ const defaultProps: Props = {
     villages: [],
 };
 
-interface Totals {
-    redAlert?: number;
-    risk?: number;
-    no_risk?: number;
-    inappropriateFeeding?: number;
-    overweight?: number;
-    stunting?: number;
-    wasting?: number;
+interface NutritionTotals {
+    inappropriateFeeding: number;
+    overweight: number;
+    stunting: number;
+    wasting: number;
+    total: number;
 }
 
-function getVillageRiskTotals(location: Location, smsData: SmsData[], module: string, riskHighlighter: any): Totals {
+interface PregnancyNpcPncTotals {
+    no_risk: number;
+    redAlert: number;
+    risk: number;
+    total: number;
+}
+
+type Totals = NutritionTotals | PregnancyNpcPncTotals;
+
+export interface RouteParams {
+    current_level: string;
+    direction: string;
+    from_level: string;
+    module: string;
+    permission_level: string;
+    node_id: string;
+    title: string;
+    risk_highlighter: string;
+}
+
+type RouterProps = RouteComponentProps<RouteParams>;
+
+export type HierarchicalDataTableType = Props & WithTranslation & RouterProps;
+
+function getLocationRiskTotals(smsData: SmsData[], module: string, riskHighlighter: RiskHighlighterType): Totals {
     const nutritionStatusConstants = [SEVERE_WASTING, OVERWEIGHT];
     const growthStatusConstants = [STUNTED];
     const feedingCategoryConstants = [INAPPROPRIATELY_FED];
-    let field: string;
+
+    let field:
+        | typeof NUTRITION_STATUS
+        | typeof GROWTH_STATUS
+        | typeof FEEDING_CATEGORY
+        | typeof LOGFACE_RISK = LOGFACE_RISK;
+
     if (nutritionStatusConstants.includes(riskHighlighter)) {
         field = NUTRITION_STATUS;
     } else if (growthStatusConstants.includes(riskHighlighter)) {
         field = GROWTH_STATUS;
     } else if (feedingCategoryConstants.includes(riskHighlighter)) {
         field = FEEDING_CATEGORY;
-    } else {
-        field = LOGFACE_RISK;
     }
-    let reducer = null;
+
+    let reducer: (accumulator: Totals, dataItem: SmsData) => Totals;
+
     if (module === NUTRITION) {
         reducer = (accumulator: Totals, dataItem: SmsData) => {
             if (dataItem[NUTRITION_STATUS] === SEVERE_WASTING) {
                 return {
                     ...accumulator,
-                    wasting: (accumulator as any).wasting + 1,
+                    wasting: (accumulator as NutritionTotals).wasting + 1,
+                    total: accumulator.total + 1,
                 };
             }
             if (dataItem[NUTRITION_STATUS] === OVERWEIGHT) {
                 return {
                     ...accumulator,
-                    overweight: (accumulator as any).overweight + 1,
+                    overweight: (accumulator as NutritionTotals).overweight + 1,
+                    total: accumulator.total + 1,
                 };
             }
             if (dataItem[GROWTH_STATUS] === STUNTED) {
                 return {
                     ...accumulator,
-                    stunting: (accumulator as any).stunting + 1,
+                    stunting: (accumulator as NutritionTotals).stunting + 1,
+                    total: accumulator.total + 1,
                 };
             }
             if (dataItem[FEEDING_CATEGORY] === INAPPROPRIATELY_FED) {
                 return {
                     ...accumulator,
-                    inappropriateFeeding: (accumulator as any).inappropriateFeeding + 1,
+                    inappropriateFeeding: (accumulator as NutritionTotals).inappropriateFeeding + 1,
+                    total: accumulator.total + 1,
                 };
             }
             return accumulator;
         };
     } else {
         reducer = (accumulator: Totals, dataItem: SmsData) => {
-            switch ((dataItem as any)[field]) {
+            switch (dataItem[field]) {
                 case RED:
                     return {
                         ...accumulator,
-                        redAlert: (accumulator as any).redAlert + 1,
+                        redAlert: (accumulator as PregnancyNpcPncTotals).redAlert + 1,
+                        total: accumulator.total + 1,
                     };
                 case HIGH:
                     return {
                         ...accumulator,
-                        risk: (accumulator as any).risk + 1,
+                        risk: (accumulator as PregnancyNpcPncTotals).risk + 1,
+                        total: accumulator.total + 1,
                     };
                 case LOW:
                     return {
                         ...accumulator,
-                        risk: (accumulator as any).risk + 1,
+                        risk: (accumulator as PregnancyNpcPncTotals).risk + 1,
+                        total: accumulator.total + 1,
                     };
                 case NO_RISK_LOWERCASE:
                     return {
                         ...accumulator,
-                        no_risk: (accumulator as any).no_risk + 1,
+                        no_risk: (accumulator as PregnancyNpcPncTotals).no_risk + 1,
+                        total: accumulator.total + 1,
                     };
                 default:
-                    return accumulator as any;
+                    return accumulator;
             }
         };
     }
-    let totalsMap: Totals;
-    if (module !== NUTRITION) {
-        totalsMap = {
-            no_risk: 0,
-            redAlert: 0,
-            risk: 0,
-        };
-    } else {
-        totalsMap = {
-            inappropriateFeeding: 0,
-            overweight: 0,
-            stunting: 0,
-            wasting: 0,
-        };
-    }
-    return smsData
-        .filter((dataItem: SmsData) => dataItem.location_id === location.location_id)
-        .reduce(reducer, totalsMap);
+
+    const totalsMap: Totals =
+        module !== NUTRITION
+            ? {
+                  no_risk: 0,
+                  redAlert: 0,
+                  risk: 0,
+                  total: 0,
+              }
+            : {
+                  inappropriateFeeding: 0,
+                  overweight: 0,
+                  stunting: 0,
+                  wasting: 0,
+                  total: 0,
+              };
+
+    return smsData.reduce(reducer, totalsMap);
 }
-function getRiskTotals(locations: LocationWithData[], module: string) {
-    const reducer = (accumulator: Totals, location: LocationWithData): Totals => {
-        if (module !== NUTRITION) {
+
+function getRiskTotals(locations: LocationWithData[], module: string): Totals {
+    let reducer: (accumulator: Totals, location: LocationWithData) => Totals;
+
+    if (module === NUTRITION) {
+        reducer = (accumulator: Totals, location: LocationWithData) => {
             return {
-                no_risk: (accumulator as any).no_risk + location.no_risk,
-                redAlert: (accumulator as any).redAlert + location.redAlert,
-                risk: (accumulator as any).risk + location.risk,
+                inappropriateFeeding:
+                    (accumulator as NutritionTotals).inappropriateFeeding +
+                    (location as NutritionTotals).inappropriateFeeding,
+                overweight: (accumulator as NutritionTotals).overweight + (location as NutritionTotals).overweight,
+                stunting: (accumulator as NutritionTotals).stunting + (location as NutritionTotals).stunting,
+                wasting: (accumulator as NutritionTotals).wasting + (location as NutritionTotals).wasting,
+                total: accumulator.total + location.total,
             };
-        }
-        return {
-            inappropriateFeeding: (accumulator as any).inappropriateFeeding + location.inappropriateFeeding,
-            overweight: (accumulator as any).overweight + location.overweight,
-            stunting: (accumulator as any).stunting + location.stunting,
-            wasting: (accumulator as any).wasting + location.wasting,
-        };
-    };
-    let totalsMap: Totals;
-    if (module !== NUTRITION) {
-        totalsMap = {
-            no_risk: 0,
-            redAlert: 0,
-            risk: 0,
         };
     } else {
-        totalsMap = {
-            inappropriateFeeding: 0,
-            overweight: 0,
-            stunting: 0,
-            wasting: 0,
+        reducer = (accumulator: Totals, location: LocationWithData) => {
+            return {
+                no_risk: (accumulator as PregnancyNpcPncTotals).no_risk + (location as PregnancyNpcPncTotals).no_risk,
+                redAlert:
+                    (accumulator as PregnancyNpcPncTotals).redAlert + (location as PregnancyNpcPncTotals).redAlert,
+                risk: (accumulator as PregnancyNpcPncTotals).risk + (location as PregnancyNpcPncTotals).risk,
+                total: (accumulator as PregnancyNpcPncTotals).total + (location as PregnancyNpcPncTotals).total,
+            };
         };
     }
+
+    const totalsMap: Totals =
+        module !== NUTRITION
+            ? {
+                  no_risk: 0,
+                  redAlert: 0,
+                  risk: 0,
+                  total: 0,
+              }
+            : {
+                  inappropriateFeeding: 0,
+                  overweight: 0,
+                  stunting: 0,
+                  wasting: 0,
+                  total: 0,
+              };
+
     return locations.reduce(reducer, totalsMap);
 }
-function getTotal(riskTotals: Totals, module: string) {
-    if (module !== NUTRITION) {
-        return (riskTotals as any).redAlert + riskTotals.risk + riskTotals.no_risk;
-    }
-    return (
-        (riskTotals as any).overweight +
-        (riskTotals as any).stunting +
-        (riskTotals as any).inappropriateFeeding +
-        (riskTotals as any).wasting
-    );
-}
+
+type locationKeys = 'communes' | 'districts' | 'provinces' | 'villages';
+
 function addDataToLocations(
     locations: {
-        [key: string]: Location[];
+        [key in locationKeys]: Location[];
     },
     smsData: SmsData[],
     module: string,
-    riskHighlighter: any,
-): { [key: string]: LocationWithData[] } {
+    riskHighlighter: RiskHighlighterType,
+): { [key in locationKeys]: LocationWithData[] } {
     const villagesWithData: LocationWithData[] = [];
-    // eslint-disable-next-line no-restricted-syntax
-    for (const village in locations.villages) {
-        if (locations.villages[village]) {
-            const villageRiskTotals: Totals = getVillageRiskTotals(
-                locations.villages[village],
-                smsData,
-                module,
-                riskHighlighter,
-            );
-            const totalRisk = getTotal(villageRiskTotals, module);
-            if (module !== NUTRITION) {
-                villagesWithData.push({
-                    ...locations.villages[village],
-                    no_risk: villageRiskTotals.no_risk,
-                    redAlert: villageRiskTotals.redAlert,
-                    risk: villageRiskTotals.risk,
-                    total: totalRisk,
-                });
-            } else {
-                villagesWithData.push({
-                    inappropriateFeeding: villageRiskTotals.inappropriateFeeding,
-                    ...locations.villages[village],
-                    overweight: villageRiskTotals.overweight,
-                    stunting: villageRiskTotals.stunting,
-                    total: totalRisk,
-                    wasting: villageRiskTotals.wasting,
-                });
-            }
+    for (const village of locations.villages) {
+        // filter sms data for data matching village
+        const villageSmsData = smsData.filter((dataItem: SmsData) => dataItem.location_id === village.location_id);
+        // get risk totals for that village
+        const villageRiskTotals = getLocationRiskTotals(villageSmsData, module, riskHighlighter);
+
+        // infer type PregnancyNpcPncTotals
+        if ('no_risk' in villageRiskTotals) {
+            villagesWithData.push({
+                ...village,
+                no_risk: villageRiskTotals.no_risk,
+                redAlert: villageRiskTotals.redAlert,
+                risk: villageRiskTotals.risk,
+                total: villageRiskTotals.total,
+            });
+        }
+        // infer type NutritionTotals
+        if ('inappropriateFeeding' in villageRiskTotals) {
+            villagesWithData.push({
+                ...village,
+                inappropriateFeeding: villageRiskTotals.inappropriateFeeding,
+                overweight: villageRiskTotals.overweight,
+                stunting: villageRiskTotals.stunting,
+                total: villageRiskTotals.total,
+                wasting: villageRiskTotals.wasting,
+            });
         }
     }
 
     const communesWithData: LocationWithData[] = [];
-    for (const commune in locations.communes) {
-        if (locations.communes[commune]) {
-            const villagesInThisCommune = villagesWithData.filter(
-                (village: LocationWithData) => village.parent_id === locations.communes[commune].location_id,
-            );
-            const communeRisktotals = getRiskTotals(villagesInThisCommune, module);
-            const totalRisk = getTotal(communeRisktotals, module);
-            if (module !== NUTRITION) {
-                communesWithData.push({
-                    ...locations.communes[commune],
-                    no_risk: communeRisktotals.no_risk,
-                    redAlert: communeRisktotals.redAlert,
-                    risk: communeRisktotals.risk,
-                    total: totalRisk,
-                });
-            } else {
-                communesWithData.push({
-                    ...locations.communes[commune],
-                    inappropriateFeeding: communeRisktotals.inappropriateFeeding,
-                    overweight: communeRisktotals.overweight,
-                    stunting: communeRisktotals.stunting,
-                    total: totalRisk,
-                    wasting: communeRisktotals.wasting,
-                });
-            }
+    for (const commune of locations.communes) {
+        // filter sms data for data matching commune
+        const communeSmsData = smsData.filter((dataItem: SmsData) => dataItem.location_id === commune.location_id);
+        const communeRiskTotals = getLocationRiskTotals(communeSmsData, module, riskHighlighter);
+
+        // get villages that are children of this commune
+        const villagesInThisCommune = villagesWithData.filter(
+            (village: LocationWithData) => village.parent_id === commune.location_id,
+        );
+        const villagesInCommuneRiskTotals = getRiskTotals(villagesInThisCommune, module);
+
+        if ('no_risk' in communeRiskTotals && 'no_risk' in villagesInCommuneRiskTotals) {
+            communesWithData.push({
+                ...commune,
+                no_risk: communeRiskTotals.no_risk + villagesInCommuneRiskTotals.no_risk,
+                redAlert: communeRiskTotals.redAlert + villagesInCommuneRiskTotals.redAlert,
+                risk: communeRiskTotals.risk + villagesInCommuneRiskTotals.risk,
+                total: communeRiskTotals.total + villagesInCommuneRiskTotals.total,
+            });
+        }
+
+        if ('inappropriateFeeding' in communeRiskTotals && 'inappropriateFeeding' in villagesInCommuneRiskTotals) {
+            communesWithData.push({
+                ...commune,
+                inappropriateFeeding:
+                    communeRiskTotals.inappropriateFeeding + villagesInCommuneRiskTotals.inappropriateFeeding,
+                overweight: communeRiskTotals.overweight + villagesInCommuneRiskTotals.overweight,
+                stunting: communeRiskTotals.stunting + villagesInCommuneRiskTotals.stunting,
+                total: communeRiskTotals.total + villagesInCommuneRiskTotals.total,
+                wasting: communeRiskTotals.wasting + villagesInCommuneRiskTotals.wasting,
+            });
         }
     }
 
     const districtsWithData: LocationWithData[] = [];
-    for (const district in locations.districts) {
-        if (locations.districts[district]) {
-            const communesInThisDistrict = communesWithData.filter(
-                (commune: LocationWithData) => commune.parent_id === locations.districts[district].location_id,
-            );
-            const districtRisktotals = getRiskTotals(communesInThisDistrict, module);
-            const totalRisk = getTotal(districtRisktotals, module);
-            if (module !== NUTRITION) {
-                districtsWithData.push({
-                    ...locations.districts[district],
-                    no_risk: districtRisktotals.no_risk,
-                    redAlert: districtRisktotals.redAlert,
-                    risk: districtRisktotals.risk,
-                    total: totalRisk,
-                });
-            } else {
-                districtsWithData.push({
-                    ...locations.districts[district],
-                    inappropriateFeeding: districtRisktotals.inappropriateFeeding,
-                    overweight: districtRisktotals.overweight,
-                    stunting: districtRisktotals.stunting,
-                    total: totalRisk,
-                    wasting: districtRisktotals.wasting,
-                });
-            }
+    for (const district of locations.districts) {
+        // filter sms data for data matching district
+        const districtSmsData = smsData.filter((dataItem: SmsData) => dataItem.location_id === district.location_id);
+        const districtRiskTotals = getLocationRiskTotals(districtSmsData, module, riskHighlighter);
+
+        // get communes that are children of this district
+        const communesInThisDistrict = communesWithData.filter(
+            (commune: LocationWithData) => commune.parent_id === district.location_id,
+        );
+        const communesInDistrictRiskTotals = getRiskTotals(communesInThisDistrict, module);
+
+        if ('no_risk' in districtRiskTotals && 'no_risk' in communesInDistrictRiskTotals) {
+            districtsWithData.push({
+                ...district,
+                no_risk: districtRiskTotals.no_risk + communesInDistrictRiskTotals.no_risk,
+                redAlert: districtRiskTotals.redAlert + communesInDistrictRiskTotals.redAlert,
+                risk: districtRiskTotals.risk + communesInDistrictRiskTotals.risk,
+                total: districtRiskTotals.total + communesInDistrictRiskTotals.total,
+            });
+        }
+
+        if ('inappropriateFeeding' in districtRiskTotals && 'inappropriateFeeding' in communesInDistrictRiskTotals) {
+            districtsWithData.push({
+                ...district,
+                inappropriateFeeding:
+                    districtRiskTotals.inappropriateFeeding + communesInDistrictRiskTotals.inappropriateFeeding,
+                overweight: districtRiskTotals.overweight + communesInDistrictRiskTotals.overweight,
+                stunting: districtRiskTotals.stunting + communesInDistrictRiskTotals.stunting,
+                total: districtRiskTotals.total + communesInDistrictRiskTotals.total,
+                wasting: districtRiskTotals.wasting + communesInDistrictRiskTotals.wasting,
+            });
         }
     }
 
     const provincesWithData: LocationWithData[] = [];
-    for (const province in locations.provinces) {
-        if (locations.provinces[province]) {
-            const districtsInThisProvince = districtsWithData.filter(
-                (district: LocationWithData) => district.parent_id === locations.provinces[province].location_id,
-            );
-            const provinceRisktotals = getRiskTotals(districtsInThisProvince, module);
-            const totalRisk = getTotal(provinceRisktotals, module);
-            if (module !== NUTRITION) {
-                provincesWithData.push({
-                    ...locations.provinces[province],
-                    no_risk: provinceRisktotals.no_risk,
-                    redAlert: provinceRisktotals.redAlert,
-                    risk: provinceRisktotals.risk,
-                    total: totalRisk,
-                });
-            } else {
-                provincesWithData.push({
-                    ...locations.provinces[province],
-                    inappropriateFeeding: provinceRisktotals.inappropriateFeeding,
-                    overweight: provinceRisktotals.overweight,
-                    stunting: provinceRisktotals.stunting,
-                    total: totalRisk,
-                    wasting: provinceRisktotals.wasting,
-                });
-            }
+    for (const province of locations.provinces) {
+        // filter sms data for data matching province
+        const provinceSmsData = smsData.filter((dataItem: SmsData) => dataItem.location_id === province.location_id);
+        const provinceRiskTotals = getLocationRiskTotals(provinceSmsData, module, riskHighlighter);
+
+        // get district that are children of this province
+        const districtsInThisProvince = districtsWithData.filter(
+            (district: LocationWithData) => district.parent_id === province.location_id,
+        );
+        const districtsInRiskTotals = getRiskTotals(districtsInThisProvince, module);
+
+        if ('no_risk' in provinceRiskTotals && 'no_risk' in districtsInRiskTotals) {
+            provincesWithData.push({
+                ...province,
+                no_risk: provinceRiskTotals.no_risk + districtsInRiskTotals.no_risk,
+                redAlert: provinceRiskTotals.redAlert + districtsInRiskTotals.redAlert,
+                risk: provinceRiskTotals.risk + districtsInRiskTotals.risk,
+                total: provinceRiskTotals.total + districtsInRiskTotals.total,
+            });
+        }
+
+        if ('inappropriateFeeding' in provinceRiskTotals && 'inappropriateFeeding' in districtsInRiskTotals) {
+            provincesWithData.push({
+                ...province,
+                inappropriateFeeding:
+                    provinceRiskTotals.inappropriateFeeding + districtsInRiskTotals.inappropriateFeeding,
+                overweight: provinceRiskTotals.overweight + districtsInRiskTotals.overweight,
+                stunting: provinceRiskTotals.stunting + districtsInRiskTotals.stunting,
+                total: provinceRiskTotals.total + districtsInRiskTotals.total,
+                wasting: provinceRiskTotals.wasting + districtsInRiskTotals.wasting,
+            });
         }
     }
 
@@ -406,8 +462,6 @@ function addDataToLocations(
         villages: villagesWithData,
     };
 }
-
-export type HierarchicalDataTableType = Props & WithTranslation;
 
 class HierarchichalDataTable extends Component<HierarchicalDataTableType, State> {
     public static defaultProps = defaultProps;
@@ -422,9 +476,11 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
             },
             nextProps.smsData,
             nextProps.module,
-            nextProps.risk_highligter,
+            nextProps.risk_highligter || '',
         );
+
         let dataToShow: LocationWithData[] = [];
+
         if ((nextProps.direction === UP && nextProps.current_level === 0) || !nextProps.node_id) {
             dataToShow = locationsWithData.provinces;
         } else if (nextProps.direction === UP && nextProps.current_level === 1) {
@@ -465,6 +521,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                     : nextProps.current_level === 2
                     ? locationsWithData.communes
                     : locationsWithData.villages;
+
             dataToShow = nextProps.node_id
                 ? dataToShow.filter((dataItem: LocationWithData) => dataItem.parent_id === nextProps.node_id)
                 : dataToShow;
@@ -475,21 +532,28 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
         const nutritionStatusConstants = [SEVERE_WASTING, OVERWEIGHT];
         const growthStatusConstants = [STUNTED];
         const feedingCategoryConstants = [INAPPROPRIATELY_FED];
-        let field: string;
-        if (nutritionStatusConstants.includes((nextProps as any).risk_highligter)) {
-            field = NUTRITION_STATUS;
-        } else if (growthStatusConstants.includes((nextProps as any).risk_highligter)) {
-            field = GROWTH_STATUS;
-        } else if (feedingCategoryConstants.includes((nextProps as any).risk_highligter)) {
-            field = FEEDING_CATEGORY;
-        } else {
-            field = LOGFACE_RISK;
+
+        let field:
+            | typeof NUTRITION_STATUS
+            | typeof GROWTH_STATUS
+            | typeof FEEDING_CATEGORY
+            | typeof LOGFACE_RISK = LOGFACE_RISK;
+
+        if (nextProps.risk_highligter) {
+            if (nutritionStatusConstants.includes(nextProps.risk_highligter)) {
+                field = NUTRITION_STATUS;
+            } else if (growthStatusConstants.includes(nextProps.risk_highligter)) {
+                field = GROWTH_STATUS;
+            } else if (feedingCategoryConstants.includes(nextProps.risk_highligter)) {
+                field = FEEDING_CATEGORY;
+            }
         }
+
         const villageData = nextProps.smsData.filter((dataItem: SmsData) => {
             if (nextProps.risk_highligter === RISK) {
                 return (
-                    (locationIds.includes(dataItem.location_id) && (dataItem as any)[field].includes(HIGH)) ||
-                    (dataItem as any)[field].includes(LOW)
+                    (locationIds.includes(dataItem.location_id) && dataItem[field].includes(HIGH)) ||
+                    dataItem[field].includes(LOW)
                 );
             }
             return (
@@ -497,7 +561,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                 (nextProps.risk_highligter === ALL
                     ? true
                     : nextProps.risk_highligter
-                    ? (dataItem as any)[field].includes(nextProps.risk_highligter ? nextProps.risk_highligter : '')
+                    ? dataItem[field].includes(nextProps.risk_highligter ? nextProps.risk_highligter : '')
                     : true)
             );
         });
@@ -514,6 +578,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
             data: [],
             district: '',
             villageData: [],
+            headerTitle: ['Provinces'],
         };
     }
 
@@ -527,9 +592,9 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                 this.props.provinces,
             )
         ) {
-            for (const slice in LOCATION_SLICES) {
+            for (const slice of LOCATION_SLICES) {
                 if (slice) {
-                    supersetFetch(LOCATION_SLICES[slice]).then((result: Location[]) => {
+                    supersetFetch(slice).then((result: Location[]) => {
                         fetchLocationsActionCreator(result);
                     });
                 }
@@ -550,6 +615,9 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
             const tableRowLink = `${getModuleLink(this.props.module)}${HIERARCHICAL_DATA_URL}/${this.props.module}/${
                 this.props.risk_highligter
             }/${this.props.title}/${this.props.current_level ? this.props.current_level + 1 : 1}/down/`;
+
+            const element = getTotals(this.state.data, this.props.module);
+
             return (
                 <Container fluid className="compartment-data-table">
                     <span
@@ -562,7 +630,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                         <FontAwesomeIcon icon={BACKPAGE_ICON} size="lg" />
                         <span>{t('Back')}</span>
                     </span>
-                    <h1>{this.props.title}</h1>
+                    <h1>{t(`${element.total} ${this.props.title}`)}</h1>
                     <Row className="villageDataRow">
                         <Card className="table-card">
                             <CardTitle>{this.header()}</CardTitle>
@@ -575,7 +643,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                                 <th className="default-width">{t('Red Alert')}</th>
                                                 <th className="default-width">{t('risk')}</th>
                                                 <th className="default-width">{t('No Risk')}</th>
-                                                <th className="default-width">{t('Total')}</th>
+                                                <th className="default-width totals">{t('Total')}</th>
                                             </tr>
                                         ) : (
                                             <tr>
@@ -584,7 +652,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                                 <th className="default-width">{t('Severe Wasting')}</th>
                                                 <th className="default-width">{t('Overweight')}</th>
                                                 <th className="default-width">{t('Inappropriately Fed')}</th>
-                                                <th className="default-width">{t('Total')}</th>
+                                                <th className="default-width totals">{t('Total')}</th>
                                             </tr>
                                         )}
                                     </thead>
@@ -594,13 +662,25 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                                 return (
                                                     <tr
                                                         key={element.location_id}
-                                                        // tslint:disable-next-line: jsx-no-lambda
+                                                        className={
+                                                            this.props.current_level !== 3
+                                                                ? 'cursor-pointer color-blue'
+                                                                : ''
+                                                        }
                                                         onClick={() => {
-                                                            this.props.history.push(
-                                                                this.props.current_level === 3
-                                                                    ? '#'
-                                                                    : `${tableRowLink}${element.location_id}/${this.props.permissionLevel}`,
-                                                            );
+                                                            // drill down only up to level 3 (village)
+                                                            if (this.props.current_level !== 3) {
+                                                                this.props.history.push(
+                                                                    `${tableRowLink}${element.location_id}/${this.props.permissionLevel}`,
+                                                                );
+                                                                // add drill down location name to header
+                                                                this.setState({
+                                                                    headerTitle: [
+                                                                        ...this.state.headerTitle,
+                                                                        element.location_name,
+                                                                    ],
+                                                                });
+                                                            }
                                                         }}
                                                     >
                                                         {this.props.module !== NUTRITION ? (
@@ -635,7 +715,9 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                                                 >
                                                                     {element.no_risk}
                                                                 </td>
-                                                                <td className="default-width">{element.total}</td>
+                                                                <td className="default-width totals">
+                                                                    {element.total}
+                                                                </td>
                                                             </>
                                                         ) : (
                                                             <>
@@ -687,7 +769,9 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                                                 >
                                                                     {element.inappropriateFeeding}
                                                                 </td>
-                                                                <td className="default-width">{element.total}</td>
+                                                                <td className="default-width totals">
+                                                                    {element.total}
+                                                                </td>
                                                             </>
                                                         )}
                                                     </tr>
@@ -699,11 +783,11 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                             </tr>
                                         )}
                                         {(() => {
-                                            const element = getTotals(this.state.data, this.props.module);
-                                            return this.props.module !== NUTRITION ? (
-                                                <tr key="total">
+                                            // inferred type PregnancyNpcPncTotals
+                                            return 'no_risk' in element ? (
+                                                <tr key="total" className="totals-row">
                                                     <td className="default-width" id="total">
-                                                        {t(`Total(${this.getLevelString()})`)}
+                                                        {t(`Total (${this.getLevelString()})`)}
                                                     </td>
                                                     <td
                                                         className={`default-width ${
@@ -735,9 +819,9 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                                     <td className="default-width">{element.total}</td>
                                                 </tr>
                                             ) : (
-                                                <tr key="total">
+                                                <tr key="total" className="totals-row">
                                                     <td className="default-width" id="total">
-                                                        {t(`Total(${this.getLevelString()})`)}
+                                                        {t(`Total (${this.getLevelString()})`)}
                                                     </td>
                                                     <td
                                                         className={`default-width ${
@@ -790,6 +874,8 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                 current_level: this.props.current_level,
                                 module: this.props.module,
                                 smsData: this.state.villageData,
+                                // commune name is the last item in the headerTitle array
+                                communeName: this.state.headerTitle[this.state.headerTitle.length - 1],
                             }}
                         />
                     ) : this.props.current_level === 3 ? (
@@ -830,152 +916,100 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
     }
 
     private header = () => {
-        let province = <span key={0}>{PROVINCE}</span>;
-        if (this.dontDisplayProvince()) {
-            province = <span key={0}>{null}</span>;
-        } else if (this.props.current_level > 0) {
-            province = (
+        const aLink = this.state.headerTitle.map((item, index, arr) => {
+            // index 0 reserved for default headerTitle value (i.e All Provinces)
+            if (
+                (index === 1 && this.dontDisplayProvince()) ||
+                (index === 2 && this.dontDisplayDistrict()) ||
+                (index === 3 && this.dontDisplayCommune())
+            ) {
+                return <span key={index}>{null}</span>;
+            }
+            return (
                 <Link
                     to={`${getModuleLink(this.props.module)}${HIERARCHICAL_DATA_URL}/${this.props.module}/${
                         this.props.risk_highligter
-                    }/${this.props.title}/0/${UP}/${this.props.node_id}/${this.props.permissionLevel}/${
+                    }/${this.props.title}/${index}/${UP}/${this.props.node_id}/${this.props.permissionLevel}/${
                         this.props.current_level
                     }`}
-                    key={0}
+                    key={index}
+                    onClick={() => {
+                        // slice of state.headerTitle array containing
+                        // items between index 0(inclusive) and index+1(exclusive) of the clicked item
+                        const newTitle = arr.slice(0, index + 1);
+                        this.setState({
+                            headerTitle: newTitle,
+                        });
+                    }}
                 >
-                    {PROVINCE}
+                    {index !== 0 && <span className="divider">&nbsp; / &nbsp;</span>}
+                    {this.props.t(`${item}`)}
                 </Link>
             );
-        }
-
-        let district = <span key={1}>''</span>;
-        if (this.dontDisplayDistrict()) {
-            district = <span key={1}>{null}</span>;
-        } else if (this.props.current_level === 1) {
-            district = <span key={1}>{DISTRICT}</span>;
-        } else {
-            district = (
-                <Link
-                    to={`${getModuleLink(this.props.module)}${HIERARCHICAL_DATA_URL}/${this.props.module}/${
-                        this.props.risk_highligter
-                    }/${this.props.title}/1/${UP}/${this.props.node_id}/${this.props.permissionLevel}/${
-                        this.props.current_level
-                    }`}
-                    key={1}
-                >
-                    {DISTRICT}
-                </Link>
-            );
-        }
-
-        let commune = <span key={2}>{COMMUNE}</span>;
-        if (this.dontDisplayCommune()) {
-            commune = <span key={2}>{null}</span>;
-        } else if (this.props.current_level === 2) {
-            commune = <span key={2}>{COMMUNE}</span>;
-        } else {
-            commune = (
-                <Link
-                    to={`${getModuleLink(this.props.module)}${HIERARCHICAL_DATA_URL}/${this.props.module}/${
-                        this.props.risk_highligter
-                    }/${this.props.title}/2/${UP}/${this.props.node_id}/${this.props.permissionLevel}/${
-                        this.props.current_level
-                    }`}
-                    key={2}
-                >
-                    {COMMUNE}
-                </Link>
-            );
-        }
-
-        const village = <span key={3}>{VILLAGE}</span>;
-        const provinceDivider = this.dontDisplayProvince() ? (
-            <span key={Math.random()}>{null}</span>
-        ) : (
-            <span className="divider" key={Math.random()}>
-                &nbsp; / &nbsp;
-            </span>
-        );
-        const districtDivider = this.dontDisplayDistrict() ? (
-            <span key={Math.random()}>{null}</span>
-        ) : (
-            <span className="divider" key={Math.random()}>
-                &nbsp; / &nbsp;
-            </span>
-        );
-        const communeDivider = this.dontDisplayCommune() ? (
-            <span key={Math.random()}>{null}</span>
-        ) : (
-            <span className="divider" key={Math.random()}>
-                &nbsp; / &nbsp;
-            </span>
-        );
-        switch (this.props.current_level) {
-            case 0:
-                return province;
-            case 1:
-                return [province, provinceDivider, district];
-            case 2:
-                return [province, provinceDivider, district, districtDivider, commune];
-            case 3:
-                return [province, provinceDivider, district, districtDivider, commune, communeDivider, village];
-            default:
-                return province;
-        }
+        });
+        return aLink;
     };
 }
 
 const getTotals = (dataToShow: LocationWithData[], module: string) => {
-    const reducer = (accumulator: Partial<LocationWithData>, currentValue: any) => {
-        if (module !== NUTRITION) {
+    let reducer: (accumulator: Totals, currentValue: LocationWithData) => Totals;
+
+    if (module === NUTRITION) {
+        reducer = (accumulator: Totals, currentValue: LocationWithData) => {
             return {
-                no_risk: accumulator.no_risk + currentValue.no_risk,
-                redAlert: accumulator.redAlert + currentValue.redAlert,
-                risk: accumulator.risk + currentValue.risk,
+                inappropriateFeeding:
+                    (accumulator as NutritionTotals).inappropriateFeeding +
+                    (currentValue as NutritionTotals).inappropriateFeeding,
+                overweight: (accumulator as NutritionTotals).overweight + (currentValue as NutritionTotals).overweight,
+                stunting: (accumulator as NutritionTotals).stunting + (currentValue as NutritionTotals).stunting,
                 total: accumulator.total + currentValue.total,
+                wasting: (accumulator as NutritionTotals).wasting + (currentValue as NutritionTotals).wasting,
             };
-        }
-        return {
-            inappropriateFeeding: accumulator.inappropriateFeeding + currentValue.inappropriateFeeding,
-            overweight: accumulator.overweight + currentValue.overweight,
-            stunting: accumulator.stunting + currentValue.stunting,
-            total: accumulator.total + currentValue.total,
-            wasting: accumulator.wasting + currentValue.wasting,
-        };
-    };
-    let totalsMap: { [key: string]: number };
-    if (module !== NUTRITION) {
-        totalsMap = {
-            no_risk: 0,
-            redAlert: 0,
-            risk: 0,
-            total: 0,
         };
     } else {
-        totalsMap = {
-            inappropriateFeeding: 0,
-            overweight: 0,
-            stunting: 0,
-            total: 0,
-            wasting: 0,
+        reducer = (accumulator: Totals, currentValue: LocationWithData) => {
+            return {
+                no_risk:
+                    (accumulator as PregnancyNpcPncTotals).no_risk + (currentValue as PregnancyNpcPncTotals).no_risk,
+                redAlert:
+                    (accumulator as PregnancyNpcPncTotals).redAlert + (currentValue as PregnancyNpcPncTotals).redAlert,
+                risk: (accumulator as PregnancyNpcPncTotals).risk + (currentValue as PregnancyNpcPncTotals).risk,
+                total: accumulator.total + currentValue.total,
+            };
         };
     }
+    const totalsMap =
+        module !== NUTRITION
+            ? {
+                  no_risk: 0,
+                  redAlert: 0,
+                  risk: 0,
+                  total: 0,
+              }
+            : {
+                  inappropriateFeeding: 0,
+                  overweight: 0,
+                  stunting: 0,
+                  total: 0,
+                  wasting: 0,
+              };
+
     return dataToShow.reduce(reducer, totalsMap);
 };
 
-const mapStateToProps = (state: Partial<Store>, ownProps: any): any => {
+const mapStateToProps = (state: Partial<Store>, ownProps: HierarchicalDataTableType) => {
     return {
         communes: getLocationsOfLevel(state, 'Commune'),
         current_level: parseInt(ownProps.match.params.current_level, 10),
-        direction: ownProps.match.params.direction,
+        direction: ownProps.match.params.direction as Props['direction'],
         districts: getLocationsOfLevel(state, 'District'),
         from_level: ownProps.match.params.from_level,
         module: ownProps.match.params.module,
         node_id: ownProps.match.params.node_id,
-        permissionLevel: ownProps.match.params.permission_level,
+        permissionLevel: parseInt(ownProps.match.params.permission_level),
         provinces: getLocationsOfLevel(state, 'Province'),
-        risk_highligter: ownProps.match.params.risk_highlighter,
-        smsData: getFilterArgs(state)
+        risk_highligter: ownProps.match.params.risk_highlighter as RiskHighlighterType,
+        smsData: getFilterArgs(state).length
             ? getFilteredSmsData(state, getFilterArgs(state) as SmsFilterFunction[])
             : getSmsData(state),
         title: ownProps.match.params.title,
@@ -985,8 +1019,6 @@ const mapStateToProps = (state: Partial<Store>, ownProps: any): any => {
 
 const mapDispatchToProps = { fetchLocationsActionCreator: fetchLocations };
 
-const ConnectedHierarchicalDataTable = withTranslation()(
-    withRouter(connect(mapStateToProps, mapDispatchToProps)(HierarchichalDataTable)),
-);
+const ConnectedHierarchicalDataTable = connect(mapStateToProps, mapDispatchToProps)(withRouter(HierarchichalDataTable));
 
-export default ConnectedHierarchicalDataTable;
+export default withTranslation()(ConnectedHierarchicalDataTable);

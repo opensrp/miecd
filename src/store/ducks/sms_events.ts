@@ -26,7 +26,7 @@ export interface SmsData extends Dictionary {
     height: number;
     weight: number;
     previous_risks: string;
-    lmp_edd: any;
+    lmp_edd: string | number;
     parity: number;
     gravidity: number;
     location_id: string;
@@ -37,6 +37,9 @@ export interface SmsData extends Dictionary {
     nutrition_status: string;
     growth_status: string;
     feeding_category: string;
+    planned_delivery_location: string;
+    location: string;
+    delivery_location: string;
     event_date: string;
     intervention: string;
 }

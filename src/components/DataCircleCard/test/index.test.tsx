@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { removeFilterArgs } from 'store/ducks/sms_events';
 import DataCircleCard from '..';
-import { NUTRITION, PREGNANCY } from '../../../constants';
+import { PREGNANCY } from '../../../constants';
 import { mountWithTranslations } from '../../../helpers/testUtils';
 import store from '../../../store/index';
 import * as smsEventsDucks from '../../../store/ducks/sms_events';
@@ -18,7 +18,15 @@ describe('DataCircleCard', () => {
         jest.resetAllMocks();
     });
     it('must render correctly', () => {
-        const props = { highRisk: 10, lowRisk: 10, noRisk: 10, title: 'test title' };
+        const props = {
+            highRisk: 10,
+            lowRisk: 10,
+            noRisk: 10,
+            title: 'Total Pregnancies',
+            userLocationId: 'd1865325-11e6-4e39-817b-e676c1affecf',
+            permissionLevel: 0,
+            totalNumber: 2,
+        };
         const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
@@ -33,7 +41,13 @@ describe('DataCircleCard', () => {
         const filterArgsSpy = jest.fn();
         const props = {
             filterArgs: [filterArgsSpy],
-            module: NUTRITION,
+            highRisk: 10,
+            lowRisk: 10,
+            noRisk: 10,
+            title: 'Total Pregnancies',
+            userLocationId: 'd1865325-11e6-4e39-817b-e676c1affecf',
+            permissionLevel: 0,
+            totalNumber: 2,
         };
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -57,7 +71,13 @@ describe('DataCircleCard', () => {
         const filterArgsSpy = jest.fn();
         const props = {
             filterArgs: [filterArgsSpy],
-            module: PREGNANCY,
+            highRisk: 10,
+            lowRisk: 10,
+            noRisk: 10,
+            title: 'Total Pregnancies',
+            userLocationId: 'd1865325-11e6-4e39-817b-e676c1affecf',
+            permissionLevel: 0,
+            totalNumber: 2,
         };
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -74,6 +94,33 @@ describe('DataCircleCard', () => {
         cardBodyLink.simulate('click', { button: 0 });
         wrapper.update();
         expect(smsEventsDucks.getFilterArgs(store.getState())).toEqual([filterArgsSpy]);
+        wrapper.unmount();
+    });
+
+    it('card header shows total', () => {
+        const filterArgsSpy = jest.fn();
+        const props = {
+            filterArgs: [filterArgsSpy],
+            highRisk: 10,
+            lowRisk: 10,
+            noRisk: 10,
+            title: 'Total Pregnancies',
+            userLocationId: 'd1865325-11e6-4e39-817b-e676c1affecf',
+            permissionLevel: 0,
+            totalNumber: 14,
+        };
+        const wrapper = mountWithTranslations(
+            <Provider store={store}>
+                <Router history={history}>
+                    <DataCircleCard {...props} module={PREGNANCY} />
+                </Router>
+            </Provider>,
+        );
+
+        // expect card title to match snapshot
+        const cardTitle = wrapper.find('CardTitle .card_title').text();
+        expect(cardTitle).toBe('14 Total Pregnancies');
+
         wrapper.unmount();
     });
 });
