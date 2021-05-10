@@ -54,7 +54,7 @@ import smsReducer, {
     SmsData,
 } from '../../store/ducks/sms_events';
 import { SmsFilterFunction } from '../../types';
-import { withTranslation, WithTranslation } from 'react-i18next';
+import { withTranslation, WithTranslation, TFunction } from 'react-i18next';
 import { history } from '@onaio/connected-reducer-registry';
 
 reducerRegistry.register(reducerName, locationsReducer);
@@ -779,7 +779,14 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                             })
                                         ) : (
                                             <tr id="no-rows">
-                                                <td>{t('There seems to be no rows here :-(')}</td>
+                                                {/* compose message to show unavailability of drill down children */}
+                                                <td>
+                                                    {this.unavailableChildren(
+                                                        this.state.headerTitle,
+                                                        this.props.current_level as 0 | 1 | 2 | 3,
+                                                        t,
+                                                    )}
+                                                </td>
                                             </tr>
                                         )}
                                         {(() => {
@@ -948,6 +955,30 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
             );
         });
         return aLink;
+    };
+
+    /**
+     * compose message to show unavailability of drill down children
+     * @param headerTitle array of header strings
+     * @param currentLevel a number between 0-3 representing the current drill down level
+     * @param translate the react-i18next translation function
+     * @returns a string in the form of 'The Ayun commune doesn't seem to have villages'
+     */
+    private unavailableChildren = (headerTitle: string[], currentLevel: 0 | 1 | 2 | 3, translate: TFunction) => {
+        // translate level number to level name
+        const levelToName = (levelNo: 0 | 1 | 2 | 3, plural?: boolean) => {
+            if (levelNo === 0) return plural ? 'provinces' : 'province';
+            else if (levelNo === 1) return plural ? 'districts' : 'district';
+            else if (levelNo === 2) return plural ? 'communes' : 'commune';
+            else return 'villages';
+        };
+
+        // compose message from last item in header, current and previous drill down level
+        const unavailableMessage = `${translate('The')} ${headerTitle[headerTitle.length - 1]} ${translate(
+            `${levelToName((currentLevel - 1) as 0 | 1 | 2 | 3)}`,
+        )} ${translate(`doesn't seem to have`)} ${translate(`${levelToName(currentLevel, true)}`)}`;
+
+        return unavailableMessage;
     };
 }
 
