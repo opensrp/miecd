@@ -212,7 +212,7 @@ describe('containers/LogFace extended', () => {
 
     it('shows loader and Breaks just fine', async () => {
         const supersetFetchMock = jest.fn(async () => []);
-        fetch.mockResponse(JSON.stringify([]));
+        fetch.mockReject(new Error('coughid'));
         const props = {
             ...commonProps,
             ...locationProps,
@@ -227,8 +227,6 @@ describe('containers/LogFace extended', () => {
         );
 
         expect(wrapper.find('Ripple')).toHaveLength(1);
-
-        fetch.mockReject(new Error('coughid'));
 
         await act(async () => {
             await new Promise((resolve) => setImmediate(resolve));
