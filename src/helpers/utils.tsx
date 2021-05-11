@@ -308,8 +308,8 @@ export const filterByPatientId = (patientIdAndSmsData: PatientIDAndSmsData): Sms
  * sort SmsData[] by EventDate in descending order(i.e. the most recent events come first)
  * @param {SmsData[]} smsData an array of smsData objects to sort by event date
  */
-export const sortByEventDate = (smsData: SmsData[]) => {
-    return smsData.sort((event1: SmsData, event2: SmsData): number => {
+export const sortByEventDate = <T extends { event_date: string }>(smsData: T[]) => {
+    return smsData.sort((event1, event2) => {
         const date1 = Date.parse(event1.event_date);
         const date2 = Date.parse(event2.event_date);
         return date2 - date1;
