@@ -961,10 +961,10 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
      * compose message to show unavailability of drill down children
      * @param headerTitle array of header strings
      * @param currentLevel a number between 0-3 representing the current drill down level
-     * @param translate the react-i18next translation function
+     * @param t the react-i18next translation function
      * @returns a string in the form of 'The Ayun commune doesn't seem to have villages'
      */
-    private unavailableChildren = (headerTitle: string[], currentLevel: 0 | 1 | 2 | 3, translate: TFunction) => {
+    private unavailableChildren = (headerTitle: string[], currentLevel: 0 | 1 | 2 | 3, t: TFunction) => {
         // translate level number to level name
         const levelToName = (levelNo: 0 | 1 | 2 | 3, plural?: boolean) => {
             if (levelNo === 0) return plural ? 'provinces' : 'province';
@@ -974,9 +974,11 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
         };
 
         // compose message from last item in header, current and previous drill down level
-        const unavailableMessage = `${translate('The')} ${headerTitle[headerTitle.length - 1]} ${translate(
-            `${levelToName((currentLevel - 1) as 0 | 1 | 2 | 3)}`,
-        )} ${translate(`doesn't seem to have`)} ${translate(`${levelToName(currentLevel, true)}`)}`;
+        const unavailableMessage = `${t(
+            `The ${headerTitle[headerTitle.length - 1]} ${levelToName(
+                (currentLevel - 1) as 0 | 1 | 2 | 3,
+            )} doesn't seem to have ${levelToName(currentLevel, true)}`,
+        )}`;
 
         return unavailableMessage;
     };
