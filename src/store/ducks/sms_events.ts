@@ -37,11 +37,12 @@ export interface SmsData extends Dictionary {
     nutrition_status: string;
     growth_status: string;
     feeding_category: string;
+    event_date: string;
+    intervention: string;
+    bp: string;
     planned_delivery_location: string;
     location: string;
     delivery_location: string;
-    event_date: string;
-    intervention: string;
 }
 
 // actions
@@ -182,7 +183,7 @@ export function smsDataFetched(state: Partial<Store>): boolean {
 /**
  * Returns a list of SmsData that has been filtered based on the value
  * of a field specified.
- * @param {Partil<Store>} state - the state of the SmsReducer redux store.
+ * @param {Partial<Store>} state - the state of the SmsReducer redux store.
  * @param {SmsFilterFunction[]}  filterArgs - an array of SMS_FILTER_FUNCTIONs.
  * @return {SmsData[]} - an array of SmsData objects that have passed the filtration criteria of all the filterArgs.
  */
@@ -215,12 +216,14 @@ export interface SMSSelectorsFilters {
     riskCategory?: RiskCategoryFilter;
     smsTypes?: string[];
     searchFilter?: string;
+    patientId?: string;
 }
 
 export const getLocationNodeFilter = (_: Partial<Store>, props: SMSSelectorsFilters) => props.locationNode;
 export const getRiskCat = (_: Partial<Store>, props: SMSSelectorsFilters) => props.riskCategory;
 export const getSmsTypes = (_: Partial<Store>, props: SMSSelectorsFilters) => props.smsTypes;
 export const getSearch = (_: Partial<Store>, props: SMSSelectorsFilters) => props.searchFilter;
+export const getPatientId = (_: Partial<Store>, filters: SMSSelectorsFilters) => filters.patientId;
 
 /** filter smsData by user's location, will return all smsEvents in locations where the user
  * has access
@@ -275,10 +278,19 @@ export const getSmsDataBySearch = () =>
         );
     });
 
+export const getSmsDataByPatientId = () =>
+    createSelector(getSmsData, getPatientId, (smsData, patientId) => {
+        if (patientId === undefined) {
+            return smsData;
+        }
+        return smsData.filter((sms) => sms.anc_id === patientId);
+    });
+
 const selectSmsByLocation = getSmsDataByUserLocation();
 const selectSmsByRisk = getSmsDataByRiskCat();
 const selectSmsByType = getSmsDataBySmsType();
 const selectSmsBySearch = getSmsDataBySearch();
+const selectSmsByPatientId = getSmsDataByPatientId();
 
 /** main selector function, composes all of the above reselect selectors for a unified selection interface */
 export const getSmsDataByFilters = () => {
@@ -287,8 +299,9 @@ export const getSmsDataByFilters = () => {
         selectSmsByRisk,
         selectSmsByType,
         selectSmsBySearch,
-        (byLocation, byRisk, bySmsType, bySearch) => {
-            return sortByEventDate(intersect([byLocation, byRisk, bySmsType, bySearch], JSON.stringify));
+        selectSmsByPatientId,
+        (byLocation, byRisk, bySmsType, bySearch, byPatientId) => {
+            return sortByEventDate(intersect([byLocation, byRisk, bySmsType, bySearch, byPatientId], JSON.stringify));
         },
     );
 };

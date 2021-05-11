@@ -1,4 +1,5 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { TFunction } from 'i18next';
 
 // openSRP api endpoints
 export const OPENSRP_SECURITY_AUTHENTICATE = '/security/authenticate';
@@ -112,19 +113,19 @@ export const GESTATION_PERIOD = 24192000000;
 export const BACKPAGE_ICON: IconProp = ['fas', 'arrow-left'];
 
 // monthNames
-export const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+export const getMonthNames = (t: TFunction) => [
+    t('January'),
+    t('February'),
+    t('March'),
+    t('April'),
+    t('May'),
+    t('June'),
+    t('July'),
+    t('August'),
+    t('September'),
+    t('October'),
+    t('November'),
+    t('December'),
 ];
 
 // operational constants

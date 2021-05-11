@@ -1,23 +1,21 @@
 import * as Highcharts from 'highcharts';
 import * as React from 'react';
 import { Card, CardTitle } from 'reactstrap';
-import { monthNames } from '../../constants';
 import { Dictionary } from '../../helpers/utils';
-import { WeightMonthYear } from '../ReportTable';
 import './index.css';
 
+interface CustomSeriesData {
+    categories: string[];
+    dataSeries: { data: unknown[]; name: string }[];
+}
+
 interface Props {
-    weights: WeightMonthYear[];
     chartWrapperId: string;
     title: string;
     units: string;
     legendString: string;
-    xAxisLabel: string;
-}
-
-interface State {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    chart: any;
+    yAxisLabel: string;
+    dataArray?: CustomSeriesData;
 }
 
 const defaultProps: Props = {
@@ -25,53 +23,28 @@ const defaultProps: Props = {
     legendString: '',
     title: '',
     units: '',
-    weights: [],
-    xAxisLabel: '',
+    yAxisLabel: '',
 };
-export default class WeightAndHeightChart extends React.Component<Props, State> {
-    public static defaultProps = defaultProps;
 
-    public static legendString = defaultProps.legendString;
-
-    public static units = defaultProps.units;
-
-    public static xAxisLabel = defaultProps.xAxisLabel;
-
-    public static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-        if (prevState.chart && prevState.chart.series) {
-            return {
-                chart: prevState.chart.series[0].setData(nextProps.weights),
-            };
-        }
-        return {
-            chart: prevState.chart,
-        };
-    }
+function Chart(props: Props) {
+    const { units, yAxisLabel, chartWrapperId, title, dataArray } = props;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public static calcChartWidth(chart: any) {
+    function calcChartWidth(chart: any) {
         if (chart && chart.series) {
             chart.setSize(0.8 * window.innerWidth, null);
             return chart;
         }
     }
 
-    constructor(props: Props) {
-        super(props);
-        // Init state.
-        this.state = { chart: null };
-    }
-
-    public componentDidMount(): void {
+    React.useEffect(() => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let chart: any;
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const self: Dictionary = this;
-        if (self.state.chart) {
-            self.state.chart.destroy();
+        if (chart) {
+            chart.destroy();
         }
-        self.timeout = setTimeout(() => {
-            chart = Highcharts.chart(`${this.props.chartWrapperId}`, {
+        const timeout = setTimeout(() => {
+            chart = Highcharts.chart(`${chartWrapperId}`, {
                 chart: {
                     type: 'line',
                     width: 0.8 * window.innerWidth,
@@ -98,9 +71,20 @@ export default class WeightAndHeightChart extends React.Component<Props, State> 
                         width: 8,
                     },
                     formatter() {
-                        return `${self.props.legendString} - ${`${this.x}`.slice(0, `${this.x}`.lastIndexOf(' '))}<br>${
-                            self.props.xAxisLabel
-                        }  <b>${this.y}</b> ${self.props.units}`;
+                        const { index: thisIndex } = this.point as Dictionary;
+                        const { data } = this.point.series;
+                        let change = '+0';
+                        const previousDataIndex = thisIndex - 1;
+                        if (previousDataIndex >= 0) {
+                            const previousY = data[previousDataIndex].options.y ?? 0;
+                            let changeSign = '+';
+                            if (this.y < previousY) {
+                                changeSign = '-';
+                            }
+                            change = `${changeSign}${Math.abs(previousY - this.y)}`;
+                        }
+
+                        return `${this.x}: <b>${this.y}</b> ${units} (${change})`;
                     },
                 },
 
@@ -110,24 +94,16 @@ export default class WeightAndHeightChart extends React.Component<Props, State> 
 
                 yAxis: {
                     title: {
-                        text: '',
+                        text: yAxisLabel,
                     },
                 },
 
                 xAxis: {
-                    categories: this.props.weights
-                        .map((weightMonthYear: WeightMonthYear) => weightMonthYear.month)
-                        .map((month: number) => monthNames[month])
-                        .map((mothName: string, index: number) => `${mothName} ${this.props.weights[index].year}`),
+                    categories: dataArray?.categories,
                 },
 
-                series: [
-                    {
-                        data: this.props.weights.map((weightMonthYear: WeightMonthYear) => weightMonthYear.weight),
-                        name: this.props.xAxisLabel,
-                    },
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ] as any,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                series: dataArray?.dataSeries as any,
 
                 responsive: {
                     rules: [
@@ -147,25 +123,23 @@ export default class WeightAndHeightChart extends React.Component<Props, State> 
                 },
             });
         }, 300);
-        window.addEventListener('resize', () => WeightAndHeightChart.calcChartWidth(chart));
-        this.setState({ chart });
-    }
+        window.addEventListener('resize', () => calcChartWidth(chart));
+        return () => {
+            if (chart) {
+                window.removeEventListener('resize', () => calcChartWidth(chart));
+                clearTimeout(timeout);
+            }
+        };
+    }, [chartWrapperId, dataArray, units, yAxisLabel]);
 
-    public componentWillUnmount(): void {
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const self: Dictionary = this;
-        if (self.state.chart) {
-            window.removeEventListener('resize', () => WeightAndHeightChart.calcChartWidth(this.state.chart));
-            clearTimeout(self.timeout);
-        }
-    }
-
-    public render() {
-        return (
-            <Card>
-                <CardTitle>{this.props.title}</CardTitle>
-                <div id={this.props.chartWrapperId} />
-            </Card>
-        );
-    }
+    return (
+        <Card>
+            <CardTitle>{title}</CardTitle>
+            <div id={chartWrapperId} />
+        </Card>
+    );
 }
+
+Chart.defaultProps = defaultProps;
+
+export { Chart };

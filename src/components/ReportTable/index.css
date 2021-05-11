@@ -55,7 +55,6 @@
 }
 
 .patient-details td {
-    width: 25%;
     border: 1px solid #e8e8e8;
 }
 
@@ -119,4 +118,32 @@
     line-height: 18px;
     text-align: left;
     padding: 20px;
+}
+
+#filter-panel p,
+.filters {
+    margin: 10px 0 0;
+    display: inline-block;
+}
+
+.table-container {
+    width: 100%;
+}
+tr .report-table__td:nth-child(1) {
+    width: 17%;
+}
+tr .report-table__td:nth-child(2) {
+    width: 17%;
+}
+tr .report-table__td:nth-child(3) {
+    width: 16%;
+}
+
+tr .report-table__td:nth-child(4) {
+    width: 50%;
+}
+
+.patient-details-filters__control {
+    min-width: 250px;
+    border-radius: 0 !important;
 }
