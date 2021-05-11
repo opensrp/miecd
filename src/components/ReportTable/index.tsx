@@ -1,325 +1,275 @@
 import ListView from '@onaio/list-view';
-import React, { Component } from 'react';
-import { TFunction, Trans, WithTranslation, withTranslation } from 'react-i18next';
-import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Row } from 'reactstrap';
+import NoRecord from 'components/NoRecord';
+import { keyBy, uniqWith } from 'lodash';
+import React, { useState } from 'react';
+import { TFunction, Trans, useTranslation } from 'react-i18next';
+import Select from 'react-select';
+import { Row } from 'reactstrap';
 import {
     ANC_REPORT,
     BIRTH_REPORT,
     GESTATION_PERIOD,
-    HEIGHT,
+    getMonthNames,
     NUTRITION_REGISTRATION,
     NUTRITION_REPORT,
     PREGNANCY_REGISTRATION,
-    WEIGHT,
 } from '../../constants';
-import { getNumberSuffix } from '../../helpers/utils';
+import { sortByEventDate } from '../../helpers/utils';
 import { SmsData } from '../../store/ducks/sms_events';
-import WeightAndHeightChart from '../WeightAndHeightChart';
+import { Chart } from '../WeightAndHeightChart';
 import './index.css';
 
-interface Props {
+interface ReportTableProps {
     singlePatientEvents: SmsData[];
     isChild: boolean;
 }
 
-/**
- * An object that represents the weight of a child
- * or mother for a given month and year.
- * @member {number} weight  the weight
- * @member {number} month a number between 0 and 11 representing the month
- * @member {number} year the year the month is in.
- */
-export interface WeightMonthYear {
-    weight: number;
-    month: number;
-    year: number;
-}
-
-/**
- * An object representing Pregnancy data contained in an SmsEvent
- * object but has been adapted specifically for the pregnancy module
- * @member {string} EventDate - the date the SmsEvent was created. this is
- * when the sms was sent.
- * @member {string | number} message - the string/number representation of the message
- * @member {string} health_workder_name - name of health worker who sent the message
- * @member {string}  sms_type - the sms type.
- */
-interface PregnancySmsData {
-    EventDate: string;
-    message: string | number;
-    health_worker_name: string;
-    sms_type: string;
-}
-interface State {
-    pregnancyEventsArray: PregnancySmsData[][];
-    dropdownOpenPregnancy: boolean;
-    currentPregnancy: number;
-    pregnancyDropdownLabel: string;
-    indicesToRemove: number[];
-}
-
-export const convertToStringArray = (smsData: PregnancySmsData): string[] => {
-    const arr: string[] = [];
-    arr.push(smsData.sms_type);
-    arr.push(smsData.EventDate);
-    arr.push(smsData.health_worker_name);
-    arr.push(smsData.message as string);
-    return arr;
+const defaultProps = {
+    singlePatientEvents: [],
+    isChild: false,
 };
 
-export const getEventsPregnancyArray = (singlePatientEvents: SmsData[], isChild: boolean): PregnancySmsData[][] => {
-    // remove event types that we are not interested in and retain
-    // only pregnancy registration, ANC and birth reports
-    singlePatientEvents = !isChild
-        ? singlePatientEvents.filter((event: SmsData) => {
-              return (
-                  event.sms_type.toLowerCase() === BIRTH_REPORT.toLowerCase() ||
-                  event.sms_type.toLowerCase() === ANC_REPORT.toLowerCase() ||
-                  event.sms_type.toLowerCase() === PREGNANCY_REGISTRATION.toLowerCase()
-              );
-          })
-        : singlePatientEvents.filter((event: SmsData) => {
-              return (
-                  event.sms_type.toLowerCase() === NUTRITION_REPORT.toLowerCase() ||
-                  event.sms_type.toLowerCase() === NUTRITION_REGISTRATION.toLowerCase()
-              );
-          });
-    const data: PregnancySmsData[][] = [];
+export type ReportTableTypes = ReportTableProps;
 
-    let pregnancyIndex = 0;
-    for (const dataItem in singlePatientEvents) {
-        if (singlePatientEvents) {
-            if (data[pregnancyIndex]) {
-                if (
-                    singlePatientEvents[dataItem].sms_type === PREGNANCY_REGISTRATION ||
-                    (data[pregnancyIndex][parseInt(dataItem, 10) - 1] &&
-                        GESTATION_PERIOD <
-                            Date.parse(singlePatientEvents[dataItem].EventDate) -
-                                Date.parse(data[pregnancyIndex][parseInt(dataItem, 10) - 1].EventDate))
-                ) {
-                    pregnancyIndex += 1;
-                    if (!data[pregnancyIndex]) {
-                        data[pregnancyIndex] = [];
-                    }
-                    data[pregnancyIndex].push(singlePatientEvents[dataItem]);
-                } else if (singlePatientEvents[dataItem].sms_type === BIRTH_REPORT) {
-                    data[pregnancyIndex].push(singlePatientEvents[dataItem]);
-                } else {
-                    data[pregnancyIndex].push(singlePatientEvents[dataItem]);
-                }
-            } else {
-                data[pregnancyIndex] = [];
-                data[pregnancyIndex].push(singlePatientEvents[dataItem]);
-            }
-        }
+function ReportTable(props: ReportTableTypes) {
+    const { singlePatientEvents, isChild } = props;
+    const smsTypesOfInterest = filterEventsByType(singlePatientEvents, isChild);
+    let smsChunks = [smsTypesOfInterest];
+    if (!isChild) {
+        smsChunks = chunkByGravida(smsTypesOfInterest);
     }
+    const [currentSmsChunkIndex, setCurrentSmsChunkIndex] = useState(smsChunks.length - 1);
+    const { t } = useTranslation();
 
-    return data;
-};
-export type ReportTableTypes = Props & WithTranslation;
-class ReportTable extends Component<ReportTableTypes, State> {
-    public static getDerivedStateFromProps(props: Props) {
-        return {
-            pregnancyEventsArray: getEventsPregnancyArray(props.singlePatientEvents, props.isChild),
-        };
-    }
-
-    constructor(props: Readonly<ReportTableTypes>) {
-        super(props);
-
-        this.state = {
-            currentPregnancy: 0,
-            dropdownOpenPregnancy: false,
-            indicesToRemove: [],
-            pregnancyDropdownLabel: '',
-            pregnancyEventsArray: [],
-        };
-    }
-
-    public getPregnancyStringArray = (pregnancySmsData: PregnancySmsData[][]): string[][][] => {
-        let pregnancySmsStrings: string[][][] = [];
-
-        const gestation: number = GESTATION_PERIOD;
-        for (const element in pregnancySmsData) {
-            if (pregnancySmsData[element]) {
-                pregnancySmsStrings[element] = pregnancySmsData[element].map((sms: PregnancySmsData): string[] => {
-                    return convertToStringArray(sms);
-                });
-            }
-        }
-
-        // filter out duplicate pregnancy registrations
-        if (pregnancySmsStrings.length > 1) {
-            for (const pregnancy in pregnancySmsStrings) {
-                if (
-                    pregnancySmsStrings.length - 1 !== parseInt(pregnancy, 10) &&
-                    pregnancySmsStrings[parseInt(pregnancy, 10)].length === 1 &&
-                    gestation >
-                        Date.parse(pregnancySmsStrings[parseInt(pregnancy, 10)][0][1]) -
-                            Date.parse(pregnancySmsStrings[parseInt(pregnancy, 10) + 1][0][1]) &&
-                    pregnancySmsStrings[parseInt(pregnancy, 10)][0][0] === PREGNANCY_REGISTRATION &&
-                    pregnancySmsStrings[parseInt(pregnancy, 10) + 1][0][0] === PREGNANCY_REGISTRATION
-                ) {
-                    this.state.indicesToRemove.push(parseInt(pregnancy, 10));
-                }
-            }
-        }
-
-        pregnancySmsStrings = pregnancySmsStrings.filter(
-            (pregnancy, index) => !this.state.indicesToRemove.includes(index),
-        );
-        return pregnancySmsStrings;
+    const listViewProps = {
+        data:
+            smsChunks[currentSmsChunkIndex]?.map((smsData) => [
+                smsData.sms_type,
+                smsData.EventDate,
+                smsData.health_worker_name,
+                smsData.message,
+            ]) ?? [],
+        headerItems: [t('Report'), t('Date'), t('Reporter'), t('Message')],
+        tableClass: 'table-container',
+        tbodyClass: 'body',
+        thClass: 'report-table__td',
+        tdClass: 'report-table__td',
     };
 
-    public getWeightsArray = (pregnancySmsData: PregnancySmsData[][], field: string): WeightMonthYear[][] => {
-        let weights: WeightMonthYear[][] = [];
-        for (const element in pregnancySmsData) {
-            if (pregnancySmsData[element]) {
-                weights[element] = pregnancySmsData[element].map(
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    (sms: any): WeightMonthYear => {
-                        return {
-                            month: new Date(sms.EventDate).getMonth(),
-                            weight: sms[field],
-                            year: new Date(sms.EventDate).getFullYear(),
-                        };
-                    },
-                );
-            }
-        }
+    const currentSmsDataChunk = smsChunks[currentSmsChunkIndex];
+    const filterOptions = pregnancyOptionsFilter(smsChunks, t);
+    const filterValue = keyBy(filterOptions, (x) => x.value)[currentSmsChunkIndex];
 
-        weights = weights.filter((pregnancy, index) => !this.state.indicesToRemove.includes(index));
-        return weights;
-    };
-
-    public render() {
-        const { t } = this.props;
-
-        const listViewProps = {
-            data: this.getPregnancyStringArray(this.state.pregnancyEventsArray)[this.state.currentPregnancy]
-                ? this.getPregnancyStringArray(this.state.pregnancyEventsArray)[this.state.currentPregnancy]
-                : [],
-            headerItems: [t('Report'), t('Date'), t('Reporter'), t('Message')],
-            tableClass: 'table-container',
-            tbodyClass: 'body',
-            tdClass: 'default-width',
-        };
-
-        return (
-            <>
-                <Row id="filter-panel">
-                    <p>
-                        <Trans t={t}>Showing reports for:&emsp;</Trans>
-                    </p>
-                    <div className="filters">
-                        {this.props.isChild ? (
-                            <Dropdown
-                                isOpen={false}
-                                // tslint:disable-next-line: jsx-no-lambda no-empty
-                                toggle={() => {
-                                    // we don't want to do any thing here for now
+    return (
+        <>
+            <div id="filter-panel">
+                {!isChild && (
+                    <>
+                        <p>
+                            <Trans t={t}>Showing reports for:&emsp;</Trans>
+                        </p>
+                        <div className="filters">
+                            <Select
+                                placeholder={t('Select pregnancy')}
+                                options={filterOptions}
+                                value={filterValue}
+                                onChange={(val) => {
+                                    setCurrentSmsChunkIndex(val?.value ?? smsChunks.length - 1);
                                 }}
-                            >
-                                <DropdownToggle variant="success" id="dropdown-basic" caret>
-                                    {t('current nutrition')}
-                                </DropdownToggle>
-                                <DropdownMenu>
-                                    <DropdownItem>{t('current nutrition')}</DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                        ) : (
-                            <Dropdown isOpen={this.state.dropdownOpenPregnancy} toggle={this.togglePregnancyDropDown}>
-                                <DropdownToggle variant="success" id="dropdown-basic" caret>
-                                    <span>
-                                        {this.state.pregnancyDropdownLabel.length
-                                            ? this.state.pregnancyDropdownLabel
-                                            : t('select pregnancy')}
-                                    </span>
-                                </DropdownToggle>
-                                <DropdownMenu>
-                                    {this.getPregnancyStringArray(this.state.pregnancyEventsArray).map(
-                                        (pregnancy, i) => {
-                                            return (
-                                                <DropdownItem
-                                                    onClick={(e) => this.handlePregnancyDropDownClick(e, t)}
-                                                    key={i}
-                                                >
-                                                    {(() => {
-                                                        if (i === 0) {
-                                                            return t('current pregnancy');
-                                                        }
-                                                        const pregnancyIndex =
-                                                            this.getPregnancyStringArray(
-                                                                this.state.pregnancyEventsArray,
-                                                            ).length - i;
-                                                        return t(
-                                                            `${
-                                                                pregnancyIndex + getNumberSuffix(pregnancyIndex)
-                                                            } pregnancy`,
-                                                        );
-                                                    })()}
-                                                </DropdownItem>
-                                            );
-                                        },
-                                    )}
-                                </DropdownMenu>
-                            </Dropdown>
-                        )}
-                    </div>
-                </Row>
-                <Row id="tableRow">
-                    <ListView {...listViewProps} />
-                </Row>
-                <Row id="chart">
-                    <WeightAndHeightChart
-                        weights={
-                            this.getWeightsArray(this.state.pregnancyEventsArray, WEIGHT)[this.state.currentPregnancy]
-                        }
-                        chartWrapperId={this.props.isChild ? t('nutrition-chart') : t('pregnancy-chart')}
-                        title={this.props.isChild ? t('Child Weight Monitoring') : t("Mother's Weight Tracking")}
-                        legendString={this.props.isChild ? t('Child Weight') : t("Mother's Weight")}
-                        units={t('kg')}
-                        xAxisLabel={t('weight')}
-                    />
-                    {this.props.isChild ? (
-                        <WeightAndHeightChart
-                            weights={
-                                this.getWeightsArray(this.state.pregnancyEventsArray, HEIGHT)[
-                                    this.state.currentPregnancy
-                                ]
-                            }
-                            chartWrapperId="nutrition-chart-1"
-                            title={t('Child Height Monitoring')}
-                            legendString={t('Child Height')}
+                                classNamePrefix="patient-details-filters"
+                                isClearable={true}
+                                id="pregnancy-filter"
+                            />
+                        </div>
+                    </>
+                )}
+            </div>
+            <Row id="tableRow">
+                <ListView {...listViewProps} />
+            </Row>
+            {currentSmsDataChunk.length > 0 ? (
+                <div id="chart">
+                    {isChild ? (
+                        <Chart
+                            dataArray={getWeightHeightDataSeries(currentSmsDataChunk, t)}
+                            chartWrapperId="child-nutrition-chart-1"
+                            title={t('Weight Height Monitoring')}
+                            legendString={t('Weight Height')}
                             units={t('cm')}
-                            xAxisLabel={t('height')}
+                            yAxisLabel={t('weight and height')}
                         />
-                    ) : null}
-                </Row>
-            </>
-        );
-    }
+                    ) : (
+                        <>
+                            <Chart
+                                dataArray={getWeightDataSeries(currentSmsDataChunk, t)}
+                                chartWrapperId="weight-chart-1"
+                                title={t('Wight Monitoring')}
+                                legendString={t('Weight')}
+                                units={t('kg')}
+                                yAxisLabel={t('weight')}
+                            />
 
-    private togglePregnancyDropDown = () => {
-        this.setState({
-            dropdownOpenPregnancy: !this.state.dropdownOpenPregnancy,
-        });
-    };
-
-    private handlePregnancyDropDownClick = (e: React.MouseEvent, t: TFunction) => {
-        // here we will take the new index and change the state using that index
-        if ((e.target as HTMLInputElement).innerText === t('current pregnancy')) {
-            this.setState({
-                currentPregnancy: 0,
-                pregnancyDropdownLabel: t('current pregnancy'),
-            });
-        } else {
-            this.setState({
-                currentPregnancy: parseInt((e.target as HTMLInputElement).innerText, 10),
-                pregnancyDropdownLabel: (e.target as HTMLInputElement).innerText,
-            });
-        }
-    };
+                            <Chart
+                                dataArray={getBloodPSeriesForChart(currentSmsDataChunk, t)}
+                                chartWrapperId="blood-pressure"
+                                title="Blood Pressure"
+                                legendString={t('Blood pressure')}
+                                units=""
+                                yAxisLabel={t('Blood Pressure')}
+                            />
+                        </>
+                    )}
+                </div>
+            ) : (
+                <NoRecord message={t('No data found')} />
+            )}
+        </>
+    );
 }
 
-export default withTranslation()(ReportTable);
+ReportTable.defaultProps = defaultProps;
+
+export default ReportTable;
+
+/** filter out sms events that this component need not concern itself with */
+export const filterEventsByType = (smsData: SmsData[], isChild: boolean) => {
+    const lowerCase = (x: string) => x.toLowerCase();
+    const pregnancySmsEventTypes = [BIRTH_REPORT, ANC_REPORT, PREGNANCY_REGISTRATION].map(lowerCase);
+    const nutritionSmsEventTypes = [NUTRITION_REPORT, NUTRITION_REGISTRATION].map(lowerCase);
+    const smsTypesToUse = isChild ? nutritionSmsEventTypes : pregnancySmsEventTypes;
+
+    return smsData.filter((sms) => {
+        return smsTypesToUse.includes(lowerCase(sms.sms_type));
+    });
+};
+
+/** helps chunk and group smsEvents by the pregnancies that they belong to */
+export const chunkByGravida = (smsEvents: SmsData[]) => {
+    const smsChunks: SmsData[][] = [];
+    let chunkIndex = 0;
+    if (!smsEvents.length) {
+        return [[]];
+    }
+
+    smsEvents.forEach((event, idx) => {
+        if (smsChunks[chunkIndex]) {
+            if (
+                event.sms_type === PREGNANCY_REGISTRATION ||
+                (smsChunks[chunkIndex][idx - 1] && // check if same pregnancy based on the gestation period difference.
+                    GESTATION_PERIOD <
+                        Math.abs(Date.parse(event.EventDate) - Date.parse(smsChunks[chunkIndex][idx - 1].EventDate)))
+            ) {
+                chunkIndex += 1;
+                if (!smsChunks[chunkIndex]) {
+                    smsChunks[chunkIndex] = [];
+                }
+                smsChunks[chunkIndex].push(event);
+            } else {
+                smsChunks[chunkIndex].push(event);
+            }
+        } else {
+            smsChunks[chunkIndex] = [];
+            smsChunks[chunkIndex].push(event);
+        }
+    });
+
+    // remove duplicate pregnancy registration chunks with respect to the gestation period
+    const finalChunks = uniqWith(smsChunks, (chunk1, chunk2) => {
+        const pregnancyRegTypeSms1 = chunk1.filter((sms) => sms.sms_type === PREGNANCY_REGISTRATION);
+        const pregnancyRegTypeSms2 = chunk2.filter((sms) => sms.sms_type === PREGNANCY_REGISTRATION);
+        if (pregnancyRegTypeSms1.length && pregnancyRegTypeSms2.length) {
+            return (
+                GESTATION_PERIOD >
+                Math.abs(Date.parse(pregnancyRegTypeSms1[0].EventDate) - Date.parse(pregnancyRegTypeSms2[0].EventDate))
+            );
+        }
+        return false;
+    });
+    return finalChunks;
+};
+
+/** create a chart data series containing the weight and height data series from smsEvents */
+export const getWeightHeightDataSeries = (smsEvents: SmsData[], t: TFunction) => {
+    const categories: string[] = [];
+    const dataSeries: { data: (number | undefined)[]; name: string }[] = [
+        { data: [], name: 'weight' },
+        { data: [], name: 'height' },
+    ];
+    // make sure events are sorted from oldest to latest
+    const sortedSmsEvents = sortByEventDate(smsEvents).reverse();
+
+    for (const data of sortedSmsEvents) {
+        const calendarCategoryObj = {
+            month: new Date(data.event_date).getMonth(),
+            year: new Date(data.event_date).getFullYear(),
+        };
+        if (data.weight && data.height) {
+            categories.push(`${getMonthNames(t)[calendarCategoryObj.month]}/${calendarCategoryObj.year}`);
+            dataSeries[0].data.push(data.weight);
+            dataSeries[1].data.push(data.height);
+        }
+    }
+    return {
+        categories,
+        dataSeries,
+    };
+};
+
+/** create a chart data series containing the weight data series from smsEvents */
+export const getWeightDataSeries = (smsEvents: SmsData[], t: TFunction) => {
+    const dataSeries = getWeightHeightDataSeries(smsEvents, t);
+    const weightDataSeries = {
+        categories: dataSeries.categories,
+        dataSeries: [dataSeries.dataSeries[0]],
+    };
+
+    return weightDataSeries;
+};
+
+/** create a data series containing the diastolic and systolic data series from smsEvents */
+export const getBloodPSeriesForChart = (smsEvents: SmsData[], t: TFunction) => {
+    const categories: string[] = [];
+    const dataSeries: { data: (number | undefined)[]; name: string }[] = [
+        { data: [], name: 'systolic' },
+        { data: [], name: 'diastolic' },
+    ];
+    // make sure events are sorted from oldest to latest
+    const sortedSmsEvents = sortByEventDate(smsEvents).reverse();
+
+    const regex = /\d{2,3}\S{0,3}\d{2,3}/;
+    const singleBpValueRegex = /\d{2,3}/g;
+
+    for (const data of sortedSmsEvents) {
+        const calendarCategoryObj = {
+            month: new Date(data.EventDate).getMonth(),
+            year: new Date(data.EventDate).getFullYear(),
+        };
+        const hasValidBp = regex.test(data.bp);
+        if (!hasValidBp) {
+            continue;
+        }
+        categories.push(`${getMonthNames(t)[calendarCategoryObj.month]}/${calendarCategoryObj.year}`);
+        const matchedValues = [...Array.from(data.bp.matchAll(singleBpValueRegex))];
+
+        dataSeries[0].data.push(Number(matchedValues[0]));
+        dataSeries[1].data.push(Number(matchedValues[1]));
+    }
+    return {
+        categories,
+        dataSeries,
+    };
+};
+
+/** generate filter option filters from chunked smsEvents */
+export const pregnancyOptionsFilter = (chunkedSms: SmsData[][], t: TFunction) => {
+    return chunkedSms.map((_, index) => {
+        const thisOption = {
+            value: index,
+            label: t(`pregnancy ${index + 1}`),
+        };
+        if (index === chunkedSms.length - 1) {
+            thisOption.label = t(`Current Pregnancy`);
+        }
+        return thisOption;
+    });
+};

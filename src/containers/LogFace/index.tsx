@@ -214,7 +214,7 @@ const LogFace = (props: LogFacePropsType) => {
     };
 
     if (broken) {
-        return <ErrorPage title={error?.name} message={error?.message} />; // TODO
+        return <ErrorPage title={error?.name} message={error?.message} />;
     }
 
     if (loading) {

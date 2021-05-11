@@ -1,43 +1,92 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TFunction } from 'i18next';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useLastLocation } from 'react-router-last-location';
-import { Row } from 'reactstrap';
 import { Store } from 'redux';
 import BasicInformation, { LabelValuePair } from '../../components/BasicInformation';
 import ReportTable from '../../components/ReportTable';
-import { BACKPAGE_ICON, FEEDING_CATEGORY, GROWTH_STATUS, NUTRITION_STATUS } from '../../constants';
-import { filterByPatientId, sortByEventDate } from '../../helpers/utils';
-import { getSmsData, SmsData } from '../../store/ducks/sms_events';
+import { BACKPAGE_ICON, COMMUNE, DISTRICT, PROVINCE, VILLAGE } from '../../constants';
+import * as React from 'react';
 import './index.css';
-import React from 'react';
+import { keyBy } from 'lodash';
+import { fetchData, useHandleBrokenPage } from 'helpers/utils';
+import supersetFetch from '../../services/superset';
+import { ErrorPage } from 'components/ErrorPage';
+import Ripple from 'components/page/Loading';
+import { getLocationsOfLevel, Location } from '../../store/ducks/locations';
+import locationsReducer, { reducerName as locationReducerName } from '../../store/ducks/locations';
+import { getSmsDataByFilters } from '../../store/ducks/sms_events';
+import smsReducer, { reducerName as smsReducerName, SmsData } from '../../store/ducks/sms_events';
+import reducerRegistry from '@onaio/redux-reducer-registry';
 
-interface Props extends RouteComponentProps {
-    patientId: string;
-    smsData: SmsData[];
-    isChild: boolean;
+reducerRegistry.register(smsReducerName, smsReducer);
+reducerRegistry.register(locationReducerName, locationsReducer);
+
+interface RouteParams {
+    patient_id: string;
 }
 
-export const PatientDetails = ({ isChild = false, patientId = 'none', smsData = [] }: Props) => {
-    const [filteredData, setFilteredData] = useState<SmsData[]>([]);
-    const { t } = useTranslation();
+interface PatientDetailProps extends RouteComponentProps<RouteParams> {
+    isChild: boolean;
+    smsData: SmsData[];
+    provinces: Location[];
+    districts: Location[];
+    communes: Location[];
+    villages: Location[];
+    supersetService: typeof supersetFetch;
+}
 
+const defaultProps = {
+    smsData: [],
+    isChild: false,
+    provinces: [],
+    districts: [],
+    communes: [],
+    villages: [],
+    supersetService: supersetFetch,
+};
+
+const PatientDetails = (props: PatientDetailProps) => {
+    const { isChild, smsData, communes, villages, districts, provinces, supersetService } = props;
+    const [loading, setLoading] = React.useState(true);
+    const { error, handleBrokenPage, broken } = useHandleBrokenPage();
+    const { t } = useTranslation();
     const lastLocation = useLastLocation();
-    useEffect(() => {
-        setFilteredData(
-            sortByEventDate(
-                filterByPatientId({
-                    patientId,
-                    smsData,
-                }),
-            ),
-        );
-    }, [patientId, smsData]);
+
+    const { patient_id: patientId } = props.match.params;
+
+    React.useEffect(() => {
+        fetchData(supersetService)
+            .catch((err) => {
+                handleBrokenPage(err);
+            })
+            .finally(() => setLoading(false));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    if (loading) {
+        return <Ripple />;
+    }
+
+    if (broken) {
+        return <ErrorPage title={error?.name} message={error?.message} />;
+    }
+
+    const basicInformationValuePairs = getBasicInformationProps(
+        patientId,
+        isChild,
+        smsData,
+        t,
+        communes,
+        districts,
+        villages,
+        provinces,
+    );
+
     return (
         <div className="patient-details">
             <Link to={lastLocation ? lastLocation.pathname : '#'} className="back-page">
@@ -47,127 +96,187 @@ export const PatientDetails = ({ isChild = false, patientId = 'none', smsData = 
             <div id="titleDiv">
                 <h2 id="patients_title">{t('Patient Details')}</h2>
             </div>
-            <Row>
-                <BasicInformation labelValuePairs={getBasicInformationProps(patientId, isChild, filteredData, t)} />
-            </Row>
-            <ReportTable isChild={isChild} singlePatientEvents={filteredData} />
+            <BasicInformation labelValuePairs={basicInformationValuePairs} />
+
+            <ReportTable isChild={isChild} singlePatientEvents={smsData} />
         </div>
     );
 };
+
 function getBasicInformationProps(
     patientId: string,
     isChild: boolean,
-    filteredData: SmsData[],
+    sortedSmsData: SmsData[],
     t: TFunction,
+    communes: Location[],
+    districts: Location[],
+    villages: Location[],
+    provinces: Location[],
 ): LabelValuePair[] {
+    let edd,
+        age,
+        height,
+        weight,
+        firstName,
+        secondName,
+        lastName,
+        gravidity,
+        parity,
+        childRisk,
+        motherRisk,
+        healthInsuranceNum,
+        handWashing,
+        household,
+        toilet,
+        ethnicity,
+        gender,
+        bloodPressure,
+        muac;
+    const defaultNA = t('N/A');
+    const defaultEdd = t('could not find any edd');
+    const defaultAge = defaultNA;
+    const mostRecentReport = sortedSmsData[0];
+
+    if (mostRecentReport.lmp_edd && !edd) {
+        edd = `${mostRecentReport.lmp_edd}`;
+    }
+    if (mostRecentReport.age && !age) {
+        edd = `${mostRecentReport.age}`;
+    }
+    if (mostRecentReport.gravidity && !gravidity) {
+        gravidity = mostRecentReport.gravidity;
+    }
+    if (mostRecentReport.parity && !parity) {
+        parity = mostRecentReport.parity;
+    }
+    if (mostRecentReport.nutrition_status && !childRisk) {
+        childRisk = mostRecentReport.nutrition_status;
+    }
+    if (mostRecentReport.risk_level && !motherRisk) {
+        motherRisk = mostRecentReport.risk_level;
+    }
+    if (mostRecentReport.first_name && !firstName) {
+        firstName = mostRecentReport.first_name;
+    }
+    if (mostRecentReport.second_name && !secondName) {
+        secondName = ` ${mostRecentReport.second_name}`;
+    }
+    if (mostRecentReport.last_name && !lastName) {
+        lastName = ` ${mostRecentReport.last_name}`;
+    }
+    if (mostRecentReport.health_insurance_id && !healthInsuranceNum) {
+        healthInsuranceNum = ` ${mostRecentReport.health_insurance_id}`;
+    }
+    if (mostRecentReport.height && !height) {
+        height = ` ${mostRecentReport.height}`;
+    }
+    if (mostRecentReport.weight && !weight) {
+        weight = ` ${mostRecentReport.weight}`;
+    }
+    if (mostRecentReport.handwashing && !handWashing) {
+        handWashing = ` ${mostRecentReport.handwashing}`;
+    }
+    if (mostRecentReport.household && !household) {
+        household = ` ${mostRecentReport.household}`;
+    }
+    if (mostRecentReport.toilet && !toilet) {
+        toilet = ` ${mostRecentReport.toilet}`;
+    }
+    if (mostRecentReport.ethnicity && !ethnicity) {
+        ethnicity = ` ${mostRecentReport.ethnicity}`;
+    }
+    if (mostRecentReport.gender && !gender) {
+        gender = ` ${mostRecentReport.gender}`;
+    }
+    if (mostRecentReport.muac && !muac) {
+        muac = ` ${mostRecentReport.muac}`;
+    }
+    if (mostRecentReport.bp && !bloodPressure) {
+        bloodPressure = ` ${mostRecentReport.bp}`;
+    }
+
+    const locationPath = getPathFromSupersetLocs(
+        provinces,
+        districts,
+        communes,
+        villages,
+        mostRecentReport.location_id,
+    );
+    const location = locationPath.map((location) => location.location_name).join(', ');
+    const commonLabels = [
+        { label: t('Name'), value: `${firstName ?? ''}${secondName ?? ''}${lastName ?? ''}` },
+        { label: t('Patient ID'), value: patientId },
+        { label: t('Age'), value: age ?? defaultAge },
+        { label: t('Location'), value: location ?? defaultNA },
+        { label: t('Current Weight'), value: weight ?? defaultNA },
+        { label: t('Current Height'), value: height ?? defaultNA },
+        { label: t('Health Insurance number'), value: healthInsuranceNum ?? defaultNA },
+        { label: t('Household Type'), value: household ?? defaultNA },
+        { label: t('Ethnicity'), value: ethnicity ?? defaultNA },
+        { label: t('HandWashing'), value: handWashing ?? defaultNA },
+        { label: t('Toilet'), value: toilet ?? defaultNA },
+    ];
     const basicInformationProps = !isChild
         ? ([
-              { label: t('ID'), value: patientId },
-              { label: t('Location'), value: getCurrentLocation(filteredData, t) },
-              { label: t('Current Gravidity'), value: getCurrentGravidity(filteredData) },
-              { label: t('Current EDD'), value: getCurrentEdd(filteredData, t) },
-              { label: t('Current Parity'), value: getCurrenParity(filteredData) },
-              { label: t('Previous Pregnancy Risk'), value: getPreviousPregnancyRisk(filteredData, t) },
+              ...commonLabels,
+              { label: t('Current Blood Pressure'), value: bloodPressure ?? defaultNA },
+              { label: t('Current Gravidity'), value: gravidity ?? defaultNA },
+              { label: t('Current EDD'), value: edd ?? defaultEdd },
+              { label: t('Current Parity'), value: parity ?? defaultNA },
+              { label: t('Previous Pregnancy Risk'), value: motherRisk ?? defaultNA },
           ] as LabelValuePair[])
         : ([
-              { label: t('Age'), value: getAge(filteredData) },
-              { label: t('ID'), value: patientId },
-              { label: t('Could not find any risk categorization'), value: getNutritionStatus(filteredData, t) },
-              { label: t('Location of residence'), value: getCurrentLocation(filteredData, t) },
+              ...commonLabels,
+              { label: t('Current MUAC'), value: muac ?? defaultNA },
+              { label: t('Gender'), value: gender ?? defaultNA },
+              { label: t('risk categorization'), value: childRisk ?? defaultNA },
           ] as LabelValuePair[]);
     return basicInformationProps;
 }
 
-function getCurrentEdd(filteredData: SmsData[], t: TFunction): string {
-    const reversedFilteredData: SmsData[] = [...filteredData];
-    reversedFilteredData.reverse();
-    for (const data in reversedFilteredData) {
-        if (reversedFilteredData[data].lmp_edd) {
-            return `${reversedFilteredData[data].lmp_edd}`;
-        }
-    }
-    return t('could not find any edd');
-}
+/** returns location path starting with the smallest level i.e village to province */
+export const getPathFromSupersetLocs = (
+    provinces: Location[],
+    district: Location[],
+    commune: Location[],
+    village: Location[],
+    location_id: string,
+) => {
+    // TODO this locations do not need be different locations arrays
+    const provincesById = keyBy(provinces, (location) => location.location_id);
+    const districtById = keyBy(district, (location) => location.location_id);
+    const communeByID = keyBy(commune, (location) => location.location_id);
+    const villageById = keyBy(village, (location) => location.location_id);
 
-function getAge(filteredData: SmsData[]): string {
-    const reversedFilteredData: SmsData[] = [...filteredData];
-    reversedFilteredData.reverse();
-    for (const data in reversedFilteredData) {
-        if (reversedFilteredData[data].age) {
-            return reversedFilteredData[data].age;
-        }
-    }
-    return '0';
-}
+    const path = [];
+    const thisVillage = villageById[location_id];
+    path.push(thisVillage);
+    const thisCommune = communeByID[thisVillage?.parent_id];
+    path.push(thisCommune);
+    const thisDistrict = districtById[thisCommune?.parent_id];
+    path.push(thisDistrict);
+    const thisProvince = provincesById[thisDistrict?.parent_id];
+    path.push(thisProvince);
+    return path.filter((location) => !!location);
+};
 
-function getNutritionStatus(filteredData: SmsData[], t: TFunction): string {
-    const reversedFilteredData: SmsData[] = [...filteredData];
-    reversedFilteredData.reverse();
-    const statusFields: string[] = [NUTRITION_STATUS, GROWTH_STATUS, FEEDING_CATEGORY];
-    for (const data in reversedFilteredData) {
-        if (reversedFilteredData[data]) {
-            for (const field in statusFields) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                if ((reversedFilteredData[data] as never)[statusFields[field]]) {
-                    return (reversedFilteredData[data] as never)[statusFields[field]];
-                }
-            }
-        }
-    }
-    return t('no risk category');
-}
+PatientDetails.defaultProps = defaultProps;
+export { PatientDetails };
 
-function getCurrentGravidity(filteredData: SmsData[]): number {
-    const reversedFilteredData: SmsData[] = [...filteredData];
-    reversedFilteredData.reverse();
-    for (const data in reversedFilteredData) {
-        if (reversedFilteredData[data].gravidity) {
-            return reversedFilteredData[data].gravidity;
-        }
-    }
-    return 0;
-}
+const getSmsData = getSmsDataByFilters();
 
-function getCurrenParity(filteredData: SmsData[]): number {
-    const reversedFilteredData: SmsData[] = [...filteredData];
-    reversedFilteredData.reverse();
-    for (const data in reversedFilteredData) {
-        if (reversedFilteredData[data].parity) {
-            return reversedFilteredData[data].parity;
-        }
-    }
-    return 0;
-}
-
-function getCurrentLocation(filteredData: SmsData[], t: TFunction): string {
-    const reversedFilteredData: SmsData[] = [...filteredData];
-    reversedFilteredData.reverse();
-    for (const data in reversedFilteredData) {
-        if (reversedFilteredData[data].health_worker_location_name) {
-            return reversedFilteredData[data].health_worker_location_name;
-        }
-    }
-    return t('could not find any location');
-}
-
-function getPreviousPregnancyRisk(filteredData: SmsData[], t: TFunction): string {
-    const reversedFilteredData: SmsData[] = [...filteredData];
-    reversedFilteredData.reverse();
-    if (reversedFilteredData[1]) {
-        return reversedFilteredData[1].logface_risk;
-    }
-    return t('no risk');
-}
-
-type RouterProps = RouteComponentProps<{
-    patient_id: string;
-}> & { isChild: boolean };
-
-const mapStateToProps = (state: Partial<Store>, ownProps: RouterProps) => {
-    return {
-        isChild: ownProps.isChild,
+type MapStateToProps = Pick<PatientDetailProps, 'smsData' | 'communes' | 'districts' | 'provinces' | 'villages'>;
+const mapStateToProps = (state: Partial<Store>, ownProps: PatientDetailProps): MapStateToProps => {
+    const filters = {
         patientId: ownProps.match.params.patient_id,
-        smsData: getSmsData(state),
+    };
+    const smsData = getSmsData(state, filters);
+    return {
+        smsData,
+        communes: getLocationsOfLevel(state, COMMUNE),
+        districts: getLocationsOfLevel(state, DISTRICT),
+        provinces: getLocationsOfLevel(state, PROVINCE),
+        villages: getLocationsOfLevel(state, VILLAGE),
     };
 };
 

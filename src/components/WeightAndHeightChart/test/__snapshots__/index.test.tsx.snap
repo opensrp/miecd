@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`WeightAndHeightChart must render correctly 1`] = `
+exports[`Chart must render correctly 1`] = `
 <div
   id="wrapper-id"
 />

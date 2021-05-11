@@ -7,30 +7,16 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { act } from 'react-dom/test-utils';
-import WeightAndHeightChart from '..';
+import { Chart } from '..';
 import store from '../../../store/index';
-import { WeightMonthYear } from '../../ReportTable';
 import { chartArgument } from './fixtures';
 
 const history = createBrowserHistory();
 
-const weights = [
-    {
-        month: 20,
-        weight: 10,
-        year: 2019,
-    },
-    {
-        month: 8,
-        weight: 10,
-        year: 2019,
-    },
-    {
-        month: 28,
-        weight: 9,
-        year: 2019,
-    },
-] as WeightMonthYear[];
+const weights = {
+    categories: ['20/2019', '8/2019', '28/2019'],
+    dataSeries: [{ data: [10, 10, 9], name: 'Weights' }],
+};
 
 const defaultProps = {
     chartWrapperId: 'wrapper-id',
@@ -40,20 +26,20 @@ const defaultProps = {
     xAxisLabel: 'x axis label',
 };
 
-describe('WeightAndHeightChart', () => {
+describe('Chart', () => {
     beforeEach(() => {
         jest.resetAllMocks();
     });
     // eslint-disable-next-line jest/expect-expect
     it('must render without crashing', () => {
-        shallow(<WeightAndHeightChart weights={weights} {...defaultProps} />);
+        shallow(<Chart dataArray={weights} {...defaultProps} />);
     });
 
     it('must render correctly', () => {
         const wrapper = mount(
             <Provider store={store}>
                 <Router history={history}>
-                    <WeightAndHeightChart weights={weights} {...defaultProps} />
+                    <Chart dataArray={weights} {...defaultProps} />
                 </Router>
             </Provider>,
         );
@@ -77,7 +63,7 @@ describe('WeightAndHeightChart', () => {
         const wrapper = mount(
             <Provider store={store}>
                 <Router history={history}>
-                    <WeightAndHeightChart weights={weights} {...defaultProps} />
+                    <Chart dataArray={weights} {...defaultProps} />
                 </Router>
             </Provider>,
             { attachTo: div },
