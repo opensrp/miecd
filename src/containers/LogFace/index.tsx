@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import superset from '@onaio/superset-connector';
 import { map } from 'lodash';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
@@ -12,21 +11,15 @@ import { Table } from 'reactstrap';
 import Ripple from '../../components/page/Loading';
 import { PaginationData, Paginator, PaginatorProps } from '../../components/Paginator';
 import RiskColoring from '../../components/RiskColoring';
-import {
-    GET_FORM_DATA_ROW_LIMIT,
-    SUPERSET_FETCH_TIMEOUT_INTERVAL,
-    SUPERSET_PREGNANCY_DATA_EXPORT,
-} from '../../configs/env';
+import { SUPERSET_PREGNANCY_DATA_EXPORT } from '../../configs/env';
 import { LogFaceModules, LogFaceSliceByModule, riskCategories, SmsTypes } from '../../configs/settings';
 import {
     DEFAULT_NUMBER_OF_LOGFACE_ROWS,
-    EVENT_ID,
     LOCATION_FILTER_PARAM,
     NBC_AND_PNC,
     NBC_AND_PNC_LOGFACE_URL,
     NUTRITION,
     NUTRITION_LOGFACE_URL,
-    NUTRITION_MODULE,
     PREGNANCY,
     PREGNANCY_LOGFACE_URL,
     PREGNANCY_MODULE,
@@ -37,11 +30,11 @@ import {
 import {
     fetchData,
     getLinkToPatientDetail,
-    toastToError,
     useHandleBrokenPage,
     parseMessage,
     formatAge,
     logFaceSupersetCall,
+    getRiskCatFilter,
 } from '../../helpers/utils';
 import supersetFetch from '../../services/superset';
 import {
@@ -156,32 +149,6 @@ const LogFace = (props: LogFacePropsType) => {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchLogFaceSmsCreator, module, supersetService, supersetSlice]);
-
-    useEffect(() => {
-        const intervalId: NodeJS.Timeout = setInterval(() => {
-            // pick the largest ID if this smsDataInDescendingOrderByEventId list is not empty
-            if (smsData.length) {
-                const largestEventID: string = smsData[0].event_id;
-                const supersetParams = superset.getFormData(GET_FORM_DATA_ROW_LIMIT, [
-                    { comparator: largestEventID, operator: '>', subject: EVENT_ID },
-                ]);
-                logFaceSupersetCall(
-                    module,
-                    supersetSlice,
-                    fetchLogFaceSmsCreator,
-                    supersetService,
-                    supersetParams,
-                ).catch((err) => {
-                    toastToError(err.Message);
-                });
-            }
-        }, SUPERSET_FETCH_TIMEOUT_INTERVAL);
-        return () => {
-            if (intervalId) {
-                clearInterval(intervalId);
-            }
-        };
-    }, [fetchLogFaceSmsCreator, module, smsData, supersetService, supersetSlice]);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const { t } = useTranslation();
@@ -317,7 +284,10 @@ const LogFace = (props: LogFacePropsType) => {
                                                         getModuleLogFaceUrlLink(module),
                                                     )}
                                                 >
-                                                    <RiskColoring {...{ risk: (dataObj as Dictionary).risk_level }} />
+                                                    <RiskColoring
+                                                        risk={dataObj.risk_level}
+                                                        displayValue={dataObj.logface_risk}
+                                                    />
                                                 </Link>
                                             </td>
                                         </tr>
@@ -373,16 +343,15 @@ const nodeSelector = getNodesByNameOrId();
 const userHierarchySelector = getTreesByIds();
 
 const mapStateToProps = (state: Partial<Store>, ownProps: LogFacePropsType): MapStateToProps => {
-    const riskAccessor = ownProps.module === NUTRITION_MODULE ? 'nutrition_status' : 'risk_level';
-
     const userLocationIdFilter = getQueryParams(ownProps.location)[LOCATION_FILTER_PARAM] as string;
     const riskCategoryFilter = getQueryParams(ownProps.location)[RISK_CATEGORY_FILTER_PARAM] as string;
     const smsTypeFilter = getQueryParams(ownProps.location)[SMS_TYPE_FILTER_PARAM] as string;
     const searchFilter = getQueryParams(ownProps.location)[SEARCH_FILTER_PARAM] as string;
     const userLocationNode = nodeSelector(state, { searchQuery: userLocationIdFilter })[0] as TreeNode | undefined;
+
     const filteredSmsData = selectSmsData(state, {
         locationNode: userLocationNode,
-        riskCategory: { accessor: riskAccessor, filterValue: riskCategoryFilter },
+        riskCategory: getRiskCatFilter(ownProps.module, riskCategoryFilter),
         smsTypes: smsTypeFilter ? [smsTypeFilter] : undefined,
         searchFilter,
         module: ownProps.module,
