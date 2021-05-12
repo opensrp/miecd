@@ -641,7 +641,7 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
                                             <tr>
                                                 <th className="default-width" />
                                                 <th className="default-width">{t('Red Alert')}</th>
-                                                <th className="default-width">{t('risk')}</th>
+                                                <th className="default-width">{t('Risk')}</th>
                                                 <th className="default-width">{t('No Risk')}</th>
                                                 <th className="default-width totals">{t('Total')}</th>
                                             </tr>
