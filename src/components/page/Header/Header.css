@@ -80,6 +80,10 @@
     justify-content: center;
 }
 
+.ml-auto .nav-link {
+    font-size: 1.3rem;
+}
+
 @media screen and (min-width: 480px) {
     .navbar-expand-md .navbar-collapse {
         display: flex;
