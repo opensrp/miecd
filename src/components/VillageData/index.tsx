@@ -77,7 +77,7 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                                             </th>
                                             <th className="default-width">{t('EDD')}</th>
                                             <th className="default-width">{t('Planned Delivery Location')}</th>
-                                            <th className="default-width">{t('Risk category')}</th>
+                                            <th className="default-width">{t('Risk Category')}</th>
                                         </tr>
                                     ) : null}
 
@@ -86,8 +86,8 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                                         <tr>
                                             <th className="default-width">{t('Patient ID')}</th>
                                             <th className="default-width">{t('Age')}</th>
-                                            <th className="default-width">{t('Location of Residence')}</th>
-                                            <th className="default-width">{t('Risk category')}</th>
+                                            <th className="default-width">{t('Location Of Residence')}</th>
+                                            <th className="default-width">{t('Risk Category')}</th>
                                         </tr>
                                     ) : null}
 
@@ -95,11 +95,11 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                                     {this.props.module === NBC_AND_PNC_CHILD ? (
                                         <tr>
                                             <th className="default-width">{t('Patient ID')}</th>
-                                            <th className="default-width">{t('Days since birth')}</th>
-                                            <th className="default-width">{t('Location of Residence')}</th>
-                                            <th className="default-width">{t('Current symptoms')}</th>
-                                            <th className="default-width">{t('Location of birth')}</th>
-                                            <th className="default-width">{t('Risk category')}</th>
+                                            <th className="default-width">{t('Days Since Birth')}</th>
+                                            <th className="default-width">{t('Location Of Residence')}</th>
+                                            <th className="default-width">{t('Current Symptoms')}</th>
+                                            <th className="default-width">{t('Location Of Birth')}</th>
+                                            <th className="default-width">{t('Risk Category')}</th>
                                         </tr>
                                     ) : null}
 
@@ -108,13 +108,13 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                                         <tr>
                                             <th className="default-width">{t('Patient ID')}</th>
                                             <th className="default-width">{t('Age')}</th>
-                                            <th className="default-width">{t('Location of Residence')}</th>
-                                            <th className="default-width">{t('Current symptoms')}</th>
+                                            <th className="default-width">{t('Location Of Residence')}</th>
+                                            <th className="default-width">{t('Current Symptoms')}</th>
                                             <th className="default-width">
                                                 {t('Previous Risks / Existing Medical Conditions')}
                                             </th>
-                                            <th className="default-width">{t('Location of birth')}</th>
-                                            <th className="default-width">{t('Risk category')}</th>
+                                            <th className="default-width">{t('Location Of Birth')}</th>
+                                            <th className="default-width">{t('Risk Category')}</th>
                                         </tr>
                                     ) : null}
                                 </thead>
