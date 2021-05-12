@@ -44,6 +44,7 @@ import {
     OPENSRP_USER_URL,
     PREGNANCY_LOGFACE_SLICE,
 } from './env';
+import { Dictionary } from 'helpers/utils';
 
 /** Authentication Configs */
 export const providers: Providers = {
@@ -79,26 +80,6 @@ export const toastConfig = {
         minWidth: '250px',
     },
     duration: 2000,
-};
-
-// Risk categories in the logface component
-export const riskCategories = (t: TFunction) => {
-    const sharedRiskCats = [
-        { label: t('Red alert'), value: 'red_alert', color: RED },
-        { label: t('Risk'), value: 'risk', color: YELLOW },
-        { label: t('No risk'), value: 'no_risk', color: GREEN },
-    ];
-
-    return {
-        [PREGNANCY_MODULE]: sharedRiskCats,
-        [NBC_AND_PNC_MODULE]: sharedRiskCats,
-        [NUTRITION_MODULE]: [
-            { label: t('Stunting'), value: 'stunting' },
-            { label: t('Wasting'), value: 'wasting' },
-            { label: t('Overweight'), value: 'overweight' },
-            { label: t('Inappropriate Feeding'), value: 'inappropriate_feeding' },
-        ],
-    };
 };
 
 export const SmsTypes = [
@@ -169,4 +150,94 @@ export const LogFaceSliceByModule: { [key in LogFaceModules]: string } = {
     [PREGNANCY_MODULE]: PREGNANCY_LOGFACE_SLICE,
     [NUTRITION_MODULE]: NUTRITION_LOGFACE_SLICE,
     [NBC_AND_PNC_MODULE]: NBC_AND_PNC_LOGFACE_SLICE,
+};
+
+/** Factory function for lookup object dictates how the Nutrition risk filters will be done
+ * what accessor/column is checked and what value(s) should be matched against
+ */
+export const nutritionModuleRiskFilterLookup = (t: TFunction) => {
+    return {
+        stunting: {
+            label: t('Stunting'),
+            accessor: 'growth_status',
+            filterValue: ['stunted'],
+        },
+        wasting: {
+            label: t('Wasting'),
+            accessor: 'nutrition_status',
+            filterValue: ['severe wasting'],
+        },
+        overweight: {
+            label: t('Overweight'),
+            accessor: 'nutrition_status',
+            filterValue: ['overweight'],
+        },
+        inappropriateFeeding: {
+            label: t('Inappropriate Feeding'),
+            accessor: 'feeding_category',
+            filterValue: ['inappropriately fed'],
+        },
+        underweight: {
+            label: t('Underweight'),
+            accessor: 'nutrition_status',
+            filterValue: ['underweight'],
+        },
+        normal: {
+            label: t('normal'),
+            accessor: 'nutrition_status',
+            filterValue: ['normal'],
+        },
+    };
+};
+
+/** Factory function for lookup object dictates how the Pregnancy risk filters will be done
+ * what accessor/column is checked and what value(s) should be matched against
+ */
+export const pregnancyModuleRiskFilterLookup = (t: TFunction) => {
+    return {
+        risk: {
+            label: t('Risk'),
+            accessor: 'risk_level',
+            filterValue: ['low', 'high', 'risk'],
+            color: YELLOW,
+        },
+        redAlert: {
+            label: t('Red alert'),
+            accessor: 'risk_level',
+            filterValue: ['risk_alert'],
+            color: RED,
+        },
+        noRisk: {
+            label: t('No risk'),
+            accessor: 'risk_level',
+            filterValue: ['no_risk'],
+            color: GREEN,
+        },
+    };
+};
+
+/** factory util to generate a lookup object for
+ * - know how to apply color style and label to RiskColoring in the logFace views
+ * - know how to filter smsEvents with respect to selected risk filter and the module in log face views
+ */
+export const riskCategories = (t: TFunction) => {
+    /** helps convert to a format that is easy to parse when creating select options */
+    const convertToOptions = (category: Dictionary<Dictionary<string | string[]>>) => {
+        const options = [];
+        for (const key in category) {
+            options.push({ color: category[key].color, label: category[key].label, value: key } as Dictionary<string>);
+        }
+        return options;
+    };
+    const pregnancyCats = pregnancyModuleRiskFilterLookup(t);
+    const nutritionCategories = nutritionModuleRiskFilterLookup(t);
+
+    const sharedRiskCats = convertToOptions(pregnancyCats);
+    const nutritionCats = convertToOptions(nutritionCategories);
+
+    return {
+        [PREGNANCY_MODULE]: sharedRiskCats,
+        [NBC_AND_PNC_MODULE]: sharedRiskCats,
+        [NUTRITION_MODULE]: nutritionCats,
+    };
 };
