@@ -24,10 +24,22 @@ exports[`containers/LogFace extended filters work correctly for Nutrition: risk 
     Overweight
   </option>
   <option
-    key="inappropriate_feeding"
-    value="inappropriate_feeding"
+    key="inappropriateFeeding"
+    value="inappropriateFeeding"
   >
     Inappropriate Feeding
+  </option>
+  <option
+    key="underweight"
+    value="underweight"
+  >
+    Underweight
+  </option>
+  <option
+    key="normal"
+    value="normal"
+  >
+    normal
   </option>
 </select>
 `;
@@ -186,20 +198,20 @@ exports[`containers/LogFace extended filters work correctly for pregnancy: risk 
   onChange={[Function]}
 >
   <option
-    key="red_alert"
-    value="red_alert"
-  >
-    Red alert
-  </option>
-  <option
     key="risk"
     value="risk"
   >
     Risk
   </option>
   <option
-    key="no_risk"
-    value="no_risk"
+    key="redAlert"
+    value="redAlert"
+  >
+    Red alert
+  </option>
+  <option
+    key="noRisk"
+    value="noRisk"
   >
     No risk
   </option>
@@ -222,16 +234,16 @@ Array [
       options={
         Array [
           Object {
-            "label": "Red alert",
-            "value": "red_alert",
-          },
-          Object {
             "label": "Risk",
             "value": "risk",
           },
           Object {
+            "label": "Red alert",
+            "value": "redAlert",
+          },
+          Object {
             "label": "No risk",
-            "value": "no_risk",
+            "value": "noRisk",
           },
         ]
       }
@@ -242,20 +254,20 @@ Array [
         onChange={[Function]}
       >
         <option
-          key="red_alert"
-          value="red_alert"
-        >
-          Red alert
-        </option>
-        <option
           key="risk"
           value="risk"
         >
           Risk
         </option>
         <option
-          key="no_risk"
-          value="no_risk"
+          key="redAlert"
+          value="redAlert"
+        >
+          Red alert
+        </option>
+        <option
+          key="noRisk"
+          value="noRisk"
         >
           No risk
         </option>
@@ -11971,19 +11983,20 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
               onClick={[Function]}
             >
               <RiskColoring
+                displayValue="low"
                 risk="low"
               >
                 <span
                   className="badge"
                   style={
                     Object {
-                      "backgroundColor": "#6c757d",
+                      "backgroundColor": "#ffc107",
                     }
                   }
                 >
                   <div>
                     <p>
-                      Not set
+                      low
                     </p>
                   </div>
                 </span>
@@ -12076,6 +12089,7 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
               onClick={[Function]}
             >
               <RiskColoring
+                displayValue="Not Set"
                 risk=" NULL"
               >
                 <span
@@ -12088,7 +12102,7 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
                 >
                   <div>
                     <p>
-                      Not set
+                      Not Set
                     </p>
                   </div>
                 </span>
@@ -12191,6 +12205,7 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
               onClick={[Function]}
             >
               <RiskColoring
+                displayValue="Not Set"
                 risk=" NULL"
               >
                 <span
@@ -12203,7 +12218,7 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
                 >
                   <div>
                     <p>
-                      Not set
+                      Not Set
                     </p>
                   </div>
                 </span>
@@ -12306,6 +12321,7 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
               onClick={[Function]}
             >
               <RiskColoring
+                displayValue="Not Set"
                 risk=" NULL"
               >
                 <span
@@ -12318,7 +12334,7 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
                 >
                   <div>
                     <p>
-                      Not set
+                      Not Set
                     </p>
                   </div>
                 </span>
@@ -12411,6 +12427,7 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
               onClick={[Function]}
             >
               <RiskColoring
+                displayValue="Not Set"
                 risk=" NULL"
               >
                 <span
@@ -12423,7 +12440,7 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
                 >
                   <div>
                     <p>
-                      Not set
+                      Not Set
                     </p>
                   </div>
                 </span>

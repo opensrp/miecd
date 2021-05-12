@@ -213,12 +213,12 @@ describe('containers/LogFace extended', () => {
         expect(toJson(wrapper.find('#risk-filter select'))).toMatchSnapshot('risk filter');
 
         // change risk level
-        wrapper.find('#risk-filter select').simulate('change', { target: { value: 'red_alert', name: 'Red alert' } });
+        wrapper.find('#risk-filter select').simulate('change', { target: { value: 'redAlert', name: 'Red alert' } });
         wrapper.update();
 
         // check url changed correctly
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
-            '?search=100&riskCategory=red_alert',
+            '?search=100&riskCategory=redAlert',
         );
 
         // just checking that there were some events filtered out.
@@ -232,7 +232,7 @@ describe('containers/LogFace extended', () => {
 
         // check url changed correctly
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
-            '?search=100&riskCategory=red_alert&smsType=Birth%20Report',
+            '?search=100&riskCategory=redAlert&smsType=Birth%20Report',
         );
 
         // just checking that there were some events filtered out.
@@ -247,7 +247,7 @@ describe('containers/LogFace extended', () => {
 
         // check url changed correctly
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
-            '?search=100&riskCategory=red_alert&smsType=Birth%20Report&locationSearch=eccfe905-0e03-4188-98bc-22f141cccd0e',
+            '?search=100&riskCategory=redAlert&smsType=Birth%20Report&locationSearch=eccfe905-0e03-4188-98bc-22f141cccd0e',
         );
         wrapper.unmount();
     });
