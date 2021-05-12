@@ -300,7 +300,7 @@ export function getFilterArgs(state: Partial<Store>): SmsFilterFunction[] {
 }
 
 export interface RiskCategoryFilter {
-    accessor: keyof NutritionLogFaceSms | keyof BaseLogFaceSms;
+    accessor: string;
     filterValue: string;
 }
 
@@ -366,7 +366,7 @@ export const getSmsDataByRiskCat = () =>
             return smsData;
         }
         const { accessor, filterValue } = riskCategory;
-        return smsData.filter((sms) => sms[accessor] === filterValue);
+        return smsData.filter((sms) => (sms as Dictionary)[accessor] === filterValue);
     });
 
 /** filter sms' by their types */
