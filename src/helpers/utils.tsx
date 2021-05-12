@@ -9,7 +9,12 @@ import {
     SUPERSET_SMS_DATA_SLICE,
     USER_LOCATION_DATA_SLICE,
 } from '../configs/env';
-import { LogFaceModules, toastConfig } from '../configs/settings';
+import {
+    LogFaceModules,
+    nutritionModuleRiskFilterLookup,
+    pregnancyModuleRiskFilterLookup,
+    toastConfig,
+} from '../configs/settings';
 import {
     CHILD_PATIENT_DETAIL,
     COMMUNE,
@@ -25,6 +30,7 @@ import {
     NBC_AND_PNC_WOMAN,
     NUTRITION,
     NUTRITION_COMPARTMENTS_URL,
+    NUTRITION_MODULE,
     OPENSRP_SECURITY_AUTHENTICATE,
     PATIENT_DETAIL,
     PREGNANCY,
@@ -705,4 +711,21 @@ export async function logFaceSupersetCall<TAction, TResponse>(
         .catch((error) => {
             throw error;
         });
+}
+
+export function getRiskCatFilter(module: string, riskFilterValue?: string) {
+    if (!riskFilterValue) {
+        return;
+    }
+    const mockTranslatorFunction = (t: string) => t;
+    const pregnancyCats = pregnancyModuleRiskFilterLookup(mockTranslatorFunction);
+    const nutritionCategories = nutritionModuleRiskFilterLookup(mockTranslatorFunction);
+    let categoryToUse: Dictionary<Dictionary<string | string[]>> = pregnancyCats;
+    if (module === NUTRITION_MODULE) {
+        categoryToUse = nutritionCategories;
+    }
+    return {
+        accessor: categoryToUse[riskFilterValue].accessor as string,
+        filterValue: categoryToUse[riskFilterValue].filterValue as string[],
+    };
 }
