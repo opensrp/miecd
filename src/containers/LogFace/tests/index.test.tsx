@@ -8,7 +8,7 @@ import { NUTRITION_MODULE, PREGNANCY, PREGNANCY_LOGFACE_URL, PREGNANCY_MODULE } 
 import { mountWithTranslations } from '../../../helpers/testUtils';
 import store from '../../../store';
 import reducer, { clearLocationSlice, fetchUserLocations, reducerName } from '../../../store/ducks/locations';
-import { LogFaceModules, LogFaceSmsType, RemoveLogFaceSms, removeSms } from '../../../store/ducks/sms_events';
+import { LogFaceSmsType, RemoveLogFaceSms, removeSms } from '../../../store/ducks/sms_events';
 import { userLocations } from './userLocationFixtures';
 import { act } from 'react-dom/test-utils';
 import * as securityAuthenticate from '../../../store/ducks/tests/fixtures/securityAuthenticate.json';
@@ -16,6 +16,7 @@ import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom';
 import { nutritionSmsFixtures, PregnancyReportFixture } from 'store/ducks/tests/fixtures';
 import { Dictionary } from '@onaio/utils/dist/types/index';
 import React from 'react';
+import { LogFaceModules } from '../../../configs/settings';
 
 reducerRegistry.register(reducerName, reducer);
 

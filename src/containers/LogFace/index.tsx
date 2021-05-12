@@ -17,7 +17,7 @@ import {
     SUPERSET_FETCH_TIMEOUT_INTERVAL,
     SUPERSET_PREGNANCY_DATA_EXPORT,
 } from '../../configs/env';
-import { LogFaceSliceByModule, riskCategories, SmsTypes } from '../../configs/settings';
+import { LogFaceModules, LogFaceSliceByModule, riskCategories, SmsTypes } from '../../configs/settings';
 import {
     DEFAULT_NUMBER_OF_LOGFACE_ROWS,
     EVENT_ID,
@@ -58,7 +58,6 @@ import locationsReducer, { reducerName as locationReducerName } from '../../stor
 import {
     fetchLogFaceSms,
     getSmsDataByFilters,
-    LogFaceModules,
     LogFaceSmsType,
     removeFilterArgs as removeFilterArgsActionCreator,
 } from '../../store/ducks/sms_events';
