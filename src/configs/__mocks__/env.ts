@@ -113,6 +113,12 @@ export const SUPERSET_PREGNANCY_DATA_EXPORT =
     'https://discover.ona.io/superset/explore_json/?form_data={"slice_id":2263}&csv=true';
 
 // slice IDs
+export const PREGNANCY_LOGFACE_SLICE = 'pregnancyLogface';
+
+export const NBC_AND_PNC_LOGFACE_SLICE = 'nbcPncLogFace';
+
+export const NUTRITION_LOGFACE_SLICE = 'nutritionLogface';
+
 export const PROVINCE_SLICE = 'province';
 
 export const DISTRICT_SLICE = 'district';
