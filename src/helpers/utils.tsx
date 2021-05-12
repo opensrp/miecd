@@ -47,7 +47,7 @@ import {
     UserLocation,
     userLocationDataFetched,
 } from '../store/ducks/locations';
-import { fetchSms, SmsData, smsDataFetched } from '../store/ducks/sms_events';
+import { fetchSms, LogFaceModules, LogFaceSmsType, SmsData, smsDataFetched } from '../store/ducks/sms_events';
 import { Dictionary } from '@onaio/utils';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
@@ -56,6 +56,8 @@ import { fetchTree } from '../store/ducks/locationHierarchy';
 import { split, trim, replace } from 'lodash';
 import * as React from 'react';
 import { TFunction } from 'i18next';
+import { ActionCreator } from 'redux';
+import { SupersetFormData } from '@onaio/superset-connector/dist/types';
 export type { Dictionary };
 
 /** Custom function to get oAuth user info depending on the oAuth2 provider
@@ -472,7 +474,7 @@ export function getLinkToHierarchicalDataTable(
  * @param {SmsData} smsData - an object representing a single smsEvent
  * @param {string} prependWith- the url we want to prepend this link/string with.
  */
-export function getLinkToPatientDetail(smsData: SmsData, prependWith: string) {
+export function getLinkToPatientDetail(smsData: LogFaceSmsType, prependWith: string) {
     if (smsData.client_type === EC_CHILD) {
         return `${prependWith}/${CHILD_PATIENT_DETAIL}/${smsData.anc_id}`;
     }
@@ -684,3 +686,30 @@ export const formatAge = (ageString: string, t: TFunction) => {
     }
     return `${age.years} ${t('age.years')}`;
 };
+
+/** abstracts code that actually makes the superset Call since it is quite similar
+ * @param supersetSlice - slice string
+ * @param actionCreator - redux action creator
+ * @param supersetService - the supersetService
+ * @param supersetOptions - adhoc filters for superset call
+ */
+export async function logFaceSupersetCall<TAction, TResponse>(
+    module: LogFaceModules,
+    supersetSlice: string,
+    actionCreator: ActionCreator<TAction>,
+    supersetService: typeof supersetFetch = supersetFetch,
+    supersetOptions: SupersetFormData | null = null,
+) {
+    const asyncOperation = supersetOptions
+        ? supersetService(supersetSlice, supersetOptions)
+        : supersetService(supersetSlice);
+    return asyncOperation
+        .then((result: TResponse[] | undefined) => {
+            if (result) {
+                actionCreator(result, module);
+            }
+        })
+        .catch((error) => {
+            throw error;
+        });
+}

@@ -30,6 +30,8 @@ import {
     DOMAIN_NAME,
     ENABLE_ONADATA_OAUTH,
     ENABLE_OPENSRP_OAUTH,
+    NBC_AND_PNC_LOGFACE_SLICE,
+    NUTRITION_LOGFACE_SLICE,
     ONADATA_ACCESS_TOKEN_URL,
     ONADATA_AUTHORIZATION_URL,
     ONADATA_CLIENT_ID,
@@ -40,8 +42,10 @@ import {
     OPENSRP_CLIENT_ID,
     OPENSRP_OAUTH_STATE,
     OPENSRP_USER_URL,
+    PREGNANCY_LOGFACE_SLICE,
 } from './env';
 import { Dictionary } from '@onaio/utils';
+import { LogFaceModules } from 'store/ducks/sms_events';
 
 /** Authentication Configs */
 export const providers: Providers = {
@@ -165,4 +169,10 @@ export const logFaceSmsTypesByModule: Dictionary<string[]> = {
     [PREGNANCY_MODULE]: pregnancySmsTypes,
     [NBC_AND_PNC_MODULE]: [...nbcSmsTypes, ...pncSmsTypes],
     [NUTRITION_MODULE]: nutritionSmsTypes,
+};
+
+export const LogFaceSliceByModule: { [key in LogFaceModules]: string } = {
+    [PREGNANCY_MODULE]: PREGNANCY_LOGFACE_SLICE,
+    [NUTRITION_MODULE]: NUTRITION_LOGFACE_SLICE,
+    [NBC_AND_PNC_MODULE]: NBC_AND_PNC_LOGFACE_SLICE,
 };
