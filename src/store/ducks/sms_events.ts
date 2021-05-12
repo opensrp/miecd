@@ -262,6 +262,11 @@ export function getSmsData(state: Partial<Store>): SmsData[] {
     return values((state as any)[reducerName].smsData);
 }
 
+export function selectSmsDataByPatientId(state: Partial<Store>, patientId: string) {
+    const allSms = getSmsData(state);
+    return allSms.filter((sms) => sms.anc_id === patientId);
+}
+
 /** returns true if sms data has been fetched from superset and false
  * if the data has not been fetched
  */
