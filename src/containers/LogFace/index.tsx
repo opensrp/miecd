@@ -17,7 +17,7 @@ import {
     SUPERSET_FETCH_TIMEOUT_INTERVAL,
     SUPERSET_PREGNANCY_DATA_EXPORT,
 } from '../../configs/env';
-import { LogFaceSliceByModule, logFaceSmsTypesByModule, riskCategories, SmsTypes } from '../../configs/settings';
+import { LogFaceSliceByModule, riskCategories, SmsTypes } from '../../configs/settings';
 import {
     DEFAULT_NUMBER_OF_LOGFACE_ROWS,
     EVENT_ID,

@@ -44,7 +44,6 @@ import {
     OPENSRP_USER_URL,
     PREGNANCY_LOGFACE_SLICE,
 } from './env';
-import { Dictionary } from '@onaio/utils';
 import { LogFaceModules } from 'store/ducks/sms_events';
 
 /** Authentication Configs */
@@ -164,12 +163,6 @@ export const nutritionSmsTypes = [MONTHLY_NUTRITION_REPORT, NUTRITION_REGISTRATI
 
 // sms types for general enquiries
 export const generalSmsTypes = [DEPARTURE_CODE, REFUSAL_REPORT, ACCOUNT_CHECK];
-
-export const logFaceSmsTypesByModule: Dictionary<string[]> = {
-    [PREGNANCY_MODULE]: pregnancySmsTypes,
-    [NBC_AND_PNC_MODULE]: [...nbcSmsTypes, ...pncSmsTypes],
-    [NUTRITION_MODULE]: nutritionSmsTypes,
-};
 
 export const LogFaceSliceByModule: { [key in LogFaceModules]: string } = {
     [PREGNANCY_MODULE]: PREGNANCY_LOGFACE_SLICE,
