@@ -1,22 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { keyBy, values } from 'lodash';
 import { AnyAction, Store } from 'redux';
-import {
-    EC_CHILD,
-    EC_FAMILY_MEMBER,
-    EC_WOMAN,
-    EVENT_DATE_DATE_FORMAT,
-    EVENT_ID,
-    NBC_AND_PNC_MODULE,
-    NUTRITION_MODULE,
-    PREGNANCY_MODULE,
-} from '../../constants';
+import { EC_CHILD, EC_FAMILY_MEMBER, EC_WOMAN, EVENT_DATE_DATE_FORMAT, EVENT_ID } from '../../constants';
 import { groupBy, formatDateStrings, sortByEventDate } from '../../helpers/utils';
 import { SmsFilterFunction } from '../../types';
 import { Dictionary } from '@onaio/utils';
 import { createSelector } from 'reselect';
 import { TreeNode } from './locationHierarchy/types';
 import intersect from 'fast_array_intersect';
+import { LogFaceModules } from '../../configs/settings';
 
 /** The reducer name */
 export const reducerName = 'SmsReducer';
@@ -44,7 +36,6 @@ export interface BaseLogFaceSms {
 export type NutritionLogFaceSms = Omit<BaseLogFaceSms, 'risk_level'> & { nutrition_status: string };
 
 export type LogFaceSmsType = BaseLogFaceSms | NutritionLogFaceSms;
-export type LogFaceModules = typeof PREGNANCY_MODULE | typeof NBC_AND_PNC_MODULE | typeof NUTRITION_MODULE;
 
 /** Interface for SMS record object as received from discover */
 export interface SmsData extends BaseLogFaceSms, NutritionLogFaceSms, Dictionary {

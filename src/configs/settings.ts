@@ -50,7 +50,6 @@ import {
     OPENSRP_USER_URL,
     PREGNANCY_LOGFACE_SLICE,
 } from './env';
-import { LogFaceModules } from 'store/ducks/sms_events';
 
 /** Authentication Configs */
 export const providers: Providers = {
@@ -167,6 +166,8 @@ export const nutritionSmsTypes = [MONTHLY_NUTRITION_REPORT, NUTRITION_REGISTRATI
 
 // sms types for general enquiries
 export const generalSmsTypes = [DEPARTURE_CODE, REFUSAL_REPORT, ACCOUNT_CHECK];
+
+export type LogFaceModules = typeof PREGNANCY_MODULE | typeof NBC_AND_PNC_MODULE | typeof NUTRITION_MODULE;
 
 export const LogFaceSliceByModule: { [key in LogFaceModules]: string } = {
     [PREGNANCY_MODULE]: PREGNANCY_LOGFACE_SLICE,

@@ -9,7 +9,7 @@ import {
     SUPERSET_SMS_DATA_SLICE,
     USER_LOCATION_DATA_SLICE,
 } from '../configs/env';
-import { toastConfig } from '../configs/settings';
+import { LogFaceModules, toastConfig } from '../configs/settings';
 import {
     CHILD_PATIENT_DETAIL,
     COMMUNE,
@@ -47,7 +47,7 @@ import {
     UserLocation,
     userLocationDataFetched,
 } from '../store/ducks/locations';
-import { fetchSms, LogFaceModules, LogFaceSmsType, SmsData, smsDataFetched } from '../store/ducks/sms_events';
+import { fetchSms, LogFaceSmsType, SmsData, smsDataFetched } from '../store/ducks/sms_events';
 import { Dictionary } from '@onaio/utils';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
