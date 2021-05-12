@@ -256,6 +256,10 @@ export function getSmsData(state: Partial<Store>): SmsData[] {
     return values((state as any)[reducerName].smsData);
 }
 
+/** filter smsData by the anc_id field
+ * @param state - the store
+ * @param patientId - patientId whose events we are looking for
+ */
 export function selectSmsDataByPatientId(state: Partial<Store>, patientId: string) {
     const allSms = getSmsData(state);
     return allSms.filter((sms) => sms.anc_id === patientId);

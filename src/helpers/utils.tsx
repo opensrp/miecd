@@ -713,6 +713,11 @@ export async function logFaceSupersetCall<TAction, TResponse>(
         });
 }
 
+/** generate a RiskCategory object to be consumed by the getSmsByRiskCategory filter,
+ * this depends on the configuration in settings, the module and the selected option in the ui
+ * @param module - module in which logface view is rendered in
+ * @param riskFilterValue - this is the option the user selected in the risk_level select filter
+ */
 export function getRiskCatFilter(module: string, riskFilterValue?: string) {
     if (!riskFilterValue) {
         return;
