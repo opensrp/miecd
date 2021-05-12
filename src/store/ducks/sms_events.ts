@@ -33,7 +33,11 @@ export interface BaseLogFaceSms {
     client_type: ClientType;
 }
 
-export type NutritionLogFaceSms = Omit<BaseLogFaceSms, 'risk_level'> & { nutrition_status: string };
+export type NutritionLogFaceSms = Omit<BaseLogFaceSms, 'risk_level'> & {
+    nutrition_status: string;
+    growth_status: string;
+    feeding_category: string;
+};
 
 export type LogFaceSmsType = BaseLogFaceSms | NutritionLogFaceSms;
 
@@ -49,8 +53,6 @@ export interface SmsData extends BaseLogFaceSms, NutritionLogFaceSms, Dictionary
     child_symptoms: string;
     mother_symptoms: string;
     date_of_birth: string;
-    growth_status: string;
-    feeding_category: string;
     event_date: string;
     intervention: string;
     bp: string;
@@ -292,7 +294,7 @@ export function getFilterArgs(state: Partial<Store>): SmsFilterFunction[] {
 
 export interface RiskCategoryFilter {
     accessor: string;
-    filterValue: string;
+    filterValue: string[];
 }
 
 /** RESELECT */
@@ -318,9 +320,9 @@ export const getLogFaceSmsByModule = (state: Partial<Store>): LogFaceEvents =>
 export const logFaceSmsBaseSelector = () =>
     createSelector(getLogFaceSmsByModule, getModule, (logFaceSmsByModule, module) => {
         if (module === undefined) {
-            const allSms: LogFaceSmsType[] = [];
+            let allSms: LogFaceSmsType[] = [];
             for (const moduleKey in logFaceSmsByModule) {
-                allSms.concat(values(logFaceSmsByModule[moduleKey as LogFaceModules]));
+                allSms = allSms.concat(values(logFaceSmsByModule[moduleKey as LogFaceModules]));
             }
             return allSms;
         }
@@ -357,7 +359,7 @@ export const getSmsDataByRiskCat = () =>
             return smsData;
         }
         const { accessor, filterValue } = riskCategory;
-        return smsData.filter((sms) => (sms as Dictionary)[accessor] === filterValue);
+        return smsData.filter((sms) => filterValue.includes((sms as Dictionary)[accessor]));
     });
 
 /** filter sms' by their types */
