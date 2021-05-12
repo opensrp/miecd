@@ -204,7 +204,7 @@ export const pregnancyModuleRiskFilterLookup = (t: TFunction) => {
         redAlert: {
             label: t('Red alert'),
             accessor: 'risk_level',
-            filterValue: ['risk_alert'],
+            filterValue: ['red_alert'],
             color: RED,
         },
         noRisk: {
