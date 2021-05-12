@@ -15,7 +15,7 @@
     color: #3a484f;
     border-bottom: 1px solid #dadce0;
     font-family: Roboto;
-    font-size: 1.636rem;
+    font-size: 1.7rem;
     font-weight: 500;
     letter-spacing: -0.018rem;
     line-height: 2rem;
@@ -31,4 +31,9 @@
 .information__card_body_cell .prop {
     color: #637381;
     margin-right: 20px;
+}
+
+.prop,
+.value {
+    font-size: 1rem;
 }

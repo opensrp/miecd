@@ -48,11 +48,15 @@ function Chart(props: Props) {
                 chart: {
                     type: 'line',
                     width: 0.8 * window.innerWidth,
+                    style: {
+                        fontSize: '1.2rem',
+                    },
                 },
                 legend: {
                     align: 'right',
                     layout: 'vertical',
                     verticalAlign: 'middle',
+                    itemStyle: { 'font-size': '1.2rem' },
                 },
                 title: {
                     text: '',
@@ -93,12 +97,22 @@ function Chart(props: Props) {
                 },
 
                 yAxis: {
+                    labels: {
+                        style: {
+                            fontSize: '1rem',
+                        },
+                    },
                     title: {
                         text: yAxisLabel,
                     },
                 },
 
                 xAxis: {
+                    labels: {
+                        style: {
+                            fontSize: '1rem',
+                        },
+                    },
                     categories: dataArray?.categories,
                 },
 
