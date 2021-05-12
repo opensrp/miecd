@@ -50,7 +50,6 @@ import {
     OPENSRP_USER_URL,
     PREGNANCY_LOGFACE_SLICE,
 } from './env';
-import { Dictionary } from '@onaio/utils';
 import { LogFaceModules } from 'store/ducks/sms_events';
 
 /** Authentication Configs */
@@ -169,10 +168,10 @@ export const nutritionSmsTypes = [MONTHLY_NUTRITION_REPORT, NUTRITION_REGISTRATI
 // sms types for general enquiries
 export const generalSmsTypes = [DEPARTURE_CODE, REFUSAL_REPORT, ACCOUNT_CHECK];
 
-export const logFaceSmsTypesByModule: Dictionary<string[]> = {
-    [PREGNANCY_MODULE]: pregnancySmsTypes,
-    [NBC_AND_PNC_MODULE]: [...nbcSmsTypes, ...pncSmsTypes],
-    [NUTRITION_MODULE]: nutritionSmsTypes,
+export const LogFaceSliceByModule: { [key in LogFaceModules]: string } = {
+    [PREGNANCY_MODULE]: PREGNANCY_LOGFACE_SLICE,
+    [NUTRITION_MODULE]: NUTRITION_LOGFACE_SLICE,
+    [NBC_AND_PNC_MODULE]: NBC_AND_PNC_LOGFACE_SLICE,
 };
 
 export const APP_CALLBACK_URL = BACKEND_ACTIVE ? BACKEND_CALLBACK_URL : REACT_LOGIN_URL;
@@ -180,9 +179,3 @@ export const { IMPLICIT, AUTHORIZATION_CODE } = AuthorizationGrantType;
 export const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
 export const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : REACT_LOGIN_URL;
 export const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
-
-export const LogFaceSliceByModule: { [key in LogFaceModules]: string } = {
-    [PREGNANCY_MODULE]: PREGNANCY_LOGFACE_SLICE,
-    [NUTRITION_MODULE]: NUTRITION_LOGFACE_SLICE,
-    [NBC_AND_PNC_MODULE]: NBC_AND_PNC_LOGFACE_SLICE,
-};
