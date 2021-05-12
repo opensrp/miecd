@@ -21,7 +21,7 @@ const RiskColoring = (props: RiskColoringProps) => {
     const { t } = useTranslation();
 
     const categories = pregnancyModuleRiskFilterLookup(t);
-    const thisCategory = values(categories).filter((cat) => cat.filterValue.includes(riskLevel));
+    const thisCategory = values(categories).filter((cat) => cat.filterValue.includes(risk));
     let color = GREY;
     if (thisCategory.length) {
         const first = thisCategory[0];
