@@ -1,31 +1,22 @@
 import { history } from '@onaio/connected-reducer-registry';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { ConnectedRouter } from 'connected-react-router';
-import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import React from 'react';
 import { Provider } from 'react-redux';
 import ConnectedLogFace, { LogFacePropsType } from '..';
-import { DEFAULT_NUMBER_OF_LOGFACE_ROWS, PREGNANCY, PREGNANCY_LOGFACE_URL } from '../../../constants';
+import { NUTRITION_MODULE, PREGNANCY, PREGNANCY_LOGFACE_URL, PREGNANCY_MODULE } from '../../../constants';
 import { mountWithTranslations } from '../../../helpers/testUtils';
 import store from '../../../store';
-import reducer, {
-    clearLocationSlice,
-    fetchLocations,
-    fetchUserId,
-    fetchUserLocations,
-    reducerName,
-} from '../../../store/ducks/locations';
-import { fetchSms, removeSms } from '../../../store/ducks/sms_events';
-import { communes, districts, provinces, villages } from '../../HierarchichalDataTable/test/fixtures';
-import { smsSlice } from './fixtures';
+import reducer, { clearLocationSlice, fetchUserLocations, reducerName } from '../../../store/ducks/locations';
+import { LogFaceModules, LogFaceSmsType, RemoveLogFaceSms, removeSms } from '../../../store/ducks/sms_events';
 import { userLocations } from './userLocationFixtures';
 import { act } from 'react-dom/test-utils';
 import * as securityAuthenticate from '../../../store/ducks/tests/fixtures/securityAuthenticate.json';
 import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom';
-import { smsDataFixture } from 'store/ducks/tests/fixtures';
+import { nutritionSmsFixtures, PregnancyReportFixture } from 'store/ducks/tests/fixtures';
 import { Dictionary } from '@onaio/utils/dist/types/index';
 import { authenticateUser } from '@onaio/session-reducer';
+import React from 'react';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -33,17 +24,6 @@ reducerRegistry.register(reducerName, reducer);
 const fetch = require('jest-fetch-mock');
 
 jest.mock('../../../configs/env');
-
-jest.mock('react-select', () => {
-    const SelectComponent = (argProps: Record<string, unknown>) => {
-        const props = {
-            ...argProps,
-            className: `mock-select ${argProps.className}`,
-        };
-        return <select {...props}></select>;
-    };
-    return SelectComponent;
-});
 
 const locationProps = {
     history,
@@ -60,114 +40,6 @@ const locationProps = {
         url: `${PREGNANCY_LOGFACE_URL}`,
     },
 };
-
-describe('containers/LogFace', () => {
-    const commonProps = { module: PREGNANCY, ...locationProps };
-    afterEach(() => {
-        store.dispatch(removeSms);
-        fetch.resetMocks();
-    });
-    beforeEach(() => {
-        jest.resetAllMocks();
-        store.dispatch(fetchLocations(provinces));
-        store.dispatch(fetchLocations(districts));
-        store.dispatch(fetchLocations(communes));
-        store.dispatch(fetchLocations(villages));
-        store.dispatch(fetchUserLocations(userLocations));
-        store.dispatch(fetchUserId('515ad0e9-fccd-4cab-8861-0ef3ecb831e0'));
-    });
-    // eslint-disable-next-line jest/expect-expect
-    it('renders without crashing', async () => {
-        shallow(
-            <Provider store={store}>
-                <ConnectedLogFace {...commonProps} />
-            </Provider>,
-        );
-
-        await act(async () => {
-            await new Promise((resolve) => setImmediate(resolve));
-        });
-    });
-
-    it('renders correctly', async () => {
-        const supersetFetchMock = jest.fn(async () => []);
-        const props = {
-            ...commonProps,
-            supersetService: supersetFetchMock,
-        };
-        store.dispatch(fetchSms(smsSlice));
-        const wrapper = mountWithTranslations(
-            <Provider store={store}>
-                <ConnectedRouter history={history}>
-                    <ConnectedLogFace {...props} />
-                </ConnectedRouter>
-            </Provider>,
-        );
-
-        await act(async () => {
-            await new Promise((resolve) => setImmediate(resolve));
-            wrapper.update();
-        });
-
-        expect(toJson(wrapper.find('table'))).toMatchSnapshot('table snapshot');
-        expect(toJson(wrapper.find('.logface-page-filter'))).toMatchSnapshot('filter div');
-        expect(toJson(wrapper.find('input#search'))).toMatchSnapshot('search div');
-        expect(toJson(wrapper.find('#logface_title'))).toMatchSnapshot('logface title');
-        expect(toJson(wrapper.find('.paginator'))).toMatchSnapshot('paginator');
-
-        wrapper.unmount();
-    });
-
-    it('renders only 10 items per page', async () => {
-        store.dispatch(fetchSms(smsSlice));
-        const supersetFetchMock = jest.fn(async () => []);
-        const props = {
-            ...commonProps,
-            supersetService: supersetFetchMock,
-        };
-        const wrapper = mountWithTranslations(
-            <Provider store={store}>
-                <ConnectedRouter history={history}>
-                    <ConnectedLogFace {...props} />
-                </ConnectedRouter>
-            </Provider>,
-        );
-
-        await act(async () => {
-            await new Promise((resolve) => setImmediate(resolve));
-            wrapper.update();
-        });
-        // + 1 is added here to unclude the header `tr`
-        expect(wrapper.find('tr').length).toBe(DEFAULT_NUMBER_OF_LOGFACE_ROWS + 1);
-        wrapper.unmount();
-    });
-
-    it('search works correctly', async () => {
-        store.dispatch(fetchSms(smsSlice));
-        const supersetFetchMock = jest.fn(async () => []);
-        const props = {
-            ...commonProps,
-            supersetService: supersetFetchMock,
-        };
-        const wrapper = mountWithTranslations(
-            <Provider store={store}>
-                <ConnectedRouter history={history}>
-                    <ConnectedLogFace {...props} />
-                </ConnectedRouter>
-            </Provider>,
-        );
-
-        await act(async () => {
-            await new Promise((resolve) => setImmediate(resolve));
-            wrapper.update();
-        });
-
-        expect(wrapper.find('input').length).toBe(1);
-        // wrapper.find('input').simulate('change', { target: { value: '1569837448461' } });
-        // + 1 is added here to unclude the header `tr`
-        expect(wrapper.find('tr').length).toBe(DEFAULT_NUMBER_OF_LOGFACE_ROWS + 1);
-    });
-});
 
 jest.mock('react-select', () => ({ options, onChange }: Dictionary) => {
     function handleChange(event: Dictionary) {
@@ -187,20 +59,9 @@ jest.mock('react-select', () => ({ options, onChange }: Dictionary) => {
 });
 
 describe('containers/LogFace extended', () => {
-    const commonProps = { module: PREGNANCY };
-
+    const commonProps = { module: PREGNANCY as LogFaceModules };
     beforeAll(() => {
-        store.dispatch(
-            authenticateUser(
-                true,
-                {
-                    email: 'bob@example.com',
-                    name: 'Bobbie',
-                    username: 'RobertBaratheon',
-                },
-                { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } },
-            ),
-        );
+        store.dispatch(fetchUserLocations(userLocations));
     });
 
     beforeEach(() => {
@@ -208,6 +69,51 @@ describe('containers/LogFace extended', () => {
         store.dispatch(clearLocationSlice());
         store.dispatch(removeSms);
         fetch.resetMocks();
+        store.dispatch(RemoveLogFaceSms());
+    });
+
+    it('renders correctly', async () => {
+        const supersetFetchMock = jest
+            .fn()
+            .mockResolvedValueOnce(PregnancyReportFixture)
+            .mockResolvedValueOnce(userLocations);
+        fetch.mockResponse(JSON.stringify(securityAuthenticate));
+        const props = {
+            module: PREGNANCY_MODULE as LogFaceModules,
+            supersetService: supersetFetchMock,
+        };
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const wrapper = mountWithTranslations(
+            <Provider store={store}>
+                <MemoryRouter initialEntries={[PREGNANCY_LOGFACE_URL]}>
+                    <Route
+                        path={PREGNANCY_LOGFACE_URL}
+                        render={(routeProps: RouteComponentProps) => {
+                            return <ConnectedLogFace {...{ ...routeProps, ...props }} />;
+                        }}
+                    ></Route>
+                </MemoryRouter>
+            </Provider>,
+            { attachTo: container },
+        );
+
+        expect(wrapper.find('Ripple')).toHaveLength(1);
+
+        await act(async () => {
+            await new Promise((resolve) => setImmediate(resolve));
+            wrapper.update();
+        });
+
+        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(490);
+        expect(toJson(wrapper.find('table'))).toMatchSnapshot('table snapshot');
+        expect(toJson(wrapper.find('.logface-page-filter'))).toMatchSnapshot('filter div');
+        expect(toJson(wrapper.find('input#search'))).toMatchSnapshot('search div');
+        expect(toJson(wrapper.find('#logface_title'))).toMatchSnapshot('logface title');
+        expect(toJson(wrapper.find('.paginator'))).toMatchSnapshot('paginator');
+
+        wrapper.unmount();
     });
 
     it('shows loader and Breaks just fine', async () => {
@@ -238,8 +144,8 @@ describe('containers/LogFace extended', () => {
 
         // showing broken page due to error
         expect(wrapper.text()).toMatchInlineSnapshot(`"An error occurredErrorcoughid"`);
-        // and finally check the requests made
-        expect(supersetFetchMock.mock.calls).toEqual([['userLocation'], ['smsData']]);
+        // // and finally check the requests made
+        expect(supersetFetchMock.mock.calls).toEqual([['pregnancyLogface'], ['userLocation']]);
         expect(fetch.mock.calls).toEqual([
             [
                 'https://test.smartregister.org/opensrp/rest//security/authenticate/',
@@ -257,8 +163,11 @@ describe('containers/LogFace extended', () => {
         wrapper.unmount();
     });
 
-    it('filters work correctly', async () => {
-        const supersetFetchMock = jest.fn().mockResolvedValueOnce(userLocations).mockResolvedValueOnce(smsDataFixture);
+    it('filters work correctly for pregnancy', async () => {
+        const supersetFetchMock = jest
+            .fn()
+            .mockResolvedValueOnce(PregnancyReportFixture)
+            .mockResolvedValueOnce(userLocations);
         fetch.mockResponse(JSON.stringify(securityAuthenticate));
         const props = {
             ...commonProps,
@@ -288,7 +197,7 @@ describe('containers/LogFace extended', () => {
             wrapper.update();
         });
 
-        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(428);
+        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(490);
 
         // start with search field
         wrapper.find('#search').simulate('change', { target: { value: '100' } });
@@ -298,7 +207,7 @@ describe('containers/LogFace extended', () => {
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual('?search=100');
 
         // just checking that there were some events filtered out.
-        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(420);
+        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(482);
 
         expect(toJson(wrapper.find('#risk-filter select'))).toMatchSnapshot('risk filter');
 
@@ -312,7 +221,7 @@ describe('containers/LogFace extended', () => {
         );
 
         // just checking that there were some events filtered out.
-        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(36);
+        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(35);
 
         // change sms type level
         wrapper
@@ -329,13 +238,95 @@ describe('containers/LogFace extended', () => {
         expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(26);
 
         // play with locations
+        expect(toJson(wrapper.find('SelectLocationFilter select'))).toMatchSnapshot('location filter');
         wrapper
             .find('SelectLocationFilter select')
             .simulate('change', { target: { value: 'eccfe905-0e03-4188-98bc-22f141cccd0e', label: 'Kon Tum' } });
+        wrapper.update();
 
         // check url changed correctly
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
             '?search=100&riskCategory=red_alert&smsType=Birth%20Report&locationSearch=eccfe905-0e03-4188-98bc-22f141cccd0e',
+        );
+        wrapper.unmount();
+    });
+
+    it('filters work correctly for Nutrition', async () => {
+        const supersetFetchMock = jest
+            .fn()
+            .mockResolvedValueOnce(nutritionSmsFixtures)
+            .mockResolvedValueOnce(userLocations);
+        fetch.mockResponse(JSON.stringify(securityAuthenticate));
+        const props = {
+            ...commonProps,
+            module: NUTRITION_MODULE as LogFaceModules,
+            supersetService: supersetFetchMock,
+        };
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+
+        const wrapper = mountWithTranslations(
+            <Provider store={store}>
+                <MemoryRouter initialEntries={[PREGNANCY_LOGFACE_URL]}>
+                    <Route
+                        path={PREGNANCY_LOGFACE_URL}
+                        render={(routeProps: RouteComponentProps) => {
+                            return <ConnectedLogFace {...{ ...routeProps, ...props }} />;
+                        }}
+                    ></Route>
+                </MemoryRouter>
+            </Provider>,
+            { attachTo: container },
+        );
+
+        expect(wrapper.find('Ripple')).toHaveLength(1);
+
+        await act(async () => {
+            await new Promise((resolve) => setImmediate(resolve));
+            wrapper.update();
+        });
+
+        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(
+            (nutritionSmsFixtures as LogFaceSmsType[]).length,
+        );
+
+        // start with search field
+        wrapper.find('#search').simulate('change', { target: { value: '100' } });
+        wrapper.update();
+
+        // check url changed correctly
+        expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual('?search=100');
+
+        // just checking that there were some events filtered out.
+        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(45);
+
+        expect(toJson(wrapper.find('#risk-filter select'))).toMatchSnapshot('risk filter');
+
+        // change risk level
+        wrapper.find('#risk-filter select').simulate('change', { target: { value: 'overweight', name: 'Overweight' } });
+        wrapper.update();
+
+        // check url changed correctly
+        expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
+            '?search=100&riskCategory=overweight',
+        );
+        // start with search field
+        wrapper.find('#search').simulate('change', { target: { value: '' } });
+        wrapper.update();
+
+        // just checking that there were some events filtered out.
+        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(3);
+
+        // change sms type level
+        expect(toJson(wrapper.find('#sms-type-filter select'))).toMatchSnapshot('smsType filter');
+        wrapper
+            .find('#sms-type-filter select')
+            .simulate('change', { target: { value: 'Nutrition Report', name: 'Nutrition Report' } });
+        wrapper.update();
+
+        // check url changed correctly
+        expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
+            '?riskCategory=overweight&smsType=Nutrition%20Report',
         );
         wrapper.unmount();
     });
