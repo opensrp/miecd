@@ -33,16 +33,17 @@ export interface BaseLogFaceSms {
     client_type: ClientType;
 }
 
-export type NutritionLogFaceSms = Omit<BaseLogFaceSms, 'risk_level'> & {
+// describes smsEvents received from the slices serving the Nutrition logface with data.
+export interface NutritionLogFaceSms extends BaseLogFaceSms {
     nutrition_status: string;
     growth_status: string;
     feeding_category: string;
-};
+}
 
 export type LogFaceSmsType = BaseLogFaceSms | NutritionLogFaceSms;
 
 /** Interface for SMS record object as received from discover */
-export interface SmsData extends BaseLogFaceSms, NutritionLogFaceSms, Dictionary {
+export interface SmsData extends NutritionLogFaceSms, Dictionary {
     height: number;
     weight: number;
     previous_risks: string;
