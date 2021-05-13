@@ -103,7 +103,7 @@ function ReportTable(props: ReportTableTypes) {
                             <Chart
                                 dataArray={getWeightDataSeries(currentSmsDataChunk, t)}
                                 chartWrapperId="weight-chart-1"
-                                title={t('Wight Monitoring')}
+                                title={t('Weight Monitoring')}
                                 legendString={t('Weight')}
                                 units={t('kg')}
                                 yAxisLabel={t('weight')}

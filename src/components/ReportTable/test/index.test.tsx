@@ -58,7 +58,7 @@ describe('ReportTable', () => {
             chartWrapperId: 'weight-chart-1',
             dataArray: { categories: ['September/2019'], dataSeries: [{ data: [54], name: 'weight' }] },
             legendString: 'Weight',
-            title: 'Wight Monitoring',
+            title: 'Weight Monitoring',
             units: 'kg',
             yAxisLabel: 'weight',
         });
@@ -90,7 +90,7 @@ describe('ReportTable', () => {
             chartWrapperId: 'weight-chart-1',
             dataArray: { categories: ['March/2020'], dataSeries: [{ data: [78], name: 'weight' }] },
             legendString: 'Weight',
-            title: 'Wight Monitoring',
+            title: 'Weight Monitoring',
             units: 'kg',
             yAxisLabel: 'weight',
         });
