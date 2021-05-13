@@ -41,7 +41,7 @@ Array [
     <th
       className="default-width"
     >
-      Risk category
+      Risk Category
     </th>
   </tr>,
   <tr
@@ -459,7 +459,7 @@ exports[`components/VillageData pagination works correctly: second Page 4`] = `"
 
 exports[`components/VillageData pagination works correctly: second Page 5`] = `"100RH234y  NULLNot set"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 1`] = `"Patient IDDays since birthLocation of ResidenceCurrent symptomsLocation of birthRisk category"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 1`] = `"Patient IDDays Since BirthLocation Of ResidenceCurrent SymptomsLocation Of BirthRisk Category"`;
 
 exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 2`] = `"100RMT18729 NULL NULL NULLNot set"`;
 
@@ -471,7 +471,7 @@ exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_P
 
 exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 6`] = `"100RH218729 NULL NULL NULLNot set"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 1`] = `"Patient IDAgeLocation of ResidenceCurrent symptomsPrevious Risks / Existing Medical ConditionsLocation of birthRisk category"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 1`] = `"Patient IDAgeLocation Of ResidenceCurrent SymptomsPrevious Risks / Existing Medical ConditionsLocation Of BirthRisk Category"`;
 
 exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 2`] = `"100RMT30y  NULLNo symptoms, No symptomsNo Previous Risks / No preexisting conditions, No Previous Risks / No preexisting conditions NULLNot set"`;
 
@@ -483,7 +483,7 @@ exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and P
 
 exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 6`] = `"100RH234y  NULL NULL NULL NULLNot set"`;
 
-exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 1`] = `"Patient IDAgeLocation of ResidenceRisk category"`;
+exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 1`] = `"Patient IDAgeLocation Of ResidenceRisk Category"`;
 
 exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 2`] = `"100RMT30y  NULLNot set"`;
 
@@ -495,7 +495,7 @@ exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 5`
 
 exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 6`] = `"100RH234y  NULLNot set"`;
 
-exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 1`] = `"Patient IDAgeLocation Of ResidenceCurrent SymptomsPrevious Risks / Existing Medical ConditionsEDDPlanned Delivery LocationRisk category"`;
+exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 1`] = `"Patient IDAgeLocation Of ResidenceCurrent SymptomsPrevious Risks / Existing Medical ConditionsEDDPlanned Delivery LocationRisk Category"`;
 
 exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 2`] = `"100RMT30y  NULLNo symptoms, No symptomsNo Previous Risks / No preexisting conditions, No Previous Risks / No preexisting conditions2019-12-05 NULLNot set"`;
 
