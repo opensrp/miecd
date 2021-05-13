@@ -108,7 +108,6 @@ describe('containers/LogFace extended', () => {
 
         expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(490);
         expect(toJson(wrapper.find('table'))).toMatchSnapshot('table snapshot');
-        expect(toJson(wrapper.find('.logface-page-filter'))).toMatchSnapshot('filter div');
         expect(toJson(wrapper.find('input#search'))).toMatchSnapshot('search div');
         expect(toJson(wrapper.find('#logface_title'))).toMatchSnapshot('logface title');
         expect(toJson(wrapper.find('.paginator'))).toMatchSnapshot('paginator');
