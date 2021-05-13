@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Table } from 'reactstrap';
 import Ripple from '../../components/page/Loading';
-import { PaginationData, Paginator, PaginatorProps } from '../../components/Paginator';
 import RiskColoring from '../../components/RiskColoring';
 import { SUPERSET_PREGNANCY_DATA_EXPORT } from '../../configs/env';
 import { LogFaceModules, LogFaceSliceByModule, riskCategories, SmsTypes } from '../../configs/settings';
@@ -70,6 +69,7 @@ import {
 } from 'store/ducks/locationHierarchy';
 import { TreeNode } from 'store/ducks/locationHierarchy/types';
 import { Dictionary } from '@onaio/utils';
+import ReactPaginate from 'react-paginate';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -157,20 +157,11 @@ const LogFace = (props: LogFacePropsType) => {
         updateUrlWithFilter(SEARCH_FILTER_PARAM, props, (event.target as HTMLInputElement).value);
     };
 
-    const onPageChangeHandler = (paginationData: PaginationData) => {
-        setCurrentPage(paginationData.currentPage);
+    const onPageChangeHandler = (page: any) => {
+        setCurrentPage(page.selected as any);
     };
 
-    const routePaginatorProps: PaginatorProps = {
-        endLabel: 'last',
-        nextLabel: 'next',
-        onPageChange: onPageChangeHandler,
-        pageLimit: numberOfRows,
-        pageNeighbours: 3,
-        previousLabel: 'previous',
-        startLabel: 'first',
-        totalRecords: smsData.length,
-    };
+    const totalPageCount = Math.ceil(smsData.length / numberOfRows);
 
     if (broken) {
         return <ErrorPage title={error?.name} message={error?.message} />;
@@ -303,9 +294,26 @@ const LogFace = (props: LogFacePropsType) => {
                 )}
             </div>
 
-            <div className="paginator">
-                <Paginator {...routePaginatorProps} />
-            </div>
+            <nav aria-label="Page navigation" className="pagination-container">
+                <ReactPaginate
+                    previousLabel={t('previous')}
+                    nextLabel={t('next')}
+                    breakLabel={<>&nbsp;&nbsp;...&nbsp;&nbsp;</>}
+                    breakClassName={'page-item'}
+                    pageCount={totalPageCount}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={3}
+                    onPageChange={onPageChangeHandler}
+                    containerClassName={'pagination'}
+                    activeClassName={'active'}
+                    pageClassName={'page-item'}
+                    previousClassName={'page-item'}
+                    nextClassName={'page-item'}
+                    pageLinkClassName={'page-link'}
+                    previousLinkClassName={'page-link'}
+                    nextLinkClassName={'page-link'}
+                />
+            </nav>
         </div>
     );
 };

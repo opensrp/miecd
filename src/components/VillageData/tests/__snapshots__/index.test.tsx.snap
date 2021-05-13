@@ -436,29 +436,30 @@ exports[`components/VillageData pagination works correctly: first Page 4`] = `"1
 exports[`components/VillageData pagination works correctly: first Page 5`] = `"100RH234y  NULL"`;
 
 exports[`components/VillageData pagination works correctly: paginationItem for page 2 1`] = `
-<PaginationLink
-  className="page-link"
-  href="#"
-  onClick={[Function]}
-  tag="a"
+<li
+  className="page-item"
 >
   <a
-    className="page-link page-link"
-    href="#"
+    aria-current={null}
+    aria-label="Page 3"
+    className="page-link"
     onClick={[Function]}
+    onKeyPress={[Function]}
+    role="button"
+    tabIndex="0"
   >
     3
   </a>
-</PaginationLink>
+</li>
 `;
 
 exports[`components/VillageData pagination works correctly: second Page 1`] = `"100RMT30y  NULLlow"`;
 
-exports[`components/VillageData pagination works correctly: second Page 2`] = `"100RH234y  NULL"`;
+exports[`components/VillageData pagination works correctly: second Page 2`] = `"100RRK4y  3m NULLNot set"`;
 
-exports[`components/VillageData pagination works correctly: second Page 3`] = `"100RJ032y  NULLno risk"`;
+exports[`components/VillageData pagination works correctly: second Page 3`] = `"100RH2-20190601-036m 13d NULLNot set"`;
 
-exports[`components/VillageData pagination works correctly: second Page 4`] = `"100RKX32y  NULLlow"`;
+exports[`components/VillageData pagination works correctly: second Page 4`] = `"1002LJ31y  NULLNot set"`;
 
 exports[`components/VillageData pagination works correctly: second Page 5`] = `"100RH234y  NULL"`;
 
