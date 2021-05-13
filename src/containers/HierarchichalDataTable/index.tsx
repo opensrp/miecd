@@ -966,18 +966,23 @@ class HierarchichalDataTable extends Component<HierarchicalDataTableType, State>
      */
     private unavailableChildren = (headerTitle: string[], currentLevel: 0 | 1 | 2 | 3, t: TFunction) => {
         // translate level number to level name
-        const levelToName = (levelNo: 0 | 1 | 2 | 3, plural?: boolean) => {
-            if (levelNo === 0) return plural ? 'provinces' : 'province';
-            else if (levelNo === 1) return plural ? 'districts' : 'district';
-            else if (levelNo === 2) return plural ? 'communes' : 'commune';
-            else return 'villages';
+        const levelToName = (levelNo: 0 | 1 | 2 | 3, t: TFunction, plural?: boolean) => {
+            let levelName: 'provinces' | 'province' | 'districts' | 'district' | 'communes' | 'commune' | 'villages';
+
+            if (levelNo === 0) levelName = plural ? 'provinces' : 'province';
+            else if (levelNo === 1) levelName = plural ? 'districts' : 'district';
+            else if (levelNo === 2) levelName = plural ? 'communes' : 'commune';
+            else levelName = 'villages';
+
+            return t(levelName);
         };
 
         // compose message from last item in header, current and previous drill down level
         const unavailableMessage = `${t(
             `The ${headerTitle[headerTitle.length - 1]} ${levelToName(
                 (currentLevel - 1) as 0 | 1 | 2 | 3,
-            )} doesn't seem to have ${levelToName(currentLevel, true)}`,
+                t,
+            )} doesn't seem to have ${levelToName(currentLevel, t, true)}`,
         )}`;
 
         return unavailableMessage;
