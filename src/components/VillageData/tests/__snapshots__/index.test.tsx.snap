@@ -100,19 +100,20 @@ Array [
       className="default-width"
     >
       <RiskColoring
+        displayValue=""
         risk="low"
       >
         <span
           className="badge"
           style={
             Object {
-              "backgroundColor": "#6c757d",
+              "backgroundColor": "#ffc107",
             }
           }
         >
           <div>
             <p>
-              Not set
+              low
             </p>
           </div>
         </span>
@@ -175,6 +176,7 @@ Array [
       className="default-width"
     >
       <RiskColoring
+        displayValue=""
         risk="Not Set"
       >
         <span
@@ -187,7 +189,7 @@ Array [
         >
           <div>
             <p>
-              Not set
+              Not Set
             </p>
           </div>
         </span>
@@ -250,6 +252,7 @@ Array [
       className="default-width"
     >
       <RiskColoring
+        displayValue=""
         risk="red"
       >
         <span
@@ -262,7 +265,7 @@ Array [
         >
           <div>
             <p>
-              Not set
+              red
             </p>
           </div>
         </span>
@@ -325,19 +328,20 @@ Array [
       className="default-width"
     >
       <RiskColoring
+        displayValue=""
         risk="high"
       >
         <span
           className="badge"
           style={
             Object {
-              "backgroundColor": "#6c757d",
+              "backgroundColor": "#ffc107",
             }
           }
         >
           <div>
             <p>
-              Not set
+              high
             </p>
           </div>
         </span>
@@ -400,6 +404,7 @@ Array [
       className="default-width"
     >
       <RiskColoring
+        displayValue=""
         risk=""
       >
         <span
@@ -411,9 +416,7 @@ Array [
           }
         >
           <div>
-            <p>
-              Not set
-            </p>
+            <p />
           </div>
         </span>
       </RiskColoring>
@@ -422,15 +425,15 @@ Array [
 ]
 `;
 
-exports[`components/VillageData pagination works correctly: first Page 1`] = `"100RMT30y  NULLNot set"`;
+exports[`components/VillageData pagination works correctly: first Page 1`] = `"100RMT30y  NULLlow"`;
 
-exports[`components/VillageData pagination works correctly: first Page 2`] = `"100RRK4y  3m NULLNot set"`;
+exports[`components/VillageData pagination works correctly: first Page 2`] = `"100RRK4y  3m NULLNot Set"`;
 
-exports[`components/VillageData pagination works correctly: first Page 3`] = `"100RH2-20190601-036m 13d NULLNot set"`;
+exports[`components/VillageData pagination works correctly: first Page 3`] = `"100RH2-20190601-036m 13d NULLred"`;
 
-exports[`components/VillageData pagination works correctly: first Page 4`] = `"1002LJ31y  NULLNot set"`;
+exports[`components/VillageData pagination works correctly: first Page 4`] = `"1002LJ31y  NULLhigh"`;
 
-exports[`components/VillageData pagination works correctly: first Page 5`] = `"100RH234y  NULLNot set"`;
+exports[`components/VillageData pagination works correctly: first Page 5`] = `"100RH234y  NULL"`;
 
 exports[`components/VillageData pagination works correctly: paginationItem for page 2 1`] = `
 <PaginationLink
@@ -449,60 +452,60 @@ exports[`components/VillageData pagination works correctly: paginationItem for p
 </PaginationLink>
 `;
 
-exports[`components/VillageData pagination works correctly: second Page 1`] = `"100RMT30y  NULLNot set"`;
+exports[`components/VillageData pagination works correctly: second Page 1`] = `"100RMT30y  NULLlow"`;
 
-exports[`components/VillageData pagination works correctly: second Page 2`] = `"100RH234y  NULLNot set"`;
+exports[`components/VillageData pagination works correctly: second Page 2`] = `"100RH234y  NULL"`;
 
-exports[`components/VillageData pagination works correctly: second Page 3`] = `"100RJ032y  NULLNot set"`;
+exports[`components/VillageData pagination works correctly: second Page 3`] = `"100RJ032y  NULLno risk"`;
 
-exports[`components/VillageData pagination works correctly: second Page 4`] = `"100RKX32y  NULLNot set"`;
+exports[`components/VillageData pagination works correctly: second Page 4`] = `"100RKX32y  NULLlow"`;
 
-exports[`components/VillageData pagination works correctly: second Page 5`] = `"100RH234y  NULLNot set"`;
+exports[`components/VillageData pagination works correctly: second Page 5`] = `"100RH234y  NULL"`;
 
 exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 1`] = `"Patient IDDays since birthLocation of ResidenceCurrent symptomsLocation of birthRisk category"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 2`] = `"100RMT18729 NULL NULL NULLNot set"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 2`] = `"100RMT18729 NULL NULL NULLlow"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 3`] = `"100RRK18729 NULL NULL NULLNot set"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 3`] = `"100RRK18729 NULL NULL NULLNot Set"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 4`] = `"100RH2-20190601-03681 NULL NULL NULLNot set"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 4`] = `"100RH2-20190601-03681 NULL NULL NULLred"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 5`] = `"1002LJ11788 NULL NULL NULLNot set"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 5`] = `"1002LJ11788 NULL NULL NULLhigh"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 6`] = `"100RH218729 NULL NULL NULLNot set"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 6`] = `"100RH218729 NULL NULL NULL"`;
 
 exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 1`] = `"Patient IDAgeLocation of ResidenceCurrent symptomsPrevious Risks / Existing Medical ConditionsLocation of birthRisk category"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 2`] = `"100RMT30y  NULLNo symptoms, No symptomsNo Previous Risks / No preexisting conditions, No Previous Risks / No preexisting conditions NULLNot set"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 2`] = `"100RMT30y  NULLNo symptoms, No symptomsNo Previous Risks / No preexisting conditions, No Previous Risks / No preexisting conditions NULLlow"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 3`] = `"100RRK4y  3m NULL NULL NULL NULLNot set"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 3`] = `"100RRK4y  3m NULL NULL NULL NULLNot Set"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 4`] = `"100RH2-20190601-036m 13d NULL NULL NULL NULLNot set"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 4`] = `"100RH2-20190601-036m 13d NULL NULL NULL NULLred"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 5`] = `"1002LJ31y  NULLCoughingHome Delivery, Previous convulsion NULLNot set"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 5`] = `"1002LJ31y  NULLCoughingHome Delivery, Previous convulsion NULLhigh"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 6`] = `"100RH234y  NULL NULL NULL NULLNot set"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 6`] = `"100RH234y  NULL NULL NULL NULL"`;
 
 exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 1`] = `"Patient IDAgeLocation of ResidenceRisk category"`;
 
-exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 2`] = `"100RMT30y  NULLNot set"`;
+exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 2`] = `"100RMT30y  NULLlow"`;
 
-exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 3`] = `"100RRK4y  3m NULLNot set"`;
+exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 3`] = `"100RRK4y  3m NULLNot Set"`;
 
-exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 4`] = `"100RH2-20190601-036m 13d NULLNot set"`;
+exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 4`] = `"100RH2-20190601-036m 13d NULLred"`;
 
-exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 5`] = `"1002LJ31y  NULLNot set"`;
+exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 5`] = `"1002LJ31y  NULLhigh"`;
 
-exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 6`] = `"100RH234y  NULLNot set"`;
+exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 6`] = `"100RH234y  NULL"`;
 
 exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 1`] = `"Patient IDAgeLocation Of ResidenceCurrent SymptomsPrevious Risks / Existing Medical ConditionsEDDPlanned Delivery LocationRisk category"`;
 
-exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 2`] = `"100RMT30y  NULLNo symptoms, No symptomsNo Previous Risks / No preexisting conditions, No Previous Risks / No preexisting conditions2019-12-05 NULLNot set"`;
+exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 2`] = `"100RMT30y  NULLNo symptoms, No symptomsNo Previous Risks / No preexisting conditions, No Previous Risks / No preexisting conditions2019-12-05 NULLlow"`;
 
-exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 3`] = `"100RRK4y  3m NULL NULL NULL0 NULLNot set"`;
+exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 3`] = `"100RRK4y  3m NULL NULL NULL0 NULLNot Set"`;
 
-exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 4`] = `"100RH2-20190601-036m 13d NULL NULL NULL0 NULLNot set"`;
+exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 4`] = `"100RH2-20190601-036m 13d NULL NULL NULL0 NULLred"`;
 
-exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 5`] = `"1002LJ31y  NULLCoughingHome Delivery, Previous convulsion2020-06-28 NULLNot set"`;
+exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 5`] = `"1002LJ31y  NULLCoughingHome Delivery, Previous convulsion2020-06-28 NULLhigh"`;
 
-exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 6`] = `"100RH234y  NULL NULL NULL0 NULLNot set"`;
+exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 6`] = `"100RH234y  NULL NULL NULL0 NULL"`;

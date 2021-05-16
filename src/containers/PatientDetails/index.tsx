@@ -19,7 +19,7 @@ import { ErrorPage } from 'components/ErrorPage';
 import Ripple from 'components/page/Loading';
 import { getLocationsOfLevel, Location } from '../../store/ducks/locations';
 import locationsReducer, { reducerName as locationReducerName } from '../../store/ducks/locations';
-import { getSmsDataByFilters } from '../../store/ducks/sms_events';
+import { selectSmsDataByPatientId } from '../../store/ducks/sms_events';
 import smsReducer, { reducerName as smsReducerName, SmsData } from '../../store/ducks/sms_events';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 
@@ -263,14 +263,12 @@ export const getPathFromSupersetLocs = (
 PatientDetails.defaultProps = defaultProps;
 export { PatientDetails };
 
-const getSmsData = getSmsDataByFilters();
-
 type MapStateToProps = Pick<PatientDetailProps, 'smsData' | 'communes' | 'districts' | 'provinces' | 'villages'>;
 const mapStateToProps = (state: Partial<Store>, ownProps: PatientDetailProps): MapStateToProps => {
-    const filters = {
-        patientId: ownProps.match.params.patient_id,
-    };
-    const smsData = getSmsData(state, filters);
+    const patientId = ownProps.match.params.patient_id;
+
+    const smsData = selectSmsDataByPatientId(state, patientId);
+
     return {
         smsData,
         communes: getLocationsOfLevel(state, COMMUNE),

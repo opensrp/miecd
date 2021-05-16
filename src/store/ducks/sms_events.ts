@@ -1,28 +1,49 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { values } from 'lodash';
+import { keyBy, values } from 'lodash';
 import { AnyAction, Store } from 'redux';
-import { EVENT_DATE_DATE_FORMAT, EVENT_ID } from '../../constants';
+import { EC_CHILD, EC_FAMILY_MEMBER, EC_WOMAN, EVENT_DATE_DATE_FORMAT, EVENT_ID } from '../../constants';
 import { groupBy, formatDateStrings, sortByEventDate } from '../../helpers/utils';
 import { SmsFilterFunction } from '../../types';
 import { Dictionary } from '@onaio/utils';
 import { createSelector } from 'reselect';
 import { TreeNode } from './locationHierarchy/types';
 import intersect from 'fast_array_intersect';
+import { LogFaceModules } from '../../configs/settings';
 
 /** The reducer name */
 export const reducerName = 'SmsReducer';
+export type ClientType = typeof EC_CHILD | typeof EC_FAMILY_MEMBER | typeof EC_WOMAN;
 
-/** Interface for SMS record object as received from discover */
-export interface SmsData extends Dictionary {
-    age: string;
-    EventDate: string;
+// describes smsEvents received from the slices serving the logface with data.
+export interface BaseLogFaceSms {
     event_id: string;
+    EventDate: string;
     health_worker_location_name: string;
-    message: string;
+    sms_type: string;
     anc_id: string;
+    patient_name: string;
+    age: string;
+    message: string;
     logface_risk: string;
     health_worker_name: string;
-    sms_type: string;
+    event_date: string;
+    risk_level: string;
+    location_id: string;
+    message_vietnamese: number;
+    client_type: ClientType;
+}
+
+// describes smsEvents received from the slices serving the Nutrition logface with data.
+export interface NutritionLogFaceSms extends BaseLogFaceSms {
+    nutrition_status: string;
+    growth_status: string;
+    feeding_category: string;
+}
+
+export type LogFaceSmsType = BaseLogFaceSms | NutritionLogFaceSms;
+
+/** Interface for SMS record object as received from discover */
+export interface SmsData extends NutritionLogFaceSms, Dictionary {
     height: number;
     weight: number;
     previous_risks: string;
@@ -30,13 +51,9 @@ export interface SmsData extends Dictionary {
     parity: number;
     gravidity: number;
     location_id: string;
-    client_type: string;
     child_symptoms: string;
     mother_symptoms: string;
     date_of_birth: string;
-    nutrition_status: string;
-    growth_status: string;
-    feeding_category: string;
     event_date: string;
     intervention: string;
     bp: string;
@@ -48,12 +65,28 @@ export interface SmsData extends Dictionary {
 // actions
 /** FETCH_SMS action type */
 export const FETCHED_SMS = 'opensrp/reducer/FETCHED_SMS';
+/** FETCH_SMS action type for logface sms's */
+export const FETCHED_LOGFACE_SMS = 'opensrp/reducer/FETCHED_LOGFACE_SMS';
+/** remove sms action type for logface sms's */
+export const REMOVE_LOGFACE_SMS = 'opensrp/reducer/REMOVE_LOGFACE_SMS';
 /** REMOVE_SMS action type */
 export const REMOVE_SMS = 'opensrp/reducer/REMOVE_SMS';
 /** ADD_FILTER_ARGS type */
 export const ADD_FILTER_ARGS = 'opensrp/reducer/ADD_FILTER_ARGS';
 /** REMOVE_FILTER_ARGS type */
 export const REMOVE_FILTER_ARGS = 'opensrp/reducer/REMOVE_FILTER_ARGS';
+
+/** interface for logface sms fetch */
+export interface FetchLogFaceSmsAction extends AnyAction {
+    smsData: Dictionary<LogFaceSmsType>;
+    type: typeof FETCHED_LOGFACE_SMS;
+    module: LogFaceModules;
+}
+
+/** interface for Remove logface Sms action */
+export interface RemoveLogFaceSmsAction extends AnyAction {
+    type: typeof REMOVE_LOGFACE_SMS;
+}
 
 /** interface for sms fetch */
 export interface FetchSmsAction extends AnyAction {
@@ -81,9 +114,39 @@ export interface AddFilterArgsAction extends AnyAction {
 }
 
 /** Create type for SMS reducer actions */
-export type SmsActionTypes = FetchSmsAction | AddFilterArgsAction | RemoveSmsAction | RemoveFilterArgs | AnyAction;
+export type SmsActionTypes =
+    | FetchSmsAction
+    | AddFilterArgsAction
+    | RemoveSmsAction
+    | RemoveFilterArgs
+    | FetchLogFaceSmsAction
+    | RemoveLogFaceSmsAction
+    | AnyAction;
 
 // action Creators
+
+/** creates action to add logface sms to store
+ * @param sms - an array of the sms events
+ * @param module - module to save the under
+ */
+export const fetchLogFaceSms = (sms: LogFaceSmsType[], module: LogFaceModules): FetchLogFaceSmsAction => {
+    const cleanedSms = sms.map((smsData) => ({
+        ...smsData,
+        EventDate: formatDateStrings(smsData.EventDate, EVENT_DATE_DATE_FORMAT),
+    }));
+    return {
+        smsData: keyBy(cleanedSms, (x) => x.event_id),
+        module,
+        type: FETCHED_LOGFACE_SMS,
+    };
+};
+
+/** creates action to remove logface sms from store */
+export const RemoveLogFaceSms = (): RemoveLogFaceSmsAction => {
+    return {
+        type: REMOVE_LOGFACE_SMS,
+    };
+};
 
 /** Fetch SMS action creator
  * @param {SmsData[]} smsData - SmsData array to add to store
@@ -119,11 +182,14 @@ export const removeFilterArgs = (): RemoveFilterArgs => {
 };
 // The reducer
 
+export type LogFaceEvents = { [key in LogFaceModules]?: Dictionary<LogFaceSmsType> };
+
 /** interface for sms state in redux store */
 interface SmsState {
     smsData: { [key: string]: SmsData };
     smsDataFetched: boolean;
     filterArgs: SmsFilterFunction[] | null;
+    logFaceEvents: LogFaceEvents;
 }
 
 /** initial sms-state state */
@@ -131,6 +197,7 @@ const initialState: SmsState = {
     filterArgs: null,
     smsData: {},
     smsDataFetched: false,
+    logFaceEvents: {},
 };
 
 /** the sms reducer function */
@@ -158,6 +225,22 @@ export default function reducer(state: SmsState = initialState, action: SmsActio
                 ...state,
                 filterArgs: action.filterArgs,
             };
+        case FETCHED_LOGFACE_SMS:
+            return {
+                ...state,
+                logFaceEvents: {
+                    ...state.logFaceEvents,
+                    [action.module]: {
+                        ...state.logFaceEvents[action.module as LogFaceModules],
+                        ...action.smsData,
+                    },
+                },
+            };
+        case REMOVE_LOGFACE_SMS:
+            return {
+                ...state,
+                logFaceEvents: {},
+            };
         default:
             return state;
     }
@@ -171,6 +254,15 @@ export default function reducer(state: SmsState = initialState, action: SmsActio
  */
 export function getSmsData(state: Partial<Store>): SmsData[] {
     return values((state as any)[reducerName].smsData);
+}
+
+/** filter smsData by the anc_id field
+ * @param state - the store
+ * @param patientId - patientId whose events we are looking for
+ */
+export function selectSmsDataByPatientId(state: Partial<Store>, patientId: string) {
+    const allSms = getSmsData(state);
+    return allSms.filter((sms) => sms.anc_id === patientId);
 }
 
 /** returns true if sms data has been fetched from superset and false
@@ -206,8 +298,8 @@ export function getFilterArgs(state: Partial<Store>): SmsFilterFunction[] {
 }
 
 export interface RiskCategoryFilter {
-    accessor: keyof SmsData;
-    filterValue: string;
+    accessor: string;
+    filterValue: string[];
 }
 
 /** RESELECT */
@@ -217,6 +309,7 @@ export interface SMSSelectorsFilters {
     smsTypes?: string[];
     searchFilter?: string;
     patientId?: string;
+    module?: LogFaceModules;
 }
 
 export const getLocationNodeFilter = (_: Partial<Store>, props: SMSSelectorsFilters) => props.locationNode;
@@ -224,12 +317,31 @@ export const getRiskCat = (_: Partial<Store>, props: SMSSelectorsFilters) => pro
 export const getSmsTypes = (_: Partial<Store>, props: SMSSelectorsFilters) => props.smsTypes;
 export const getSearch = (_: Partial<Store>, props: SMSSelectorsFilters) => props.searchFilter;
 export const getPatientId = (_: Partial<Store>, filters: SMSSelectorsFilters) => filters.patientId;
+export const getModule = (_: Partial<Store>, props: SMSSelectorsFilters) => props.module;
+export const getLogFaceSmsByModule = (state: Partial<Store>): LogFaceEvents =>
+    (state as any)[reducerName].logFaceEvents;
+
+/** base selector for sms, filters by module */
+export const logFaceSmsBaseSelector = () =>
+    createSelector(getLogFaceSmsByModule, getModule, (logFaceSmsByModule, module) => {
+        if (module === undefined) {
+            let allSms: LogFaceSmsType[] = [];
+            for (const moduleKey in logFaceSmsByModule) {
+                allSms = allSms.concat(values(logFaceSmsByModule[moduleKey as LogFaceModules]));
+            }
+            return allSms;
+        }
+        const requestedSms = logFaceSmsByModule[module] ?? {};
+        return values(requestedSms);
+    });
+
+export const baseLogFaceSms = logFaceSmsBaseSelector();
 
 /** filter smsData by user's location, will return all smsEvents in locations where the user
  * has access
  */
 export const getSmsDataByUserLocation = () =>
-    createSelector(getSmsData, getLocationNodeFilter, (smsData, locationNode) => {
+    createSelector(baseLogFaceSms, getLocationNodeFilter, (smsData, locationNode) => {
         if (locationNode === undefined) {
             return smsData;
         }
@@ -247,17 +359,17 @@ export const getSmsDataByUserLocation = () =>
 /** filter smsData by the smsData risk categorization
  */
 export const getSmsDataByRiskCat = () =>
-    createSelector(getSmsData, getRiskCat, (smsData, riskCategory) => {
+    createSelector(baseLogFaceSms, getRiskCat, (smsData, riskCategory) => {
         if (riskCategory?.filterValue === undefined) {
             return smsData;
         }
         const { accessor, filterValue } = riskCategory;
-        return smsData.filter((sms) => sms[accessor] === filterValue);
+        return smsData.filter((sms) => filterValue.includes((sms as Dictionary)[accessor]));
     });
 
 /** filter sms' by their types */
 export const getSmsDataBySmsType = () =>
-    createSelector(getSmsData, getSmsTypes, (smsData, smsTypes) => {
+    createSelector(baseLogFaceSms, getSmsTypes, (smsData, smsTypes) => {
         if (smsTypes === undefined) {
             return smsData;
         }
@@ -266,7 +378,7 @@ export const getSmsDataBySmsType = () =>
 
 /** filter sms events from a search action, this will filter based on the event_id, health_worker_name and patient_id */
 export const getSmsDataBySearch = () =>
-    createSelector(getSmsData, getSearch, (smsData, search) => {
+    createSelector(baseLogFaceSms, getSearch, (smsData, search) => {
         if (search === undefined) {
             return smsData;
         }
@@ -278,8 +390,9 @@ export const getSmsDataBySearch = () =>
         );
     });
 
+/** filter sms events by patient Id */
 export const getSmsDataByPatientId = () =>
-    createSelector(getSmsData, getPatientId, (smsData, patientId) => {
+    createSelector(baseLogFaceSms, getPatientId, (smsData, patientId) => {
         if (patientId === undefined) {
             return smsData;
         }
