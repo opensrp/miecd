@@ -218,16 +218,138 @@ exports[`containers/LogFace extended filters work correctly for pregnancy: risk 
 </select>
 `;
 
-exports[`containers/LogFace extended renders correctly 1`] = `
+exports[`containers/LogFace renders correctly 1`] = `
 <li
-  className="page-item disabled page-item"
+  className="page-item disabled"
 >
-  <PaginationLink
-    aria-label="first"
+  <a
+    aria-disabled="true"
+    aria-label="Previous page"
     className="page-link"
-    href="#"
     onClick={[Function]}
-    tag="a"
+    onKeyPress={[Function]}
+    rel="prev"
+    role="button"
+    tabIndex="0"
+  >
+    previous
+  </a>
+</li>
+`;
+
+exports[`containers/LogFace renders correctly 2`] = `
+<li
+  className="page-item active"
+>
+  <a
+    aria-current="page"
+    aria-label="Page 1 is your current page"
+    className="page-link"
+    onClick={[Function]}
+    onKeyPress={[Function]}
+    role="button"
+    tabIndex="0"
+  >
+    1
+  </a>
+</li>
+`;
+
+exports[`containers/LogFace renders correctly 3`] = `
+<li
+  className="page-item"
+>
+  <a
+    aria-current={null}
+    aria-label="Page 2"
+    className="page-link"
+    onClick={[Function]}
+    onKeyPress={[Function]}
+    role="button"
+    tabIndex="0"
+  >
+    2
+  </a>
+</li>
+`;
+
+exports[`containers/LogFace renders correctly 4`] = `
+<li
+  className="page-item"
+>
+  <a
+    aria-current={null}
+    aria-label="Page 3"
+    className="page-link"
+    onClick={[Function]}
+    onKeyPress={[Function]}
+    role="button"
+    tabIndex="0"
+  >
+    3
+  </a>
+</li>
+`;
+
+exports[`containers/LogFace renders correctly 5`] = `
+<li
+  className="page-item"
+>
+  <a
+    aria-current={null}
+    aria-label="Page 4"
+    className="page-link"
+    onClick={[Function]}
+    onKeyPress={[Function]}
+    role="button"
+    tabIndex="0"
+  >
+    4
+  </a>
+</li>
+`;
+
+exports[`containers/LogFace renders correctly 6`] = `
+<li
+  className="page-item"
+>
+  <a
+    aria-current={null}
+    aria-label="Page 5"
+    className="page-link"
+    onClick={[Function]}
+    onKeyPress={[Function]}
+    role="button"
+    tabIndex="0"
+  >
+    5
+  </a>
+</li>
+`;
+
+exports[`containers/LogFace renders correctly 7`] = `
+<li
+  className="page-item"
+>
+  <a
+    aria-disabled="false"
+    aria-label="Next page"
+    className="page-link"
+    onClick={[Function]}
+    onKeyPress={[Function]}
+    rel="next"
+    role="button"
+    tabIndex="0"
+  >
+    next
+  </a>
+</li>
+`;
+
+exports[`containers/LogFace renders correctly: filter div 1`] = `
+Array [
+  <div
+    className="logface-page-filter"
   >
     <a
       aria-label="first"
@@ -324,121 +446,7 @@ exports[`containers/LogFace extended renders correctly 4`] = `
 </li>
 `;
 
-exports[`containers/LogFace extended renders correctly 5`] = `
-<li
-  className="page-item  page-item"
->
-  <PaginationLink
-    className="page-link"
-    href="#"
-    onClick={[Function]}
-    tag="a"
-  >
-    <a
-      className="page-link page-link"
-      href="#"
-      onClick={[Function]}
-    >
-      3
-    </a>
-  </PaginationLink>
-</li>
-`;
-
-exports[`containers/LogFace extended renders correctly 6`] = `
-<li
-  className="page-item  page-item"
->
-  <PaginationLink
-    className="page-link"
-    href="#"
-    onClick={[Function]}
-    tag="a"
-  >
-    <a
-      className="page-link page-link"
-      href="#"
-      onClick={[Function]}
-    >
-      4
-    </a>
-  </PaginationLink>
-</li>
-`;
-
-exports[`containers/LogFace extended renders correctly 7`] = `
-<li
-  className="page-item   page-item"
->
-  <PaginationLink
-    aria-label="next"
-    className="page-link"
-    href="#"
-    onClick={[Function]}
-    tag="a"
-  >
-    <a
-      aria-label="next"
-      className="page-link page-link"
-      href="#"
-      onClick={[Function]}
-    >
-      <span
-        aria-hidden="true"
-      >
-        next
-      </span>
-      <span
-        className="sr-only"
-      >
-        next
-      </span>
-    </a>
-  </PaginationLink>
-</li>
-`;
-
-exports[`containers/LogFace extended renders correctly 8`] = `
-<li
-  className="page-item  page-item"
->
-  <PaginationLink
-    aria-label="last"
-    className="page-link "
-    href="#"
-    onClick={[Function]}
-    tag="a"
-  >
-    <a
-      aria-label="last"
-      className="page-link  page-link"
-      href="#"
-      onClick={[Function]}
-    >
-      <span
-        aria-hidden="true"
-      >
-        last
-      </span>
-      <span
-        className="sr-only"
-      >
-        last
-      </span>
-    </a>
-  </PaginationLink>
-</li>
-`;
-
-exports[`containers/LogFace extended renders correctly: logface title 1`] = `
-<h2
-  id="logface_title"
->
-  Log Face - Pregnancy
-</h2>
-`;
-
-exports[`containers/LogFace extended renders correctly: search div 1`] = `
+exports[`containers/LogFace renders correctly: search div 1`] = `
 <input
   className="form-control logface-search"
   id="search"

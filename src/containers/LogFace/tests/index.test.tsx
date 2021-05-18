@@ -94,7 +94,9 @@ describe('containers/LogFace', () => {
         expect(toJson(wrapper.find('.logface-page-filter'))).toMatchSnapshot('filter div');
         expect(toJson(wrapper.find('input#search'))).toMatchSnapshot('search div');
         expect(toJson(wrapper.find('#logface_title'))).toMatchSnapshot('logface title');
-        expect(toJson(wrapper.find('.pagination-container'))).toMatchSnapshot('paginator');
+        wrapper.find('.pagination-container li').forEach((li) => {
+            expect(toJson(li)).toMatchSnapshot();
+        });
 
         wrapper.unmount();
     });
