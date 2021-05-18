@@ -1,7 +1,7 @@
 /** This is the main configuration module */
-import { Providers } from '@onaio/gatekeeper';
 import { TFunction } from 'react-i18next';
 import { GREEN, RED, YELLOW } from './colors';
+import { AuthorizationGrantType, Providers } from '@onaio/gatekeeper';
 import {
     PREGNANCY_MODULE,
     NUTRITION_MODULE,
@@ -25,8 +25,14 @@ import {
     REFUSAL_REPORT,
     RESPONSE_REPORT,
     SOCIAL_DETERMINANTS,
+    BACKEND_CALLBACK_URL,
+    REACT_LOGIN_URL,
+    BACKEND_LOGIN_URL,
+    BACKEND_CALLBACK_PATH,
+    REACT_CALLBACK_PATH,
 } from '../constants';
 import {
+    BACKEND_ACTIVE,
     DOMAIN_NAME,
     ENABLE_ONADATA_OAUTH,
     ENABLE_OPENSRP_OAUTH,
@@ -68,8 +74,6 @@ export const providers: Providers = {
         },
     }),
 };
-
-export const URLS_TO_HIDE_HEADER: string[] = ['login', 'home'];
 
 /** constant react-hot-toast config */
 export const toastConfig = {
@@ -166,3 +170,9 @@ export const logFaceSmsTypesByModule: Dictionary<string[]> = {
     [NBC_AND_PNC_MODULE]: [...nbcSmsTypes, ...pncSmsTypes],
     [NUTRITION_MODULE]: nutritionSmsTypes,
 };
+
+export const APP_CALLBACK_URL = BACKEND_ACTIVE ? BACKEND_CALLBACK_URL : REACT_LOGIN_URL;
+export const { IMPLICIT, AUTHORIZATION_CODE } = AuthorizationGrantType;
+export const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
+export const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : REACT_LOGIN_URL;
+export const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;

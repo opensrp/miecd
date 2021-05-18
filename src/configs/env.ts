@@ -129,3 +129,16 @@ export const LOCATION_SLICES = [PROVINCE_SLICE, DISTRICT_SLICE, COMMUNE_SLICE, V
 export const SUPERSET_SMS_DATA_SLICE = process.env.REACT_APP_SUPERSET_SMS_DATA_SLICE || '0';
 
 export const USER_LOCATION_DATA_SLICE = process.env.REACT_APP_USER_LOCATION_DATA_SLICE || '0';
+
+export const BACKEND_ACTIVE = process.env.REACT_APP_BACKEND_ACTIVE === 'true';
+
+export const EXPRESS_OAUTH_LOGOUT_URL =
+    process.env.REACT_APP_EXPRESS_OAUTH_LOGOUT_URL || 'http://localhost:3000/logout';
+
+export const KEYCLOAK_LOGOUT_URL =
+    process.env.REACT_APP_KEYCLOAK_LOGOUT_URL ||
+    'https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/logout';
+
+/** Express server settings */
+export const EXPRESS_OAUTH_GET_STATE_URL =
+    process.env.REACT_APP_EXPRESS_OAUTH_GET_STATE_URL || 'http://localhost:3000/oauth/state';

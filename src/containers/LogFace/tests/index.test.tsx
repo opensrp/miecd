@@ -25,6 +25,7 @@ import * as securityAuthenticate from '../../../store/ducks/tests/fixtures/secur
 import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom';
 import { smsDataFixture } from 'store/ducks/tests/fixtures';
 import { Dictionary } from '@onaio/utils/dist/types/index';
+import { authenticateUser } from '@onaio/session-reducer';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -188,6 +189,20 @@ jest.mock('react-select', () => ({ options, onChange }: Dictionary) => {
 describe('containers/LogFace extended', () => {
     const commonProps = { module: PREGNANCY };
 
+    beforeAll(() => {
+        store.dispatch(
+            authenticateUser(
+                true,
+                {
+                    email: 'bob@example.com',
+                    name: 'Bobbie',
+                    username: 'RobertBaratheon',
+                },
+                { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } },
+            ),
+        );
+    });
+
     beforeEach(() => {
         jest.resetAllMocks();
         store.dispatch(clearLocationSlice());
@@ -197,7 +212,7 @@ describe('containers/LogFace extended', () => {
 
     it('shows loader and Breaks just fine', async () => {
         const supersetFetchMock = jest.fn(async () => []);
-        fetch.mockResponse(JSON.stringify([]));
+        fetch.mockReject(new Error('coughid'));
         const props = {
             ...commonProps,
             ...locationProps,
@@ -212,8 +227,6 @@ describe('containers/LogFace extended', () => {
         );
 
         expect(wrapper.find('Ripple')).toHaveLength(1);
-
-        fetch.mockReject(new Error('coughid'));
 
         await act(async () => {
             await new Promise((resolve) => setImmediate(resolve));
@@ -233,7 +246,7 @@ describe('containers/LogFace extended', () => {
                 {
                     headers: {
                         accept: 'application/json',
-                        authorization: 'Bearer ',
+                        authorization: 'Bearer hunter2',
                         'content-type': 'application/json;charset=UTF-8',
                     },
                     method: 'GET',
