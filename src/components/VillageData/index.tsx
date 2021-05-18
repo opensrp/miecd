@@ -4,7 +4,7 @@ import ReactPaginate from 'react-paginate';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardTitle, Row, Table } from 'reactstrap';
 import { NBC_AND_PNC_CHILD, NBC_AND_PNC_WOMAN, NUTRITION, PREGNANCY } from '../../constants';
-import { getModuleLink, getNumberOfDaysSinceDate } from '../../helpers/utils';
+import { getCommonPaginationProps, getModuleLink, getNumberOfDaysSinceDate } from '../../helpers/utils';
 import { SmsData } from '../../store/ducks/sms_events';
 import RiskColoring from '../RiskColoring';
 import './index.css';
@@ -46,26 +46,13 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
         const totalPageCount = Math.ceil(this.props.smsData.length / pageLimit);
 
         const paginatorProps = {
-            previousLabel: t('previous'),
-            nextLabel: t('next'),
-            breakLabel: <>&nbsp;&nbsp;...&nbsp;&nbsp;</>,
-            breakClassName: 'page-item',
+            ...getCommonPaginationProps(t),
             pageCount: totalPageCount,
-            marginPagesDisplayed: 2,
-            pageRangeDisplayed: 3,
             onPageChange: (data: { selected: number }) => {
                 this.setState({
                     currentPage: data.selected,
                 });
             },
-            containerClassName: 'pagination',
-            activeClassName: 'active',
-            pageClassName: 'page-item',
-            previousClassName: 'page-item',
-            nextClassName: 'page-item',
-            pageLinkClassName: 'page-link',
-            previousLinkClassName: 'page-link',
-            nextLinkClassName: 'page-link',
         };
 
         return (

@@ -34,6 +34,7 @@ import {
     formatAge,
     logFaceSupersetCall,
     getRiskCatFilter,
+    getCommonPaginationProps,
 } from '../../helpers/utils';
 import supersetFetch from '../../services/superset';
 import {
@@ -162,6 +163,12 @@ const LogFace = (props: LogFacePropsType) => {
     };
 
     const totalPageCount = Math.ceil(smsData.length / numberOfRows);
+    const paginationProps = {
+        ...getCommonPaginationProps(t),
+        pageCount: totalPageCount,
+
+        onPageChange: onPageChangeHandler,
+    };
 
     if (broken) {
         return <ErrorPage title={error?.name} message={error?.message} />;
@@ -295,24 +302,7 @@ const LogFace = (props: LogFacePropsType) => {
             </div>
 
             <nav aria-label="Page navigation" className="pagination-container">
-                <ReactPaginate
-                    previousLabel={t('previous')}
-                    nextLabel={t('next')}
-                    breakLabel={<>&nbsp;&nbsp;...&nbsp;&nbsp;</>}
-                    breakClassName={'page-item'}
-                    pageCount={totalPageCount}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={3}
-                    onPageChange={onPageChangeHandler}
-                    containerClassName={'pagination'}
-                    activeClassName={'active'}
-                    pageClassName={'page-item'}
-                    previousClassName={'page-item'}
-                    nextClassName={'page-item'}
-                    pageLinkClassName={'page-link'}
-                    previousLinkClassName={'page-link'}
-                    nextLinkClassName={'page-link'}
-                />
+                <ReactPaginate {...paginationProps} />
             </nav>
         </div>
     );
