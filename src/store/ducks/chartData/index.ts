@@ -87,7 +87,7 @@ export interface ChartFilters {
 const getMotherData = (state: Partial<Store>): MotherChartData[] =>
     values((state as Dictionary)[sliceName].motherChartData);
 
-const getChildData = (state: Partial<Store>): MotherChartData[] =>
+const getChildData = (state: Partial<Store>): ChildChartData[] =>
     values((state as Dictionary)[sliceName].childChartData);
 
 const getPatientId = (_: Partial<Store>, props: ChartFilters) => props.patientId;
