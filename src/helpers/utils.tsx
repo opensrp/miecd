@@ -54,7 +54,7 @@ import {
     UserLocation,
     userLocationDataFetched,
 } from '../store/ducks/locations';
-import { fetchSms, LogFaceSmsType, SmsData, smsDataFetched } from '../store/ducks/sms_events';
+import { fetchSms, LogFaceSmsType, SmsData, smsDataFetched, CompartmentSmsTypes } from '../store/ducks/sms_events';
 import { Dictionary } from '@onaio/utils';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
@@ -172,7 +172,7 @@ export const locationIdIn = (locationId: string, locations: Location[]) => {
  * An object representing the filter function and location level for a logged in user.
  */
 export interface FilterFunctionAndLocationLevel {
-    locationFilterFunction: (smsData: SmsData) => boolean;
+    locationFilterFunction: (CompartmentSmsData: CompartmentSmsTypes) => boolean;
     locationLevel: number;
 }
 
@@ -190,7 +190,7 @@ export function getFilterFunctionAndLocationLevel(
     userLocationId: string,
     [provinces, districts, communes, villages]: Location[][],
 ): FilterFunctionAndLocationLevel {
-    let locationFilterFunction: (smsData: SmsData) => boolean = () => {
+    let locationFilterFunction: (CompartmentSmsData: CompartmentSmsTypes) => boolean = () => {
         return false;
     };
 
@@ -203,10 +203,10 @@ export function getFilterFunctionAndLocationLevel(
 
     if (locationIdIn(userLocationId, provinces)) {
         userLocationLevel = 1;
-        locationFilterFunction = (smsData: SmsData): boolean => {
+        locationFilterFunction = (CompartmentSmsData: CompartmentSmsTypes): boolean => {
             // tslint:disable-next-line: no-shadowed-variable
             const village = villages.find((location: Location) => {
-                return location.location_id === smsData.location_id;
+                return location.location_id === CompartmentSmsData.location_id;
             });
             if (village) {
                 return (
@@ -219,10 +219,10 @@ export function getFilterFunctionAndLocationLevel(
 
     if (locationIdIn(userLocationId, districts)) {
         userLocationLevel = 2;
-        locationFilterFunction = (smsData: SmsData): boolean => {
+        locationFilterFunction = (CompartmentSmsData: CompartmentSmsTypes): boolean => {
             // tslint:disable-next-line: no-shadowed-variable
             const village = villages.find((location: Location) => {
-                return location.location_id === smsData.location_id;
+                return location.location_id === CompartmentSmsData.location_id;
             });
             if (village) {
                 return userLocationId === getDistrict(village as Location & { level: typeof VILLAGE }, communes);
@@ -233,10 +233,10 @@ export function getFilterFunctionAndLocationLevel(
 
     if (locationIdIn(userLocationId, communes)) {
         userLocationLevel = 3;
-        locationFilterFunction = (smsData: SmsData): boolean => {
+        locationFilterFunction = (CompartmentSmsData: CompartmentSmsTypes): boolean => {
             // tslint:disable-next-line: no-shadowed-variable
             const village = villages.find((location: Location) => {
-                return location.location_id === smsData.location_id;
+                return location.location_id === CompartmentSmsData.location_id;
             });
             if (village) {
                 return userLocationId === getCommune(village as Location & { level: typeof VILLAGE });
@@ -247,8 +247,8 @@ export function getFilterFunctionAndLocationLevel(
 
     if (locationIdIn(userLocationId, villages)) {
         userLocationLevel = 4;
-        locationFilterFunction = (smsData: SmsData): boolean => {
-            return userLocationId === smsData.location_id;
+        locationFilterFunction = (CompartmentSmsData: CompartmentSmsTypes): boolean => {
+            return userLocationId === CompartmentSmsData.location_id;
         };
     }
 
