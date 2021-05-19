@@ -551,6 +551,49 @@ export async function fetchData(
     });
 }
 
+/**
+ * Helper function to fetch superset/discover slices and return without dispatch
+ * @param supersetSlice superset/discover slice number
+ * @returns an array of slice type
+ */
+export async function fetchSupersetData<ReturnType>(supersetSlice: string): Promise<ReturnType[]> {
+    // error object
+    const UserException = (message: string) => ({
+        name: 'NoResponseData',
+        message: message,
+    });
+    // fetch
+    return supersetFetch(supersetSlice)
+        .then((response: ReturnType[] | undefined) => {
+            if (!response) {
+                throw UserException(`No data found for slice ${supersetSlice}`);
+            }
+            return response;
+        })
+        .catch((error) => {
+            throw error;
+        });
+}
+
+export async function fetchOpenSrpData(endpoint: string) {
+    const openSrpService = new OpenSRPService(OPENSRP_SECURITY_AUTHENTICATE);
+    return (
+        openSrpService
+            .read(endpoint)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .then((response: any) => {
+                if (!response) {
+                    const errorMessage = { name: 'NoResponseData', message: 'No user data found' };
+                    throw errorMessage;
+                }
+                return response;
+            })
+            .catch((error) => {
+                throw error;
+            })
+    );
+}
+
 /** convert milliseconds to years (rounded off to two decimal places)
  * @param mSeconds - time in milliseconds
  */
