@@ -3,7 +3,7 @@ import { keyBy, values } from 'lodash';
 import { AnyAction, Store } from 'redux';
 import { EC_CHILD, EC_FAMILY_MEMBER, EC_WOMAN, EVENT_DATE_DATE_FORMAT, EVENT_ID } from '../../constants';
 import { groupBy, formatDateStrings, sortByEventDate } from '../../helpers/utils';
-import { SmsFilterFunction } from '../../types';
+import { SmsFilterFunction, CompartmentsSmsFilterFunction } from '../../types';
 import { Dictionary } from '@onaio/utils';
 import { createSelector } from 'reselect';
 import { TreeNode } from './locationHierarchy/types';
@@ -185,7 +185,7 @@ export interface RemoveFilterArgs extends AnyAction {
 
 /** Interface for AddFilterArgs */
 export interface AddFilterArgsAction extends AnyAction {
-    filterArgs: SmsFilterFunction[];
+    filterArgs: CompartmentsSmsFilterFunction[];
     type: typeof ADD_FILTER_ARGS;
 }
 
@@ -246,7 +246,7 @@ export const removeSms: RemoveSmsAction = {
 };
 
 /** Add filter args action creator */
-export const addFilterArgs = (filterArgs: SmsFilterFunction[]): AddFilterArgsAction => {
+export const addFilterArgs = (filterArgs: CompartmentsSmsFilterFunction[]): AddFilterArgsAction => {
     return {
         filterArgs,
         type: ADD_FILTER_ARGS as typeof ADD_FILTER_ARGS,
@@ -355,7 +355,7 @@ export function smsDataFetched(state: Partial<Store>): boolean {
  * @param {SmsFilterFunction[]}  filterArgs - an array of SMS_FILTER_FUNCTIONs.
  * @return {SmsData[]} - an array of SmsData objects that have passed the filtration criteria of all the filterArgs.
  */
-export function getFilteredSmsData(state: Partial<Store>, filterArgs: SmsFilterFunction[]): SmsData[] {
+export function getFilteredSmsData(state: Partial<Store>, filterArgs: CompartmentsSmsFilterFunction[]): SmsData[] {
     let results = values((state as any)[reducerName].smsData);
     for (const filterArgsIndex in filterArgs) {
         if (filterArgsIndex) {
@@ -366,7 +366,7 @@ export function getFilteredSmsData(state: Partial<Store>, filterArgs: SmsFilterF
 }
 
 /** Returns the filterArgs currently in the store */
-export function getFilterArgs(state: Partial<Store>): SmsFilterFunction[] {
+export function getFilterArgs(state: Partial<Store>): CompartmentsSmsFilterFunction[] {
     if ((state as any)[reducerName].filterArgs) {
         return (state as any)[reducerName].filterArgs;
     }
