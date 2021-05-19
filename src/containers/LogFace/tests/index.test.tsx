@@ -14,10 +14,10 @@ import { act } from 'react-dom/test-utils';
 import * as securityAuthenticate from '../../../store/ducks/tests/fixtures/securityAuthenticate.json';
 import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom';
 import { nutritionSmsFixtures, PregnancyReportFixture } from 'store/ducks/tests/fixtures';
-import { Dictionary } from '@onaio/utils/dist/types/index';
-import { authenticateUser } from '@onaio/session-reducer';
+import { Dictionary } from '@onaio/utils';
 import React from 'react';
 import { LogFaceModules } from '../../../configs/settings';
+import { authenticateUser } from '@onaio/session-reducer';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -63,6 +63,17 @@ describe('containers/LogFace extended', () => {
     const commonProps = { module: PREGNANCY as LogFaceModules };
     beforeAll(() => {
         store.dispatch(fetchUserLocations(userLocations));
+        store.dispatch(
+            authenticateUser(
+                true,
+                {
+                    email: 'bob@example.com',
+                    name: 'Bobbie',
+                    username: 'RobertBaratheon',
+                },
+                { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } },
+            ),
+        );
     });
 
     beforeEach(() => {
