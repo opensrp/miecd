@@ -52,6 +52,8 @@ export const NBC_AND_PNC = 'NBC & PNC';
 export const NBC_AND_PNC_CHILD = 'NBC & PNC_CHILD';
 export const NBC_AND_PNC_WOMAN = 'NBC & PNC_WOMAN';
 export const NUTRITION = 'Nutrition';
+export const NO_UNDERSCORE_RISK = 'no_risk';
+export const RED_ALERT = 'red_alert';
 
 // module string literals
 export const PREGNANCY_MODULE = 'Pregnancy';
@@ -104,6 +106,7 @@ export const HEIGHT = 'height';
 export const WEIGHT = 'weight';
 export const RISK = 'risk';
 export const NUTRITION_REPORT = 'Nutrition Report';
+export const RISK_LEVEL = 'risk_level';
 
 // TIME constants
 export const MICROSECONDS_IN_A_WEEK = 604800000;
