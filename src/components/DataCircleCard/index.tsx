@@ -19,7 +19,7 @@ import {
 } from '../../constants';
 import { getLinkToHierarchicalDataTable, Dictionary } from '../../helpers/utils';
 import reducer, { reducerName, addFilterArgs } from '../../store/ducks/sms_events';
-import { SmsFilterFunction } from '../../types';
+import { CompartmentsSmsFilterFunction } from '../../types';
 import './index.css';
 import { useTranslation } from 'react-i18next';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -39,8 +39,8 @@ interface Props extends RouteComponentProps {
     inappropriateFeeding?: number;
     title: string;
     addFilterArgsActionCreator?: typeof addFilterArgs;
-    filterArgs?: SmsFilterFunction[];
-    module: typeof PREGNANCY | typeof NBC_AND_PNC_CHILD | typeof NBC_AND_PNC_WOMAN | typeof NUTRITION | '';
+    filterArgs?: CompartmentsSmsFilterFunction[];
+    module: typeof PREGNANCY | typeof NBC_AND_PNC_CHILD | typeof NBC_AND_PNC_WOMAN | typeof NUTRITION;
     userLocationId: string;
     permissionLevel: number;
     totalNumber: number;
