@@ -52,7 +52,6 @@ interface Props {
     userUUID: string;
     addFilterArgs: typeof addFilterArgsActionCreator;
     removeFilterArgs: typeof removeFilterArgsActionCreator;
-    filterArgs: SmsFilterFunction[];
     module: typeof PREGNANCY | typeof NBC_AND_PNC | typeof NUTRITION | '';
     provinces: Location[];
     districts: Location[];
@@ -94,7 +93,6 @@ export const Compartments = ({
     communes = [],
     villages = [],
     filterArgsInStore = [],
-    filterArgs = [],
     removeFilterArgs = removeFilterArgsActionCreator,
     addFilterArgs = addFilterArgsActionCreator,
 }: Props) => {
@@ -161,7 +159,6 @@ export const Compartments = ({
             !filterArgsInStore.find((element) => element.toString() === locationFilterFunction.toString())
         ) {
             removeFilterArgs();
-            addFilterArgs(filterArgs);
             addFilterArgs([locationFilterFunction as SmsFilterFunction]);
         }
         const locationPath = buildHeaderBreadCrumb(
@@ -186,7 +183,6 @@ export const Compartments = ({
         smsData,
         removeFilterArgs,
         addFilterArgs,
-        filterArgs,
     ]);
 
     useEffect(() => {
