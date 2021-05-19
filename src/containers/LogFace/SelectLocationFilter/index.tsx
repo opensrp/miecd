@@ -25,23 +25,24 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
     const { t } = useTranslation();
     const { userLocationTree, userLocationId, disabled, onLocationChange } = props;
 
-    // find the treeNode this user is assigned to
-    const userLocationNode = userLocationTree?.first((node) => node.model.id === userLocationId);
-
-    const immediateDescendants: TreeNode[] = userLocationNode?.hasChildren() ? userLocationNode.children : [] ?? [];
-    const initialSelectOptions = immediateDescendants.map((node) => ({
-        value: node.model.id,
-        label: node.model.label,
-    }));
+    const initialSelectOptions = getOptions(userLocationTree, userLocationId);
     const [options, setOptions] = useState(initialSelectOptions);
     const [hierarchy, setHierarchy] = useState<TreeNode[]>([]);
     const [selectedNode, setSelectedNode] = useState<TreeNode | undefined>();
     const [closeMenuOnSelect, setMenuToClose] = useState<boolean>(false);
 
     useEffect(() => {
+        // update options on prop changes
+        const updateOptions = getOptions(userLocationTree, userLocationId);
+        setOptions(updateOptions);
+    }, [userLocationId, userLocationTree]);
+
+    useEffect(() => {
         // don't close dropdown after user makes selection if selected node has children
-        const hasChildren: boolean | undefined = selectedNode?.hasChildren();
-        setMenuToClose(!hasChildren);
+        if (selectedNode) {
+            const hasChildren: boolean | undefined = selectedNode?.hasChildren();
+            setMenuToClose(!hasChildren);
+        }
     }, [selectedNode]);
 
     /** handles a location selection */
@@ -101,7 +102,8 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
                 }));
                 setOptions(nextOptions);
             } else {
-                setOptions(initialSelectOptions);
+                const updateOptions = getOptions(userLocationTree, userLocationId);
+                setOptions(updateOptions);
             }
         }
     };
@@ -146,3 +148,19 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
 SelectLocationFilter.defaultProps = defaultProps;
 
 export { SelectLocationFilter };
+
+/** generates options from user location hierarchy
+ * @param userLocationTree - the user hierarchy tree
+ * @param userLocationId - the locationId where this user is assigned
+ */
+const getOptions = (userLocationTree: TreeNode | undefined, userLocationId: string) => {
+    // find the treeNode this user is assigned to
+    const userLocationNode = userLocationTree?.first((node) => node.model.id === userLocationId);
+
+    const immediateDescendants: TreeNode[] = userLocationNode?.hasChildren() ? userLocationNode.children : [] ?? [];
+    const options = immediateDescendants.map((node) => ({
+        value: node.model.id,
+        label: node.model.label,
+    }));
+    return options;
+};

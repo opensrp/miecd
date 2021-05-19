@@ -47,7 +47,7 @@ describe('selectLocationFilter', () => {
 
         // list option; should be 3, demo user is at national level and has access to only 3 provinces
         expect(toJson(wrapper.find('select'))).toMatchSnapshot('initial Options');
-        expect((wrapper.find('Select').props() as Dictionary).closeMenuOnSelect).toBeTruthy();
+        expect((wrapper.find('Select').props() as Dictionary).closeMenuOnSelect).toBeFalsy();
 
         // simulate selection of one of provinces
         wrapper
@@ -106,7 +106,7 @@ describe('selectLocationFilter', () => {
 
         // list option; should be 3, demo user is at national level and has access to only 3 provinces
         expect(toJson(wrapper.find('select'))).toMatchSnapshot('initial Options');
-        expect((wrapper.find('Select').props() as Dictionary).closeMenuOnSelect).toBeTruthy();
+        expect((wrapper.find('Select').props() as Dictionary).closeMenuOnSelect).toBeFalsy();
 
         // expect(wrapper.find('Select').props()).toEqual();
 

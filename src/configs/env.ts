@@ -116,6 +116,12 @@ export const SUPERSET_PREGNANCY_DATA_EXPORT =
     'https://discover.ona.io/superset/explore_json/?form_data={"slice_id":2263}&csv=true';
 
 // slice IDs
+export const PREGNANCY_LOGFACE_SLICE = process.env.REACT_APP_LOGFACE_PREGNANCY_SLICE || '0';
+
+export const NBC_AND_PNC_LOGFACE_SLICE = process.env.REACT_APP_NBC_AND_PNC_LOGFACE_SLICE || '0';
+
+export const NUTRITION_LOGFACE_SLICE = process.env.REACT_APP_NUTRITION_LOGFACE_SLICE || '0';
+
 export const PROVINCE_SLICE = process.env.REACT_APP_PROVINCE_SLICE || '0';
 
 export const DISTRICT_SLICE = process.env.REACT_APP_DISTRICT_SLICE || '0';

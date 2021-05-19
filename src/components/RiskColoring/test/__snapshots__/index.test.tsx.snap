@@ -2,6 +2,7 @@
 
 exports[`RiskColoring must show correct Risk level depending on the string passed as a prop: default 1`] = `
 <RiskColoring
+  displayValue=""
   risk=""
 >
   <span
@@ -13,9 +14,7 @@ exports[`RiskColoring must show correct Risk level depending on the string passe
     }
   >
     <div>
-      <p>
-        Not set
-      </p>
+      <p />
     </div>
   </span>
 </RiskColoring>
@@ -23,19 +22,20 @@ exports[`RiskColoring must show correct Risk level depending on the string passe
 
 exports[`RiskColoring must show correct Risk level depending on the string passed as a prop: hight_risk 1`] = `
 <RiskColoring
+  displayValue=""
   risk="high"
 >
   <span
     className="badge"
     style={
       Object {
-        "backgroundColor": "#6c757d",
+        "backgroundColor": "#ffc107",
       }
     }
   >
     <div>
       <p>
-        Not set
+        high
       </p>
     </div>
   </span>
@@ -44,19 +44,20 @@ exports[`RiskColoring must show correct Risk level depending on the string passe
 
 exports[`RiskColoring must show correct Risk level depending on the string passed as a prop: low_risk 1`] = `
 <RiskColoring
+  displayValue=""
   risk="low"
 >
   <span
     className="badge"
     style={
       Object {
-        "backgroundColor": "#6c757d",
+        "backgroundColor": "#ffc107",
       }
     }
   >
     <div>
       <p>
-        Not set
+        low
       </p>
     </div>
   </span>
@@ -65,6 +66,7 @@ exports[`RiskColoring must show correct Risk level depending on the string passe
 
 exports[`RiskColoring must show correct Risk level depending on the string passed as a prop: not_set 1`] = `
 <RiskColoring
+  displayValue=""
   risk="not set"
 >
   <span
@@ -77,7 +79,7 @@ exports[`RiskColoring must show correct Risk level depending on the string passe
   >
     <div>
       <p>
-        Not set
+        not set
       </p>
     </div>
   </span>
@@ -86,6 +88,7 @@ exports[`RiskColoring must show correct Risk level depending on the string passe
 
 exports[`RiskColoring must show correct Risk level depending on the string passed as a prop: red_alert 1`] = `
 <RiskColoring
+  displayValue=""
   risk="red"
 >
   <span
@@ -98,7 +101,7 @@ exports[`RiskColoring must show correct Risk level depending on the string passe
   >
     <div>
       <p>
-        Not set
+        red
       </p>
     </div>
   </span>

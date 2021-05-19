@@ -19,14 +19,7 @@ import {
 import logo from '../../../assets/images/logo.png';
 import logo2 from '../../../assets/images/vietnam-moh.png';
 import { WEBSITE_NAME } from '../../../configs/env';
-import {
-    ALL_LANGUAGE_OPTIONS,
-    EN_LANGUAGE_CODE,
-    HOME_URL,
-    LOGIN_URL,
-    LOGOUT_URL,
-    VI_LANGUAGE_CODE,
-} from '../../../constants';
+import { ALL_LANGUAGE_OPTIONS, EN_LANGUAGE_CODE, HOME_URL, LOGOUT_URL, VI_LANGUAGE_CODE } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 import './Header.css';
 import { APP_LOGIN_URL } from 'configs/settings';
