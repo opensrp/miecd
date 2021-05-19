@@ -145,3 +145,18 @@ export const LOCATION_FILTER_PARAM = 'locationSearch';
 export const RISK_CATEGORY_FILTER_PARAM = 'riskCategory';
 export const SMS_TYPE_FILTER_PARAM = 'smsType';
 export const SEARCH_FILTER_PARAM = 'search';
+
+// react-query queryKey's
+// compartment slices
+export const FETCH_COMPARTMENTS_PREGNANCY_SLICE = 'FETCH_COMPARTMENTS_PREGNANCY_SLICE';
+export const FETCH_COMPARTMENTS_NBC_AND_PNC_SLICE = 'FETCH_COMPARTMENTS_NBC_AND_PNC_SLICE';
+export const FETCH_COMPARTMENTS_NUTRITION_SLICE = 'FETCH_COMPARTMENTS_NUTRITION_SLICE';
+// location slices
+export const FETCH_VILLAGES = 'FETCH_VILLAGES';
+export const FETCH_COMMUNES = 'FETCH_COMMUNES';
+export const FETCH_DISTRICTS = 'FETCH_DISTRICTS';
+export const FETCH_PROVINCES = 'FETCH_PROVINCES';
+// user location slice
+export const FETCH_USER_LOCATION = 'FETCH_USER_LOCATION';
+// user id
+export const FETCH_USER_ID = 'FETCH_USER_ID';
