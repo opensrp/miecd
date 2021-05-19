@@ -310,7 +310,7 @@ export const filterByPatientId = (patientIdAndSmsData: PatientIDAndSmsData): Sms
  * @param {SmsData[]} smsData an array of smsData objects to sort by event date
  */
 export const sortByEventDate = <T extends { event_date: string }>(smsData: T[]) => {
-    return smsData.sort((event1, event2) => {
+    return smsData.sort((event1, event2): number => {
         const date1 = Date.parse(event1.event_date);
         const date2 = Date.parse(event2.event_date);
         return date2 - date1;
