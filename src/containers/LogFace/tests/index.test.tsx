@@ -120,9 +120,14 @@ describe('containers/LogFace extended', () => {
 
         expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(490);
         expect(toJson(wrapper.find('table'))).toMatchSnapshot('table snapshot');
+        wrapper.find('table tr td').forEach((td) => {
+            expect(toJson(td)).toMatchSnapshot('tables');
+        });
         expect(toJson(wrapper.find('input#search'))).toMatchSnapshot('search div');
         expect(toJson(wrapper.find('#logface_title'))).toMatchSnapshot('logface title');
-        expect(toJson(wrapper.find('.paginator'))).toMatchSnapshot('paginator');
+        wrapper.find('.paginator li').forEach((li) => {
+            expect(toJson(li)).toMatchSnapshot();
+        });
 
         wrapper.unmount();
     });
