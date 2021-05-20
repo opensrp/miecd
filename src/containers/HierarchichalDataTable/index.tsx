@@ -1,17 +1,16 @@
-import { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'react-table/react-table.css';
 import { Card, CardBody, CardTitle, Container, Row, Table } from 'reactstrap';
 import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { connect } from 'react-redux';
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
-import { Store } from 'redux';
+import { useSelector } from 'react-redux';
+import { Link, useParams, useHistory } from 'react-router-dom';
 import NoRecord from '../../components/NoRecord';
 import Loading from '../../components/page/Loading/index';
 import VillageData from '../../components/VillageData';
-import { LOCATION_SLICES } from '../../configs/env';
-import React from 'react';
+import { ErrorPage } from '../../components/ErrorPage';
+import { VILLAGE_SLICE, COMMUNE_SLICE, DISTRICT_SLICE, PROVINCE_SLICE } from '../../configs/env';
 import {
     ALL,
     BACKPAGE_ICON,
@@ -22,10 +21,11 @@ import {
     HIERARCHICAL_DATA_URL,
     HIGH,
     INAPPROPRIATELY_FED,
-    LOGFACE_RISK,
     LOW,
     NO,
-    NO_RISK_LOWERCASE,
+    PREGNANCY,
+    NBC_AND_PNC_CHILD,
+    NBC_AND_PNC_WOMAN,
     NUTRITION,
     NUTRITION_STATUS,
     OVERWEIGHT,
@@ -37,30 +37,33 @@ import {
     STUNTED,
     UP,
     VILLAGE,
+    FETCH_VILLAGES,
+    FETCH_COMMUNES,
+    FETCH_DISTRICTS,
+    FETCH_PROVINCES,
+    RED_ALERT,
+    NO_UNDERSCORE_RISK,
+    RISK_LEVEL,
 } from '../../constants';
-import { locationDataIsAvailable, getModuleLink } from '../../helpers/utils';
-import supersetFetch from '../../services/superset';
-import locationsReducer, {
-    fetchLocations,
-    getLocationsOfLevel,
-    Location,
-    reducerName,
-} from '../../store/ducks/locations';
+import { getModuleLink, fetchSupersetData } from '../../helpers/utils';
+import locationsReducer, { Location, reducerName } from '../../store/ducks/locations';
 import smsReducer, {
-    getFilterArgs,
-    getFilteredSmsData,
     reducerName as smsReducerName,
-    getSmsData,
-    SmsData,
+    CompartmentSmsTypes,
+    PregnancySmsData,
+    NutritionSmsData,
+    NbcPncSmsData,
+    getFilterArgs,
 } from '../../store/ducks/sms_events';
-import { SmsFilterFunction } from '../../types';
-import { withTranslation, WithTranslation } from 'react-i18next';
-import { history } from '@onaio/connected-reducer-registry';
+import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
+import { CompartmentsSmsFilterFunction } from '../../types';
+import { queryKeyAndSmsSlice } from '../../configs/settings';
 
 reducerRegistry.register(reducerName, locationsReducer);
 reducerRegistry.register(smsReducerName, smsReducer);
 
-export interface LocationWithData extends Location {
+interface LocationWithData extends Location {
     redAlert?: number;
     inappropriateFeeding?: number;
     risk?: number;
@@ -71,61 +74,15 @@ export interface LocationWithData extends Location {
     wasting?: number;
 }
 
-interface State {
-    data: LocationWithData[];
-    district: string;
-    villageData: SmsData[];
-    headerTitle: string[];
-}
-
 type RiskHighlighterType =
     | typeof RED
     | typeof RISK
-    | typeof HIGH
-    | typeof LOW
     | typeof NO
     | typeof STUNTED
     | typeof INAPPROPRIATELY_FED
     | typeof OVERWEIGHT
     | typeof SEVERE_WASTING
-    | typeof ALL
-    | '';
-
-interface Props {
-    current_level: number;
-    node_id?: string;
-    direction: 'down' | 'up';
-    from_level?: string;
-    risk_highligter?: RiskHighlighterType;
-    title: string;
-    fetchLocationsActionCreator: typeof fetchLocations;
-    provinces: Location[];
-    districts: Location[];
-    communes: Location[];
-    villages: Location[];
-    smsData: SmsData[];
-    compartMentUrl: string;
-    module: string;
-    permissionLevel: number;
-    history: typeof history;
-}
-
-const defaultProps: Props = {
-    communes: [],
-    compartMentUrl: '#',
-    current_level: 0,
-    direction: 'down',
-    districts: [],
-    fetchLocationsActionCreator: fetchLocations,
-    history: history,
-    module: '',
-    permissionLevel: 3,
-    provinces: [],
-    risk_highligter: '',
-    smsData: [],
-    title: '',
-    villages: [],
-};
+    | typeof ALL;
 
 interface NutritionTotals {
     inappropriateFeeding: number;
@@ -144,66 +101,47 @@ interface PregnancyNpcPncTotals {
 
 type Totals = NutritionTotals | PregnancyNpcPncTotals;
 
-export interface RouteParams {
+type locationKeys = 'communes' | 'districts' | 'provinces' | 'villages';
+type moduleType = typeof PREGNANCY | typeof NBC_AND_PNC_CHILD | typeof NBC_AND_PNC_WOMAN | typeof NUTRITION;
+
+interface RouteParams {
     current_level: string;
-    direction: string;
-    from_level: string;
-    module: string;
+    direction: 'down' | 'up';
+    from_level?: string;
+    module: moduleType;
     permission_level: string;
-    node_id: string;
+    node_id?: string;
     title: string;
-    risk_highlighter: string;
+    risk_highlighter?: RiskHighlighterType;
 }
 
-type RouterProps = RouteComponentProps<RouteParams>;
-
-export type HierarchicalDataTableType = Props & WithTranslation & RouterProps;
-
-function getLocationRiskTotals(smsData: SmsData[], module: string, riskHighlighter: RiskHighlighterType): Totals {
-    const nutritionStatusConstants = [SEVERE_WASTING, OVERWEIGHT];
-    const growthStatusConstants = [STUNTED];
-    const feedingCategoryConstants = [INAPPROPRIATELY_FED];
-
-    let field:
-        | typeof NUTRITION_STATUS
-        | typeof GROWTH_STATUS
-        | typeof FEEDING_CATEGORY
-        | typeof LOGFACE_RISK = LOGFACE_RISK;
-
-    if (nutritionStatusConstants.includes(riskHighlighter)) {
-        field = NUTRITION_STATUS;
-    } else if (growthStatusConstants.includes(riskHighlighter)) {
-        field = GROWTH_STATUS;
-    } else if (feedingCategoryConstants.includes(riskHighlighter)) {
-        field = FEEDING_CATEGORY;
-    }
-
-    let reducer: (accumulator: Totals, dataItem: SmsData) => Totals;
+function getLocationRiskTotals(CompartmentSmsData: CompartmentSmsTypes[], module: moduleType): Totals {
+    let reducer: (accumulator: Totals, dataItem: CompartmentSmsTypes) => Totals;
 
     if (module === NUTRITION) {
-        reducer = (accumulator: Totals, dataItem: SmsData) => {
-            if (dataItem[NUTRITION_STATUS] === SEVERE_WASTING) {
+        reducer = (accumulator: Totals, dataItem: CompartmentSmsTypes) => {
+            if ((dataItem as NutritionSmsData)[NUTRITION_STATUS] === SEVERE_WASTING) {
                 return {
                     ...accumulator,
                     wasting: (accumulator as NutritionTotals).wasting + 1,
                     total: accumulator.total + 1,
                 };
             }
-            if (dataItem[NUTRITION_STATUS] === OVERWEIGHT) {
+            if ((dataItem as NutritionSmsData)[NUTRITION_STATUS] === OVERWEIGHT) {
                 return {
                     ...accumulator,
                     overweight: (accumulator as NutritionTotals).overweight + 1,
                     total: accumulator.total + 1,
                 };
             }
-            if (dataItem[GROWTH_STATUS] === STUNTED) {
+            if ((dataItem as NutritionSmsData)[GROWTH_STATUS] === STUNTED) {
                 return {
                     ...accumulator,
                     stunting: (accumulator as NutritionTotals).stunting + 1,
                     total: accumulator.total + 1,
                 };
             }
-            if (dataItem[FEEDING_CATEGORY] === INAPPROPRIATELY_FED) {
+            if ((dataItem as NutritionSmsData)[FEEDING_CATEGORY] === INAPPROPRIATELY_FED) {
                 return {
                     ...accumulator,
                     inappropriateFeeding: (accumulator as NutritionTotals).inappropriateFeeding + 1,
@@ -213,27 +151,23 @@ function getLocationRiskTotals(smsData: SmsData[], module: string, riskHighlight
             return accumulator;
         };
     } else {
-        reducer = (accumulator: Totals, dataItem: SmsData) => {
-            switch (dataItem[field]) {
-                case RED:
+        reducer = (accumulator: Totals, dataItem: CompartmentSmsTypes) => {
+            switch ((dataItem as PregnancySmsData | NbcPncSmsData)[RISK_LEVEL]) {
+                case RED_ALERT:
                     return {
                         ...accumulator,
                         redAlert: (accumulator as PregnancyNpcPncTotals).redAlert + 1,
                         total: accumulator.total + 1,
                     };
                 case HIGH:
-                    return {
-                        ...accumulator,
-                        risk: (accumulator as PregnancyNpcPncTotals).risk + 1,
-                        total: accumulator.total + 1,
-                    };
                 case LOW:
+                case RISK:
                     return {
                         ...accumulator,
                         risk: (accumulator as PregnancyNpcPncTotals).risk + 1,
                         total: accumulator.total + 1,
                     };
-                case NO_RISK_LOWERCASE:
+                case NO_UNDERSCORE_RISK:
                     return {
                         ...accumulator,
                         no_risk: (accumulator as PregnancyNpcPncTotals).no_risk + 1,
@@ -261,10 +195,10 @@ function getLocationRiskTotals(smsData: SmsData[], module: string, riskHighlight
                   total: 0,
               };
 
-    return smsData.reduce(reducer, totalsMap);
+    return CompartmentSmsData.reduce(reducer, totalsMap);
 }
 
-function getRiskTotals(locations: LocationWithData[], module: string): Totals {
+function getRiskTotals(locations: LocationWithData[], module: moduleType): Totals {
     let reducer: (accumulator: Totals, location: LocationWithData) => Totals;
 
     if (module === NUTRITION) {
@@ -309,23 +243,30 @@ function getRiskTotals(locations: LocationWithData[], module: string): Totals {
 
     return locations.reduce(reducer, totalsMap);
 }
-
-type locationKeys = 'communes' | 'districts' | 'provinces' | 'villages';
-
+/**
+ * a function that populates locations with sms data that correspond to that location id
+ * @param locations a locations object containing location arrays (villages, communes, districts, provinces)
+ * @param CompartmentSmsData sms data slice corresponding to compartment/module (nutrition, pregnancy, nbc-pnc)
+ * @param module compartment module displaying data for
+ * @returns locations populated with sms data
+ */
 function addDataToLocations(
     locations: {
         [key in locationKeys]: Location[];
     },
-    smsData: SmsData[],
-    module: string,
-    riskHighlighter: RiskHighlighterType,
+    CompartmentSmsData: CompartmentSmsTypes[],
+    module: moduleType,
 ): { [key in locationKeys]: LocationWithData[] } {
+    // loop locations and recursively add sms data with location id matching location
     const villagesWithData: LocationWithData[] = [];
     for (const village of locations.villages) {
-        // filter sms data for data matching village
-        const villageSmsData = smsData.filter((dataItem: SmsData) => dataItem.location_id === village.location_id);
-        // get risk totals for that village
-        const villageRiskTotals = getLocationRiskTotals(villageSmsData, module, riskHighlighter);
+        // filter sms data for data with location id matching village
+        const villageSmsData = CompartmentSmsData.filter(
+            (dataItem: CompartmentSmsTypes) => dataItem.location_id === village.location_id,
+        );
+
+        // get risk totals for village sms
+        const villageRiskTotals = getLocationRiskTotals(villageSmsData, module);
 
         // infer type PregnancyNpcPncTotals
         if ('no_risk' in villageRiskTotals) {
@@ -344,19 +285,21 @@ function addDataToLocations(
                 inappropriateFeeding: villageRiskTotals.inappropriateFeeding,
                 overweight: villageRiskTotals.overweight,
                 stunting: villageRiskTotals.stunting,
-                total: villageRiskTotals.total,
                 wasting: villageRiskTotals.wasting,
+                total: villageRiskTotals.total,
             });
         }
     }
 
     const communesWithData: LocationWithData[] = [];
     for (const commune of locations.communes) {
-        // filter sms data for data matching commune
-        const communeSmsData = smsData.filter((dataItem: SmsData) => dataItem.location_id === commune.location_id);
-        const communeRiskTotals = getLocationRiskTotals(communeSmsData, module, riskHighlighter);
+        // filter sms data for data with location id matching commune
+        const communeSmsData = CompartmentSmsData.filter(
+            (dataItem: CompartmentSmsTypes) => dataItem.location_id === commune.location_id,
+        );
+        const communeRiskTotals = getLocationRiskTotals(communeSmsData, module);
 
-        // get villages that are children of this commune
+        // get village data for villages that are children of this commune
         const villagesInThisCommune = villagesWithData.filter(
             (village: LocationWithData) => village.parent_id === commune.location_id,
         );
@@ -379,19 +322,21 @@ function addDataToLocations(
                     communeRiskTotals.inappropriateFeeding + villagesInCommuneRiskTotals.inappropriateFeeding,
                 overweight: communeRiskTotals.overweight + villagesInCommuneRiskTotals.overweight,
                 stunting: communeRiskTotals.stunting + villagesInCommuneRiskTotals.stunting,
-                total: communeRiskTotals.total + villagesInCommuneRiskTotals.total,
                 wasting: communeRiskTotals.wasting + villagesInCommuneRiskTotals.wasting,
+                total: communeRiskTotals.total + villagesInCommuneRiskTotals.total,
             });
         }
     }
 
     const districtsWithData: LocationWithData[] = [];
     for (const district of locations.districts) {
-        // filter sms data for data matching district
-        const districtSmsData = smsData.filter((dataItem: SmsData) => dataItem.location_id === district.location_id);
-        const districtRiskTotals = getLocationRiskTotals(districtSmsData, module, riskHighlighter);
+        // filter sms data for data with location id matching district
+        const districtSmsData = CompartmentSmsData.filter(
+            (dataItem: CompartmentSmsTypes) => dataItem.location_id === district.location_id,
+        );
+        const districtRiskTotals = getLocationRiskTotals(districtSmsData, module);
 
-        // get communes that are children of this district
+        // get communes data for communes that are children of this district
         const communesInThisDistrict = communesWithData.filter(
             (commune: LocationWithData) => commune.parent_id === district.location_id,
         );
@@ -414,19 +359,21 @@ function addDataToLocations(
                     districtRiskTotals.inappropriateFeeding + communesInDistrictRiskTotals.inappropriateFeeding,
                 overweight: districtRiskTotals.overweight + communesInDistrictRiskTotals.overweight,
                 stunting: districtRiskTotals.stunting + communesInDistrictRiskTotals.stunting,
-                total: districtRiskTotals.total + communesInDistrictRiskTotals.total,
                 wasting: districtRiskTotals.wasting + communesInDistrictRiskTotals.wasting,
+                total: districtRiskTotals.total + communesInDistrictRiskTotals.total,
             });
         }
     }
 
     const provincesWithData: LocationWithData[] = [];
     for (const province of locations.provinces) {
-        // filter sms data for data matching province
-        const provinceSmsData = smsData.filter((dataItem: SmsData) => dataItem.location_id === province.location_id);
-        const provinceRiskTotals = getLocationRiskTotals(provinceSmsData, module, riskHighlighter);
+        // filter sms data for data with location id matching province
+        const provinceSmsData = CompartmentSmsData.filter(
+            (dataItem: CompartmentSmsTypes) => dataItem.location_id === province.location_id,
+        );
+        const provinceRiskTotals = getLocationRiskTotals(provinceSmsData, module);
 
-        // get district that are children of this province
+        // get district data for district that are children of this province
         const districtsInThisProvince = districtsWithData.filter(
             (district: LocationWithData) => district.parent_id === province.location_id,
         );
@@ -449,8 +396,8 @@ function addDataToLocations(
                     provinceRiskTotals.inappropriateFeeding + districtsInRiskTotals.inappropriateFeeding,
                 overweight: provinceRiskTotals.overweight + districtsInRiskTotals.overweight,
                 stunting: provinceRiskTotals.stunting + districtsInRiskTotals.stunting,
-                total: provinceRiskTotals.total + districtsInRiskTotals.total,
                 wasting: provinceRiskTotals.wasting + districtsInRiskTotals.wasting,
+                total: provinceRiskTotals.total + districtsInRiskTotals.total,
             });
         }
     }
@@ -463,495 +410,7 @@ function addDataToLocations(
     };
 }
 
-class HierarchichalDataTable extends Component<HierarchicalDataTableType, State> {
-    public static defaultProps = defaultProps;
-
-    public static getDerivedStateFromProps(nextProps: HierarchicalDataTableType) {
-        const locationsWithData = addDataToLocations(
-            {
-                communes: nextProps.communes,
-                districts: nextProps.districts,
-                provinces: nextProps.provinces,
-                villages: nextProps.villages,
-            },
-            nextProps.smsData,
-            nextProps.module,
-            nextProps.risk_highligter || '',
-        );
-
-        let dataToShow: LocationWithData[] = [];
-
-        if ((nextProps.direction === UP && nextProps.current_level === 0) || !nextProps.node_id) {
-            dataToShow = locationsWithData.provinces;
-        } else if (nextProps.direction === UP && nextProps.current_level === 1) {
-            dataToShow = locationsWithData.districts;
-            let parentId: string;
-            const node = dataToShow.find((dataItem: LocationWithData) => dataItem.location_id === nextProps.node_id);
-            if (nextProps.from_level === '2' && node) {
-                parentId = node.parent_id;
-            } else {
-                const commune = locationsWithData.communes.find(
-                    (dataItem: LocationWithData) => dataItem.location_id === nextProps.node_id,
-                );
-                if (commune) {
-                    parentId = commune.parent_id;
-                } else {
-                    return [];
-                }
-                parentId = dataToShow.find((dataItem: LocationWithData) => dataItem.location_id === parentId)
-                    ?.parent_id as string;
-            }
-            dataToShow = dataToShow.filter((dataItem: LocationWithData) => dataItem.parent_id === parentId);
-        } else if (nextProps.direction === UP && nextProps.current_level === 2) {
-            dataToShow = locationsWithData.communes;
-            const node = dataToShow.find((dataItem: LocationWithData) => dataItem.location_id === nextProps.node_id);
-            let parentId: null | string = null;
-            if (node) {
-                parentId = node.parent_id;
-            } else {
-                return [];
-            }
-            dataToShow = dataToShow.filter((dataItem: LocationWithData) => dataItem.parent_id === parentId);
-        } else {
-            dataToShow =
-                nextProps.current_level === 0
-                    ? locationsWithData.provinces
-                    : nextProps.current_level === 1
-                    ? locationsWithData.districts
-                    : nextProps.current_level === 2
-                    ? locationsWithData.communes
-                    : locationsWithData.villages;
-
-            dataToShow = nextProps.node_id
-                ? dataToShow.filter((dataItem: LocationWithData) => dataItem.parent_id === nextProps.node_id)
-                : dataToShow;
-        }
-
-        // get data to show on the VillageData component.
-        const locationIds = dataToShow.map((location: LocationWithData) => location.location_id);
-        const nutritionStatusConstants = [SEVERE_WASTING, OVERWEIGHT];
-        const growthStatusConstants = [STUNTED];
-        const feedingCategoryConstants = [INAPPROPRIATELY_FED];
-
-        let field:
-            | typeof NUTRITION_STATUS
-            | typeof GROWTH_STATUS
-            | typeof FEEDING_CATEGORY
-            | typeof LOGFACE_RISK = LOGFACE_RISK;
-
-        if (nextProps.risk_highligter) {
-            if (nutritionStatusConstants.includes(nextProps.risk_highligter)) {
-                field = NUTRITION_STATUS;
-            } else if (growthStatusConstants.includes(nextProps.risk_highligter)) {
-                field = GROWTH_STATUS;
-            } else if (feedingCategoryConstants.includes(nextProps.risk_highligter)) {
-                field = FEEDING_CATEGORY;
-            }
-        }
-
-        const villageData = nextProps.smsData.filter((dataItem: SmsData) => {
-            if (nextProps.risk_highligter === RISK) {
-                return (
-                    (locationIds.includes(dataItem.location_id) && dataItem[field].includes(HIGH)) ||
-                    dataItem[field].includes(LOW)
-                );
-            }
-            return (
-                locationIds.includes(dataItem.location_id) &&
-                (nextProps.risk_highligter === ALL
-                    ? true
-                    : nextProps.risk_highligter
-                    ? dataItem[field].includes(nextProps.risk_highligter ? nextProps.risk_highligter : '')
-                    : true)
-            );
-        });
-
-        return {
-            data: dataToShow,
-            villageData,
-        };
-    }
-
-    constructor(props: HierarchicalDataTableType) {
-        super(props);
-        this.state = {
-            data: [],
-            district: '',
-            villageData: [],
-            headerTitle: ['Provinces'],
-        };
-    }
-
-    public componentDidMount() {
-        const { fetchLocationsActionCreator } = this.props;
-        if (
-            locationDataIsAvailable(
-                this.props.villages,
-                this.props.communes,
-                this.props.districts,
-                this.props.provinces,
-            )
-        ) {
-            for (const slice of LOCATION_SLICES) {
-                if (slice) {
-                    supersetFetch(slice).then((result: Location[]) => {
-                        fetchLocationsActionCreator(result);
-                    });
-                }
-            }
-        }
-    }
-
-    public render() {
-        const { t } = this.props;
-        if (
-            locationDataIsAvailable(
-                this.props.villages,
-                this.props.communes,
-                this.props.districts,
-                this.props.provinces,
-            )
-        ) {
-            const tableRowLink = `${getModuleLink(this.props.module)}${HIERARCHICAL_DATA_URL}/${this.props.module}/${
-                this.props.risk_highligter
-            }/${this.props.title}/${this.props.current_level ? this.props.current_level + 1 : 1}/down/`;
-
-            const element = getTotals(this.state.data, this.props.module);
-
-            return (
-                <Container fluid className="compartment-data-table">
-                    <span
-                        // tslint:disable-next-line: jsx-no-lambda
-                        onClick={() => {
-                            window.history.go(-1);
-                        }}
-                        className="back-page"
-                    >
-                        <FontAwesomeIcon icon={BACKPAGE_ICON} size="lg" />
-                        <span>{t('Back')}</span>
-                    </span>
-                    <h1>{t(`${element.total} ${this.props.title}`)}</h1>
-                    <Row className="villageDataRow">
-                        <Card className="table-card">
-                            <CardTitle>{this.header()}</CardTitle>
-                            <CardBody>
-                                <Table striped borderless>
-                                    <thead id="header">
-                                        {this.props.module !== NUTRITION ? (
-                                            <tr>
-                                                <th className="default-width" />
-                                                <th className="default-width">{t('Red Alert')}</th>
-                                                <th className="default-width">{t('Risk')}</th>
-                                                <th className="default-width">{t('No Risk')}</th>
-                                                <th className="default-width totals">{t('Total')}</th>
-                                            </tr>
-                                        ) : (
-                                            <tr>
-                                                <th className="default-width" />
-                                                <th className="default-width">{t('Stunted')}</th>
-                                                <th className="default-width">{t('Severe Wasting')}</th>
-                                                <th className="default-width">{t('Overweight')}</th>
-                                                <th className="default-width">{t('Inappropriately Fed')}</th>
-                                                <th className="default-width totals">{t('Total')}</th>
-                                            </tr>
-                                        )}
-                                    </thead>
-                                    <tbody id="body">
-                                        {this.state.data.length ? (
-                                            this.state.data.map((element: LocationWithData) => {
-                                                return (
-                                                    <tr
-                                                        key={element.location_id}
-                                                        className={
-                                                            this.props.current_level !== 3
-                                                                ? 'cursor-pointer color-blue'
-                                                                : ''
-                                                        }
-                                                        onClick={() => {
-                                                            // drill down only up to level 3 (village)
-                                                            if (this.props.current_level !== 3) {
-                                                                this.props.history.push(
-                                                                    `${tableRowLink}${element.location_id}/${this.props.permissionLevel}`,
-                                                                );
-                                                                // add drill down location name to header
-                                                                this.setState({
-                                                                    headerTitle: [
-                                                                        ...this.state.headerTitle,
-                                                                        element.location_name,
-                                                                    ],
-                                                                });
-                                                            }
-                                                        }}
-                                                    >
-                                                        {this.props.module !== NUTRITION ? (
-                                                            <>
-                                                                <td className="default-width">
-                                                                    {element.location_name}
-                                                                </td>
-                                                                <td
-                                                                    className={`default-width ${
-                                                                        this.props.risk_highligter === RED
-                                                                            ? this.props.risk_highligter
-                                                                            : ''
-                                                                    }`}
-                                                                >
-                                                                    {element.redAlert}
-                                                                </td>
-                                                                <td
-                                                                    className={`default-width ${
-                                                                        this.props.risk_highligter === RISK
-                                                                            ? this.props.risk_highligter
-                                                                            : ''
-                                                                    }`}
-                                                                >
-                                                                    {element.risk}
-                                                                </td>
-                                                                <td
-                                                                    className={`default-width ${
-                                                                        this.props.risk_highligter === NO
-                                                                            ? this.props.risk_highligter
-                                                                            : ''
-                                                                    }`}
-                                                                >
-                                                                    {element.no_risk}
-                                                                </td>
-                                                                <td className="default-width totals">
-                                                                    {element.total}
-                                                                </td>
-                                                            </>
-                                                        ) : (
-                                                            <>
-                                                                <td className="default-width">
-                                                                    {element.location_name}
-                                                                </td>
-                                                                <td
-                                                                    className={`default-width ${
-                                                                        this.props.risk_highligter === STUNTED
-                                                                            ? this.props.risk_highligter
-                                                                                  .split(' ')
-                                                                                  .join('-')
-                                                                            : ''
-                                                                    }`}
-                                                                >
-                                                                    {element.stunting}
-                                                                </td>
-                                                                <td
-                                                                    className={`default-width ${
-                                                                        this.props.risk_highligter === SEVERE_WASTING
-                                                                            ? this.props.risk_highligter
-                                                                                  .split(' ')
-                                                                                  .join('-')
-                                                                            : ''
-                                                                    }`}
-                                                                >
-                                                                    {element.wasting}
-                                                                </td>
-                                                                <td
-                                                                    className={`default-width ${
-                                                                        this.props.risk_highligter === OVERWEIGHT
-                                                                            ? this.props.risk_highligter
-                                                                                  .split(' ')
-                                                                                  .join('-')
-                                                                            : ''
-                                                                    }`}
-                                                                >
-                                                                    {element.overweight}
-                                                                </td>
-                                                                <td
-                                                                    className={`default-width ${
-                                                                        this.props.risk_highligter ===
-                                                                        INAPPROPRIATELY_FED
-                                                                            ? this.props.risk_highligter
-                                                                                  .split(' ')
-                                                                                  .join('-')
-                                                                            : ''
-                                                                    }`}
-                                                                >
-                                                                    {element.inappropriateFeeding}
-                                                                </td>
-                                                                <td className="default-width totals">
-                                                                    {element.total}
-                                                                </td>
-                                                            </>
-                                                        )}
-                                                    </tr>
-                                                );
-                                            })
-                                        ) : (
-                                            <tr id="no-rows">
-                                                <td>{t('There seems to be no rows here :-(')}</td>
-                                            </tr>
-                                        )}
-                                        {(() => {
-                                            // inferred type PregnancyNpcPncTotals
-                                            return 'no_risk' in element ? (
-                                                <tr key="total" className="totals-row">
-                                                    <td className="default-width" id="total">
-                                                        {t(`Total (${this.getLevelString()})`)}
-                                                    </td>
-                                                    <td
-                                                        className={`default-width ${
-                                                            this.props.risk_highligter === RED
-                                                                ? RED_ALERT_CLASSNAME
-                                                                : ''
-                                                        }`}
-                                                    >
-                                                        {element.redAlert}
-                                                    </td>
-                                                    <td
-                                                        className={`default-width ${
-                                                            this.props.risk_highligter === RISK
-                                                                ? this.props.risk_highligter
-                                                                : ''
-                                                        }`}
-                                                    >
-                                                        {element.risk}
-                                                    </td>
-                                                    <td
-                                                        className={`default-width ${
-                                                            this.props.risk_highligter === NO
-                                                                ? this.props.risk_highligter
-                                                                : ''
-                                                        }`}
-                                                    >
-                                                        {element.no_risk}
-                                                    </td>
-                                                    <td className="default-width">{element.total}</td>
-                                                </tr>
-                                            ) : (
-                                                <tr key="total" className="totals-row">
-                                                    <td className="default-width" id="total">
-                                                        {t(`Total (${this.getLevelString()})`)}
-                                                    </td>
-                                                    <td
-                                                        className={`default-width ${
-                                                            this.props.risk_highligter === STUNTED
-                                                                ? this.props.risk_highligter.split(' ').join('-')
-                                                                : ''
-                                                        }`}
-                                                    >
-                                                        {element.stunting}
-                                                    </td>
-                                                    <td
-                                                        className={`default-width ${
-                                                            this.props.risk_highligter === SEVERE_WASTING
-                                                                ? this.props.risk_highligter.split(' ').join('-')
-                                                                : ''
-                                                        }`}
-                                                    >
-                                                        {element.wasting}
-                                                    </td>
-                                                    <td
-                                                        className={`default-width ${
-                                                            this.props.risk_highligter === OVERWEIGHT
-                                                                ? this.props.risk_highligter.split(' ').join('-')
-                                                                : ''
-                                                        }`}
-                                                    >
-                                                        {element.overweight}
-                                                    </td>
-                                                    <td
-                                                        className={`default-width ${
-                                                            this.props.risk_highligter === INAPPROPRIATELY_FED
-                                                                ? this.props.risk_highligter.split(' ').join('-')
-                                                                : ''
-                                                        }`}
-                                                    >
-                                                        {element.inappropriateFeeding}
-                                                    </td>
-                                                    <td className="default-width">{element.total}</td>
-                                                </tr>
-                                            );
-                                        })()}
-                                    </tbody>
-                                </Table>
-                            </CardBody>
-                        </Card>
-                    </Row>
-                    {this.state.villageData.length ? (
-                        <VillageData
-                            {...{
-                                current_level: this.props.current_level,
-                                module: this.props.module,
-                                smsData: this.state.villageData,
-                                // commune name is the last item in the headerTitle array
-                                communeName: this.state.headerTitle[this.state.headerTitle.length - 1],
-                            }}
-                        />
-                    ) : this.props.current_level === 3 ? (
-                        <NoRecord message={t('No Patient Level data to show for this commune')} />
-                    ) : null}
-                </Container>
-            );
-        }
-        return <Loading />;
-    }
-
-    private getLevelString = () => {
-        if (this.props.current_level === 0) {
-            return PROVINCE;
-        }
-        if (this.props.current_level === 1) {
-            return DISTRICT;
-        }
-        if (this.props.current_level === 2) {
-            return COMMUNE;
-        }
-        if (this.props.current_level === 3) {
-            return VILLAGE;
-        }
-        return PROVINCE;
-    };
-
-    private dontDisplayProvince() {
-        return this.props.permissionLevel > 0;
-    }
-
-    private dontDisplayDistrict() {
-        return this.props.permissionLevel > 1;
-    }
-
-    private dontDisplayCommune() {
-        return this.props.permissionLevel > 2;
-    }
-
-    private header = () => {
-        const aLink = this.state.headerTitle.map((item, index, arr) => {
-            // index 0 reserved for default headerTitle value (i.e All Provinces)
-            if (
-                (index === 1 && this.dontDisplayProvince()) ||
-                (index === 2 && this.dontDisplayDistrict()) ||
-                (index === 3 && this.dontDisplayCommune())
-            ) {
-                return <span key={index}>{null}</span>;
-            }
-            return (
-                <Link
-                    to={`${getModuleLink(this.props.module)}${HIERARCHICAL_DATA_URL}/${this.props.module}/${
-                        this.props.risk_highligter
-                    }/${this.props.title}/${index}/${UP}/${this.props.node_id}/${this.props.permissionLevel}/${
-                        this.props.current_level
-                    }`}
-                    key={index}
-                    onClick={() => {
-                        // slice of state.headerTitle array containing
-                        // items between index 0(inclusive) and index+1(exclusive) of the clicked item
-                        const newTitle = arr.slice(0, index + 1);
-                        this.setState({
-                            headerTitle: newTitle,
-                        });
-                    }}
-                >
-                    {index !== 0 && <span className="divider">&nbsp; / &nbsp;</span>}
-                    {this.props.t(`${item}`)}
-                </Link>
-            );
-        });
-        return aLink;
-    };
-}
-
-const getTotals = (dataToShow: LocationWithData[], module: string) => {
+const getTotals = (dataToShow: LocationWithData[], module: moduleType) => {
     let reducer: (accumulator: Totals, currentValue: LocationWithData) => Totals;
 
     if (module === NUTRITION) {
@@ -962,8 +421,8 @@ const getTotals = (dataToShow: LocationWithData[], module: string) => {
                     (currentValue as NutritionTotals).inappropriateFeeding,
                 overweight: (accumulator as NutritionTotals).overweight + (currentValue as NutritionTotals).overweight,
                 stunting: (accumulator as NutritionTotals).stunting + (currentValue as NutritionTotals).stunting,
-                total: accumulator.total + currentValue.total,
                 wasting: (accumulator as NutritionTotals).wasting + (currentValue as NutritionTotals).wasting,
+                total: accumulator.total + currentValue.total,
             };
         };
     } else {
@@ -997,28 +456,586 @@ const getTotals = (dataToShow: LocationWithData[], module: string) => {
     return dataToShow.reduce(reducer, totalsMap);
 };
 
-const mapStateToProps = (state: Partial<Store>, ownProps: HierarchicalDataTableType) => {
-    return {
-        communes: getLocationsOfLevel(state, 'Commune'),
-        current_level: parseInt(ownProps.match.params.current_level, 10),
-        direction: ownProps.match.params.direction as Props['direction'],
-        districts: getLocationsOfLevel(state, 'District'),
-        from_level: ownProps.match.params.from_level,
-        module: ownProps.match.params.module,
-        node_id: ownProps.match.params.node_id,
-        permissionLevel: parseInt(ownProps.match.params.permission_level),
-        provinces: getLocationsOfLevel(state, 'Province'),
-        risk_highligter: ownProps.match.params.risk_highlighter as RiskHighlighterType,
-        smsData: getFilterArgs(state).length
-            ? getFilteredSmsData(state, getFilterArgs(state) as SmsFilterFunction[])
-            : getSmsData(state),
-        title: ownProps.match.params.title,
-        villages: getLocationsOfLevel(state, 'Village'),
+export default function HierarchicalDataTable() {
+    const [locationData, setLocationData] = useState<LocationWithData[]>([]);
+    const [villageData, setVillageData] = useState<CompartmentSmsTypes[]>([]);
+    const [headerTitle, setHeaderTitle] = useState<string[]>(['Provinces']);
+    const [moduleSmsSlice, setModuleSmsSlice] = useState<CompartmentSmsTypes[]>([]);
+
+    // get filter arguments in store
+    const filterArgsInStore = useSelector((state) => getFilterArgs(state));
+
+    // get translation function
+    const { t } = useTranslation();
+
+    // navigate
+    const history = useHistory();
+
+    // get url params
+    const {
+        current_level: string_current_level,
+        direction,
+        from_level,
+        module,
+        node_id,
+        permission_level: string_permission_level,
+        risk_highlighter,
+        title,
+    } = useParams<RouteParams>();
+
+    // parse string param to int
+    const permissionLevel = string_permission_level ? parseInt(string_permission_level) : 3;
+    const current_level = string_current_level ? parseInt(string_current_level) : 0;
+
+    // conditionally assign sms slice and queryKey to use depending on module
+    const QueryKeyAndSmsSlice = queryKeyAndSmsSlice(module);
+
+    // fetch and cache current module sms slice
+    const { data: moduleSms, isLoading: moduleSmsSliceLoading, error: moduleSmsSliceError } = useQuery(
+        QueryKeyAndSmsSlice.queryKey,
+        () => fetchSupersetData<CompartmentSmsTypes>(QueryKeyAndSmsSlice.smsSlice),
+        {
+            select: (res: CompartmentSmsTypes[]) => res,
+            onError: (err: Error) => err,
+        },
+    );
+
+    // filter sms data according to stored filters (passed in from components)
+    useEffect(() => {
+        if (moduleSms?.length) {
+            // function to recursively filter sms data
+            const getFilteredSmsData = (
+                moduleSms: CompartmentSmsTypes[],
+                filterArgsInStore: CompartmentsSmsFilterFunction[],
+            ): CompartmentSmsTypes[] => {
+                let results = moduleSms;
+
+                // recursively filter results
+                for (const filterArgs of filterArgsInStore) {
+                    results = results.filter(filterArgs);
+                }
+                return results;
+            };
+
+            let filteredSmsData = moduleSms;
+            if (filterArgsInStore.length) filteredSmsData = getFilteredSmsData(moduleSms, filterArgsInStore);
+
+            setModuleSmsSlice(filteredSmsData);
+        }
+    }, [moduleSms, filterArgsInStore]);
+
+    // fetch all location slices
+    // todo: switch to useQueries once select is supported (because of type inference)
+    const { data: villages, isLoading: villagesLoading, error: villagesError } = useQuery(
+        FETCH_VILLAGES,
+        () => fetchSupersetData<Location>(VILLAGE_SLICE),
+        {
+            select: (res: Location[]) => res,
+            onError: (err: Error) => err,
+        },
+    );
+    const { data: communes, isLoading: communesLoading, error: communesError } = useQuery(
+        FETCH_COMMUNES,
+        () => fetchSupersetData<Location>(COMMUNE_SLICE),
+        {
+            select: (res: Location[]) => res,
+            onError: (err: Error) => err,
+        },
+    );
+    const { data: districts, isLoading: districtsLoading, error: districtsError } = useQuery(
+        FETCH_DISTRICTS,
+        () => fetchSupersetData<Location>(DISTRICT_SLICE),
+        {
+            select: (res: Location[]) => res,
+            onError: (err: Error) => err,
+        },
+    );
+    const { data: provinces, isLoading: provincesLoading, error: provincesError } = useQuery(
+        FETCH_PROVINCES,
+        () => fetchSupersetData<Location>(PROVINCE_SLICE),
+        {
+            select: (res: Location[]) => res,
+            onError: (err: Error) => err,
+        },
+    );
+
+    useEffect(() => {
+        if (provinces?.length && districts?.length && communes?.length && villages?.length) {
+            const locationsWithData = addDataToLocations(
+                {
+                    communes: communes,
+                    districts: districts,
+                    provinces: provinces,
+                    villages: villages,
+                },
+                moduleSmsSlice,
+                module,
+            );
+
+            let dataToShow: LocationWithData[] = [];
+
+            if ((direction === UP && current_level === 0) || !node_id) {
+                dataToShow = locationsWithData.provinces;
+            } else if (direction === UP && current_level === 1) {
+                dataToShow = locationsWithData.districts;
+                let parentId: string;
+                const node = dataToShow.find((dataItem: LocationWithData) => dataItem.location_id === node_id);
+                if (from_level === '2' && node) {
+                    parentId = node.parent_id;
+                } else {
+                    const commune = locationsWithData.communes.find(
+                        (dataItem: LocationWithData) => dataItem.location_id === node_id,
+                    );
+                    if (commune) {
+                        parentId = commune.parent_id;
+                    } else {
+                        dataToShow = [];
+                    }
+                    parentId = dataToShow.find((dataItem: LocationWithData) => dataItem.location_id === parentId)
+                        ?.parent_id as string;
+                }
+                dataToShow = dataToShow.filter((dataItem: LocationWithData) => dataItem.parent_id === parentId);
+            } else if (direction === UP && current_level === 2) {
+                dataToShow = locationsWithData.communes;
+                const node = dataToShow.find((dataItem: LocationWithData) => dataItem.location_id === node_id);
+                let parentId: null | string = null;
+                if (node) {
+                    parentId = node.parent_id;
+                } else {
+                    dataToShow = [];
+                }
+                dataToShow = dataToShow.filter((dataItem: LocationWithData) => dataItem.parent_id === parentId);
+            } else {
+                dataToShow =
+                    current_level === 0
+                        ? locationsWithData.provinces
+                        : current_level === 1
+                        ? locationsWithData.districts
+                        : current_level === 2
+                        ? locationsWithData.communes
+                        : locationsWithData.villages;
+
+                dataToShow = node_id
+                    ? dataToShow.filter((dataItem: LocationWithData) => dataItem.parent_id === node_id)
+                    : dataToShow;
+            }
+
+            setLocationData(dataToShow);
+        }
+    }, [
+        communes,
+        villages,
+        districts,
+        provinces,
+        current_level,
+        direction,
+        from_level,
+        module,
+        node_id,
+        risk_highlighter,
+        moduleSmsSlice,
+    ]);
+
+    useEffect(() => {
+        if (moduleSmsSlice && locationData.length) {
+            const nutritionStatusConstants = [SEVERE_WASTING, OVERWEIGHT];
+            const growthStatusConstants = [STUNTED];
+            const feedingCategoryConstants = [INAPPROPRIATELY_FED];
+
+            let field:
+                | typeof NUTRITION_STATUS
+                | typeof GROWTH_STATUS
+                | typeof FEEDING_CATEGORY
+                | typeof RISK_LEVEL = RISK_LEVEL;
+
+            if (risk_highlighter) {
+                if (nutritionStatusConstants.includes(risk_highlighter)) {
+                    field = NUTRITION_STATUS;
+                } else if (growthStatusConstants.includes(risk_highlighter)) {
+                    field = GROWTH_STATUS;
+                } else if (feedingCategoryConstants.includes(risk_highlighter)) {
+                    field = FEEDING_CATEGORY;
+                }
+            }
+
+            // get an array of current location ID's
+            const locationIds = locationData.map((location: LocationWithData) => location.location_id);
+
+            // filter for data matching these locations
+            const dataForCurrentLocation = moduleSmsSlice.filter((dataItem: CompartmentSmsTypes) =>
+                locationIds.includes(dataItem.location_id),
+            );
+
+            // default to all data (unfiltered) for undefined and 'all' risk_highlighter types
+            let villageData: CompartmentSmsTypes[] = dataForCurrentLocation;
+
+            // filter for current risk_highlighter
+            if (risk_highlighter && risk_highlighter !== ALL) {
+                if (field === RISK_LEVEL) {
+                    villageData = dataForCurrentLocation.filter((dataItem: CompartmentSmsTypes) => {
+                        // these risk_highlighter types are as generated by DataCircleCard component
+                        if (risk_highlighter === RED) {
+                            return (dataItem as PregnancySmsData | NbcPncSmsData)[RISK_LEVEL] === RED_ALERT;
+                        }
+                        if (risk_highlighter === RISK) {
+                            return (
+                                (dataItem as PregnancySmsData | NbcPncSmsData)[RISK_LEVEL] === HIGH ||
+                                (dataItem as PregnancySmsData | NbcPncSmsData)[RISK_LEVEL] === LOW ||
+                                (dataItem as PregnancySmsData | NbcPncSmsData)[RISK_LEVEL] === RISK
+                            );
+                        }
+                        if (risk_highlighter === NO) {
+                            return (dataItem as PregnancySmsData | NbcPncSmsData)[RISK_LEVEL] === NO_UNDERSCORE_RISK;
+                        }
+                        // if risk highlighter does not match (e.g arbitrary value) return empty array
+                        return false;
+                    });
+                } else {
+                    villageData = dataForCurrentLocation.filter(
+                        (dataItem: CompartmentSmsTypes) =>
+                            (dataItem as NutritionSmsData)[field as Exclude<typeof field, typeof RISK_LEVEL>] ===
+                            risk_highlighter,
+                    );
+                }
+            }
+
+            setVillageData(villageData);
+        }
+    }, [locationData, risk_highlighter, moduleSmsSlice]);
+
+    const getLevelString = () => {
+        if (current_level === 0) {
+            return PROVINCE;
+        }
+        if (current_level === 1) {
+            return DISTRICT;
+        }
+        if (current_level === 2) {
+            return COMMUNE;
+        }
+        if (current_level === 3) {
+            return VILLAGE;
+        }
+        return PROVINCE;
     };
-};
 
-const mapDispatchToProps = { fetchLocationsActionCreator: fetchLocations };
+    const dontDisplayProvince = () => {
+        return permissionLevel > 0;
+    };
 
-const ConnectedHierarchicalDataTable = connect(mapStateToProps, mapDispatchToProps)(withRouter(HierarchichalDataTable));
+    const dontDisplayDistrict = () => {
+        return permissionLevel > 1;
+    };
 
-export default withTranslation()(ConnectedHierarchicalDataTable);
+    const dontDisplayCommune = () => {
+        return permissionLevel > 2;
+    };
+
+    const header = () => {
+        const aLink = headerTitle.map((item, index, arr) => {
+            // index 0 reserved for default headerTitle value (i.e All Provinces)
+            if (
+                (index === 1 && dontDisplayProvince()) ||
+                (index === 2 && dontDisplayDistrict()) ||
+                (index === 3 && dontDisplayCommune())
+            ) {
+                return <span key={index}>{null}</span>;
+            }
+            return (
+                <Link
+                    to={`${getModuleLink(
+                        module,
+                    )}${HIERARCHICAL_DATA_URL}/${module}/${risk_highlighter}/${title}/${index}/${UP}/${node_id}/${permissionLevel}/${current_level}`}
+                    key={index}
+                    onClick={() => {
+                        // slice of state.headerTitle array containing
+                        // items between index 0(inclusive) and index+1(exclusive) of clicked item
+                        const newTitle = arr.slice(0, index + 1);
+                        setHeaderTitle(newTitle);
+                    }}
+                >
+                    {index !== 0 && <span className="divider">&nbsp; / &nbsp;</span>}
+                    {t(`${item}`)}
+                </Link>
+            );
+        });
+        return aLink;
+    };
+
+    if (moduleSmsSliceError || villagesError || communesError || districtsError || provincesError) {
+        // generate error object
+        const genErrorObject = (error: Error) => ({
+            name: error.name,
+            message: error.message,
+        });
+
+        let errorObject = {
+            name: '',
+            message: '',
+        };
+
+        if (moduleSmsSliceError) {
+            errorObject = genErrorObject(moduleSmsSliceError);
+        } else if (villagesError) {
+            errorObject = genErrorObject(villagesError);
+        } else if (communesError) {
+            errorObject = genErrorObject(communesError);
+        } else if (districtsError) {
+            errorObject = genErrorObject(districtsError);
+        } else if (provincesError) {
+            errorObject = genErrorObject(provincesError);
+        }
+
+        return <ErrorPage title={errorObject.name} message={errorObject.message} />;
+    }
+
+    if (
+        !provinces?.length ||
+        !districts?.length ||
+        !communes?.length ||
+        !villages?.length ||
+        moduleSmsSliceLoading ||
+        villagesLoading ||
+        communesLoading ||
+        districtsLoading ||
+        provincesLoading
+    ) {
+        return <Loading />;
+    }
+
+    const tableRowLink = `${getModuleLink(module)}${HIERARCHICAL_DATA_URL}/${module}/${risk_highlighter}/${title}/${
+        current_level ? current_level + 1 : 1
+    }/down/`;
+
+    const element = getTotals(locationData, module);
+
+    return (
+        <Container fluid className="compartment-data-table">
+            <span
+                onClick={() => {
+                    history.goBack();
+                }}
+                className="back-page"
+            >
+                <FontAwesomeIcon icon={BACKPAGE_ICON} size="lg" />
+                <span>{t('Back')}</span>
+            </span>
+            <h1>{t(`${element.total} ${title}`)}</h1>
+            <Row className="villageDataRow">
+                <Card className="table-card">
+                    <CardTitle>{header()}</CardTitle>
+                    <CardBody>
+                        <Table striped borderless>
+                            <thead id="header">
+                                {module !== NUTRITION ? (
+                                    <tr>
+                                        <th className="default-width" />
+                                        <th className="default-width">{t('Red Alert')}</th>
+                                        <th className="default-width">{t('Risk')}</th>
+                                        <th className="default-width">{t('No Risk')}</th>
+                                        <th className="default-width totals">{t('Total')}</th>
+                                    </tr>
+                                ) : (
+                                    <tr>
+                                        <th className="default-width" />
+                                        <th className="default-width">{t('Stunted')}</th>
+                                        <th className="default-width">{t('Severe Wasting')}</th>
+                                        <th className="default-width">{t('Overweight')}</th>
+                                        <th className="default-width">{t('Inappropriately Fed')}</th>
+                                        <th className="default-width totals">{t('Total')}</th>
+                                    </tr>
+                                )}
+                            </thead>
+                            <tbody id="body">
+                                {locationData.length ? (
+                                    locationData.map((element: LocationWithData) => {
+                                        return (
+                                            <tr
+                                                key={element.location_id}
+                                                className={current_level !== 3 ? 'cursor-pointer color-blue' : ''}
+                                                onClick={() => {
+                                                    // drill down only up to level 3 (village)
+                                                    if (current_level !== 3) {
+                                                        history.push(
+                                                            `${tableRowLink}${element.location_id}/${permissionLevel}`,
+                                                        );
+                                                        // add drill down location name to header
+                                                        setHeaderTitle((prevState) => [
+                                                            ...prevState,
+                                                            element.location_name,
+                                                        ]);
+                                                    }
+                                                }}
+                                            >
+                                                {module !== NUTRITION ? (
+                                                    <>
+                                                        <td className="default-width">{element.location_name}</td>
+                                                        <td
+                                                            className={`default-width ${
+                                                                risk_highlighter === RED ? RED_ALERT_CLASSNAME : ''
+                                                            }`}
+                                                        >
+                                                            {element.redAlert}
+                                                        </td>
+                                                        <td
+                                                            className={`default-width ${
+                                                                risk_highlighter === RISK ? risk_highlighter : ''
+                                                            }`}
+                                                        >
+                                                            {element.risk}
+                                                        </td>
+                                                        <td
+                                                            className={`default-width ${
+                                                                risk_highlighter === NO ? risk_highlighter : ''
+                                                            }`}
+                                                        >
+                                                            {element.no_risk}
+                                                        </td>
+                                                        <td className="default-width totals">{element.total}</td>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <td className="default-width">{element.location_name}</td>
+                                                        <td
+                                                            className={`default-width ${
+                                                                risk_highlighter === STUNTED
+                                                                    ? risk_highlighter.split(' ').join('-')
+                                                                    : ''
+                                                            }`}
+                                                        >
+                                                            {element.stunting}
+                                                        </td>
+                                                        <td
+                                                            className={`default-width ${
+                                                                risk_highlighter === SEVERE_WASTING
+                                                                    ? risk_highlighter.split(' ').join('-')
+                                                                    : ''
+                                                            }`}
+                                                        >
+                                                            {element.wasting}
+                                                        </td>
+                                                        <td
+                                                            className={`default-width ${
+                                                                risk_highlighter === OVERWEIGHT
+                                                                    ? risk_highlighter.split(' ').join('-')
+                                                                    : ''
+                                                            }`}
+                                                        >
+                                                            {element.overweight}
+                                                        </td>
+                                                        <td
+                                                            className={`default-width ${
+                                                                risk_highlighter === INAPPROPRIATELY_FED
+                                                                    ? risk_highlighter.split(' ').join('-')
+                                                                    : ''
+                                                            }`}
+                                                        >
+                                                            {element.inappropriateFeeding}
+                                                        </td>
+                                                        <td className="default-width totals">{element.total}</td>
+                                                    </>
+                                                )}
+                                            </tr>
+                                        );
+                                    })
+                                ) : (
+                                    <tr id="no-rows">
+                                        <td>{t('There seems to be no rows here')}</td>
+                                    </tr>
+                                )}
+                                {(() => {
+                                    // inferred type PregnancyNpcPncTotals
+                                    return 'no_risk' in element ? (
+                                        <tr key="total" className="totals-row">
+                                            <td className="default-width" id="total">
+                                                {t(`Total (${getLevelString()})`)}
+                                            </td>
+                                            <td
+                                                className={`default-width ${
+                                                    risk_highlighter === RED ? RED_ALERT_CLASSNAME : ''
+                                                }`}
+                                            >
+                                                {element.redAlert}
+                                            </td>
+                                            <td
+                                                className={`default-width ${
+                                                    risk_highlighter === RISK ? risk_highlighter : ''
+                                                }`}
+                                            >
+                                                {element.risk}
+                                            </td>
+                                            <td
+                                                className={`default-width ${
+                                                    risk_highlighter === NO ? risk_highlighter : ''
+                                                }`}
+                                            >
+                                                {element.no_risk}
+                                            </td>
+                                            <td className="default-width">{element.total}</td>
+                                        </tr>
+                                    ) : (
+                                        <tr key="total" className="totals-row">
+                                            <td className="default-width" id="total">
+                                                {t(`Total (${getLevelString()})`)}
+                                            </td>
+                                            <td
+                                                className={`default-width ${
+                                                    risk_highlighter === STUNTED
+                                                        ? risk_highlighter.split(' ').join('-')
+                                                        : ''
+                                                }`}
+                                            >
+                                                {element.stunting}
+                                            </td>
+                                            <td
+                                                className={`default-width ${
+                                                    risk_highlighter === SEVERE_WASTING
+                                                        ? risk_highlighter.split(' ').join('-')
+                                                        : ''
+                                                }`}
+                                            >
+                                                {element.wasting}
+                                            </td>
+                                            <td
+                                                className={`default-width ${
+                                                    risk_highlighter === OVERWEIGHT
+                                                        ? risk_highlighter.split(' ').join('-')
+                                                        : ''
+                                                }`}
+                                            >
+                                                {element.overweight}
+                                            </td>
+                                            <td
+                                                className={`default-width ${
+                                                    risk_highlighter === INAPPROPRIATELY_FED
+                                                        ? risk_highlighter.split(' ').join('-')
+                                                        : ''
+                                                }`}
+                                            >
+                                                {element.inappropriateFeeding}
+                                            </td>
+                                            <td className="default-width">{element.total}</td>
+                                        </tr>
+                                    );
+                                })()}
+                            </tbody>
+                        </Table>
+                    </CardBody>
+                </Card>
+            </Row>
+            {villageData.length ? (
+                <VillageData
+                    {...{
+                        current_level: current_level,
+                        module: module,
+                        smsData: villageData,
+                        // commune name is last item in headerTitle array
+                        communeName: headerTitle[headerTitle.length - 1],
+                    }}
+                />
+            ) : current_level === 3 ? (
+                <NoRecord message={t('No Patient Level data to show for this commune')} />
+            ) : null}
+        </Container>
+    );
+}
