@@ -1,0 +1,41 @@
+diff --git a/node_modules/@onaio/gatekeeper/dist/helpers/oauth.js b/node_modules/@onaio/gatekeeper/dist/helpers/oauth.js
+index 4543f73..6e7b505 100644
+--- a/node_modules/@onaio/gatekeeper/dist/helpers/oauth.js
++++ b/node_modules/@onaio/gatekeeper/dist/helpers/oauth.js
+@@ -37,7 +37,7 @@ function getProviderFromOptions(options) {
+ }
+ 
+ function getOnadataUserInfo(apiResponse) {
+-  if (!apiResponse.username || !apiResponse.api_token) {
++  if (!apiResponse.userName || !apiResponse.api_token) {
+     throw new Error(_constants.OAUTH2_CALLBACK_ERROR);
+   }
+ 
+@@ -48,7 +48,7 @@ function getOnadataUserInfo(apiResponse) {
+       email: apiResponse.email || '',
+       gravatar: apiResponse.gravatar || '',
+       name: apiResponse.name || '',
+-      username: apiResponse.username
++      username: apiResponse.userName
+     }
+   };
+ }
+@@ -59,7 +59,7 @@ var addSecToCurrentTime = function addSecToCurrentTime(seconds) {
+ };
+ 
+ function getOpenSRPUserInfo(apiResponse) {
+-  if (!apiResponse.username) {
++  if (!apiResponse.userName) {
+     throw new Error(_constants.OAUTH2_CALLBACK_ERROR);
+   }
+ 
+@@ -87,7 +87,7 @@ function getOpenSRPUserInfo(apiResponse) {
+       email: '',
+       gravatar: '',
+       name: '',
+-      username: apiResponse.username
++      username: apiResponse.userName
+     }
+   };
+ }
+\ No newline at end of file
