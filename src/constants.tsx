@@ -36,6 +36,13 @@ export const REPORTS_URL = '/';
 export const PATIENT_DETAIL_URL = `/${PATIENT_DETAIL}/:patient_id`;
 export const CHILD_PATIENT_DETAIL_URL = `/${CHILD_PATIENT_DETAIL}/:patient_id`;
 export const VIETNAM_COUNTRY_LOCATION_ID = 'd1865325-11e6-4e39-817b-e676c1affecf';
+export const BACKEND_CALLBACK_URL = '/fe/oauth/callback/opensrp';
+export const BACKEND_CALLBACK_PATH = '/fe/oauth/callback/:id';
+export const REACT_CALLBACK_PATH = '/oauth/callback/:id';
+export const BACKEND_LOGIN_URL = '/fe/login';
+export const EXPRESS_LOGIN_URL = '/login';
+export const REACT_LOGIN_URL = '/login';
+export const EXPRESS_TOKEN_REFRESH_URL = '/refresh/token';
 
 // string literals
 export const HIGH = 'high';

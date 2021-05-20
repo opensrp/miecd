@@ -140,3 +140,15 @@ export const USER_LOCATION_DATA_SLICE = process.env.REACT_APP_USER_LOCATION_DATA
 export const COMPARTMENTS_PREGNANCY_SLICE = process.env.REACT_APP_COMPARTMENTS_PREGNANCY_SLICE || '0';
 export const COMPARTMENTS_NBC_AND_PNC_SLICE = process.env.REACT_APP_COMPARTMENTS_NBC_AND_PNC_SLICE || '0';
 export const COMPARTMENTS_NUTRITION_SLICE = process.env.REACT_APP_COMPARTMENTS_NUTRITION_SLICE || '0';
+export const BACKEND_ACTIVE = process.env.REACT_APP_BACKEND_ACTIVE === 'true';
+
+export const EXPRESS_OAUTH_LOGOUT_URL =
+    process.env.REACT_APP_EXPRESS_OAUTH_LOGOUT_URL || 'http://localhost:3000/logout';
+
+export const KEYCLOAK_LOGOUT_URL =
+    process.env.REACT_APP_KEYCLOAK_LOGOUT_URL ||
+    'https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/logout';
+
+/** Express server settings */
+export const EXPRESS_OAUTH_GET_STATE_URL =
+    process.env.REACT_APP_EXPRESS_OAUTH_GET_STATE_URL || 'http://localhost:3000/oauth/state';

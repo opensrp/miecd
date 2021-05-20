@@ -201,7 +201,7 @@ exports[`containers/LogFace extended filters work correctly for pregnancy: risk 
     key="risk"
     value="risk"
   >
-    Risk
+    Wasting
   </option>
   <option
     key="redAlert"
@@ -213,9 +213,239 @@ exports[`containers/LogFace extended filters work correctly for pregnancy: risk 
     key="noRisk"
     value="noRisk"
   >
-    No risk
+    Overweight
+  </option>
+  <option
+    key="inappropriateFeeding"
+    value="inappropriateFeeding"
+  >
+    Inappropriate Feeding
+  </option>
+  <option
+    key="underweight"
+    value="underweight"
+  >
+    Underweight
+  </option>
+  <option
+    key="normal"
+    value="normal"
+  >
+    normal
   </option>
 </select>
+`;
+
+exports[`containers/LogFace extended renders correctly 1`] = `
+<li
+  className="page-item disabled page-item"
+>
+  <PaginationLink
+    aria-label="first"
+    className="page-link"
+    href="#"
+    onClick={[Function]}
+    tag="a"
+  >
+    <a
+      aria-label="first"
+      className="page-link page-link"
+      href="#"
+      onClick={[Function]}
+    >
+      <span
+        aria-hidden="true"
+      >
+        first
+      </span>
+      <span
+        className="sr-only"
+      >
+        first
+      </span>
+    </a>
+  </PaginationLink>
+</li>
+`;
+
+exports[`containers/LogFace extended renders correctly 2`] = `
+<li
+  className="page-item disabled page-item"
+>
+  <PaginationLink
+    aria-label="previous"
+    className="page-link"
+    href="#"
+    onClick={[Function]}
+    tag="a"
+  >
+    <a
+      aria-label="previous"
+      className="page-link page-link"
+      href="#"
+      onClick={[Function]}
+    >
+      <span
+        aria-hidden="true"
+      >
+        previous
+      </span>
+      <span
+        className="sr-only"
+      >
+        previous
+      </span>
+    </a>
+  </PaginationLink>
+</li>
+`;
+
+exports[`containers/LogFace extended renders correctly 3`] = `
+<li
+  className="page-item  active page-item"
+>
+  <PaginationLink
+    className="page-link"
+    href="#"
+    onClick={[Function]}
+    tag="a"
+  >
+    <a
+      className="page-link page-link"
+      href="#"
+      onClick={[Function]}
+    >
+      1
+    </a>
+  </PaginationLink>
+</li>
+`;
+
+exports[`containers/LogFace extended renders correctly 4`] = `
+<li
+  className="page-item  page-item"
+>
+  <PaginationLink
+    className="page-link"
+    href="#"
+    onClick={[Function]}
+    tag="a"
+  >
+    <a
+      className="page-link page-link"
+      href="#"
+      onClick={[Function]}
+    >
+      2
+    </a>
+  </PaginationLink>
+</li>
+`;
+
+exports[`containers/LogFace extended renders correctly 5`] = `
+<li
+  className="page-item  page-item"
+>
+  <PaginationLink
+    className="page-link"
+    href="#"
+    onClick={[Function]}
+    tag="a"
+  >
+    <a
+      className="page-link page-link"
+      href="#"
+      onClick={[Function]}
+    >
+      3
+    </a>
+  </PaginationLink>
+</li>
+`;
+
+exports[`containers/LogFace extended renders correctly 6`] = `
+<li
+  className="page-item  page-item"
+>
+  <PaginationLink
+    className="page-link"
+    href="#"
+    onClick={[Function]}
+    tag="a"
+  >
+    <a
+      className="page-link page-link"
+      href="#"
+      onClick={[Function]}
+    >
+      4
+    </a>
+  </PaginationLink>
+</li>
+`;
+
+exports[`containers/LogFace extended renders correctly 7`] = `
+<li
+  className="page-item   page-item"
+>
+  <PaginationLink
+    aria-label="next"
+    className="page-link"
+    href="#"
+    onClick={[Function]}
+    tag="a"
+  >
+    <a
+      aria-label="next"
+      className="page-link page-link"
+      href="#"
+      onClick={[Function]}
+    >
+      <span
+        aria-hidden="true"
+      >
+        next
+      </span>
+      <span
+        className="sr-only"
+      >
+        next
+      </span>
+    </a>
+  </PaginationLink>
+</li>
+`;
+
+exports[`containers/LogFace extended renders correctly 8`] = `
+<li
+  className="page-item  page-item"
+>
+  <PaginationLink
+    aria-label="last"
+    className="page-link "
+    href="#"
+    onClick={[Function]}
+    tag="a"
+  >
+    <a
+      aria-label="last"
+      className="page-link  page-link"
+      href="#"
+      onClick={[Function]}
+    >
+      <span
+        aria-hidden="true"
+      >
+        last
+      </span>
+      <span
+        className="sr-only"
+      >
+        last
+      </span>
+    </a>
+  </PaginationLink>
+</li>
 `;
 
 exports[`containers/LogFace extended renders correctly: logface title 1`] = `
@@ -224,287 +454,6 @@ exports[`containers/LogFace extended renders correctly: logface title 1`] = `
 >
   Log Face - Pregnancy
 </h2>
-`;
-
-exports[`containers/LogFace extended renders correctly: paginator 1`] = `
-<div
-  className="paginator"
->
-  <Paginator
-    ariaLabel="page navigation"
-    endLabel="last"
-    nextLabel="next"
-    onPageChange={[Function]}
-    pageLimit={5}
-    pageNeighbours={3}
-    previousLabel="previous"
-    startLabel="first"
-    totalRecords={490}
-  >
-    <BasePaginator
-      ariaLabel="page navigation"
-      currentPage={1}
-      endLabel="last"
-      nextLabel="next"
-      onPageChange={[Function]}
-      pageChangeHandler={[Function]}
-      pageLimit={5}
-      pageNeighbours={3}
-      previousLabel="previous"
-      startLabel="first"
-      totalRecords={490}
-    >
-      <Pagination
-        aria-label="page navigation"
-        listTag="ul"
-        size="sm"
-        tag="nav"
-      >
-        <nav
-          aria-label="page navigation"
-          className=""
-        >
-          <ul
-            className="pagination pagination-sm"
-          >
-            <PaginationItem
-              className="page-item disabled"
-              tag="li"
-            >
-              <li
-                className="page-item disabled page-item"
-              >
-                <PaginationLink
-                  aria-label="first"
-                  className="page-link"
-                  href="#"
-                  onClick={[Function]}
-                  tag="a"
-                >
-                  <a
-                    aria-label="first"
-                    className="page-link page-link"
-                    href="#"
-                    onClick={[Function]}
-                  >
-                    <span
-                      aria-hidden="true"
-                    >
-                      first
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      first
-                    </span>
-                  </a>
-                </PaginationLink>
-              </li>
-            </PaginationItem>
-            <PaginationItem
-              className="page-item disabled"
-              tag="li"
-            >
-              <li
-                className="page-item disabled page-item"
-              >
-                <PaginationLink
-                  aria-label="previous"
-                  className="page-link"
-                  href="#"
-                  onClick={[Function]}
-                  tag="a"
-                >
-                  <a
-                    aria-label="previous"
-                    className="page-link page-link"
-                    href="#"
-                    onClick={[Function]}
-                  >
-                    <span
-                      aria-hidden="true"
-                    >
-                      previous
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      previous
-                    </span>
-                  </a>
-                </PaginationLink>
-              </li>
-            </PaginationItem>
-            <PaginationItem
-              className="page-item  active"
-              key="0"
-              tag="li"
-            >
-              <li
-                className="page-item  active page-item"
-              >
-                <PaginationLink
-                  className="page-link"
-                  href="#"
-                  onClick={[Function]}
-                  tag="a"
-                >
-                  <a
-                    className="page-link page-link"
-                    href="#"
-                    onClick={[Function]}
-                  >
-                    1
-                  </a>
-                </PaginationLink>
-              </li>
-            </PaginationItem>
-            <PaginationItem
-              className="page-item "
-              key="1"
-              tag="li"
-            >
-              <li
-                className="page-item  page-item"
-              >
-                <PaginationLink
-                  className="page-link"
-                  href="#"
-                  onClick={[Function]}
-                  tag="a"
-                >
-                  <a
-                    className="page-link page-link"
-                    href="#"
-                    onClick={[Function]}
-                  >
-                    2
-                  </a>
-                </PaginationLink>
-              </li>
-            </PaginationItem>
-            <PaginationItem
-              className="page-item "
-              key="2"
-              tag="li"
-            >
-              <li
-                className="page-item  page-item"
-              >
-                <PaginationLink
-                  className="page-link"
-                  href="#"
-                  onClick={[Function]}
-                  tag="a"
-                >
-                  <a
-                    className="page-link page-link"
-                    href="#"
-                    onClick={[Function]}
-                  >
-                    3
-                  </a>
-                </PaginationLink>
-              </li>
-            </PaginationItem>
-            <PaginationItem
-              className="page-item "
-              key="3"
-              tag="li"
-            >
-              <li
-                className="page-item  page-item"
-              >
-                <PaginationLink
-                  className="page-link"
-                  href="#"
-                  onClick={[Function]}
-                  tag="a"
-                >
-                  <a
-                    className="page-link page-link"
-                    href="#"
-                    onClick={[Function]}
-                  >
-                    4
-                  </a>
-                </PaginationLink>
-              </li>
-            </PaginationItem>
-            <PaginationItem
-              className="page-item  "
-              tag="li"
-            >
-              <li
-                className="page-item   page-item"
-              >
-                <PaginationLink
-                  aria-label="next"
-                  className="page-link"
-                  href="#"
-                  onClick={[Function]}
-                  tag="a"
-                >
-                  <a
-                    aria-label="next"
-                    className="page-link page-link"
-                    href="#"
-                    onClick={[Function]}
-                  >
-                    <span
-                      aria-hidden="true"
-                    >
-                      next
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      next
-                    </span>
-                  </a>
-                </PaginationLink>
-              </li>
-            </PaginationItem>
-            <PaginationItem
-              className="page-item "
-              tag="li"
-            >
-              <li
-                className="page-item  page-item"
-              >
-                <PaginationLink
-                  aria-label="last"
-                  className="page-link "
-                  href="#"
-                  onClick={[Function]}
-                  tag="a"
-                >
-                  <a
-                    aria-label="last"
-                    className="page-link  page-link"
-                    href="#"
-                    onClick={[Function]}
-                  >
-                    <span
-                      aria-hidden="true"
-                    >
-                      last
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      last
-                    </span>
-                  </a>
-                </PaginationLink>
-              </li>
-            </PaginationItem>
-          </ul>
-        </nav>
-      </Pagination>
-    </BasePaginator>
-  </Paginator>
-</div>
 `;
 
 exports[`containers/LogFace extended renders correctly: search div 1`] = `
@@ -1148,4 +1097,679 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
     </tr>
   </tbody>
 </table>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 1`] = `
+<td
+  className="default-width"
+>
+  11/05/2021
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 2`] = `
+<td
+  className="default-width"
+>
+  Đăk Tờ Re
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 3`] = `
+<td
+  className="default-width"
+>
+  Pregnancy Registration
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 4`] = `
+<td
+  className="default-width"
+>
+  Husna Hariz
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 5`] = `
+<td
+  className="default-width"
+>
+  <Link
+    to="#"
+  >
+    <LinkAnchor
+      href="/pregnancy_log_face"
+      navigate={[Function]}
+    >
+      <a
+        href="/pregnancy_log_face"
+        onClick={[Function]}
+      >
+        101C71
+      </a>
+    </LinkAnchor>
+  </Link>
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 6`] = `
+<td
+  className="small-width"
+>
+  31 years
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 7`] = `
+<td
+  className="large-width"
+>
+  <ul>
+    <li
+      key="EDD : 07/09/2021-0"
+    >
+      EDD : 07/09/2021
+    </li>
+    <li
+      key="Gravidity : 2-1"
+    >
+      Gravidity : 2
+    </li>
+    <li
+      key="Parity : 1-2"
+    >
+      Parity : 1
+    </li>
+    <li
+      key="Weight : 50.4kg-3"
+    >
+      Weight : 50.4kg
+    </li>
+    <li
+      key="Height : 123cm-4"
+    >
+      Height : 123cm
+    </li>
+    <li
+      key="BMI : 33.31350386674598-5"
+    >
+      BMI : 33.31350386674598
+    </li>
+    <li
+      key="Previous Gynaecology History : No Previous Risks / No preexisting conditions-6"
+    >
+      Previous Gynaecology History : No Previous Risks / No preexisting conditions
+    </li>
+    <li
+      key="Current Symptoms : Bu00ecnh thu01b0u1eddng, Coughing-7"
+    >
+      Current Symptoms : Bu00ecnh thu01b0u1eddng, Coughing
+    </li>
+  </ul>
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 8`] = `
+<td
+  className="default-width"
+>
+  <Link
+    to="#"
+  >
+    <LinkAnchor
+      href="/pregnancy_log_face"
+      navigate={[Function]}
+    >
+      <a
+        href="/pregnancy_log_face"
+        onClick={[Function]}
+      >
+        <RiskColoring
+          displayValue="low"
+          risk="low"
+        >
+          <span
+            className="badge"
+            style={
+              Object {
+                "backgroundColor": "#ffc107",
+              }
+            }
+          >
+            <div>
+              <p>
+                low
+              </p>
+            </div>
+          </span>
+        </RiskColoring>
+      </a>
+    </LinkAnchor>
+  </Link>
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 9`] = `
+<td
+  className="default-width"
+>
+  11/05/2021
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 10`] = `
+<td
+  className="default-width"
+>
+  Đăk Tờ Re
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 11`] = `
+<td
+  className="default-width"
+>
+  Pregnancy Detection
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 12`] = `
+<td
+  className="default-width"
+>
+  Husna Hariz
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 13`] = `
+<td
+  className="default-width"
+>
+  <Link
+    to="#"
+  >
+    <LinkAnchor
+      href="/pregnancy_log_face"
+      navigate={[Function]}
+    >
+      <a
+        href="/pregnancy_log_face"
+        onClick={[Function]}
+      >
+        101C71
+      </a>
+    </LinkAnchor>
+  </Link>
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 14`] = `
+<td
+  className="small-width"
+>
+  31 years
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 15`] = `
+<td
+  className="large-width"
+>
+  <ul>
+    <li
+      key="Name : BENT SENT  BRAND-0"
+    >
+      Name : BENT SENT  BRAND
+    </li>
+    <li
+      key="Phone Number : 0912734510-1"
+    >
+      Phone Number : 0912734510
+    </li>
+    <li
+      key="Health Insurance : KCO-2"
+    >
+      Health Insurance : KCO
+    </li>
+  </ul>
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 16`] = `
+<td
+  className="default-width"
+>
+  <Link
+    to="#"
+  >
+    <LinkAnchor
+      href="/pregnancy_log_face"
+      navigate={[Function]}
+    >
+      <a
+        href="/pregnancy_log_face"
+        onClick={[Function]}
+      >
+        <RiskColoring
+          displayValue="Not Set"
+          risk=" NULL"
+        >
+          <span
+            className="badge"
+            style={
+              Object {
+                "backgroundColor": "#6c757d",
+              }
+            }
+          >
+            <div>
+              <p>
+                Not Set
+              </p>
+            </div>
+          </span>
+        </RiskColoring>
+      </a>
+    </LinkAnchor>
+  </Link>
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 17`] = `
+<td
+  className="default-width"
+>
+  06/05/2021
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 18`] = `
+<td
+  className="default-width"
+>
+  Thôn Kon Hia 1
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 19`] = `
+<td
+  className="default-width"
+>
+  Social Determinants
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 20`] = `
+<td
+  className="default-width"
+>
+  Husna Hariz
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 21`] = `
+<td
+  className="default-width"
+>
+  <Link
+    to="#"
+  >
+    <LinkAnchor
+      href="/pregnancy_log_face"
+      navigate={[Function]}
+    >
+      <a
+        href="/pregnancy_log_face"
+        onClick={[Function]}
+      >
+        1004R7
+      </a>
+    </LinkAnchor>
+  </Link>
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 22`] = `
+<td
+  className="small-width"
+>
+  30 years
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 23`] = `
+<td
+  className="large-width"
+>
+  <ul>
+    <li
+      key="Planned Delivery Location : Bu1ec7nh viu1ec7n tu1ec9nh hou1eb7c Bu1ec7nh viu1ec7n Trung u01afu01a1ng-0"
+    >
+      Planned Delivery Location : Bu1ec7nh viu1ec7n tu1ec9nh hou1eb7c Bu1ec7nh viu1ec7n Trung u01afu01a1ng
+    </li>
+    <li
+      key="Household : Not a poor householes-1"
+    >
+      Household : Not a poor householes
+    </li>
+    <li
+      key="Ethnicity : H'MONG-2"
+    >
+      Ethnicity : H'MONG
+    </li>
+    <li
+      key="Toilet : Has toilet-3"
+    >
+      Toilet : Has toilet
+    </li>
+    <li
+      key="Handwashing : Has Handwashing facilities with soap-4"
+    >
+      Handwashing : Has Handwashing facilities with soap
+    </li>
+  </ul>
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 24`] = `
+<td
+  className="default-width"
+>
+  <Link
+    to="#"
+  >
+    <LinkAnchor
+      href="/pregnancy_log_face"
+      navigate={[Function]}
+    >
+      <a
+        href="/pregnancy_log_face"
+        onClick={[Function]}
+      >
+        <RiskColoring
+          displayValue="Not Set"
+          risk=" NULL"
+        >
+          <span
+            className="badge"
+            style={
+              Object {
+                "backgroundColor": "#6c757d",
+              }
+            }
+          >
+            <div>
+              <p>
+                Not Set
+              </p>
+            </div>
+          </span>
+        </RiskColoring>
+      </a>
+    </LinkAnchor>
+  </Link>
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 25`] = `
+<td
+  className="default-width"
+>
+  27/04/2021
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 26`] = `
+<td
+  className="default-width"
+>
+  Thôn Kon Hia 1
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 27`] = `
+<td
+  className="default-width"
+>
+  Social Determinants
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 28`] = `
+<td
+  className="default-width"
+>
+  Husna Hariz
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 29`] = `
+<td
+  className="default-width"
+>
+  <Link
+    to="#"
+  >
+    <LinkAnchor
+      href="/pregnancy_log_face"
+      navigate={[Function]}
+    >
+      <a
+        href="/pregnancy_log_face"
+        onClick={[Function]}
+      >
+        1004R7
+      </a>
+    </LinkAnchor>
+  </Link>
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 30`] = `
+<td
+  className="small-width"
+>
+  30 years
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 31`] = `
+<td
+  className="large-width"
+>
+  <ul>
+    <li
+      key="Planned Delivery Location : Bu1ec7nh viu1ec7n tu1ec9nh hou1eb7c Bu1ec7nh viu1ec7n Trung u01afu01a1ng-0"
+    >
+      Planned Delivery Location : Bu1ec7nh viu1ec7n tu1ec9nh hou1eb7c Bu1ec7nh viu1ec7n Trung u01afu01a1ng
+    </li>
+    <li
+      key="Household : Not a poor householes-1"
+    >
+      Household : Not a poor householes
+    </li>
+    <li
+      key="Ethnicity : H'MONG-2"
+    >
+      Ethnicity : H'MONG
+    </li>
+    <li
+      key="Toilet : Has toilet-3"
+    >
+      Toilet : Has toilet
+    </li>
+    <li
+      key="Handwashing : Has Handwashing facilities with soap-4"
+    >
+      Handwashing : Has Handwashing facilities with soap
+    </li>
+  </ul>
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 32`] = `
+<td
+  className="default-width"
+>
+  <Link
+    to="#"
+  >
+    <LinkAnchor
+      href="/pregnancy_log_face"
+      navigate={[Function]}
+    >
+      <a
+        href="/pregnancy_log_face"
+        onClick={[Function]}
+      >
+        <RiskColoring
+          displayValue="Not Set"
+          risk=" NULL"
+        >
+          <span
+            className="badge"
+            style={
+              Object {
+                "backgroundColor": "#6c757d",
+              }
+            }
+          >
+            <div>
+              <p>
+                Not Set
+              </p>
+            </div>
+          </span>
+        </RiskColoring>
+      </a>
+    </LinkAnchor>
+  </Link>
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 33`] = `
+<td
+  className="default-width"
+>
+  27/04/2021
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 34`] = `
+<td
+  className="default-width"
+>
+  Đăk Tờ Re
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 35`] = `
+<td
+  className="default-width"
+>
+  Pregnancy Detection
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 36`] = `
+<td
+  className="default-width"
+>
+  Husna Hariz
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 37`] = `
+<td
+  className="default-width"
+>
+  <Link
+    to="#"
+  >
+    <LinkAnchor
+      href="/pregnancy_log_face"
+      navigate={[Function]}
+    >
+      <a
+        href="/pregnancy_log_face"
+        onClick={[Function]}
+      >
+        101C63
+      </a>
+    </LinkAnchor>
+  </Link>
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 38`] = `
+<td
+  className="small-width"
+>
+  34 years
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 39`] = `
+<td
+  className="large-width"
+>
+  <ul>
+    <li
+      key="Name : BENT SENT  BRAND-0"
+    >
+      Name : BENT SENT  BRAND
+    </li>
+    <li
+      key="Phone Number : 0912785510-1"
+    >
+      Phone Number : 0912785510
+    </li>
+    <li
+      key="Health Insurance : KCO-2"
+    >
+      Health Insurance : KCO
+    </li>
+  </ul>
+</td>
+`;
+
+exports[`containers/LogFace extended renders correctly: tables 40`] = `
+<td
+  className="default-width"
+>
+  <Link
+    to="#"
+  >
+    <LinkAnchor
+      href="/pregnancy_log_face"
+      navigate={[Function]}
+    >
+      <a
+        href="/pregnancy_log_face"
+        onClick={[Function]}
+      >
+        <RiskColoring
+          displayValue="Not Set"
+          risk=" NULL"
+        >
+          <span
+            className="badge"
+            style={
+              Object {
+                "backgroundColor": "#6c757d",
+              }
+            }
+          >
+            <div>
+              <p>
+                Not Set
+              </p>
+            </div>
+          </span>
+        </RiskColoring>
+      </a>
+    </LinkAnchor>
+  </Link>
+</td>
 `;

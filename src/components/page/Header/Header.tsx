@@ -19,17 +19,10 @@ import {
 import logo from '../../../assets/images/logo.png';
 import logo2 from '../../../assets/images/vietnam-moh.png';
 import { WEBSITE_NAME } from '../../../configs/env';
-import {
-    ALL_LANGUAGE_OPTIONS,
-    EN_LANGUAGE_CODE,
-    HOME_URL,
-    LOGIN_URL,
-    LOGOUT_URL,
-    VI_LANGUAGE_CODE,
-} from '../../../constants';
-import { headerShouldRender } from '../../../helpers/utils';
+import { ALL_LANGUAGE_OPTIONS, EN_LANGUAGE_CODE, HOME_URL, LOGOUT_URL, VI_LANGUAGE_CODE } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 import './Header.css';
+import { APP_LOGIN_URL } from 'configs/settings';
 
 /** interface for Header state */
 interface State {
@@ -88,10 +81,6 @@ export class HeaderComponent extends React.Component<HeaderPropTypes, State> {
             supportedLanguages: [EN_LANGUAGE_CODE, VI_LANGUAGE_CODE],
         };
 
-        if (!headerShouldRender()) {
-            return null;
-        }
-
         return (
             <Navbar className="custom-navbar navbar-expand-sm">
                 <NavbarBrand to={HOME_URL} className="custom-navbar__brand">
@@ -115,7 +104,7 @@ export class HeaderComponent extends React.Component<HeaderPropTypes, State> {
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                         ) : (
-                            <NavLink to={LOGIN_URL} className="nav-link" activeClassName="active">
+                            <NavLink to={APP_LOGIN_URL} className="nav-link" activeClassName="active">
                                 {t('Login')}
                             </NavLink>
                         )}

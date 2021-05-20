@@ -1,7 +1,7 @@
 /** This is the main configuration module */
-import { Providers } from '@onaio/gatekeeper';
 import { TFunction } from 'react-i18next';
 import { GREEN, RED, YELLOW } from './colors';
+import { AuthorizationGrantType, Providers } from '@onaio/gatekeeper';
 import {
     PREGNANCY_MODULE,
     NUTRITION_MODULE,
@@ -33,8 +33,14 @@ import {
     FETCH_COMPARTMENTS_PREGNANCY_SLICE,
     FETCH_COMPARTMENTS_NBC_AND_PNC_SLICE,
     FETCH_COMPARTMENTS_NUTRITION_SLICE,
+    BACKEND_CALLBACK_URL,
+    REACT_LOGIN_URL,
+    BACKEND_LOGIN_URL,
+    BACKEND_CALLBACK_PATH,
+    REACT_CALLBACK_PATH,
 } from '../constants';
 import {
+    BACKEND_ACTIVE,
     DOMAIN_NAME,
     ENABLE_ONADATA_OAUTH,
     ENABLE_OPENSRP_OAUTH,
@@ -82,8 +88,6 @@ export const providers: Providers = {
         },
     }),
 };
-
-export const URLS_TO_HIDE_HEADER: string[] = ['login', 'home'];
 
 /** constant react-hot-toast config */
 export const toastConfig = {
@@ -163,6 +167,12 @@ export const LogFaceSliceByModule: { [key in LogFaceModules]: string } = {
     [NBC_AND_PNC_MODULE]: NBC_AND_PNC_LOGFACE_SLICE,
 };
 
+export const APP_CALLBACK_URL = BACKEND_ACTIVE ? BACKEND_CALLBACK_URL : REACT_LOGIN_URL;
+export const { IMPLICIT, AUTHORIZATION_CODE } = AuthorizationGrantType;
+export const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
+export const APP_LOGIN_URL = BACKEND_ACTIVE ? BACKEND_LOGIN_URL : REACT_LOGIN_URL;
+export const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
+
 /** Factory function for lookup object dictates how the Nutrition risk filters will be done
  * what accessor/column is checked and what value(s) should be matched against
  */
@@ -224,6 +234,32 @@ export const pregnancyModuleRiskFilterLookup = (t: TFunction) => {
             filterValue: ['no_risk'],
             color: GREEN,
         },
+    };
+};
+
+/** factory util to generate a lookup object for
+ * - know how to apply color style and label to RiskColoring in the logFace views
+ * - know how to filter smsEvents with respect to selected risk filter and the module in log face views
+ */
+export const riskCategories = (t: TFunction) => {
+    /** helps convert to a format that is easy to parse when creating select options */
+    const convertToOptions = (category: Dictionary<Dictionary<string | string[]>>) => {
+        const options = [];
+        for (const key in category) {
+            options.push({ color: category[key].color, label: category[key].label, value: key } as Dictionary<string>);
+        }
+        return options;
+    };
+    const pregnancyCats = pregnancyModuleRiskFilterLookup(t);
+    const nutritionCategories = nutritionModuleRiskFilterLookup(t);
+
+    const sharedRiskCats = convertToOptions(pregnancyCats);
+    const nutritionCats = convertToOptions(nutritionCategories);
+
+    return {
+        [PREGNANCY_MODULE]: sharedRiskCats,
+        [NBC_AND_PNC_MODULE]: sharedRiskCats,
+        [NUTRITION_MODULE]: nutritionCats,
     };
 };
 

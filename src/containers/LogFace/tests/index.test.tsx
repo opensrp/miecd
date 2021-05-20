@@ -14,9 +14,10 @@ import { act } from 'react-dom/test-utils';
 import * as securityAuthenticate from '../../../store/ducks/tests/fixtures/securityAuthenticate.json';
 import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom';
 import { nutritionSmsFixtures, PregnancyReportFixture } from 'store/ducks/tests/fixtures';
-import { Dictionary } from '@onaio/utils/dist/types/index';
+import { Dictionary } from '@onaio/utils';
 import React from 'react';
 import { LogFaceModules } from '../../../configs/settings';
+import { authenticateUser } from '@onaio/session-reducer';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -62,6 +63,17 @@ describe('containers/LogFace extended', () => {
     const commonProps = { module: PREGNANCY as LogFaceModules };
     beforeAll(() => {
         store.dispatch(fetchUserLocations(userLocations));
+        store.dispatch(
+            authenticateUser(
+                true,
+                {
+                    email: 'bob@example.com',
+                    name: 'Bobbie',
+                    username: 'RobertBaratheon',
+                },
+                { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } },
+            ),
+        );
     });
 
     beforeEach(() => {
@@ -108,9 +120,14 @@ describe('containers/LogFace extended', () => {
 
         expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(490);
         expect(toJson(wrapper.find('table'))).toMatchSnapshot('table snapshot');
+        wrapper.find('table tr td').forEach((td) => {
+            expect(toJson(td)).toMatchSnapshot('tables');
+        });
         expect(toJson(wrapper.find('input#search'))).toMatchSnapshot('search div');
         expect(toJson(wrapper.find('#logface_title'))).toMatchSnapshot('logface title');
-        expect(toJson(wrapper.find('.paginator'))).toMatchSnapshot('paginator');
+        wrapper.find('.paginator li').forEach((li) => {
+            expect(toJson(li)).toMatchSnapshot();
+        });
 
         wrapper.unmount();
     });
@@ -151,7 +168,7 @@ describe('containers/LogFace extended', () => {
                 {
                     headers: {
                         accept: 'application/json',
-                        authorization: 'Bearer ',
+                        authorization: 'Bearer hunter2',
                         'content-type': 'application/json;charset=UTF-8',
                     },
                     method: 'GET',

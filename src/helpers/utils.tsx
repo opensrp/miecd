@@ -14,7 +14,6 @@ import {
     nutritionModuleRiskFilterLookup,
     pregnancyModuleRiskFilterLookup,
     toastConfig,
-    URLS_TO_HIDE_HEADER,
 } from '../configs/settings';
 import {
     CHILD_PATIENT_DETAIL,
@@ -82,13 +81,6 @@ export function oAuthUserInfoGetter(apiResponse: Dictionary): SessionState | voi
                 return getOnadataUserInfo(apiResponse);
         }
     }
-}
-
-/**
- * determines weather the header should be rendered.
- */
-export function headerShouldRender(): boolean {
-    return !RegExp(URLS_TO_HIDE_HEADER.join('|')).test(window.location.pathname);
 }
 
 /**
