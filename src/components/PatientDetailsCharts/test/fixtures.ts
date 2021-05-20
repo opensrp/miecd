@@ -4209,3 +4209,47 @@ export const backDatedEvents = ([
         team: ' NULL',
     },
 ] as unknown) as SmsData[];
+
+export const sampleChildChartData = [
+    {
+        anc_id: '100RRK',
+        base_entity_id: '5d9f9e3c-44c5-454d-8440-9c5645ec5225',
+        event_date: '2019-11-15T08:49:12.434000',
+        event_type: 'Nutrition Report',
+        weight: 9.0,
+        height: 64.0,
+        event_id: '1573807752690',
+    },
+    {
+        anc_id: '100RRK',
+        base_entity_id: '5d9f9e3c-44c5-454d-8440-9c5645ec5225',
+        event_date: '2019-11-15T08:06:59.149000',
+        event_type: 'Nutrition Report',
+        weight: 9.0,
+        height: 64.0,
+        event_id: '1573805219331',
+    },
+];
+
+export const sampleMotherChartData = [
+    {
+        anc_id: '100RKX',
+        base_entity_id: '73f04c18-20fe-4e72-b0ad-3692ce8085f5',
+        event_date: '2019-11-14T16:45:51.913000',
+        event_type: 'home_anc_visit',
+        weight: 80.0,
+        bp: '118-78',
+        event_id: '1573749952093',
+        pregnancy_id: ' NULL',
+    },
+    {
+        anc_id: '100RKX',
+        base_entity_id: '73f04c18-20fe-4e72-b0ad-3692ce8085f5',
+        event_date: '2019-11-14T16:36:58.999000',
+        event_type: 'anc_visit',
+        weight: 80.0,
+        bp: '129-78',
+        event_id: '1573749419033',
+        pregnancy_id: ' NULL',
+    },
+];

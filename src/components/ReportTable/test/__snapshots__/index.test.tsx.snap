@@ -1,46 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ReportTable works okay: after filter pregnancies 1`] = `"ReportDateReporterMessage"`;
-
-exports[`ReportTable works okay: after filter pregnancies 2`] = `
-"Pregnancy Registration2020-03-03Amanda BeckEDD = 28-06-2020
-Gravidity = 4
-Parity = 3
-Weight = 78 
-Height = 165
-BMI = 28
-Previous Gynaecology History = Home Delivery, Previous convulsion
-Current Symptoms = Coughing"
-`;
-
-exports[`ReportTable works okay: initial current pregnancies 1`] = `"ReportDateReporterMessage"`;
-
-exports[`ReportTable works okay: initial current pregnancies 2`] = `
-"Pregnancy Registration2018-09-25Husna HarizEDD = 2019-04-01
-Gravidity = 3
-Parity = 2
-Weight = 54 
-Height = 160
-Previous Gynaecology History = Diabetes, High blood pressure
-Current Symptoms = Flaccid Paralysis"
-`;
-
-exports[`ReportTable works okay: pregnancy filter 1`] = `
-<select
-  data-testid="select"
-  onChange={[Function]}
+exports[`ReportTable renders correctly: Filter panel 1`] = `
+<div
+  id="filter-panel"
 >
-  <option
-    key="0"
-    value={0}
+  <p>
+    <Trans
+      t={[Function]}
+    >
+      Showing reports for: 
+    </Trans>
+  </p>
+  <div
+    className="filters"
   >
-    pregnancy 1
-  </option>
-  <option
-    key="1"
-    value={1}
-  >
-    Current Pregnancy
-  </option>
-</select>
+    <Component
+      classNamePrefix="patient-details-filters"
+      id="pregnancy-filter"
+      isClearable={true}
+      onChange={[Function]}
+      options={
+        Array [
+          Object {
+            "label": "Current Pregnancy",
+            "value": 0,
+          },
+        ]
+      }
+      placeholder="Select pregnancy"
+      value={
+        Object {
+          "label": "Current Pregnancy",
+          "value": 0,
+        }
+      }
+    >
+      <select
+        data-testid="select"
+        onChange={[Function]}
+      >
+        <option
+          key="0"
+          value={0}
+        >
+          Current Pregnancy
+        </option>
+      </select>
+    </Component>
+  </div>
+</div>
 `;

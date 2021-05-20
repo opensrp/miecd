@@ -63,7 +63,7 @@ describe('ReportTable', () => {
         );
 
         expect(toJson(wrapper.find('#filter-panel'))).toMatchSnapshot('Filter panel');
-        expect(wrapper.find('tableRow table')).toHaveLength(1);
+        expect(wrapper.find('#tableRow table')).toHaveLength(1);
         expect(wrapper.find('MotherChart')).toHaveLength(1);
         expect(wrapper.find('ChildChart')).toHaveLength(0);
     });
