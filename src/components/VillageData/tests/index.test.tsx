@@ -8,7 +8,13 @@ import { Router } from 'react-router';
 import VillageData, { Props } from '..';
 import { mountWithTranslations } from '../../../helpers/testUtils';
 import store from '../../../store/index';
-import villageDataProps from './villageDataPropsfixtures';
+import {
+    villageDataProps,
+    pregnancyModuleData,
+    nutritionModuleData,
+    nbcPncChildModuleData,
+    nbcPncMotherModuleData,
+} from './villageDataPropsfixtures';
 import MockDate from 'mockdate';
 
 global.fetch = require('jest-fetch-mock');
@@ -46,13 +52,13 @@ describe('components/VillageData', () => {
         const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <VillageData {...props} />
+                    <VillageData {...(props as Props)} />
                 </Router>
             </Provider>,
         );
 
         expect(wrapper.find('#navrow Pagination').text()).toMatchInlineSnapshot(
-            `"firstfirstpreviousprevious1234nextnextlastlast"`,
+            `"firstfirstpreviousprevious12nextnextlastlast"`,
         );
 
         // inspect entries shown on page 1
@@ -82,13 +88,13 @@ describe('components/VillageData', () => {
         const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <VillageData {...props} />
+                    <VillageData {...(props as Props)} />
                 </Router>
             </Provider>,
         );
 
         expect(wrapper.find('#navrow Pagination').text()).toMatchInlineSnapshot(
-            `"firstfirstpreviousprevious1234nextnextlastlast"`,
+            `"firstfirstpreviousprevious12nextnextlastlast"`,
         );
 
         wrapper.find('tr').forEach((tr) => {
@@ -105,13 +111,13 @@ describe('components/VillageData', () => {
         const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <VillageData {...props} />
+                    <VillageData {...(props as Props)} />
                 </Router>
             </Provider>,
         );
 
         expect(wrapper.find('#navrow Pagination').text()).toMatchInlineSnapshot(
-            `"firstfirstpreviousprevious1234nextnextlastlast"`,
+            `"firstfirstpreviousprevious12nextnextlastlast"`,
         );
 
         wrapper.find('tr').forEach((tr) => {
@@ -129,13 +135,13 @@ describe('components/VillageData', () => {
         const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <VillageData {...props} />
+                    <VillageData {...(props as Props)} />
                 </Router>
             </Provider>,
         );
 
         expect(wrapper.find('#navrow Pagination').text()).toMatchInlineSnapshot(
-            `"firstfirstpreviousprevious1234nextnextlastlast"`,
+            `"firstfirstpreviousprevious12nextnextlastlast"`,
         );
 
         wrapper.find('tr').forEach((tr) => {
@@ -152,13 +158,13 @@ describe('components/VillageData', () => {
         const wrapper = mountWithTranslations(
             <Provider store={store}>
                 <Router history={history}>
-                    <VillageData {...props} />
+                    <VillageData {...(props as Props)} />
                 </Router>
             </Provider>,
         );
 
         expect(wrapper.find('#navrow Pagination').text()).toMatchInlineSnapshot(
-            `"firstfirstpreviousprevious1234nextnextlastlast"`,
+            `"firstfirstpreviousprevious12nextnextlastlast"`,
         );
 
         wrapper.find('tr').forEach((tr) => {
@@ -178,12 +184,12 @@ describe('components/VillageData/pregnancyMapFunction', () => {
             </Provider>,
         );
         const instance = wrapper.find('VillageData').instance() as typeof VillageData;
-        const tableRows = shallow(instance.pregnancyMapFunction(villageDataProps.smsData[0]));
+        const tableRows = shallow(instance.pregnancyMapFunction(pregnancyModuleData));
         const tableData = tableRows.find('td[className="default-width"]');
         expect(tableData.length).toEqual(8);
         // expect Patient ID row to match Patient ID
         const PatientIDRow = tableData.at(0).text();
-        expect(PatientIDRow).toBe('100RMT');
+        expect(PatientIDRow).toMatchInlineSnapshot(`"101CN2"`);
     });
 });
 
@@ -197,12 +203,12 @@ describe('components/VillageData/nutritionMapFunction', () => {
             </Provider>,
         );
         const instance = wrapper.find('VillageData').instance() as typeof VillageData;
-        const tableRows = shallow(instance.nutritionMapFunction(villageDataProps.smsData[1]));
+        const tableRows = shallow(instance.nutritionMapFunction(nutritionModuleData));
         const tableData = tableRows.find('td[className="default-width"]');
         expect(tableData.length).toEqual(4);
         // expect Patient ID row to match Patient ID
         const PatientIDRow = tableData.at(0).text();
-        expect(PatientIDRow).toBe('100RRK');
+        expect(PatientIDRow).toMatchInlineSnapshot(`"100TPL"`);
     });
 });
 
@@ -216,12 +222,12 @@ describe('components/VillageData/nbcAndPncChildMapFunction', () => {
             </Provider>,
         );
         const instance = wrapper.find('VillageData').instance() as typeof VillageData;
-        const tableRows = shallow(instance.nbcAndPncChildMapFunction(villageDataProps.smsData[2]));
+        const tableRows = shallow(instance.nbcAndPncChildMapFunction(nbcPncChildModuleData));
         const tableData = tableRows.find('td[className="default-width"]');
         expect(tableData.length).toEqual(6);
         // expect Patient ID row to match Patient ID
         const PatientIDRow = tableData.at(0).text();
-        expect(PatientIDRow).toBe('100RH2-20190601-03');
+        expect(PatientIDRow).toMatchInlineSnapshot(`"100T5T-20190920-01"`);
     });
 });
 
@@ -235,11 +241,11 @@ describe('components/VillageData/nbcAndPncMotherMapFunction', () => {
             </Provider>,
         );
         const instance = wrapper.find('VillageData').instance() as typeof VillageData;
-        const tableRows = shallow(instance.nbcAndPncMotherMapFunction(villageDataProps.smsData[3]));
+        const tableRows = shallow(instance.nbcAndPncMotherMapFunction(nbcPncMotherModuleData));
         const tableData = tableRows.find('td[className="default-width"]');
         expect(tableData.length).toEqual(7);
         // expect Patient ID row to match Patient ID
         const PatientIDRow = tableData.at(0).text();
-        expect(PatientIDRow).toBe('1002LJ');
+        expect(PatientIDRow).toMatchInlineSnapshot(`"100VNL"`);
     });
 });
