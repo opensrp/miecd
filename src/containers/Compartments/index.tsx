@@ -31,9 +31,6 @@ import {
     NBC_AND_PNC,
     NUTRITION,
     VIETNAM_COUNTRY_LOCATION_ID,
-    FETCH_COMPARTMENTS_PREGNANCY_SLICE,
-    FETCH_COMPARTMENTS_NBC_AND_PNC_SLICE,
-    FETCH_COMPARTMENTS_NUTRITION_SLICE,
     FETCH_VILLAGES,
     FETCH_COMMUNES,
     FETCH_DISTRICTS,
@@ -63,11 +60,7 @@ import {
     addFilterArgs,
 } from '../../store/ducks/sms_events';
 import './index.css';
-
 import {
-    COMPARTMENTS_PREGNANCY_SLICE,
-    COMPARTMENTS_NBC_AND_PNC_SLICE,
-    COMPARTMENTS_NUTRITION_SLICE,
     VILLAGE_SLICE,
     COMMUNE_SLICE,
     DISTRICT_SLICE,
@@ -75,16 +68,19 @@ import {
     USER_LOCATION_DATA_SLICE,
 } from '../../configs/env';
 import { CompartmentsSmsFilterFunction } from '../../types';
+import { queryKeyAndSmsSlice } from '../../configs/settings';
 
 interface Props {
     module: typeof PREGNANCY | typeof NBC_AND_PNC | typeof NUTRITION;
 }
 
+type moduleType = typeof PREGNANCY | typeof NBC_AND_PNC_CHILD | typeof NBC_AND_PNC_WOMAN;
+
 interface PregnancyAndNBCDataCircleCardProps {
     filterArgs?: CompartmentsSmsFilterFunction[];
     noRisk: number;
     permissionLevel: number;
-    module: typeof PREGNANCY | typeof NBC_AND_PNC_CHILD | typeof NBC_AND_PNC_WOMAN;
+    module: moduleType;
     redAlert: number;
     risk: number;
     title: string;
@@ -113,25 +109,12 @@ export const Compartments = ({ module }: Props) => {
     }, [dispatch]);
 
     // conditionally assign sms slice and queryKey to use depending on module
-    const queryKeyAndSmsSlice = {
-        queryKey:
-            module === PREGNANCY
-                ? FETCH_COMPARTMENTS_PREGNANCY_SLICE
-                : module === NBC_AND_PNC
-                ? FETCH_COMPARTMENTS_NBC_AND_PNC_SLICE
-                : FETCH_COMPARTMENTS_NUTRITION_SLICE,
-        smsSlice:
-            module === PREGNANCY
-                ? COMPARTMENTS_PREGNANCY_SLICE
-                : module === NBC_AND_PNC
-                ? COMPARTMENTS_NBC_AND_PNC_SLICE
-                : COMPARTMENTS_NUTRITION_SLICE,
-    };
+    const QueryKeyAndSmsSlice = queryKeyAndSmsSlice(module);
 
     // fetch and cache current module sms slice
     const { data: moduleSmsSlice, isLoading: moduleSmsSliceLoading, error: moduleSmsSliceError } = useQuery(
-        queryKeyAndSmsSlice.queryKey,
-        () => fetchSupersetData<CompartmentSmsTypes>(queryKeyAndSmsSlice.smsSlice),
+        QueryKeyAndSmsSlice.queryKey,
+        () => fetchSupersetData<CompartmentSmsTypes>(QueryKeyAndSmsSlice.smsSlice),
         {
             select: (res: CompartmentSmsTypes[]) => res,
             onError: (err: Error) => err,
@@ -237,7 +220,7 @@ export const Compartments = ({ module }: Props) => {
     }, [userUUID, userLocationData]);
 
     useEffect(() => {
-        if (provinces && districts && communes && villages) {
+        if (provinces && districts && communes && villages && userLocationId) {
             const { locationLevel, locationFilterFunction } = getFilterFunctionAndLocationLevel(userLocationId, [
                 provinces,
                 districts,
@@ -486,46 +469,31 @@ export const Compartments = ({ module }: Props) => {
         userLocationError ||
         userUUIDError
     ) {
+        // generate error object
+        const genErrorObject = (error: Error) => ({
+            name: error.name,
+            message: error.message,
+        });
+
         let errorObject = {
             name: '',
             message: '',
         };
 
         if (moduleSmsSliceError) {
-            errorObject = {
-                name: moduleSmsSliceError.name,
-                message: moduleSmsSliceError.message,
-            };
+            errorObject = genErrorObject(moduleSmsSliceError);
         } else if (villagesError) {
-            errorObject = {
-                name: villagesError.name,
-                message: villagesError.message,
-            };
+            errorObject = genErrorObject(villagesError);
         } else if (communesError) {
-            errorObject = {
-                name: communesError.name,
-                message: communesError.message,
-            };
+            errorObject = genErrorObject(communesError);
         } else if (districtsError) {
-            errorObject = {
-                name: districtsError.name,
-                message: districtsError.message,
-            };
+            errorObject = genErrorObject(districtsError);
         } else if (provincesError) {
-            errorObject = {
-                name: provincesError.name,
-                message: provincesError.message,
-            };
+            errorObject = genErrorObject(provincesError);
         } else if (userLocationError) {
-            errorObject = {
-                name: userLocationError.name,
-                message: userLocationError.message,
-            };
+            errorObject = genErrorObject(userLocationError);
         } else if (userUUIDError) {
-            errorObject = {
-                name: userUUIDError.name,
-                message: userUUIDError.message,
-            };
+            errorObject = genErrorObject(userUUIDError);
         }
 
         return <ErrorPage title={errorObject?.name} message={errorObject?.message} />;
