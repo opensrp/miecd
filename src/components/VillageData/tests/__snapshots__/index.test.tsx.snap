@@ -455,11 +455,11 @@ exports[`components/VillageData pagination works correctly: paginationItem for p
 
 exports[`components/VillageData pagination works correctly: second Page 1`] = `"100RMT30y  NULLlow"`;
 
-exports[`components/VillageData pagination works correctly: second Page 2`] = `"100RRK4y  3m NULLNot set"`;
+exports[`components/VillageData pagination works correctly: second Page 2`] = `"100RRK4y  3m NULLNot Set"`;
 
-exports[`components/VillageData pagination works correctly: second Page 3`] = `"100RH2-20190601-036m 13d NULLNot set"`;
+exports[`components/VillageData pagination works correctly: second Page 3`] = `"100RH2-20190601-036m 13d NULLred"`;
 
-exports[`components/VillageData pagination works correctly: second Page 4`] = `"1002LJ31y  NULLNot set"`;
+exports[`components/VillageData pagination works correctly: second Page 4`] = `"1002LJ31y  NULLhigh"`;
 
 exports[`components/VillageData pagination works correctly: second Page 5`] = `"100RH234y  NULL"`;
 
