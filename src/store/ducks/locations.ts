@@ -23,10 +23,12 @@ export interface UserLocation {
     provider_name: string;
     provider_contact: string;
     provider_id: string;
+    location_name: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     location_id: string | any;
+    team_name?: string;
+    team_id?: string;
     openmrs_identifier?: string;
-    location_name: string;
 }
 
 // actions
