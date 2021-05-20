@@ -263,32 +263,6 @@ export const riskCategories = (t: TFunction) => {
     };
 };
 
-/** factory util to generate a lookup object for
- * - know how to apply color style and label to RiskColoring in the logFace views
- * - know how to filter smsEvents with respect to selected risk filter and the module in log face views
- */
-export const riskCategories = (t: TFunction) => {
-    /** helps convert to a format that is easy to parse when creating select options */
-    const convertToOptions = (category: Dictionary<Dictionary<string | string[]>>) => {
-        const options = [];
-        for (const key in category) {
-            options.push({ color: category[key].color, label: category[key].label, value: key } as Dictionary<string>);
-        }
-        return options;
-    };
-    const pregnancyCats = pregnancyModuleRiskFilterLookup(t);
-    const nutritionCategories = nutritionModuleRiskFilterLookup(t);
-
-    const sharedRiskCats = convertToOptions(pregnancyCats);
-    const nutritionCats = convertToOptions(nutritionCategories);
-
-    return {
-        [PREGNANCY_MODULE]: sharedRiskCats,
-        [NBC_AND_PNC_MODULE]: sharedRiskCats,
-        [NUTRITION_MODULE]: nutritionCats,
-    };
-};
-
 type moduleType =
     | typeof PREGNANCY
     | typeof NBC_AND_PNC
