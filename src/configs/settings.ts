@@ -25,6 +25,14 @@ import {
     REFUSAL_REPORT,
     RESPONSE_REPORT,
     SOCIAL_DETERMINANTS,
+    PREGNANCY,
+    NBC_AND_PNC,
+    NBC_AND_PNC_CHILD,
+    NBC_AND_PNC_WOMAN,
+    NUTRITION,
+    FETCH_COMPARTMENTS_PREGNANCY_SLICE,
+    FETCH_COMPARTMENTS_NBC_AND_PNC_SLICE,
+    FETCH_COMPARTMENTS_NUTRITION_SLICE,
 } from '../constants';
 import {
     DOMAIN_NAME,
@@ -43,6 +51,9 @@ import {
     OPENSRP_OAUTH_STATE,
     OPENSRP_USER_URL,
     PREGNANCY_LOGFACE_SLICE,
+    COMPARTMENTS_PREGNANCY_SLICE,
+    COMPARTMENTS_NBC_AND_PNC_SLICE,
+    COMPARTMENTS_NUTRITION_SLICE,
 } from './env';
 import { Dictionary } from 'helpers/utils';
 
@@ -241,3 +252,30 @@ export const riskCategories = (t: TFunction) => {
         [NUTRITION_MODULE]: nutritionCats,
     };
 };
+
+type moduleType =
+    | typeof PREGNANCY
+    | typeof NBC_AND_PNC
+    | typeof NBC_AND_PNC_CHILD
+    | typeof NBC_AND_PNC_WOMAN
+    | typeof NUTRITION;
+
+/**
+ * factory function to generate react-query queryKey and function's sms slice depending on module
+ * @param module compartments module type
+ * @returns an object with a query key and the corresponding sms slice number
+ */
+export const queryKeyAndSmsSlice = (module: moduleType) => ({
+    queryKey:
+        module === PREGNANCY
+            ? FETCH_COMPARTMENTS_PREGNANCY_SLICE
+            : module === NBC_AND_PNC || module === NBC_AND_PNC_CHILD || module === NBC_AND_PNC_WOMAN
+            ? FETCH_COMPARTMENTS_NBC_AND_PNC_SLICE
+            : FETCH_COMPARTMENTS_NUTRITION_SLICE,
+    smsSlice:
+        module === PREGNANCY
+            ? COMPARTMENTS_PREGNANCY_SLICE
+            : module === NBC_AND_PNC || module === NBC_AND_PNC_CHILD || module === NBC_AND_PNC_WOMAN
+            ? COMPARTMENTS_NBC_AND_PNC_SLICE
+            : COMPARTMENTS_NUTRITION_SLICE,
+});
