@@ -228,7 +228,8 @@ export const Compartments = ({ module }: Props) => {
                 villages,
             ]);
 
-            if (locationLevel) setUserLocationLevel(locationLevel);
+            // gotcha: locationLevel is a number so checking for truthy will fail for level 0
+            if (locationLevel !== undefined) setUserLocationLevel(locationLevel);
 
             if (
                 locationFilterFunction &&
