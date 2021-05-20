@@ -44,8 +44,6 @@ export interface NutritionLogFaceSms extends PregnancyLogFaceSms {
     feeding_category: string;
 }
 
-export type LogFaceSmsType = PregnancyLogFaceSms | NutritionLogFaceSms;
-
 /** Interfaces for SMS record objects as received from discover*/
 export interface PregnancySmsData {
     anc_id: string;
@@ -121,6 +119,8 @@ export interface NbcPncSmsData {
 }
 
 export type CompartmentSmsTypes = PregnancySmsData | NutritionSmsData | NbcPncSmsData;
+
+export type LogFaceSmsType = PregnancyLogFaceSms | NutritionLogFaceSms;
 
 /** Interface for SMS record object as received from discover */
 export interface SmsData extends NutritionLogFaceSms, Dictionary {
