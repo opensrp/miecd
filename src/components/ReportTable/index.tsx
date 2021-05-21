@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import ListView from '@onaio/list-view';
 import { ConnectedChildChart } from 'components/PatientDetailsCharts/ChildChart';
 import { ConnectedMotherChart } from 'components/PatientDetailsCharts/MotherChart';
@@ -7,6 +8,12 @@ import { TFunction, Trans, useTranslation } from 'react-i18next';
 import { RouteComponentProps } from 'react-router';
 import Select from 'react-select';
 import { Row } from 'reactstrap';
+=======
+import NoRecord from 'components/NoRecord';
+import { uniqWith } from 'lodash';
+import React, { useState } from 'react';
+import { TFunction, useTranslation } from 'react-i18next';
+>>>>>>> Remove old patientDetailsReports table code in ReportTable
 import {
     ANC_REPORT,
     BIRTH_REPORT,

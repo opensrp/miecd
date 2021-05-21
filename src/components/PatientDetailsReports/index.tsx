@@ -9,7 +9,7 @@ import { LogFaceSmsType, NutritionLogFaceSms, PregnancyLogFaceSms } from '../../
 import React from 'react';
 
 interface ReportTableProps {
-    patientsReports: PregnancyLogFaceSms | NutritionLogFaceSms[];
+    patientsReports: (PregnancyLogFaceSms | NutritionLogFaceSms)[];
     isChild: boolean;
 }
 
