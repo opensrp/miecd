@@ -7,6 +7,9 @@ import store from 'store';
 import toJson from 'enzyme-to-json';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+import { backDatedEvents } from './fixtures';
+import { smsDataFixture } from '../../../store/ducks/tests/fixtures/index';
+import { act } from 'react-dom/test-utils';
 
 jest.mock('highcharts');
 
@@ -49,7 +52,43 @@ describe('ReportTable', () => {
         jest.resetAllMocks();
     });
 
-    it('renders correctly', () => {
+    it('works okay', async () => {
+        const smsDataProps = smsDataFixture.filter((sms) => sms.anc_id.toLowerCase() === '1002lj');
+        const smsData = [...smsDataProps, ...backDatedEvents];
+        const props = {
+            ...locationProps,
+            singlePatientEvents: smsData,
+            isChild: false,
+        };
+        const wrapper = mountWithTranslations(
+            <Provider store={store}>
+                <Router history={history}>
+                    <ReportTable {...props} />
+                </Router>
+            </Provider>,
+        );
+
+        await act(async () => {
+            await new Promise((r) => setImmediate(r));
+            wrapper.update();
+        });
+
+        wrapper.find('table tr').forEach((tr) => {
+            expect(tr.text()).toMatchSnapshot('initial current pregnancies');
+        });
+
+        expect(toJson(wrapper.find('select'))).toMatchSnapshot('pregnancy filter');
+
+        // switch pregnancies
+        wrapper.find('select').simulate('change', { target: { value: 0, name: 'pregnancy 1' } });
+        wrapper.update();
+
+        wrapper.find('table tr').forEach((tr) => {
+            expect(tr.text()).toMatchSnapshot('after filter pregnancies');
+        });
+    });
+
+    it('renders correctly', async () => {
         const props = {
             ...locationProps,
         };
@@ -60,13 +99,17 @@ describe('ReportTable', () => {
                 </Router>
             </Provider>,
         );
+        await act(async () => {
+            await new Promise((r) => setImmediate(r));
+            wrapper.update();
+        });
 
         expect(toJson(wrapper.find('#filter-panel'))).toMatchSnapshot('Filter panel');
         expect(wrapper.find('#tableRow table')).toHaveLength(1);
         expect(wrapper.find('MotherChart')).toHaveLength(1);
         expect(wrapper.find('ChildChart')).toHaveLength(0);
     });
-    it('renders child chart', () => {
+    it('renders child chart', async () => {
         const props = {
             ...locationProps,
             isChild: true,
@@ -78,6 +121,11 @@ describe('ReportTable', () => {
                 </Router>
             </Provider>,
         );
+
+        await act(async () => {
+            await new Promise((r) => setImmediate(r));
+            wrapper.update();
+        });
 
         expect(wrapper.find('MotherChart')).toHaveLength(0);
         expect(wrapper.find('ChildChart')).toHaveLength(1);
