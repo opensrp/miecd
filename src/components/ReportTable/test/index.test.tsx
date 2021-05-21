@@ -1,4 +1,3 @@
-import { shallow } from 'enzyme';
 import ReportTable from '..';
 import { Dictionary } from '@onaio/utils';
 import { mountWithTranslations } from 'helpers/testUtils';
