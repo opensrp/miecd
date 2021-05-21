@@ -19,9 +19,10 @@ import { ErrorPage } from 'components/ErrorPage';
 import Ripple from 'components/page/Loading';
 import { getLocationsOfLevel, Location } from '../../store/ducks/locations';
 import locationsReducer, { reducerName as locationReducerName } from '../../store/ducks/locations';
-import { selectSmsDataByPatientId } from '../../store/ducks/sms_events';
+import { getSmsDataByFilters, LogFaceSmsType, selectSmsDataByPatientId } from '../../store/ducks/sms_events';
 import smsReducer, { reducerName as smsReducerName, SmsData } from '../../store/ducks/sms_events';
 import reducerRegistry from '@onaio/redux-reducer-registry';
+import { PatientDetailsReport } from 'components/PatientDetailsReports';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -38,6 +39,7 @@ interface PatientDetailProps extends RouteComponentProps<RouteParams> {
     communes: Location[];
     villages: Location[];
     supersetService: typeof supersetFetch;
+    logFaceReports: LogFaceSmsType[];
 }
 
 const defaultProps = {
@@ -48,10 +50,11 @@ const defaultProps = {
     communes: [],
     villages: [],
     supersetService: supersetFetch,
+    logFaceReports: [],
 };
 
 const PatientDetails = (props: PatientDetailProps) => {
-    const { isChild, smsData, communes, villages, districts, provinces, supersetService } = props;
+    const { isChild, smsData, communes, villages, districts, provinces, supersetService, logFaceReports } = props;
     const [loading, setLoading] = React.useState(true);
     const { error, handleBrokenPage, broken } = useHandleBrokenPage();
     const { t } = useTranslation();
@@ -98,7 +101,9 @@ const PatientDetails = (props: PatientDetailProps) => {
             </div>
             <BasicInformation labelValuePairs={basicInformationValuePairs} />
 
-            <ReportTable {...props} isChild={isChild} singlePatientEvents={smsData} />
+            <PatientDetailsReport patientsReports={logFaceReports} isChild={isChild}></PatientDetailsReport>
+
+            <ReportTable isChild={isChild} singlePatientEvents={smsData} />
         </div>
     );
 };
@@ -263,11 +268,19 @@ export const getPathFromSupersetLocs = (
 PatientDetails.defaultProps = defaultProps;
 export { PatientDetails };
 
-type MapStateToProps = Pick<PatientDetailProps, 'smsData' | 'communes' | 'districts' | 'provinces' | 'villages'>;
+const smsByFilters = getSmsDataByFilters();
+
+type MapStateToProps = Pick<
+    PatientDetailProps,
+    'smsData' | 'communes' | 'districts' | 'provinces' | 'villages' | 'logFaceReports'
+>;
 const mapStateToProps = (state: Partial<Store>, ownProps: PatientDetailProps): MapStateToProps => {
     const patientId = ownProps.match.params.patient_id;
 
     const smsData = selectSmsDataByPatientId(state, patientId);
+    const logFaceReports = smsByFilters(state, {
+        patientId: patientId,
+    });
 
     return {
         smsData,
@@ -275,6 +288,7 @@ const mapStateToProps = (state: Partial<Store>, ownProps: PatientDetailProps): M
         districts: getLocationsOfLevel(state, DISTRICT),
         provinces: getLocationsOfLevel(state, PROVINCE),
         villages: getLocationsOfLevel(state, VILLAGE),
+        logFaceReports,
     };
 };
 
