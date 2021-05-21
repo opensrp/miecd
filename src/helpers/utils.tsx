@@ -734,3 +734,25 @@ export function getRiskCatFilter(module: string, riskFilterValue?: string) {
         filterValue: categoryToUse[riskFilterValue].filterValue as string[],
     };
 }
+
+/** returns common pagination props
+ * @param t - the translator function
+ */
+export const getCommonPaginationProps = (t: TFunction) => {
+    return {
+        previousLabel: t('previous'),
+        nextLabel: t('next'),
+        breakLabel: <>&nbsp;&nbsp;...&nbsp;&nbsp;</>,
+        breakClassName: 'page-item',
+        marginPagesDisplayed: 2,
+        pageRangeDisplayed: 3,
+        containerClassName: 'pagination',
+        activeClassName: 'active',
+        pageClassName: 'page-item',
+        previousClassName: 'page-item',
+        nextClassName: 'page-item',
+        pageLinkClassName: 'page-link',
+        previousLinkClassName: 'page-link',
+        nextLinkClassName: 'page-link',
+    };
+};

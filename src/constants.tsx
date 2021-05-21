@@ -136,7 +136,7 @@ export const getMonthNames = (t: TFunction) => [
 ];
 
 // operational constants
-export const DEFAULT_NUMBER_OF_LOGFACE_ROWS = 5;
+export const DEFAULT_PAGINATION_SIZE = 5;
 export const EN_LANGUAGE_CODE = 'en' as const;
 export const VI_LANGUAGE_CODE = 'vi' as const;
 
