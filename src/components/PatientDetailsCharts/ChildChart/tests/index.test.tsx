@@ -12,6 +12,8 @@ import { mountWithTranslations } from 'helpers/testUtils';
 const history = createBrowserHistory();
 jest.mock('highcharts');
 
+jest.mock('../../../../configs/env');
+
 const locationProps = {
     history,
     location: {
@@ -60,7 +62,7 @@ describe('ConnectedChildChart', () => {
         expect(wrapper.find('Ripple')).toHaveLength(0);
         expect(wrapper.text()).toMatchInlineSnapshot(`"Chart could not load, an error occurred. coughid"`);
 
-        expect(supersetFetchMock).toHaveBeenCalledWith('18881', {
+        expect(supersetFetchMock).toHaveBeenCalledWith('childChartSlice', {
             adhoc_filters: [
                 {
                     clause: 'WHERE',
