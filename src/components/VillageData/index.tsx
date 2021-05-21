@@ -3,7 +3,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import ReactPaginate from 'react-paginate';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardTitle, Row, Table } from 'reactstrap';
-import { NBC_AND_PNC_CHILD, NBC_AND_PNC_WOMAN, NUTRITION, PREGNANCY } from '../../constants';
+import { DEFAULT_PAGINATION_SIZE, NBC_AND_PNC_CHILD, NBC_AND_PNC_WOMAN, NUTRITION, PREGNANCY } from '../../constants';
 import { getCommonPaginationProps, getModuleLink, getNumberOfDaysSinceDate } from '../../helpers/utils';
 import { SmsData } from '../../store/ducks/sms_events';
 import RiskColoring from '../RiskColoring';
@@ -42,7 +42,7 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
     public render() {
         const { t } = this.props;
 
-        const pageLimit = 5;
+        const pageLimit = DEFAULT_PAGINATION_SIZE;
         const totalPageCount = Math.ceil(this.props.smsData.length / pageLimit);
 
         const paginatorProps = {

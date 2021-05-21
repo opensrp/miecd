@@ -13,7 +13,7 @@ import RiskColoring from '../../components/RiskColoring';
 import { SUPERSET_PREGNANCY_DATA_EXPORT } from '../../configs/env';
 import { LogFaceModules, LogFaceSliceByModule, riskCategories, SmsTypes } from '../../configs/settings';
 import {
-    DEFAULT_NUMBER_OF_LOGFACE_ROWS,
+    DEFAULT_PAGINATION_SIZE,
     LOCATION_FILTER_PARAM,
     NBC_AND_PNC,
     NBC_AND_PNC_LOGFACE_URL,
@@ -107,7 +107,7 @@ const defaultProps: LogFaceProps = {
     dataFetched: false,
     districts: [],
     module: PREGNANCY_MODULE,
-    numberOfRows: DEFAULT_NUMBER_OF_LOGFACE_ROWS,
+    numberOfRows: DEFAULT_PAGINATION_SIZE,
     provinces: [],
     removeFilterArgs: removeFilterArgsActionCreator,
     smsData: [],
