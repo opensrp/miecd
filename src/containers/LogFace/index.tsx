@@ -158,8 +158,8 @@ const LogFace = (props: LogFacePropsType) => {
         updateUrlWithFilter(SEARCH_FILTER_PARAM, props, (event.target as HTMLInputElement).value);
     };
 
-    const onPageChangeHandler = (page: any) => {
-        setCurrentPage(page.selected as any);
+    const onPageChangeHandler = (page: { selected: number }) => {
+        setCurrentPage(page.selected);
     };
 
     const totalPageCount = Math.ceil(smsData.length / numberOfRows);
