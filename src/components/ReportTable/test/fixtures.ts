@@ -2721,7 +2721,7 @@ export const emoveDuplicateWeightsOutput2 = [
     } as unknown,
 ];
 
-export const singlePatientEvents = ([
+export const singlePatientEvents = [
     {
         EventDate: '2019-09-27',
         sms_type: 'Pregnancy Detection',
@@ -3626,7 +3626,7 @@ export const singlePatientEvents = ([
         health_worker_contact: 'telegram:782996367',
         team: ' NULL',
     },
-] as unknown) as SmsData[];
+] as unknown as SmsData[];
 
 export const getPregnancyStringsArrayInput = [
     [
@@ -4010,7 +4010,7 @@ export const getWeightsArrayOutput2 = [
     ],
 ];
 
-export const backDatedEvents = ([
+export const backDatedEvents = [
     {
         EventDate: '2018-09-25',
         sms_type: 'Pregnancy Detection',
@@ -4208,4 +4208,4 @@ export const backDatedEvents = ([
         health_worker_contact: 'telegram:782996367',
         team: ' NULL',
     },
-] as unknown) as SmsData[];
+] as unknown as SmsData[];

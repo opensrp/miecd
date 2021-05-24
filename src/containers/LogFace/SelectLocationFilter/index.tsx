@@ -93,9 +93,8 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
         } else {
             if (selectedNode) {
                 // set options to be children of currently selected node, where selected node is a leaf node, the siblings will be the options
-                const nextOptions = (selectedNode?.hasChildren()
-                    ? selectedNode?.children
-                    : selectedNode?.parent?.children ?? []
+                const nextOptions = (
+                    selectedNode?.hasChildren() ? selectedNode?.children : selectedNode?.parent?.children ?? []
                 ).map((node: TreeNode) => ({
                     value: node.model.id,
                     label: node.model.label,
