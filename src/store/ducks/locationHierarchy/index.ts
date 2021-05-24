@@ -137,7 +137,7 @@ export const getSearchQuery = (_: Partial<Store>, props: Filters) => props.searc
  * @param state - the store
  * @param _ -  the filterProps
  */
-export const getTreesByRootId = (state: Partial<Store>, _: Filters): Dictionary<TreeNode> =>
+export const getTreesByRootId = (state: Partial<Store>): Dictionary<TreeNode> =>
     (state as Dictionary)[hierarchyReducerName].treeByRootId;
 
 /** factory that returns a selector to retrieve the tree(s) using their rootNode's ids */
