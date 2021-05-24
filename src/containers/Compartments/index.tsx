@@ -112,7 +112,11 @@ export const Compartments = ({ module }: Props) => {
     const QueryKeyAndSmsSlice = queryKeyAndSmsSlice(module);
 
     // fetch and cache current module sms slice
-    const { data: moduleSmsSlice, isLoading: moduleSmsSliceLoading, error: moduleSmsSliceError } = useQuery(
+    const {
+        data: moduleSmsSlice,
+        isLoading: moduleSmsSliceLoading,
+        error: moduleSmsSliceError,
+    } = useQuery(
         QueryKeyAndSmsSlice.queryKey,
         () => fetchSupersetData<CompartmentSmsTypes>(QueryKeyAndSmsSlice.smsSlice),
         {
@@ -123,58 +127,58 @@ export const Compartments = ({ module }: Props) => {
 
     // fetch all location slices
     // todo: switch to useQueries once select is supported
-    const { data: villages, isLoading: villagesLoading, error: villagesError } = useQuery(
-        FETCH_VILLAGES,
-        () => fetchSupersetData<Location>(VILLAGE_SLICE),
-        {
-            select: (res: Location[]) => res,
-            onError: (err: Error) => err,
-        },
-    );
-    const { data: communes, isLoading: communesLoading, error: communesError } = useQuery(
-        FETCH_COMMUNES,
-        () => fetchSupersetData<Location>(COMMUNE_SLICE),
-        {
-            select: (res: Location[]) => res,
-            onError: (err: Error) => err,
-        },
-    );
-    const { data: districts, isLoading: districtsLoading, error: districtsError } = useQuery(
-        FETCH_DISTRICTS,
-        () => fetchSupersetData<Location>(DISTRICT_SLICE),
-        {
-            select: (res: Location[]) => res,
-            onError: (err: Error) => err,
-        },
-    );
-    const { data: provinces, isLoading: provincesLoading, error: provincesError } = useQuery(
-        FETCH_PROVINCES,
-        () => fetchSupersetData<Location>(PROVINCE_SLICE),
-        {
-            select: (res: Location[]) => res,
-            onError: (err: Error) => err,
-        },
-    );
+    const {
+        data: villages,
+        isLoading: villagesLoading,
+        error: villagesError,
+    } = useQuery(FETCH_VILLAGES, () => fetchSupersetData<Location>(VILLAGE_SLICE), {
+        select: (res: Location[]) => res,
+        onError: (err: Error) => err,
+    });
+    const {
+        data: communes,
+        isLoading: communesLoading,
+        error: communesError,
+    } = useQuery(FETCH_COMMUNES, () => fetchSupersetData<Location>(COMMUNE_SLICE), {
+        select: (res: Location[]) => res,
+        onError: (err: Error) => err,
+    });
+    const {
+        data: districts,
+        isLoading: districtsLoading,
+        error: districtsError,
+    } = useQuery(FETCH_DISTRICTS, () => fetchSupersetData<Location>(DISTRICT_SLICE), {
+        select: (res: Location[]) => res,
+        onError: (err: Error) => err,
+    });
+    const {
+        data: provinces,
+        isLoading: provincesLoading,
+        error: provincesError,
+    } = useQuery(FETCH_PROVINCES, () => fetchSupersetData<Location>(PROVINCE_SLICE), {
+        select: (res: Location[]) => res,
+        onError: (err: Error) => err,
+    });
 
     // fetch user location details
-    const { data: userLocationData, isLoading: userLocationLoading, error: userLocationError } = useQuery(
-        FETCH_USER_LOCATION,
-        () => fetchSupersetData<UserLocation>(USER_LOCATION_DATA_SLICE),
-        {
-            select: (res: UserLocation[]) => res,
-            onError: (err: Error) => err,
-        },
-    );
+    const {
+        data: userLocationData,
+        isLoading: userLocationLoading,
+        error: userLocationError,
+    } = useQuery(FETCH_USER_LOCATION, () => fetchSupersetData<UserLocation>(USER_LOCATION_DATA_SLICE), {
+        select: (res: UserLocation[]) => res,
+        onError: (err: Error) => err,
+    });
 
     // fetch user UUID
-    const { data: userUUID, isLoading: userUUIDLoading, error: userUUIDError } = useQuery(
-        FETCH_USER_ID,
-        () => fetchOpenSrpData(''),
-        {
-            select: (res: Dictionary) => res.user.attributes._PERSON_UUID as string,
-            onError: (err: Error) => err,
-        },
-    );
+    const {
+        data: userUUID,
+        isLoading: userUUIDLoading,
+        error: userUUIDError,
+    } = useQuery(FETCH_USER_ID, () => fetchOpenSrpData(''), {
+        select: (res: Dictionary) => res.user.baseEntityId as string,
+        onError: (err: Error) => err,
+    });
 
     const [filteredData, setFilteredData] = useState<CompartmentSmsTypes[]>([]);
     const [locationAndPath, setLocationAndPath] = useState<HeaderBreadCrumb>({
@@ -216,7 +220,11 @@ export const Compartments = ({ module }: Props) => {
 
     // update userLocationId if UUID of logged in user changes
     useEffect(() => {
-        if (userLocationData && userUUID) setUserLocationId(getLocationId(userLocationData, userUUID));
+        if (userLocationData && userUUID) {
+            // fetch user location id
+            const locationId = getLocationId(userLocationData, userUUID);
+            setUserLocationId(locationId);
+        }
     }, [userUUID, userLocationData]);
 
     useEffect(() => {
@@ -232,11 +240,9 @@ export const Compartments = ({ module }: Props) => {
             if (locationLevel !== undefined) setUserLocationLevel(locationLevel);
 
             if (
-                locationFilterFunction &&
                 // if locationFilterFunction is not already in store
                 !filterArgsInStore.find((element) => element.toString() === locationFilterFunction.toString())
             ) {
-                dispatch(removeFilterArgs());
                 dispatch(addFilterArgs([locationFilterFunction]));
             }
             const locationPath = buildHeaderBreadCrumb(
@@ -250,10 +256,14 @@ export const Compartments = ({ module }: Props) => {
 
             setLocationAndPath(locationPath);
 
+            // initialize filtered data
+            let filteredData = moduleSmsSlice ?? [];
+
             // filter sms data for user's location
-            if (locationFilterFunction && moduleSmsSlice) {
-                setFilteredData(moduleSmsSlice.filter(locationFilterFunction));
+            if (locationFilterFunction) {
+                filteredData = filteredData.filter(locationFilterFunction);
             }
+            setFilteredData(filteredData);
         }
     }, [userLocationId, provinces, districts, communes, villages, filterArgsInStore, moduleSmsSlice, dispatch]);
 
@@ -563,7 +573,7 @@ export const childrenAgeRangeFilterFunction = (startAge: number, endAge: number)
 const getNumberOfSmsWithRisk = (risk: string, CompartmentSmsData: CompartmentSmsTypes[], field: string) => {
     function reducer(accumulator: number, currentValue: CompartmentSmsTypes) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        if ((currentValue as any)[field].toLowerCase() === risk) {
+        if ((currentValue as any)[field]?.toLowerCase() === risk) {
             return accumulator + 1;
         }
         return accumulator;
