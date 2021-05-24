@@ -119,37 +119,28 @@ function getLocationRiskTotals(CompartmentSmsData: CompartmentSmsTypes[], module
     let reducer: (accumulator: Totals, dataItem: CompartmentSmsTypes) => Totals;
 
     if (module === NUTRITION) {
-        reducer = (accumulator: Totals, dataItem: CompartmentSmsTypes) => {
-            if ((dataItem as NutritionSmsData)[NUTRITION_STATUS] === SEVERE_WASTING) {
-                return {
-                    ...accumulator,
+        reducer = (accumulator: Totals, dataItem: CompartmentSmsTypes) =>
+            // conditional assignment of fields to totals
+            // depending on NUTRITION_STATUS and GROWTH_STATUS fields
+            ({
+                ...accumulator,
+                ...((dataItem as NutritionSmsData)[NUTRITION_STATUS] === SEVERE_WASTING && {
                     wasting: (accumulator as NutritionTotals).wasting + 1,
                     total: accumulator.total + 1,
-                };
-            }
-            if ((dataItem as NutritionSmsData)[NUTRITION_STATUS] === OVERWEIGHT) {
-                return {
-                    ...accumulator,
+                }),
+                ...((dataItem as NutritionSmsData)[NUTRITION_STATUS] === OVERWEIGHT && {
                     overweight: (accumulator as NutritionTotals).overweight + 1,
                     total: accumulator.total + 1,
-                };
-            }
-            if ((dataItem as NutritionSmsData)[GROWTH_STATUS] === STUNTED) {
-                return {
-                    ...accumulator,
+                }),
+                ...((dataItem as NutritionSmsData)[GROWTH_STATUS] === STUNTED && {
                     stunting: (accumulator as NutritionTotals).stunting + 1,
                     total: accumulator.total + 1,
-                };
-            }
-            if ((dataItem as NutritionSmsData)[FEEDING_CATEGORY] === INAPPROPRIATELY_FED) {
-                return {
-                    ...accumulator,
+                }),
+                ...((dataItem as NutritionSmsData)[FEEDING_CATEGORY] === INAPPROPRIATELY_FED && {
                     inappropriateFeeding: (accumulator as NutritionTotals).inappropriateFeeding + 1,
                     total: accumulator.total + 1,
-                };
-            }
-            return accumulator;
-        };
+                }),
+            });
     } else {
         reducer = (accumulator: Totals, dataItem: CompartmentSmsTypes) => {
             switch ((dataItem as PregnancySmsData | NbcPncSmsData)[RISK_LEVEL]) {
@@ -243,6 +234,43 @@ function getRiskTotals(locations: LocationWithData[], module: moduleType): Total
 
     return locations.reduce(reducer, totalsMap);
 }
+
+/**
+ * Function to sum up two risk totals to one unified risk total
+ * @param firstTotals first risk total
+ * @param secondTotals second risk total
+ * @param module current module
+ * @returns a unified risk total
+ */
+function sumTotals(firstTotals: Totals, secondTotals: Totals, module: moduleType) {
+    let reducer: (accumulator: Totals, currentValue: Totals) => Totals;
+
+    if (module === NUTRITION) {
+        reducer = (accumulator: Totals, currentValue: Totals) => ({
+            ...accumulator,
+            inappropriateFeeding:
+                (accumulator as NutritionTotals).inappropriateFeeding +
+                (currentValue as NutritionTotals).inappropriateFeeding,
+            overweight: (accumulator as NutritionTotals).overweight + (currentValue as NutritionTotals).overweight,
+            stunting: (accumulator as NutritionTotals).stunting + (currentValue as NutritionTotals).stunting,
+            wasting: (accumulator as NutritionTotals).wasting + (currentValue as NutritionTotals).wasting,
+            total: (accumulator as NutritionTotals).total + (currentValue as NutritionTotals).total,
+        });
+    } else {
+        reducer = (accumulator: Totals, currentValue: Totals) => ({
+            ...accumulator,
+            no_risk: (accumulator as PregnancyNpcPncTotals).no_risk + (currentValue as PregnancyNpcPncTotals).no_risk,
+            redAlert:
+                (accumulator as PregnancyNpcPncTotals).redAlert + (currentValue as PregnancyNpcPncTotals).redAlert,
+            risk: (accumulator as PregnancyNpcPncTotals).risk + (currentValue as PregnancyNpcPncTotals).risk,
+            total: (accumulator as PregnancyNpcPncTotals).total + (currentValue as PregnancyNpcPncTotals).total,
+        });
+    }
+
+    const initialValue: Totals = firstTotals;
+    return [secondTotals].reduce(reducer, initialValue);
+}
+
 /**
  * a function that populates locations with sms data that correspond to that location id
  * @param locations a locations object containing location arrays (villages, communes, districts, provinces)
@@ -279,7 +307,7 @@ function addDataToLocations(
             });
         }
         // infer type NutritionTotals
-        if ('inappropriateFeeding' in villageRiskTotals) {
+        else {
             villagesWithData.push({
                 ...village,
                 inappropriateFeeding: villageRiskTotals.inappropriateFeeding,
@@ -305,25 +333,28 @@ function addDataToLocations(
         );
         const villagesInCommuneRiskTotals = getRiskTotals(villagesInThisCommune, module);
 
-        if ('no_risk' in communeRiskTotals && 'no_risk' in villagesInCommuneRiskTotals) {
+        // sum the two risk totals to one unified risk total
+        const unifiedTotals = sumTotals(communeRiskTotals, villagesInCommuneRiskTotals, module);
+
+        // infer type PregnancyNpcPncTotals
+        if ('no_risk' in unifiedTotals) {
             communesWithData.push({
                 ...commune,
-                no_risk: communeRiskTotals.no_risk + villagesInCommuneRiskTotals.no_risk,
-                redAlert: communeRiskTotals.redAlert + villagesInCommuneRiskTotals.redAlert,
-                risk: communeRiskTotals.risk + villagesInCommuneRiskTotals.risk,
-                total: communeRiskTotals.total + villagesInCommuneRiskTotals.total,
+                no_risk: unifiedTotals.no_risk,
+                redAlert: unifiedTotals.redAlert,
+                risk: unifiedTotals.risk,
+                total: unifiedTotals.total,
             });
         }
-
-        if ('inappropriateFeeding' in communeRiskTotals && 'inappropriateFeeding' in villagesInCommuneRiskTotals) {
+        // infer type NutritionTotals
+        else {
             communesWithData.push({
                 ...commune,
-                inappropriateFeeding:
-                    communeRiskTotals.inappropriateFeeding + villagesInCommuneRiskTotals.inappropriateFeeding,
-                overweight: communeRiskTotals.overweight + villagesInCommuneRiskTotals.overweight,
-                stunting: communeRiskTotals.stunting + villagesInCommuneRiskTotals.stunting,
-                wasting: communeRiskTotals.wasting + villagesInCommuneRiskTotals.wasting,
-                total: communeRiskTotals.total + villagesInCommuneRiskTotals.total,
+                inappropriateFeeding: unifiedTotals.inappropriateFeeding,
+                overweight: unifiedTotals.overweight,
+                stunting: unifiedTotals.stunting,
+                wasting: unifiedTotals.wasting,
+                total: unifiedTotals.total,
             });
         }
     }
@@ -342,25 +373,28 @@ function addDataToLocations(
         );
         const communesInDistrictRiskTotals = getRiskTotals(communesInThisDistrict, module);
 
-        if ('no_risk' in districtRiskTotals && 'no_risk' in communesInDistrictRiskTotals) {
+        // sum the two risk totals to one unified risk total
+        const unifiedTotals = sumTotals(districtRiskTotals, communesInDistrictRiskTotals, module);
+
+        // infer type PregnancyNpcPncTotals
+        if ('no_risk' in unifiedTotals) {
             districtsWithData.push({
                 ...district,
-                no_risk: districtRiskTotals.no_risk + communesInDistrictRiskTotals.no_risk,
-                redAlert: districtRiskTotals.redAlert + communesInDistrictRiskTotals.redAlert,
-                risk: districtRiskTotals.risk + communesInDistrictRiskTotals.risk,
-                total: districtRiskTotals.total + communesInDistrictRiskTotals.total,
+                no_risk: unifiedTotals.no_risk,
+                redAlert: unifiedTotals.redAlert,
+                risk: unifiedTotals.risk,
+                total: unifiedTotals.total,
             });
         }
-
-        if ('inappropriateFeeding' in districtRiskTotals && 'inappropriateFeeding' in communesInDistrictRiskTotals) {
+        // infer type NutritionTotals
+        else {
             districtsWithData.push({
                 ...district,
-                inappropriateFeeding:
-                    districtRiskTotals.inappropriateFeeding + communesInDistrictRiskTotals.inappropriateFeeding,
-                overweight: districtRiskTotals.overweight + communesInDistrictRiskTotals.overweight,
-                stunting: districtRiskTotals.stunting + communesInDistrictRiskTotals.stunting,
-                wasting: districtRiskTotals.wasting + communesInDistrictRiskTotals.wasting,
-                total: districtRiskTotals.total + communesInDistrictRiskTotals.total,
+                inappropriateFeeding: unifiedTotals.inappropriateFeeding,
+                overweight: unifiedTotals.overweight,
+                stunting: unifiedTotals.stunting,
+                wasting: unifiedTotals.wasting,
+                total: unifiedTotals.total,
             });
         }
     }
@@ -379,25 +413,28 @@ function addDataToLocations(
         );
         const districtsInRiskTotals = getRiskTotals(districtsInThisProvince, module);
 
-        if ('no_risk' in provinceRiskTotals && 'no_risk' in districtsInRiskTotals) {
+        // sum the two risk totals to one unified risk total
+        const unifiedTotals = sumTotals(provinceRiskTotals, districtsInRiskTotals, module);
+
+        // infer type PregnancyNpcPncTotals
+        if ('no_risk' in unifiedTotals) {
             provincesWithData.push({
                 ...province,
-                no_risk: provinceRiskTotals.no_risk + districtsInRiskTotals.no_risk,
-                redAlert: provinceRiskTotals.redAlert + districtsInRiskTotals.redAlert,
-                risk: provinceRiskTotals.risk + districtsInRiskTotals.risk,
-                total: provinceRiskTotals.total + districtsInRiskTotals.total,
+                no_risk: unifiedTotals.no_risk,
+                redAlert: unifiedTotals.redAlert,
+                risk: unifiedTotals.risk,
+                total: unifiedTotals.total,
             });
         }
-
-        if ('inappropriateFeeding' in provinceRiskTotals && 'inappropriateFeeding' in districtsInRiskTotals) {
+        // infer type NutritionTotals
+        else {
             provincesWithData.push({
                 ...province,
-                inappropriateFeeding:
-                    provinceRiskTotals.inappropriateFeeding + districtsInRiskTotals.inappropriateFeeding,
-                overweight: provinceRiskTotals.overweight + districtsInRiskTotals.overweight,
-                stunting: provinceRiskTotals.stunting + districtsInRiskTotals.stunting,
-                wasting: provinceRiskTotals.wasting + districtsInRiskTotals.wasting,
-                total: provinceRiskTotals.total + districtsInRiskTotals.total,
+                inappropriateFeeding: unifiedTotals.inappropriateFeeding,
+                overweight: unifiedTotals.overweight,
+                stunting: unifiedTotals.stunting,
+                wasting: unifiedTotals.wasting,
+                total: unifiedTotals.total,
             });
         }
     }
@@ -460,7 +497,7 @@ export default function HierarchicalDataTable() {
     const [locationData, setLocationData] = useState<LocationWithData[]>([]);
     const [villageData, setVillageData] = useState<CompartmentSmsTypes[]>([]);
     const [headerTitle, setHeaderTitle] = useState<string[]>(['Provinces']);
-    const [moduleSmsSlice, setModuleSmsSlice] = useState<CompartmentSmsTypes[]>([]);
+    const [moduleSmsSlice, setModuleSmsSlice] = useState<CompartmentSmsTypes[] | undefined>(undefined);
 
     // get filter arguments in store
     const filterArgsInStore = useSelector((state) => getFilterArgs(state));
@@ -484,7 +521,10 @@ export default function HierarchicalDataTable() {
     } = useParams<RouteParams>();
 
     // parse string param to int
+
+    // default 3 is lowest permission level
     const permissionLevel = string_permission_level ? parseInt(string_permission_level) : 3;
+    // default 0 is level country
     const current_level = string_current_level ? parseInt(string_current_level) : 0;
 
     // conditionally assign sms slice and queryKey to use depending on module
@@ -564,7 +604,7 @@ export default function HierarchicalDataTable() {
     });
 
     useEffect(() => {
-        if (provinces && districts && communes && villages) {
+        if (communes && districts && provinces && villages && moduleSmsSlice) {
             const locationsWithData = addDataToLocations(
                 {
                     communes: communes,
@@ -636,7 +676,6 @@ export default function HierarchicalDataTable() {
         from_level,
         module,
         node_id,
-        risk_highlighter,
         moduleSmsSlice,
     ]);
 
@@ -720,17 +759,11 @@ export default function HierarchicalDataTable() {
         return PROVINCE;
     };
 
-    const dontDisplayProvince = () => {
-        return permissionLevel > 0;
-    };
+    const dontDisplayProvince = () => permissionLevel > 0;
 
-    const dontDisplayDistrict = () => {
-        return permissionLevel > 1;
-    };
+    const dontDisplayDistrict = () => permissionLevel > 1;
 
-    const dontDisplayCommune = () => {
-        return permissionLevel > 2;
-    };
+    const dontDisplayCommune = () => permissionLevel > 2;
 
     const header = () => {
         const aLink = headerTitle.map((item, index, arr) => {
