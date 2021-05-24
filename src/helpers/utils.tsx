@@ -147,8 +147,9 @@ export function getLocationId(userLocationData: UserLocation[], userUUID: string
         userLocationData.length &&
         userLocationData.find((userLocationDataItem: UserLocation) => userLocationDataItem.provider_id === userUUID);
     if (userDetailObj) {
-        return userDetailObj.location_id;
+        return userDetailObj.location_id as string;
     }
+    return '';
 }
 
 /**
