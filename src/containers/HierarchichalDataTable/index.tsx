@@ -491,7 +491,11 @@ export default function HierarchicalDataTable() {
     const QueryKeyAndSmsSlice = queryKeyAndSmsSlice(module);
 
     // fetch and cache current module sms slice
-    const { data: moduleSms, isLoading: moduleSmsSliceLoading, error: moduleSmsSliceError } = useQuery(
+    const {
+        data: moduleSms,
+        isLoading: moduleSmsSliceLoading,
+        error: moduleSmsSliceError,
+    } = useQuery(
         QueryKeyAndSmsSlice.queryKey,
         () => fetchSupersetData<CompartmentSmsTypes>(QueryKeyAndSmsSlice.smsSlice),
         {
@@ -502,7 +506,7 @@ export default function HierarchicalDataTable() {
 
     // filter sms data according to stored filters (passed in from components)
     useEffect(() => {
-        if (moduleSms?.length) {
+        if (moduleSms) {
             // function to recursively filter sms data
             const getFilteredSmsData = (
                 moduleSms: CompartmentSmsTypes[],
@@ -526,41 +530,41 @@ export default function HierarchicalDataTable() {
 
     // fetch all location slices
     // todo: switch to useQueries once select is supported (because of type inference)
-    const { data: villages, isLoading: villagesLoading, error: villagesError } = useQuery(
-        FETCH_VILLAGES,
-        () => fetchSupersetData<Location>(VILLAGE_SLICE),
-        {
-            select: (res: Location[]) => res,
-            onError: (err: Error) => err,
-        },
-    );
-    const { data: communes, isLoading: communesLoading, error: communesError } = useQuery(
-        FETCH_COMMUNES,
-        () => fetchSupersetData<Location>(COMMUNE_SLICE),
-        {
-            select: (res: Location[]) => res,
-            onError: (err: Error) => err,
-        },
-    );
-    const { data: districts, isLoading: districtsLoading, error: districtsError } = useQuery(
-        FETCH_DISTRICTS,
-        () => fetchSupersetData<Location>(DISTRICT_SLICE),
-        {
-            select: (res: Location[]) => res,
-            onError: (err: Error) => err,
-        },
-    );
-    const { data: provinces, isLoading: provincesLoading, error: provincesError } = useQuery(
-        FETCH_PROVINCES,
-        () => fetchSupersetData<Location>(PROVINCE_SLICE),
-        {
-            select: (res: Location[]) => res,
-            onError: (err: Error) => err,
-        },
-    );
+    const {
+        data: villages,
+        isLoading: villagesLoading,
+        error: villagesError,
+    } = useQuery(FETCH_VILLAGES, () => fetchSupersetData<Location>(VILLAGE_SLICE), {
+        select: (res: Location[]) => res,
+        onError: (err: Error) => err,
+    });
+    const {
+        data: communes,
+        isLoading: communesLoading,
+        error: communesError,
+    } = useQuery(FETCH_COMMUNES, () => fetchSupersetData<Location>(COMMUNE_SLICE), {
+        select: (res: Location[]) => res,
+        onError: (err: Error) => err,
+    });
+    const {
+        data: districts,
+        isLoading: districtsLoading,
+        error: districtsError,
+    } = useQuery(FETCH_DISTRICTS, () => fetchSupersetData<Location>(DISTRICT_SLICE), {
+        select: (res: Location[]) => res,
+        onError: (err: Error) => err,
+    });
+    const {
+        data: provinces,
+        isLoading: provincesLoading,
+        error: provincesError,
+    } = useQuery(FETCH_PROVINCES, () => fetchSupersetData<Location>(PROVINCE_SLICE), {
+        select: (res: Location[]) => res,
+        onError: (err: Error) => err,
+    });
 
     useEffect(() => {
-        if (provinces?.length && districts?.length && communes?.length && villages?.length) {
+        if (provinces && districts && communes && villages) {
             const locationsWithData = addDataToLocations(
                 {
                     communes: communes,
@@ -637,16 +641,13 @@ export default function HierarchicalDataTable() {
     ]);
 
     useEffect(() => {
-        if (moduleSmsSlice && locationData.length) {
+        if (moduleSmsSlice) {
             const nutritionStatusConstants = [SEVERE_WASTING, OVERWEIGHT];
             const growthStatusConstants = [STUNTED];
             const feedingCategoryConstants = [INAPPROPRIATELY_FED];
 
-            let field:
-                | typeof NUTRITION_STATUS
-                | typeof GROWTH_STATUS
-                | typeof FEEDING_CATEGORY
-                | typeof RISK_LEVEL = RISK_LEVEL;
+            let field: typeof NUTRITION_STATUS | typeof GROWTH_STATUS | typeof FEEDING_CATEGORY | typeof RISK_LEVEL =
+                RISK_LEVEL;
 
             if (risk_highlighter) {
                 if (nutritionStatusConstants.includes(risk_highlighter)) {
@@ -790,15 +791,15 @@ export default function HierarchicalDataTable() {
     }
 
     if (
-        !provinces?.length ||
-        !districts?.length ||
-        !communes?.length ||
-        !villages?.length ||
         moduleSmsSliceLoading ||
         villagesLoading ||
         communesLoading ||
         districtsLoading ||
-        provincesLoading
+        provincesLoading ||
+        !provinces ||
+        !districts ||
+        !communes ||
+        !villages
     ) {
         return <Loading />;
     }
