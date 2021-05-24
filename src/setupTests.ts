@@ -1,12 +1,7 @@
 import Adapter from 'enzyme-adapter-react-16';
 import Enzyme from 'enzyme';
-import { GlobalWithFetchMock } from 'jest-fetch-mock';
 
-const customGlobal: GlobalWithFetchMock = (global as unknown) as GlobalWithFetchMock;
-/* tslint:disable-next-line no-var-requires */
-customGlobal.fetch = require('jest-fetch-mock');
-
-customGlobal.fetchMock = customGlobal.fetch;
+global.fetch = require('jest-fetch-mock');
 
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
