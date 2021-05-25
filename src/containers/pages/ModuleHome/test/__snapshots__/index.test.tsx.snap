@@ -89,6 +89,7 @@ exports[`PregnancyHome must render correctly 1`] = `
           >
             <p>
               This is the aggregation and categorization of patients data
+                   
             </p>
           </div>
           <div

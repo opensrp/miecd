@@ -201,7 +201,7 @@ exports[`containers/LogFace extended filters work correctly for pregnancy: risk 
     key="risk"
     value="risk"
   >
-    Wasting
+    Risk
   </option>
   <option
     key="redAlert"
@@ -213,25 +213,7 @@ exports[`containers/LogFace extended filters work correctly for pregnancy: risk 
     key="noRisk"
     value="noRisk"
   >
-    Overweight
-  </option>
-  <option
-    key="inappropriateFeeding"
-    value="inappropriateFeeding"
-  >
-    Inappropriate Feeding
-  </option>
-  <option
-    key="underweight"
-    value="underweight"
-  >
-    Underweight
-  </option>
-  <option
-    key="normal"
-    value="normal"
-  >
-    normal
+    No risk
   </option>
 </select>
 `;
