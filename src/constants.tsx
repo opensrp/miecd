@@ -61,6 +61,7 @@ export const NBC_AND_PNC_WOMAN = 'NBC & PNC_WOMAN';
 export const NUTRITION = 'Nutrition';
 export const NO_UNDERSCORE_RISK = 'no_risk';
 export const RED_ALERT = 'red_alert';
+export const NORMAL = 'normal';
 
 // module string literals
 export const PREGNANCY_MODULE = 'Pregnancy';

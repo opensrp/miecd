@@ -186,6 +186,10 @@
     background-color: #ffe9db;
 }
 
+.compartment-data-table .normal {
+    background-color: #7efff5;
+}
+
 .compartment-data-table span.divider {
     color: #0292d3 !important;
 }

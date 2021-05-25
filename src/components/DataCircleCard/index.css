@@ -73,6 +73,10 @@
     background-color: #ceb01cd2;
 }
 
+.compartment-wrapper .circlesRow > .normal {
+    background-color: #7efff5;
+}
+
 .compartment-wrapper .circlesRow > .green,
 .compartment-wrapper .circlesRow > .red,
 .compartment-wrapper .circlesRow > .orange {

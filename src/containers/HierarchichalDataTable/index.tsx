@@ -35,6 +35,7 @@ import {
     RISK,
     SEVERE_WASTING,
     STUNTED,
+    NORMAL,
     UP,
     VILLAGE,
     FETCH_VILLAGES,
@@ -72,6 +73,7 @@ interface LocationWithData extends Location {
     stunting?: number;
     total: number;
     wasting?: number;
+    normal?: number;
 }
 
 type RiskHighlighterType =
@@ -82,13 +84,15 @@ type RiskHighlighterType =
     | typeof INAPPROPRIATELY_FED
     | typeof OVERWEIGHT
     | typeof SEVERE_WASTING
-    | typeof ALL;
+    | typeof ALL
+    | typeof NORMAL;
 
 interface NutritionTotals {
     inappropriateFeeding: number;
     overweight: number;
     stunting: number;
     wasting: number;
+    normal: number;
     total: number;
 }
 
@@ -126,19 +130,23 @@ function getLocationRiskTotals(CompartmentSmsData: CompartmentSmsTypes[], module
                 ...accumulator,
                 ...((dataItem as NutritionSmsData)[NUTRITION_STATUS] === SEVERE_WASTING && {
                     wasting: (accumulator as NutritionTotals).wasting + 1,
-                    total: accumulator.total + 1,
+                    total: (accumulator as NutritionTotals).total + 1,
                 }),
                 ...((dataItem as NutritionSmsData)[NUTRITION_STATUS] === OVERWEIGHT && {
                     overweight: (accumulator as NutritionTotals).overweight + 1,
-                    total: accumulator.total + 1,
+                    total: (accumulator as NutritionTotals).total + 1,
+                }),
+                ...((dataItem as NutritionSmsData)[NUTRITION_STATUS] === NORMAL && {
+                    normal: (accumulator as NutritionTotals).normal + 1,
+                    total: (accumulator as NutritionTotals).total + 1,
                 }),
                 ...((dataItem as NutritionSmsData)[GROWTH_STATUS] === STUNTED && {
                     stunting: (accumulator as NutritionTotals).stunting + 1,
-                    total: accumulator.total + 1,
+                    total: (accumulator as NutritionTotals).total + 1,
                 }),
                 ...((dataItem as NutritionSmsData)[FEEDING_CATEGORY] === INAPPROPRIATELY_FED && {
                     inappropriateFeeding: (accumulator as NutritionTotals).inappropriateFeeding + 1,
-                    total: accumulator.total + 1,
+                    total: (accumulator as NutritionTotals).total + 1,
                 }),
             });
     } else {
@@ -183,10 +191,29 @@ function getLocationRiskTotals(CompartmentSmsData: CompartmentSmsTypes[], module
                   overweight: 0,
                   stunting: 0,
                   wasting: 0,
+                  normal: 0,
                   total: 0,
               };
 
     return CompartmentSmsData.reduce(reducer, totalsMap);
+}
+
+function getFieldTotals(location: LocationWithData | Totals, module: moduleType): number {
+    let total;
+    if (module === NUTRITION) {
+        total =
+            (location as NutritionTotals).inappropriateFeeding +
+            (location as NutritionTotals).overweight +
+            (location as NutritionTotals).stunting +
+            (location as NutritionTotals).wasting +
+            (location as NutritionTotals).normal;
+    } else {
+        total =
+            (location as PregnancyNpcPncTotals).no_risk +
+            (location as PregnancyNpcPncTotals).redAlert +
+            (location as PregnancyNpcPncTotals).risk;
+    }
+    return total;
 }
 
 function getRiskTotals(locations: LocationWithData[], module: moduleType): Totals {
@@ -201,7 +228,8 @@ function getRiskTotals(locations: LocationWithData[], module: moduleType): Total
                 overweight: (accumulator as NutritionTotals).overweight + (location as NutritionTotals).overweight,
                 stunting: (accumulator as NutritionTotals).stunting + (location as NutritionTotals).stunting,
                 wasting: (accumulator as NutritionTotals).wasting + (location as NutritionTotals).wasting,
-                total: accumulator.total + location.total,
+                normal: (accumulator as NutritionTotals).normal + (location as NutritionTotals).normal,
+                total: (accumulator as NutritionTotals).total + getFieldTotals(location, module),
             };
         };
     } else {
@@ -211,7 +239,7 @@ function getRiskTotals(locations: LocationWithData[], module: moduleType): Total
                 redAlert:
                     (accumulator as PregnancyNpcPncTotals).redAlert + (location as PregnancyNpcPncTotals).redAlert,
                 risk: (accumulator as PregnancyNpcPncTotals).risk + (location as PregnancyNpcPncTotals).risk,
-                total: (accumulator as PregnancyNpcPncTotals).total + (location as PregnancyNpcPncTotals).total,
+                total: (accumulator as PregnancyNpcPncTotals).total + getFieldTotals(location, module),
             };
         };
     }
@@ -229,6 +257,7 @@ function getRiskTotals(locations: LocationWithData[], module: moduleType): Total
                   overweight: 0,
                   stunting: 0,
                   wasting: 0,
+                  normal: 0,
                   total: 0,
               };
 
@@ -254,6 +283,7 @@ function sumTotals(firstTotals: Totals, secondTotals: Totals, module: moduleType
             overweight: (accumulator as NutritionTotals).overweight + (currentValue as NutritionTotals).overweight,
             stunting: (accumulator as NutritionTotals).stunting + (currentValue as NutritionTotals).stunting,
             wasting: (accumulator as NutritionTotals).wasting + (currentValue as NutritionTotals).wasting,
+            normal: (accumulator as NutritionTotals).normal + (currentValue as NutritionTotals).normal,
             total: (accumulator as NutritionTotals).total + (currentValue as NutritionTotals).total,
         });
     } else {
@@ -266,7 +296,7 @@ function sumTotals(firstTotals: Totals, secondTotals: Totals, module: moduleType
             total: (accumulator as PregnancyNpcPncTotals).total + (currentValue as PregnancyNpcPncTotals).total,
         });
     }
-
+    // take initial value to be one of the values then reduce the second into it
     const initialValue: Totals = firstTotals;
     return [secondTotals].reduce(reducer, initialValue);
 }
@@ -296,6 +326,8 @@ function addDataToLocations(
         // get risk totals for village sms
         const villageRiskTotals = getLocationRiskTotals(villageSmsData, module);
 
+        const villageTotals = getFieldTotals(villageRiskTotals, module);
+
         // infer type PregnancyNpcPncTotals
         if ('no_risk' in villageRiskTotals) {
             villagesWithData.push({
@@ -303,7 +335,7 @@ function addDataToLocations(
                 no_risk: villageRiskTotals.no_risk,
                 redAlert: villageRiskTotals.redAlert,
                 risk: villageRiskTotals.risk,
-                total: villageRiskTotals.total,
+                total: villageTotals,
             });
         }
         // infer type NutritionTotals
@@ -314,7 +346,8 @@ function addDataToLocations(
                 overweight: villageRiskTotals.overweight,
                 stunting: villageRiskTotals.stunting,
                 wasting: villageRiskTotals.wasting,
-                total: villageRiskTotals.total,
+                normal: villageRiskTotals.normal,
+                total: villageTotals,
             });
         }
     }
@@ -354,6 +387,7 @@ function addDataToLocations(
                 overweight: unifiedTotals.overweight,
                 stunting: unifiedTotals.stunting,
                 wasting: unifiedTotals.wasting,
+                normal: unifiedTotals.normal,
                 total: unifiedTotals.total,
             });
         }
@@ -394,6 +428,7 @@ function addDataToLocations(
                 overweight: unifiedTotals.overweight,
                 stunting: unifiedTotals.stunting,
                 wasting: unifiedTotals.wasting,
+                normal: unifiedTotals.normal,
                 total: unifiedTotals.total,
             });
         }
@@ -434,6 +469,7 @@ function addDataToLocations(
                 overweight: unifiedTotals.overweight,
                 stunting: unifiedTotals.stunting,
                 wasting: unifiedTotals.wasting,
+                normal: unifiedTotals.normal,
                 total: unifiedTotals.total,
             });
         }
@@ -459,7 +495,8 @@ const getTotals = (dataToShow: LocationWithData[], module: moduleType) => {
                 overweight: (accumulator as NutritionTotals).overweight + (currentValue as NutritionTotals).overweight,
                 stunting: (accumulator as NutritionTotals).stunting + (currentValue as NutritionTotals).stunting,
                 wasting: (accumulator as NutritionTotals).wasting + (currentValue as NutritionTotals).wasting,
-                total: accumulator.total + currentValue.total,
+                normal: (accumulator as NutritionTotals).normal + (currentValue as NutritionTotals).normal,
+                total: (accumulator as NutritionTotals).total + (currentValue as NutritionTotals).total,
             };
         };
     } else {
@@ -470,7 +507,7 @@ const getTotals = (dataToShow: LocationWithData[], module: moduleType) => {
                 redAlert:
                     (accumulator as PregnancyNpcPncTotals).redAlert + (currentValue as PregnancyNpcPncTotals).redAlert,
                 risk: (accumulator as PregnancyNpcPncTotals).risk + (currentValue as PregnancyNpcPncTotals).risk,
-                total: accumulator.total + currentValue.total,
+                total: (accumulator as PregnancyNpcPncTotals).total + (currentValue as PregnancyNpcPncTotals).total,
             };
         };
     }
@@ -486,16 +523,18 @@ const getTotals = (dataToShow: LocationWithData[], module: moduleType) => {
                   inappropriateFeeding: 0,
                   overweight: 0,
                   stunting: 0,
-                  total: 0,
                   wasting: 0,
+                  normal: 0,
+                  total: 0,
               };
 
     return dataToShow.reduce(reducer, totalsMap);
 };
 
 export default function HierarchicalDataTable() {
-    const [locationData, setLocationData] = useState<LocationWithData[]>([]);
-    const [villageData, setVillageData] = useState<CompartmentSmsTypes[]>([]);
+    const [populatedLocationData, setPopulatedLocationData] = useState<LocationWithData[] | undefined>(undefined);
+    const [villageData, setVillageData] = useState<CompartmentSmsTypes[] | undefined>(undefined);
+    // initialization data here is the header's title at province level, change with caution
     const [headerTitle, setHeaderTitle] = useState<string[]>(['Provinces']);
     const [moduleSmsSlice, setModuleSmsSlice] = useState<CompartmentSmsTypes[] | undefined>(undefined);
 
@@ -664,7 +703,7 @@ export default function HierarchicalDataTable() {
                     : dataToShow;
             }
 
-            setLocationData(dataToShow);
+            setPopulatedLocationData(dataToShow);
         }
     }, [
         communes,
@@ -680,7 +719,7 @@ export default function HierarchicalDataTable() {
     ]);
 
     useEffect(() => {
-        if (moduleSmsSlice) {
+        if (moduleSmsSlice && populatedLocationData) {
             const nutritionStatusConstants = [SEVERE_WASTING, OVERWEIGHT];
             const growthStatusConstants = [STUNTED];
             const feedingCategoryConstants = [INAPPROPRIATELY_FED];
@@ -699,7 +738,7 @@ export default function HierarchicalDataTable() {
             }
 
             // get an array of current location ID's
-            const locationIds = locationData.map((location: LocationWithData) => location.location_id);
+            const locationIds = populatedLocationData.map((location: LocationWithData) => location.location_id);
 
             // filter for data matching these locations
             const dataForCurrentLocation = moduleSmsSlice.filter((dataItem: CompartmentSmsTypes) =>
@@ -741,7 +780,7 @@ export default function HierarchicalDataTable() {
 
             setVillageData(villageData);
         }
-    }, [locationData, risk_highlighter, moduleSmsSlice]);
+    }, [populatedLocationData, risk_highlighter, moduleSmsSlice]);
 
     const getLevelString = () => {
         if (current_level === 0) {
@@ -841,8 +880,6 @@ export default function HierarchicalDataTable() {
         current_level ? current_level + 1 : 1
     }/down/`;
 
-    const element = getTotals(locationData, module);
-
     return (
         <Container fluid className="compartment-data-table">
             <span
@@ -854,7 +891,7 @@ export default function HierarchicalDataTable() {
                 <FontAwesomeIcon icon={BACKPAGE_ICON} size="lg" />
                 <span>{t('Back')}</span>
             </span>
-            <h1>{t(`${element.total} ${title}`)}</h1>
+            <h1>{t(title)}</h1>
             <Row className="villageDataRow">
                 <Card className="table-card">
                     <CardTitle>{header()}</CardTitle>
@@ -876,13 +913,14 @@ export default function HierarchicalDataTable() {
                                         <th className="default-width">{t('Severe Wasting')}</th>
                                         <th className="default-width">{t('Overweight')}</th>
                                         <th className="default-width">{t('Inappropriately Fed')}</th>
+                                        <th className="default-width">{t('Normal')}</th>
                                         <th className="default-width totals">{t('Total')}</th>
                                     </tr>
                                 )}
                             </thead>
                             <tbody id="body">
-                                {locationData.length ? (
-                                    locationData.map((element: LocationWithData) => {
+                                {populatedLocationData ? (
+                                    populatedLocationData.map((element: LocationWithData) => {
                                         return (
                                             <tr
                                                 key={element.location_id}
@@ -966,6 +1004,13 @@ export default function HierarchicalDataTable() {
                                                         >
                                                             {element.inappropriateFeeding}
                                                         </td>
+                                                        <td
+                                                            className={`default-width ${
+                                                                risk_highlighter === NORMAL ? risk_highlighter : ''
+                                                            }`}
+                                                        >
+                                                            {element.normal}
+                                                        </td>
                                                         <td className="default-width totals">{element.total}</td>
                                                     </>
                                                 )}
@@ -978,8 +1023,9 @@ export default function HierarchicalDataTable() {
                                     </tr>
                                 )}
                                 {(() => {
+                                    const totals = getTotals(populatedLocationData ?? [], module);
                                     // inferred type PregnancyNpcPncTotals
-                                    return 'no_risk' in element ? (
+                                    return 'no_risk' in totals ? (
                                         <tr key="total" className="totals-row">
                                             <td className="default-width" id="total">
                                                 {t(`Total (${getLevelString()})`)}
@@ -989,23 +1035,23 @@ export default function HierarchicalDataTable() {
                                                     risk_highlighter === RED ? RED_ALERT_CLASSNAME : ''
                                                 }`}
                                             >
-                                                {element.redAlert}
+                                                {totals.redAlert}
                                             </td>
                                             <td
                                                 className={`default-width ${
                                                     risk_highlighter === RISK ? risk_highlighter : ''
                                                 }`}
                                             >
-                                                {element.risk}
+                                                {totals.risk}
                                             </td>
                                             <td
                                                 className={`default-width ${
                                                     risk_highlighter === NO ? risk_highlighter : ''
                                                 }`}
                                             >
-                                                {element.no_risk}
+                                                {totals.no_risk}
                                             </td>
-                                            <td className="default-width">{element.total}</td>
+                                            <td className="default-width">{totals.total}</td>
                                         </tr>
                                     ) : (
                                         <tr key="total" className="totals-row">
@@ -1019,7 +1065,7 @@ export default function HierarchicalDataTable() {
                                                         : ''
                                                 }`}
                                             >
-                                                {element.stunting}
+                                                {totals.stunting}
                                             </td>
                                             <td
                                                 className={`default-width ${
@@ -1028,7 +1074,7 @@ export default function HierarchicalDataTable() {
                                                         : ''
                                                 }`}
                                             >
-                                                {element.wasting}
+                                                {totals.wasting}
                                             </td>
                                             <td
                                                 className={`default-width ${
@@ -1037,7 +1083,7 @@ export default function HierarchicalDataTable() {
                                                         : ''
                                                 }`}
                                             >
-                                                {element.overweight}
+                                                {totals.overweight}
                                             </td>
                                             <td
                                                 className={`default-width ${
@@ -1046,9 +1092,16 @@ export default function HierarchicalDataTable() {
                                                         : ''
                                                 }`}
                                             >
-                                                {element.inappropriateFeeding}
+                                                {totals.inappropriateFeeding}
                                             </td>
-                                            <td className="default-width">{element.total}</td>
+                                            <td
+                                                className={`default-width ${
+                                                    risk_highlighter === NORMAL ? risk_highlighter : ''
+                                                }`}
+                                            >
+                                                {totals.normal}
+                                            </td>
+                                            <td className="default-width">{totals.total}</td>
                                         </tr>
                                     );
                                 })()}
@@ -1057,7 +1110,7 @@ export default function HierarchicalDataTable() {
                     </CardBody>
                 </Card>
             </Row>
-            {villageData.length ? (
+            {villageData?.length ? (
                 <VillageData
                     {...{
                         current_level: current_level,

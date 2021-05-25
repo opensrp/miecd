@@ -24,6 +24,7 @@ import {
     OVERWEIGHT,
     STUNTED,
     SEVERE_WASTING,
+    NORMAL,
     MICROSECONDS_IN_A_WEEK,
     NBC_AND_PNC_CHILD,
     NBC_AND_PNC_WOMAN,
@@ -84,7 +85,6 @@ interface PregnancyAndNBCDataCircleCardProps {
     redAlert: number;
     risk: number;
     title: string;
-    totalNumber: number;
 }
 
 interface NutritionDataCircleCardProps {
@@ -94,9 +94,9 @@ interface NutritionDataCircleCardProps {
     overweight: number;
     permissionLevel: number;
     stunting: number;
+    normal: number;
     title: string;
     wasting: number;
-    totalNumber: number;
 }
 
 export const Compartments = ({ module }: Props) => {
@@ -197,7 +197,6 @@ export const Compartments = ({ module }: Props) => {
         redAlert: 0,
         risk: 0,
         title: '',
-        totalNumber: 0,
     });
     const [pregnaciesDueIn2WeeksProps, setpregnaciesDueIn2WeeksProps] = useState<PregnancyAndNBCDataCircleCardProps>({
         noRisk: 0,
@@ -206,7 +205,6 @@ export const Compartments = ({ module }: Props) => {
         redAlert: 0,
         risk: 0,
         title: '',
-        totalNumber: 0,
     });
     const [pregnanciesDueIn1WeekProps, setpregnanciesDueIn1WeekProps] = useState<PregnancyAndNBCDataCircleCardProps>({
         noRisk: 0,
@@ -215,7 +213,6 @@ export const Compartments = ({ module }: Props) => {
         redAlert: 0,
         risk: 0,
         title: '',
-        totalNumber: 0,
     });
 
     // update userLocationId if UUID of logged in user changes
@@ -288,8 +285,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, birthsInTheFuture, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, birthsInTheFuture, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, birthsInTheFuture, RISK_LEVEL),
-                title: 'Total Pregnancies',
-                totalNumber: birthsInTheFuture.length,
+                title: `${birthsInTheFuture.length} Total Pregnancies`,
             } as PregnancyAndNBCDataCircleCardProps);
 
             setpregnaciesDueIn2WeeksProps({
@@ -302,8 +298,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, last2WeeksSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, last2WeeksSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, last2WeeksSmsData, RISK_LEVEL),
-                title: 'Total Pregnancies due in 2 weeks',
-                totalNumber: last2WeeksSmsData.length,
+                title: `${last2WeeksSmsData.length} Total Pregnancies due in 2 weeks`,
             });
 
             setpregnanciesDueIn1WeekProps({
@@ -316,8 +311,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, last1WeekSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, last1WeekSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, last1WeekSmsData, RISK_LEVEL),
-                title: 'Total Pregnancies due in 1 week',
-                totalNumber: last1WeekSmsData.length,
+                title: `${last1WeekSmsData.length} Total Pregnancies due in 1 week`,
             });
         }
     }, [filteredData, module, userLocationLevel]);
@@ -329,7 +323,6 @@ export const Compartments = ({ module }: Props) => {
         redAlert: 0,
         risk: 0,
         title: '',
-        totalNumber: 0,
     });
     const [dataCircleCardWomanData, setDataCircleCardWomanData] = useState<PregnancyAndNBCDataCircleCardProps>({
         noRisk: 0,
@@ -338,7 +331,6 @@ export const Compartments = ({ module }: Props) => {
         redAlert: 0,
         risk: 0,
         title: '',
-        totalNumber: 0,
     });
 
     // this should only run when the module is NBC & PNC
@@ -357,8 +349,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, newBorn, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, newBorn, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, newBorn, RISK_LEVEL),
-                title: `Total Newborn${newBorn.length > 1 ? 's' : ''}`,
-                totalNumber: newBorn.length,
+                title: `${newBorn.length} Total Newborn${newBorn.length > 1 ? 's' : ''}`,
             });
 
             setDataCircleCardWomanData({
@@ -371,8 +362,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, woman, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, woman, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, woman, RISK_LEVEL),
-                title: `Total Mother${woman.length > 1 ? 's' : ''} in PNC`,
-                totalNumber: woman.length,
+                title: `${woman.length} Total Mother${woman.length > 1 ? 's' : ''} in PNC`,
             });
         }
     }, [filteredData, module, userLocationLevel]);
@@ -384,9 +374,9 @@ export const Compartments = ({ module }: Props) => {
         overweight: 0,
         permissionLevel: 0,
         stunting: 0,
+        normal: 0,
         title: '',
         wasting: 0,
-        totalNumber: 0,
     });
     const [dataCircleCardNutrition2, setDataCircleCardNutrition2] = useState<NutritionDataCircleCardProps>({
         filterArgs: [],
@@ -395,9 +385,9 @@ export const Compartments = ({ module }: Props) => {
         overweight: 0,
         permissionLevel: 0,
         stunting: 0,
+        normal: 0,
         title: '',
         wasting: 0,
-        totalNumber: 0,
     });
 
     useEffect(() => {
@@ -415,8 +405,8 @@ export const Compartments = ({ module }: Props) => {
                 overweight: getNumberOfSmsWithRisk(OVERWEIGHT, childrenUnder5, NUTRITION_STATUS),
                 stunting: getNumberOfSmsWithRisk(STUNTED, childrenUnder5, GROWTH_STATUS),
                 wasting: getNumberOfSmsWithRisk(SEVERE_WASTING, childrenUnder5, NUTRITION_STATUS),
-                title: 'Total Children Under 5',
-                totalNumber: childrenUnder5.length,
+                normal: getNumberOfSmsWithRisk(NORMAL, childrenUnder5, NUTRITION_STATUS),
+                title: `${childrenUnder5.length} Total Children Under 5`,
             });
 
             setDataCircleCardNutrition2({
@@ -427,8 +417,8 @@ export const Compartments = ({ module }: Props) => {
                 overweight: getNumberOfSmsWithRisk(OVERWEIGHT, childrenUnder2, NUTRITION_STATUS),
                 stunting: getNumberOfSmsWithRisk(STUNTED, childrenUnder2, GROWTH_STATUS),
                 wasting: getNumberOfSmsWithRisk(SEVERE_WASTING, childrenUnder2, NUTRITION_STATUS),
-                title: 'Total Children Under 2',
-                totalNumber: childrenUnder2.length,
+                normal: getNumberOfSmsWithRisk(NORMAL, childrenUnder5, NUTRITION_STATUS),
+                title: `${childrenUnder2.length} Total Children Under 2`,
             });
         }
     }, [filteredData, module, userLocationLevel]);
