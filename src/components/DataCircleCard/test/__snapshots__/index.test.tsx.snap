@@ -5,17 +5,17 @@ exports[`DataCircleCard card body link works: card title link 1`] = `
   className="red circle"
   key="0"
   onClick={[Function]}
-  to="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+  to="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
 >
   <LinkAnchor
     className="red circle"
-    href="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+    href="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
     navigate={[Function]}
     onClick={[Function]}
   >
     <a
       className="red circle"
-      href="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+      href="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
       onClick={[Function]}
     >
       <span
@@ -34,15 +34,15 @@ exports[`DataCircleCard card body link works: card title link 1`] = `
 exports[`DataCircleCard card title link works: card title link 1`] = `
 <Link
   onClick={[Function]}
-  to="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+  to="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
 >
   <LinkAnchor
-    href="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+    href="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
     navigate={[Function]}
     onClick={[Function]}
   >
     <a
-      href="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+      href="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
       onClick={[Function]}
     >
       <h5
@@ -71,15 +71,15 @@ exports[`DataCircleCard must render correctly 1`] = `
       >
         <Link
           onClick={[Function]}
-          to="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+          to="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
         >
           <LinkAnchor
-            href="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+            href="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
             navigate={[Function]}
             onClick={[Function]}
           >
             <a
-              href="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+              href="/pregnancy_compartments/hierarchicaldata/Pregnancy/all/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
               onClick={[Function]}
             >
               <h5
@@ -103,17 +103,17 @@ exports[`DataCircleCard must render correctly 1`] = `
           className="red circle"
           key="0"
           onClick={[Function]}
-          to="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+          to="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
         >
           <LinkAnchor
             className="red circle"
-            href="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+            href="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
             navigate={[Function]}
             onClick={[Function]}
           >
             <a
               className="red circle"
-              href="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+              href="/pregnancy_compartments/hierarchicaldata/Pregnancy/red/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
               onClick={[Function]}
             >
               <span
@@ -131,17 +131,17 @@ exports[`DataCircleCard must render correctly 1`] = `
           className="yellow circle"
           key="1"
           onClick={[Function]}
-          to="/pregnancy_compartments/hierarchicaldata/Pregnancy/risk/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+          to="/pregnancy_compartments/hierarchicaldata/Pregnancy/risk/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
         >
           <LinkAnchor
             className="yellow circle"
-            href="/pregnancy_compartments/hierarchicaldata/Pregnancy/risk/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+            href="/pregnancy_compartments/hierarchicaldata/Pregnancy/risk/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
             navigate={[Function]}
             onClick={[Function]}
           >
             <a
               className="yellow circle"
-              href="/pregnancy_compartments/hierarchicaldata/Pregnancy/risk/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+              href="/pregnancy_compartments/hierarchicaldata/Pregnancy/risk/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
               onClick={[Function]}
             >
               <span
@@ -159,17 +159,17 @@ exports[`DataCircleCard must render correctly 1`] = `
           className="green circle"
           key="2"
           onClick={[Function]}
-          to="/pregnancy_compartments/hierarchicaldata/Pregnancy/no/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+          to="/pregnancy_compartments/hierarchicaldata/Pregnancy/no/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
         >
           <LinkAnchor
             className="green circle"
-            href="/pregnancy_compartments/hierarchicaldata/Pregnancy/no/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+            href="/pregnancy_compartments/hierarchicaldata/Pregnancy/no/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
             navigate={[Function]}
             onClick={[Function]}
           >
             <a
               className="green circle"
-              href="/pregnancy_compartments/hierarchicaldata/Pregnancy/no/Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
+              href="/pregnancy_compartments/hierarchicaldata/Pregnancy/no/2 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0"
               onClick={[Function]}
             >
               <span
