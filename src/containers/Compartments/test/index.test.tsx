@@ -29,7 +29,7 @@ import {
     SEVERE_WASTING,
     NORMAL,
 } from '../../../constants';
-import { mountWithTranslations, waitForPromises } from '../../../helpers/testUtils';
+import { mountWithTranslations } from '../../../helpers/testUtils';
 import locationsReducer, { reducerName as locationsReducerName } from '../../../store/ducks/locations';
 import smsReducer, {
     reducerName as smsReducerName,
@@ -52,6 +52,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { authenticateUser } from '@onaio/session-reducer';
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import fetchMock from 'fetch-mock';
+import flushPromises from 'flush-promises';
+import { act } from 'react-dom/test-utils';
 
 const history = createBrowserHistory();
 reducerRegistry.register(smsReducerName, smsReducer);
@@ -128,8 +130,10 @@ describe('Compartments', () => {
         expect(wrapper.find('Ripple')).toBeTruthy();
 
         // wait for fetches to complete
-        await waitForPromises();
-        wrapper.update();
+        await act(async () => {
+            await flushPromises();
+            wrapper.update();
+        });
 
         // expect no loader
         expect(wrapper.find('Ripple').exists()).toBeFalsy();
@@ -157,8 +161,10 @@ describe('Compartments', () => {
         expect(wrapper.find('DataCircleCard')).toHaveLength(0);
 
         // wait for fetches to complete
-        await waitForPromises();
-        wrapper.update();
+        await act(async () => {
+            await flushPromises();
+            wrapper.update();
+        });
 
         // expect no loader
         expect(wrapper.find('Ripple').exists()).toBeFalsy();
@@ -201,8 +207,10 @@ describe('Compartments', () => {
         expect(wrapper.find('DataCircleCard')).toHaveLength(0);
 
         // wait for fetches to complete
-        await waitForPromises();
-        wrapper.update();
+        await act(async () => {
+            await flushPromises();
+            wrapper.update();
+        });
 
         // expect no loader
         expect(wrapper.find('Ripple').exists()).toBeFalsy();
@@ -245,8 +253,10 @@ describe('Compartments', () => {
         expect(wrapper.find('DataCircleCard')).toHaveLength(0);
 
         // wait for fetches to complete
-        await waitForPromises();
-        wrapper.update();
+        await act(async () => {
+            await flushPromises();
+            wrapper.update();
+        });
 
         // expect no loader
         expect(wrapper.find('Ripple').exists()).toBeFalsy();
