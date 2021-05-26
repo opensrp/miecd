@@ -560,7 +560,7 @@ export const childrenAgeRangeFilterFunction = (startAge: number, endAge: number)
  * @param {string | any} field - sms event field for which we want to
  * check the value passed in risk
  */
-const getNumberOfSmsWithRisk = (risk: string, CompartmentSmsData: CompartmentSmsTypes[], field: string) => {
+export const getNumberOfSmsWithRisk = (risk: string, CompartmentSmsData: CompartmentSmsTypes[], field: string) => {
     function reducer(accumulator: number, currentValue: CompartmentSmsTypes) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((currentValue as any)[field]?.toLowerCase() === risk) {
