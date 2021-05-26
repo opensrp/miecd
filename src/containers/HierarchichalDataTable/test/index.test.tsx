@@ -92,6 +92,8 @@ describe('HierarchichalDataTable', () => {
 
         // show ripple loader
         expect(wrapper.find('Ripple')).toBeTruthy();
+
+        wrapper.unmount();
     });
 
     it('renders correctly for Pregnancy module', async () => {
@@ -182,6 +184,8 @@ describe('HierarchichalDataTable', () => {
         const noRiskTd = wrapper.find('Table tr').find('.no');
         // expect four rows (3 provinces and totals)
         expect(noRiskTd).toHaveLength(4);
+
+        wrapper.unmount();
     });
 
     it('renders correctly for NBC_AND_PNC module', async () => {
@@ -271,6 +275,8 @@ describe('HierarchichalDataTable', () => {
         const noRiskTd = wrapper.find('Table tr').find('.no');
         // expect four rows (3 provinces and totals)
         expect(noRiskTd).toHaveLength(4);
+
+        wrapper.unmount();
     });
 
     it('renders correctly for Nutrition module', async () => {
@@ -404,5 +410,7 @@ describe('HierarchichalDataTable', () => {
         const normal = wrapper.find('Table tr').find('.normal');
         // expect four rows (3 provinces and totals)
         expect(normal).toHaveLength(4);
+
+        wrapper.unmount();
     });
 });

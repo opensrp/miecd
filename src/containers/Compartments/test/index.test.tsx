@@ -109,6 +109,8 @@ describe('Compartments', () => {
 
         // show ripple loader
         expect(wrapper.find('Ripple')).toBeTruthy();
+
+        wrapper.unmount();
     });
 
     it('shows loader when loading data', async () => {
@@ -137,6 +139,8 @@ describe('Compartments', () => {
 
         // expect no loader
         expect(wrapper.find('Ripple').exists()).toBeFalsy();
+
+        wrapper.unmount();
     });
 
     it('renders correctly for pregnancy module', async () => {
@@ -183,6 +187,8 @@ describe('Compartments', () => {
 
         // second card group title to be pregnancies due in 2 week
         expect(cardGroups.at(1).find('.card_title').text()).toMatch(/Total Pregnancies due in 2 weeks/);
+
+        wrapper.unmount();
     });
 
     it('renders correctly for NBC_AND_PNC module', async () => {
@@ -229,6 +235,8 @@ describe('Compartments', () => {
 
         // second card group title to be Total Mother in PNC
         expect(cardGroups.at(1).find('.card_title').text()).toMatch(/Total Mother in PNC/);
+
+        wrapper.unmount();
     });
 
     it('renders correctly for Nutrition module', async () => {
@@ -275,6 +283,8 @@ describe('Compartments', () => {
 
         // second card group title to be Total Children Under 2
         expect(cardGroups.at(1).find('.card_title').text()).toMatch(/Total Children Under 2/);
+
+        wrapper.unmount();
     });
 });
 
