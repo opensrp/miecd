@@ -58,19 +58,18 @@ reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationsReducerName, locationsReducer);
 
 describe('Compartments', () => {
-    const OpenSRPAPIResponse = {
-        oAuth2Data: {
-            access_token: 'hunter2',
-            expires_in: '3599',
-            state: 'opensrp',
-            token_type: 'bearer',
-        },
-        preferredName: 'Superset User',
-        roles: ['Provider'],
-        username: 'admin',
-    };
-
     beforeAll(() => {
+        const OpenSRPAPIResponse = {
+            oAuth2Data: {
+                access_token: 'hunter2',
+                expires_in: '3599',
+                state: 'opensrp',
+                token_type: 'bearer',
+            },
+            preferredName: 'Superset User',
+            roles: ['Provider'],
+            username: 'admin',
+        };
         const { authenticated, user, extraData } = getOpenSRPUserInfo(OpenSRPAPIResponse);
         store.dispatch(authenticateUser(authenticated, user, extraData));
     });
