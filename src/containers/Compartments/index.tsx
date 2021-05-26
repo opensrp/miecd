@@ -417,7 +417,7 @@ export const Compartments = ({ module }: Props) => {
                 overweight: getNumberOfSmsWithRisk(OVERWEIGHT, childrenUnder2, NUTRITION_STATUS),
                 stunting: getNumberOfSmsWithRisk(STUNTED, childrenUnder2, GROWTH_STATUS),
                 wasting: getNumberOfSmsWithRisk(SEVERE_WASTING, childrenUnder2, NUTRITION_STATUS),
-                normal: getNumberOfSmsWithRisk(NORMAL, childrenUnder5, NUTRITION_STATUS),
+                normal: getNumberOfSmsWithRisk(NORMAL, childrenUnder2, NUTRITION_STATUS),
                 title: `${childrenUnder2.length} Total Children Under 2`,
             });
         }
