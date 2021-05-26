@@ -1,11 +1,11 @@
 import React from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import ReactPaginate from 'react-paginate';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardTitle, Row, Table } from 'reactstrap';
-import { NBC_AND_PNC_CHILD, NBC_AND_PNC_WOMAN, NUTRITION, PREGNANCY } from '../../constants';
-import { getModuleLink, getNumberOfDaysSinceDate } from '../../helpers/utils';
 import { CompartmentSmsTypes, PregnancySmsData, NutritionSmsData, NbcPncSmsData } from '../../store/ducks/sms_events';
-import { PaginationData, Paginator, PaginatorProps } from '../Paginator';
+import { DEFAULT_PAGINATION_SIZE, NBC_AND_PNC_CHILD, NBC_AND_PNC_WOMAN, NUTRITION, PREGNANCY } from '../../constants';
+import { getCommonPaginationProps, getModuleLink, getNumberOfDaysSinceDate } from '../../helpers/utils';
 import RiskColoring from '../RiskColoring';
 import './index.css';
 
@@ -42,19 +42,17 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
     public render() {
         const { t } = this.props;
 
-        const routePaginatorProps: PaginatorProps = {
-            endLabel: t('last'),
-            nextLabel: t('next'),
-            onPageChange: (paginationData: PaginationData) => {
+        const pageLimit = DEFAULT_PAGINATION_SIZE;
+        const totalPageCount = Math.ceil(this.props.smsData.length / pageLimit);
+
+        const paginatorProps = {
+            ...getCommonPaginationProps(t),
+            pageCount: totalPageCount,
+            onPageChange: (data: { selected: number }) => {
                 this.setState({
-                    currentPage: paginationData.currentPage,
+                    currentPage: data.selected,
                 });
             },
-            pageLimit: 5,
-            pageNeighbours: 3,
-            previousLabel: t('previous'),
-            startLabel: t('first'),
-            totalRecords: this.props.smsData.length,
         };
 
         return (
@@ -122,9 +120,8 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                                     {this.props.smsData.length
                                         ? this.props.smsData
                                               .slice(
-                                                  (this.state.currentPage - 1) * routePaginatorProps.pageLimit,
-                                                  (this.state.currentPage - 1) * routePaginatorProps.pageLimit +
-                                                      routePaginatorProps.pageLimit,
+                                                  (this.state.currentPage - 1) * pageLimit,
+                                                  (this.state.currentPage - 1) * pageLimit + pageLimit,
                                               )
                                               .map(
                                                   this.props.module === PREGNANCY
@@ -141,9 +138,9 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                         </CardBody>
                     </Card>
                 </Row>
-                <Row id="navrow" className="villageDataRow">
-                    <Paginator {...routePaginatorProps} />
-                </Row>
+                <nav className="pagination-container" aria-label="Page navigation">
+                    <ReactPaginate {...paginatorProps} />
+                </nav>
             </>
         );
     }

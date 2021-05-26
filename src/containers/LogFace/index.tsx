@@ -9,12 +9,11 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Table } from 'reactstrap';
 import Ripple from '../../components/page/Loading';
-import { PaginationData, Paginator, PaginatorProps } from '../../components/Paginator';
 import RiskColoring from '../../components/RiskColoring';
 import { SUPERSET_PREGNANCY_DATA_EXPORT } from '../../configs/env';
 import { LogFaceModules, LogFaceSliceByModule, riskCategories, SmsTypes } from '../../configs/settings';
 import {
-    DEFAULT_NUMBER_OF_LOGFACE_ROWS,
+    DEFAULT_PAGINATION_SIZE,
     LOCATION_FILTER_PARAM,
     NBC_AND_PNC,
     NBC_AND_PNC_LOGFACE_URL,
@@ -35,6 +34,7 @@ import {
     formatAge,
     logFaceSupersetCall,
     getRiskCatFilter,
+    getCommonPaginationProps,
 } from '../../helpers/utils';
 import supersetFetch from '../../services/superset';
 import {
@@ -70,6 +70,7 @@ import {
 } from 'store/ducks/locationHierarchy';
 import { TreeNode } from 'store/ducks/locationHierarchy/types';
 import { Dictionary } from '@onaio/utils';
+import ReactPaginate from 'react-paginate';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -106,7 +107,7 @@ const defaultProps: LogFaceProps = {
     dataFetched: false,
     districts: [],
     module: PREGNANCY_MODULE,
-    numberOfRows: DEFAULT_NUMBER_OF_LOGFACE_ROWS,
+    numberOfRows: DEFAULT_PAGINATION_SIZE,
     provinces: [],
     removeFilterArgs: removeFilterArgsActionCreator,
     smsData: [],
@@ -157,19 +158,16 @@ const LogFace = (props: LogFacePropsType) => {
         updateUrlWithFilter(SEARCH_FILTER_PARAM, props, (event.target as HTMLInputElement).value);
     };
 
-    const onPageChangeHandler = (paginationData: PaginationData) => {
-        setCurrentPage(paginationData.currentPage);
+    const onPageChangeHandler = (page: { selected: number }) => {
+        setCurrentPage(page.selected);
     };
 
-    const routePaginatorProps: PaginatorProps = {
-        endLabel: 'last',
-        nextLabel: 'next',
+    const totalPageCount = Math.ceil(smsData.length / numberOfRows);
+    const paginationProps = {
+        ...getCommonPaginationProps(t),
+        pageCount: totalPageCount,
+
         onPageChange: onPageChangeHandler,
-        pageLimit: numberOfRows,
-        pageNeighbours: 3,
-        previousLabel: 'previous',
-        startLabel: 'first',
-        totalRecords: smsData.length,
     };
 
     if (broken) {
@@ -303,9 +301,9 @@ const LogFace = (props: LogFacePropsType) => {
                 )}
             </div>
 
-            <div className="paginator">
-                <Paginator {...routePaginatorProps} />
-            </div>
+            <nav aria-label="Page navigation" className="pagination-container">
+                <ReactPaginate {...paginationProps} />
+            </nav>
         </div>
     );
 };

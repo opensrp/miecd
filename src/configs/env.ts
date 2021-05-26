@@ -152,3 +152,7 @@ export const KEYCLOAK_LOGOUT_URL =
 /** Express server settings */
 export const EXPRESS_OAUTH_GET_STATE_URL =
     process.env.REACT_APP_EXPRESS_OAUTH_GET_STATE_URL || 'http://localhost:3000/oauth/state';
+
+export const CHILD_CHART_SLICE = process.env.REACT_APP_CHILD_CHART_SLICE || '0';
+
+export const MOTHER_CHART_SLICE = process.env.REACT_APP_MOTHER_CHART_SLICE || '0';

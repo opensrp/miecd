@@ -438,40 +438,33 @@ exports[`components/VillageData pagination works correctly: first Page 4`] = `"1
 exports[`components/VillageData pagination works correctly: first Page 5`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1"`;
 
 exports[`components/VillageData pagination works correctly: paginationItem for page 2 1`] = `
-<PaginationLink
-  aria-label="next"
-  className="page-link"
-  href="#"
-  onClick={[Function]}
-  tag="a"
+<li
+  className="page-item"
 >
   <a
-    aria-label="next"
-    className="page-link page-link"
-    href="#"
+    aria-disabled="false"
+    aria-label="Next page"
+    className="page-link"
     onClick={[Function]}
+    onKeyPress={[Function]}
+    rel="next"
+    role="button"
+    tabIndex="0"
   >
-    <span
-      aria-hidden="true"
-    >
-      next
-    </span>
-    <span
-      className="sr-only"
-    >
-      next
-    </span>
+    next
   </a>
-</PaginationLink>
+</li>
 `;
 
-exports[`components/VillageData pagination works correctly: second Page 1`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1"`;
+exports[`components/VillageData pagination works correctly: second Page 1`] = `"101CN224 Years 04 Months 18 DaysThôn Kon Hia 1"`;
 
 exports[`components/VillageData pagination works correctly: second Page 2`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1"`;
 
 exports[`components/VillageData pagination works correctly: second Page 3`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1"`;
 
 exports[`components/VillageData pagination works correctly: second Page 4`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1"`;
+
+exports[`components/VillageData pagination works correctly: second Page 5`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1"`;
 
 exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 1`] = `"Patient IDDays Since BirthLocation Of ResidenceCurrent SymptomsLocation Of BirthRisk Category"`;
 
