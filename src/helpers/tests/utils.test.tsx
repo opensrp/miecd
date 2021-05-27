@@ -1,5 +1,27 @@
-import { formatAge, getNumberSuffix, oAuthUserInfoGetter, parseMessage, sortByEventDate } from '../utils';
+import {
+    formatAge,
+    getNumberSuffix,
+    oAuthUserInfoGetter,
+    parseMessage,
+    sortByEventDate,
+    fetchSupersetData,
+} from '../utils';
 import { OpenSRPAPIResponse } from './fixtures';
+import fetchMock from 'fetch-mock';
+import store from '../../store/index';
+import { authenticateUser } from '@onaio/session-reducer';
+import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
+import { CompartmentSmsTypes } from '../../store/ducks/sms_events';
+import {
+    villages,
+    communes,
+    districts,
+    provinces,
+    userLocationDetails,
+    pregnancySmsData,
+    nutritionSmsData,
+    nbcPncSmsData,
+} from '../../containers/HierarchichalDataTable/test/fixtures';
 
 jest.mock('@onaio/gatekeeper', () => {
     const actual = jest.requireActual('@onaio/gatekeeper');
@@ -92,5 +114,75 @@ describe('src/helpers', () => {
             { event_date: '2021-04-27T15:19:04.173000' },
             { event_date: '2020-04-27T15:19:04.173000' },
         ]);
+    });
+});
+
+describe('src/helpers/utils.tsx', () => {
+    beforeAll(() => {
+        const OpenSRPAPIResponse = {
+            oAuth2Data: {
+                access_token: 'hunter2',
+                expires_in: '35999',
+                state: 'opensrp',
+                token_type: 'bearer',
+            },
+            preferredName: 'Superset User',
+            roles: ['Provider'],
+            username: 'admin',
+        };
+        const { authenticated, user, extraData } = getOpenSRPUserInfo(OpenSRPAPIResponse);
+        store.dispatch(authenticateUser(authenticated, user, extraData));
+    });
+
+    beforeEach(() => {
+        fetchMock.get(`https://somesuperseturl.org/oauth-authorized/opensrp`, {});
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
+        jest.clearAllMocks();
+        fetchMock.restore();
+    });
+
+    it('fetches slices from superset', async () => {
+        // pregnancy, nbcPnc, Nutrition sms slice
+        fetchMock
+            .get(`https://somesuperseturl.org/superset/slice_json/6`, pregnancySmsData)
+            .get(`https://somesuperseturl.org/superset/slice_json/7`, nbcPncSmsData)
+            .get(`https://somesuperseturl.org/superset/slice_json/8`, nutritionSmsData);
+
+        // location slices
+        fetchMock
+            .get(`https://somesuperseturl.org/superset/slice_json/1`, villages)
+            .get(`https://somesuperseturl.org/superset/slice_json/2`, communes)
+            .get(`https://somesuperseturl.org/superset/slice_json/3`, districts)
+            .get(`https://somesuperseturl.org/superset/slice_json/4`, provinces);
+
+        // userLocations slice
+        fetchMock.get(`https://somesuperseturl.org/superset/slice_json/5`, userLocationDetails);
+
+        // fetch pregnancy,nbcPnc,Nutrition
+        const pregnancyResp = await fetchSupersetData<CompartmentSmsTypes>('6');
+        const nbcPncResp = await fetchSupersetData<CompartmentSmsTypes>('7');
+        const nutritionResp = await fetchSupersetData<CompartmentSmsTypes>('8');
+
+        expect(pregnancyResp).toMatchObject(pregnancySmsData.data.records);
+        expect(nbcPncResp).toMatchObject(nbcPncSmsData.data.records);
+        expect(nutritionResp).toMatchObject(nutritionSmsData.data.records);
+
+        // fetch villages,communes,districts,provinces
+        const villagesResp = await fetchSupersetData<CompartmentSmsTypes>('1');
+        const communesResp = await fetchSupersetData<CompartmentSmsTypes>('2');
+        const districtsResp = await fetchSupersetData<CompartmentSmsTypes>('3');
+        const provincesResp = await fetchSupersetData<CompartmentSmsTypes>('4');
+
+        expect(villagesResp).toMatchObject(villages.data.records);
+        expect(communesResp).toMatchObject(communes.data.records);
+        expect(districtsResp).toMatchObject(districts.data.records);
+        expect(provincesResp).toMatchObject(provinces.data.records);
+
+        // fetch userLocationDetails
+        const userLocationDetailsResp = await fetchSupersetData<CompartmentSmsTypes>('5');
+        expect(userLocationDetailsResp).toMatchObject(userLocationDetails.data.records);
     });
 });
