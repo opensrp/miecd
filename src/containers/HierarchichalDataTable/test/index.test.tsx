@@ -5,7 +5,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { Route, MemoryRouter } from 'react-router';
 import ConnectedHierarchicalDataTable from '..';
-import { mountWithTranslations } from '../../../helpers/testUtils';
+import { mountWithTranslations, waitForPromises } from '../../../helpers/testUtils';
 import store from '../../../store/index';
 import {
     villages,
@@ -20,8 +20,6 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import fetchMock from 'fetch-mock';
-import flushPromises from 'flush-promises';
-import { act } from 'react-dom/test-utils';
 
 jest.mock('@fortawesome/react-fontawesome');
 
@@ -112,11 +110,9 @@ describe('HierarchichalDataTable', () => {
         // show ripple loader
         expect(wrapper.find('Ripple')).toBeTruthy();
 
-        // wait for fetches to complete
-        await act(async () => {
-            await flushPromises();
-            wrapper.update();
-        });
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
 
         // expect no loader
         expect(wrapper.find('Ripple').exists()).toBeFalsy();
@@ -131,11 +127,9 @@ describe('HierarchichalDataTable', () => {
             initialEntry: '/Pregnancy/red/11 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0',
         });
 
-        // wait for fetches to complete
-        await act(async () => {
-            await flushPromises();
-            wrapper.update();
-        });
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
 
         // show's hierarchy table with red alert highlighted
 
@@ -151,11 +145,9 @@ describe('HierarchichalDataTable', () => {
             initialEntry: '/Pregnancy/risk/11 Total Pregnancies/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0',
         });
 
-        // wait for fetches to complete
-        await act(async () => {
-            await flushPromises();
-            wrapper.update();
-        });
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
 
         // show's hierarchy table with red alert highlighted
 
@@ -172,11 +164,9 @@ describe('HierarchichalDataTable', () => {
                 '/Pregnancy/no/0 Total Pregnancies due in 2 weeks/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0',
         });
 
-        // wait for fetches to complete
-        await act(async () => {
-            await flushPromises();
-            wrapper.update();
-        });
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
 
         // show's hierarchy table with no_risk highlighted
 
@@ -204,11 +194,9 @@ describe('HierarchichalDataTable', () => {
         // show ripple loader
         expect(wrapper.find('Ripple')).toBeTruthy();
 
-        // wait for fetches to complete
-        await act(async () => {
-            await flushPromises();
-            wrapper.update();
-        });
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
 
         // expect no loader
         expect(wrapper.find('Ripple').exists()).toBeFalsy();
@@ -223,11 +211,9 @@ describe('HierarchichalDataTable', () => {
             initialEntry: '/NBC & PNC_WOMAN/red/3 Total Mothers in PNC/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0',
         });
 
-        // wait for fetches to complete
-        await act(async () => {
-            await flushPromises();
-            wrapper.update();
-        });
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
 
         // show's hierarchy table with red alert highlighted
 
@@ -243,11 +229,9 @@ describe('HierarchichalDataTable', () => {
             initialEntry: '/NBC & PNC_CHILD/risk/4 Total Newborns/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0',
         });
 
-        // wait for fetches to complete
-        await act(async () => {
-            await flushPromises();
-            wrapper.update();
-        });
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
 
         // show's hierarchy table with red alert highlighted
 
@@ -263,11 +247,9 @@ describe('HierarchichalDataTable', () => {
             initialEntry: '/NBC & PNC_CHILD/no/4 Total Newborns/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0',
         });
 
-        // wait for fetches to complete
-        await act(async () => {
-            await flushPromises();
-            wrapper.update();
-        });
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
 
         // show's hierarchy table with no_risk highlighted
 
@@ -296,11 +278,9 @@ describe('HierarchichalDataTable', () => {
         // show ripple loader
         expect(wrapper.find('Ripple')).toBeTruthy();
 
-        // wait for fetches to complete
-        await act(async () => {
-            await flushPromises();
-            wrapper.update();
-        });
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
 
         // expect no loader
         expect(wrapper.find('Ripple').exists()).toBeFalsy();
@@ -315,11 +295,9 @@ describe('HierarchichalDataTable', () => {
             initialEntry: '/Nutrition/stunted/11 Total Children Under 5/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0',
         });
 
-        // wait for fetches to complete
-        await act(async () => {
-            await flushPromises();
-            wrapper.update();
-        });
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
 
         // show's hierarchy table with stunted highlighted
 
@@ -336,11 +314,9 @@ describe('HierarchichalDataTable', () => {
                 '/Nutrition/severe wasting/9 Total Children Under 2/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0',
         });
 
-        // wait for fetches to complete
-        await act(async () => {
-            await flushPromises();
-            wrapper.update();
-        });
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
 
         // show's hierarchy table with severe wasting highlighted
 
@@ -357,11 +333,9 @@ describe('HierarchichalDataTable', () => {
                 '/Nutrition/overweight/9 Total Children Under 2/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0',
         });
 
-        // wait for fetches to complete
-        await act(async () => {
-            await flushPromises();
-            wrapper.update();
-        });
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
 
         // show's hierarchy table with overweight highlighted
 
@@ -378,11 +352,9 @@ describe('HierarchichalDataTable', () => {
                 '/Nutrition/inappropriately fed/11 Total Children Under 5/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0',
         });
 
-        // wait for fetches to complete
-        await act(async () => {
-            await flushPromises();
-            wrapper.update();
-        });
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
 
         // show's hierarchy table with inappropriately fed highlighted
 
@@ -398,11 +370,9 @@ describe('HierarchichalDataTable', () => {
             initialEntry: '/Nutrition/normal/11 Total Children Under 5/0/down/d1865325-11e6-4e39-817b-e676c1affecf/0',
         });
 
-        // wait for fetches to complete
-        await act(async () => {
-            await flushPromises();
-            wrapper.update();
-        });
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
 
         // show's hierarchy table with normal highlighted
 
