@@ -78,16 +78,13 @@ describe('Compartments', () => {
 
     beforeEach(() => {
         fetchMock
-            .get(`https://discover.miecd-stage.smartregister.org/oauth-authorized/opensrp`, {})
-            .get(`https://unicef-miecd.labs.smartregister.org/opensrp/security/authenticate/`, securityAuthenticate)
-            .get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/12`, villages)
-            .get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/13`, communes)
-            .get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/10`, districts)
-            .get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/11`, provinces)
-            .get(
-                `https://discover.miecd-stage.smartregister.org/superset/slice_json/9`,
-                JSON.stringify(userLocationDetails),
-            );
+            .get(`https://somesuperseturl.org/oauth-authorized/opensrp`, {})
+            .get(`https://someopensrpbaseurl/opensrp/security/authenticate/`, securityAuthenticate)
+            .get(`https://somesuperseturl.org/superset/slice_json/1`, villages)
+            .get(`https://somesuperseturl.org/superset/slice_json/2`, communes)
+            .get(`https://somesuperseturl.org/superset/slice_json/3`, districts)
+            .get(`https://somesuperseturl.org/superset/slice_json/4`, provinces)
+            .get(`https://somesuperseturl.org/superset/slice_json/5`, userLocationDetails);
     });
 
     afterEach(() => {
@@ -116,7 +113,7 @@ describe('Compartments', () => {
     it('shows loader when loading data', async () => {
         const queryClient = new QueryClient();
         // fetch pregnancy sms slice
-        fetchMock.get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/8`, pregnancySmsData);
+        fetchMock.get(`https://somesuperseturl.org/superset/slice_json/6`, pregnancySmsData);
 
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -146,7 +143,7 @@ describe('Compartments', () => {
     it('renders correctly for pregnancy module', async () => {
         const queryClient = new QueryClient();
         // fetch pregnancy sms slice
-        fetchMock.get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/8`, pregnancySmsData);
+        fetchMock.get(`https://somesuperseturl.org/superset/slice_json/6`, pregnancySmsData);
 
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -194,7 +191,7 @@ describe('Compartments', () => {
     it('renders correctly for NBC_AND_PNC module', async () => {
         const queryClient = new QueryClient();
         // fetch nbcPnc sms slice
-        fetchMock.get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/5`, nbcPncSmsData);
+        fetchMock.get(`https://somesuperseturl.org/superset/slice_json/7`, nbcPncSmsData);
 
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -242,7 +239,7 @@ describe('Compartments', () => {
     it('renders correctly for Nutrition module', async () => {
         const queryClient = new QueryClient();
         // fetch Nutrition sms slice
-        fetchMock.get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/6`, nutritionSmsData);
+        fetchMock.get(`https://somesuperseturl.org/superset/slice_json/8`, nutritionSmsData);
 
         const wrapper = mountWithTranslations(
             <Provider store={store}>

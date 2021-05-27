@@ -66,11 +66,11 @@ describe('HierarchichalDataTable', () => {
 
     beforeEach(() => {
         fetchMock
-            .get(`https://discover.miecd-stage.smartregister.org/oauth-authorized/opensrp`, {})
-            .get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/12`, villages)
-            .get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/13`, communes)
-            .get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/10`, districts)
-            .get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/11`, provinces);
+            .get(`https://somesuperseturl.org/oauth-authorized/opensrp`, {})
+            .get(`https://somesuperseturl.org/superset/slice_json/1`, villages)
+            .get(`https://somesuperseturl.org/superset/slice_json/2`, communes)
+            .get(`https://somesuperseturl.org/superset/slice_json/3`, districts)
+            .get(`https://somesuperseturl.org/superset/slice_json/4`, provinces);
     });
 
     afterEach(() => {
@@ -100,7 +100,7 @@ describe('HierarchichalDataTable', () => {
         const queryClient = new QueryClient();
 
         // fetch pregnancy sms slice
-        fetchMock.get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/8`, pregnancySmsData);
+        fetchMock.get(`https://somesuperseturl.org/superset/slice_json/6`, pregnancySmsData);
 
         // mount for pregnancy module with 'all' risk type
         let wrapper = renderWithProviders(ConnectedHierarchicalDataTable, {
@@ -192,7 +192,7 @@ describe('HierarchichalDataTable', () => {
         const queryClient = new QueryClient();
 
         // fetch nbcPnc sms slice
-        fetchMock.get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/5`, nbcPncSmsData);
+        fetchMock.get(`https://somesuperseturl.org/superset/slice_json/7`, nbcPncSmsData);
 
         // mount for nbcPnc module with 'all' risk type
         let wrapper = renderWithProviders(ConnectedHierarchicalDataTable, {
@@ -283,7 +283,7 @@ describe('HierarchichalDataTable', () => {
         const queryClient = new QueryClient();
 
         // fetch Nutrition sms slice
-        fetchMock.get(`https://discover.miecd-stage.smartregister.org/superset/slice_json/6`, nutritionSmsData);
+        fetchMock.get(`https://somesuperseturl.org/superset/slice_json/8`, nutritionSmsData);
 
         // mount for pregnancy module with 'all' risk type
         let wrapper = renderWithProviders(ConnectedHierarchicalDataTable, {
