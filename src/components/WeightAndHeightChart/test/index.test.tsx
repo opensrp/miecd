@@ -1,22 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { mount, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import * as Highcharts from 'highcharts';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import { act } from 'react-dom/test-utils';
 import { Chart } from '..';
 import store from '../../../store/index';
-import { chartArgument } from './fixtures';
-
 const history = createBrowserHistory();
 
 const weights = {
     categories: ['20/2019', '8/2019', '28/2019'],
     dataSeries: [{ data: [10, 10, 9], name: 'Weights' }],
 };
+
+jest.mock('highcharts', () => {
+    return {
+        _esModule: true,
+        chart: (...args: any[]) => {
+            expect(JSON.stringify(args)).toEqual(
+                '["wrapper-id",{"chart":{"type":"line","width":819.2},"legend":{"align":"right","layout":"vertical","verticalAlign":"middle"},"title":{"text":""},"tooltip":{"backgroundColor":"white","borderColor":"#DADCE0","borderRadius":10,"borderWidth":1,"shadow":{"color":"#D7D7E0","offsetX":0,"offsetY":2,"opacity":0.2,"width":8}},"subtitle":{"text":""},"yAxis":{"title":{"text":""}},"xAxis":{"categories":["undefined 2019","September 2019","undefined 2019"]},"series":[{"data":[10,10,9],"name":"x axis label"}],"responsive":{"rules":[{"chartOptions":{"legend":{"align":"center","layout":"horizontal","verticalAlign":"bottom"}},"condition":{"maxWidth":5000}}]}}]',
+            );
+        },
+    };
+});
 
 const defaultProps = {
     chartWrapperId: 'wrapper-id',
@@ -44,38 +51,6 @@ describe('Chart', () => {
             </Provider>,
         );
         expect(toJson(wrapper.find('#wrapper-id'))).toMatchSnapshot();
-        wrapper.unmount();
-    });
-
-    it('calls hicharts.chart with the correct arguments', async () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        // eslint-disable-next-line @typescript-eslint/ban-types
-        const customTimeout = (fun: Function) => {
-            fun();
-        };
-        const actualTimeout = window.setTimeout;
-        (window as any).setTimeout = customTimeout;
-
-        const chartMock = jest.fn();
-        (Highcharts as any).chart = chartMock;
-
-        const wrapper = mount(
-            <Provider store={store}>
-                <Router history={history}>
-                    <Chart dataArray={weights} {...defaultProps} />
-                </Router>
-            </Provider>,
-            { attachTo: div },
-        );
-
-        await act(async () => {
-            await new Promise((resolve) => setImmediate(resolve));
-        });
-
-        expect(JSON.stringify(chartMock.mock.calls)).toEqual(chartArgument);
-
-        (window as any).setTimeout = actualTimeout;
         wrapper.unmount();
     });
 });

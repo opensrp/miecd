@@ -1,9 +1,10 @@
+import { EXPRESS_LOGIN_URL } from 'constants';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
+import { MemoryRouter, Router } from 'react-router';
 import CustomOauthLogin from '../../components/CustomAuthLogin';
 import store from '../../store';
 import App from '../App';
@@ -13,6 +14,18 @@ const history = createBrowserHistory();
 jest.mock('../../configs/env');
 
 describe('App', () => {
+    const ActualWindowLocation = window.location;
+    afterAll(() => {
+        window.location = ActualWindowLocation;
+    });
+    delete window.location;
+    const applyHrefMock = (mock: jest.Mock) => {
+        (window.location as any) = {
+            set href(url: string) {
+                mock(url);
+            },
+        };
+    };
     beforeEach(() => {
         jest.resetAllMocks();
     });
@@ -21,8 +34,10 @@ describe('App', () => {
     it('renders without crashing', () => {
         const div = document.createElement('div');
         document.body.appendChild(div);
+        const hrefMock = jest.fn();
+        applyHrefMock(hrefMock);
 
-        mount(
+        const wrapper = mount(
             <Provider store={store}>
                 <Router history={history}>
                     <App />
@@ -30,24 +45,34 @@ describe('App', () => {
             </Provider>,
             { attachTo: div },
         );
+        wrapper.unmount();
     });
 
-    it('renders App correctly', () => {
+    it('login inits correctly', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        const hrefMock = jest.fn();
+        applyHrefMock(hrefMock);
         const wrapper = mount(
             <Provider store={store}>
-                <Router history={history}>
+                <MemoryRouter
+                    initialEntries={[
+                        {
+                            hash: '',
+                            pathname: `/login`,
+                            search: '',
+                            state: {},
+                        },
+                    ]}
+                >
                     <App />
-                </Router>
+                </MemoryRouter>
             </Provider>,
+            { attachTo: div },
         );
-        // should have a top header
-        const headerWrapper = wrapper.find('HeaderComponent');
-        expect(headerWrapper.length).toEqual(1);
-
-        const customOathLoginChildren = wrapper.find(CustomOauthLogin).children();
-
-        expect(toJson(customOathLoginChildren)).toMatchSnapshot();
-        expect(wrapper.find('Toaster')).toHaveLength(1);
         wrapper.unmount();
+        expect(hrefMock).toBeCalledWith(
+            'https://test-stage.smartregister.org/opensrp/oauth/authorize?client_id=hunter1&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Foauth%2Fcallback%2FOpenSRP%2F&response_type=token&state=opensrp&scope=read%20write',
+        );
     });
 });

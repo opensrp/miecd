@@ -242,3 +242,8 @@ td {
 .hierarchy-actions {
     padding: 5px;
 }
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+}

@@ -15,7 +15,6 @@ import {
     ENABLE_NUTRITION_MODULE,
     ENABLE_REPORT_MODULE,
 } from '../../../configs/env';
-import { headerShouldRender } from '../../../helpers/utils';
 import { ENABLE_ADMIN_MODULE, ENABLE_CLIENT_RECORDS_MODULE, navigationModulesFactory } from './constants';
 import './index.css';
 import SubMenu, { ModulePageLink, PageLink, SubMenuProps } from './SubMenu';
@@ -87,9 +86,7 @@ class SideMenu extends React.Component<HeaderPropsTypes, SideMenuState> {
         return (
             <div
                 className={`${
-                    this.props.authenticated && headerShouldRender() && !this.checkHomePageURL(this.props)
-                        ? 'sidebar'
-                        : 'hidden-container'
+                    this.props.authenticated && !this.checkHomePageURL(this.props) ? 'sidebar' : 'hidden-container'
                 }`}
             >
                 <div className="side-menu-container">

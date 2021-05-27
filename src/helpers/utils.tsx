@@ -9,7 +9,12 @@ import {
     SUPERSET_SMS_DATA_SLICE,
     USER_LOCATION_DATA_SLICE,
 } from '../configs/env';
-import { toastConfig, URLS_TO_HIDE_HEADER } from '../configs/settings';
+import {
+    LogFaceModules,
+    nutritionModuleRiskFilterLookup,
+    pregnancyModuleRiskFilterLookup,
+    toastConfig,
+} from '../configs/settings';
 import {
     CHILD_PATIENT_DETAIL,
     COMMUNE,
@@ -25,6 +30,7 @@ import {
     NBC_AND_PNC_WOMAN,
     NUTRITION,
     NUTRITION_COMPARTMENTS_URL,
+    NUTRITION_MODULE,
     OPENSRP_SECURITY_AUTHENTICATE,
     PATIENT_DETAIL,
     PREGNANCY,
@@ -47,7 +53,7 @@ import {
     UserLocation,
     userLocationDataFetched,
 } from '../store/ducks/locations';
-import { fetchSms, SmsData, smsDataFetched } from '../store/ducks/sms_events';
+import { fetchSms, LogFaceSmsType, SmsData, smsDataFetched } from '../store/ducks/sms_events';
 import { Dictionary } from '@onaio/utils';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
@@ -56,6 +62,8 @@ import { fetchTree } from '../store/ducks/locationHierarchy';
 import { split, trim, replace } from 'lodash';
 import * as React from 'react';
 import { TFunction } from 'i18next';
+import { ActionCreator } from 'redux';
+import { SupersetFormData } from '@onaio/superset-connector/dist/types';
 export type { Dictionary };
 
 /** Custom function to get oAuth user info depending on the oAuth2 provider
@@ -73,13 +81,6 @@ export function oAuthUserInfoGetter(apiResponse: Dictionary): SessionState | voi
                 return getOnadataUserInfo(apiResponse);
         }
     }
-}
-
-/**
- * determines weather the header should be rendered.
- */
-export function headerShouldRender(): boolean {
-    return !RegExp(URLS_TO_HIDE_HEADER.join('|')).test(window.location.pathname);
 }
 
 /**
@@ -308,8 +309,8 @@ export const filterByPatientId = (patientIdAndSmsData: PatientIDAndSmsData): Sms
  * sort SmsData[] by EventDate in descending order(i.e. the most recent events come first)
  * @param {SmsData[]} smsData an array of smsData objects to sort by event date
  */
-export const sortByEventDate = (smsData: SmsData[]) => {
-    return smsData.sort((event1: SmsData, event2: SmsData): number => {
+export const sortByEventDate = <T extends { event_date: string }>(smsData: T[]) => {
+    return smsData.sort((event1, event2) => {
         const date1 = Date.parse(event1.event_date);
         const date2 = Date.parse(event2.event_date);
         return date2 - date1;
@@ -472,7 +473,7 @@ export function getLinkToHierarchicalDataTable(
  * @param {SmsData} smsData - an object representing a single smsEvent
  * @param {string} prependWith- the url we want to prepend this link/string with.
  */
-export function getLinkToPatientDetail(smsData: SmsData, prependWith: string) {
+export function getLinkToPatientDetail(smsData: LogFaceSmsType, prependWith: string) {
     if (smsData.client_type === EC_CHILD) {
         return `${prependWith}/${CHILD_PATIENT_DETAIL}/${smsData.anc_id}`;
     }
@@ -683,4 +684,75 @@ export const formatAge = (ageString: string, t: TFunction) => {
         return `${sumMonthsAge} ${t('age.months')}`;
     }
     return `${age.years} ${t('age.years')}`;
+};
+
+/** abstracts code that actually makes the superset Call since it is quite similar
+ * @param supersetSlice - slice string
+ * @param actionCreator - redux action creator
+ * @param supersetService - the supersetService
+ * @param supersetOptions - adhoc filters for superset call
+ */
+export async function logFaceSupersetCall<TAction, TResponse>(
+    module: LogFaceModules,
+    supersetSlice: string,
+    actionCreator: ActionCreator<TAction>,
+    supersetService: typeof supersetFetch = supersetFetch,
+    supersetOptions: SupersetFormData | null = null,
+) {
+    const asyncOperation = supersetOptions
+        ? supersetService(supersetSlice, supersetOptions)
+        : supersetService(supersetSlice);
+    return asyncOperation
+        .then((result: TResponse[] | undefined) => {
+            if (result) {
+                actionCreator(result, module);
+            }
+        })
+        .catch((error) => {
+            throw error;
+        });
+}
+
+/** generate a RiskCategory object to be consumed by the getSmsByRiskCategory filter,
+ * this depends on the configuration in settings, the module and the selected option in the ui
+ * @param module - module in which logface view is rendered in
+ * @param riskFilterValue - this is the option the user selected in the risk_level select filter
+ */
+export function getRiskCatFilter(module: string, riskFilterValue?: string) {
+    if (!riskFilterValue) {
+        return;
+    }
+    const mockTranslatorFunction = (t: string) => t;
+    const pregnancyCats = pregnancyModuleRiskFilterLookup(mockTranslatorFunction);
+    const nutritionCategories = nutritionModuleRiskFilterLookup(mockTranslatorFunction);
+    let categoryToUse: Dictionary<Dictionary<string | string[]>> = pregnancyCats;
+    if (module === NUTRITION_MODULE) {
+        categoryToUse = nutritionCategories;
+    }
+    return {
+        accessor: categoryToUse[riskFilterValue].accessor as string,
+        filterValue: categoryToUse[riskFilterValue].filterValue as string[],
+    };
+}
+
+/** returns common pagination props
+ * @param t - the translator function
+ */
+export const getCommonPaginationProps = (t: TFunction) => {
+    return {
+        previousLabel: t('previous'),
+        nextLabel: t('next'),
+        breakLabel: <>&nbsp;&nbsp;...&nbsp;&nbsp;</>,
+        breakClassName: 'page-item',
+        marginPagesDisplayed: 2,
+        pageRangeDisplayed: 3,
+        containerClassName: 'pagination',
+        activeClassName: 'active',
+        pageClassName: 'page-item',
+        previousClassName: 'page-item',
+        nextClassName: 'page-item',
+        pageLinkClassName: 'page-link',
+        previousLinkClassName: 'page-link',
+        nextLinkClassName: 'page-link',
+    };
 };

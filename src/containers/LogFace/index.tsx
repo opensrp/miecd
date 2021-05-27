@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import superset from '@onaio/superset-connector';
 import { map } from 'lodash';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
@@ -10,24 +9,16 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Table } from 'reactstrap';
 import Ripple from '../../components/page/Loading';
-import { PaginationData, Paginator, PaginatorProps } from '../../components/Paginator';
 import RiskColoring from '../../components/RiskColoring';
+import { SUPERSET_PREGNANCY_DATA_EXPORT } from '../../configs/env';
+import { LogFaceModules, LogFaceSliceByModule, riskCategories, SmsTypes } from '../../configs/settings';
 import {
-    GET_FORM_DATA_ROW_LIMIT,
-    SUPERSET_FETCH_TIMEOUT_INTERVAL,
-    SUPERSET_PREGNANCY_DATA_EXPORT,
-    SUPERSET_SMS_DATA_SLICE,
-} from '../../configs/env';
-import { logFaceSmsTypesByModule, riskCategories, SmsTypes } from '../../configs/settings';
-import {
-    DEFAULT_NUMBER_OF_LOGFACE_ROWS,
-    EVENT_ID,
+    DEFAULT_PAGINATION_SIZE,
     LOCATION_FILTER_PARAM,
     NBC_AND_PNC,
     NBC_AND_PNC_LOGFACE_URL,
     NUTRITION,
     NUTRITION_LOGFACE_URL,
-    NUTRITION_MODULE,
     PREGNANCY,
     PREGNANCY_LOGFACE_URL,
     PREGNANCY_MODULE,
@@ -38,11 +29,12 @@ import {
 import {
     fetchData,
     getLinkToPatientDetail,
-    sortFunction,
-    toastToError,
     useHandleBrokenPage,
     parseMessage,
     formatAge,
+    logFaceSupersetCall,
+    getRiskCatFilter,
+    getCommonPaginationProps,
 } from '../../helpers/utils';
 import supersetFetch from '../../services/superset';
 import {
@@ -57,17 +49,12 @@ import {
 } from '../../store/ducks/locations';
 import locationsReducer, { reducerName as locationReducerName } from '../../store/ducks/locations';
 import {
-    addFilterArgs as addFilterArgsActionCreator,
+    fetchLogFaceSms,
     getSmsDataByFilters,
+    LogFaceSmsType,
     removeFilterArgs as removeFilterArgsActionCreator,
 } from '../../store/ducks/sms_events';
-import smsReducer, {
-    fetchSms,
-    getFilterArgs,
-    reducerName as smsReducerName,
-    SmsData,
-    smsDataFetched,
-} from '../../store/ducks/sms_events';
+import smsReducer, { getFilterArgs, reducerName as smsReducerName, smsDataFetched } from '../../store/ducks/sms_events';
 import './index.css';
 import { useTranslation, withTranslation } from 'react-i18next';
 import { ErrorPage } from 'components/ErrorPage';
@@ -83,6 +70,7 @@ import {
 } from 'store/ducks/locationHierarchy';
 import { TreeNode } from 'store/ducks/locationHierarchy/types';
 import { Dictionary } from '@onaio/utils';
+import ReactPaginate from 'react-paginate';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -92,9 +80,9 @@ reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
  * Interface representing Logface props
  */
 export interface LogFaceProps {
-    module: string;
-    smsData: SmsData[];
-    fetchSmsDataActionCreator: typeof fetchSms;
+    module: LogFaceModules;
+    smsData: LogFaceSmsType[];
+    fetchLogFaceSmsCreator: typeof fetchLogFaceSms;
     dataFetched: boolean;
     numberOfRows: number;
     userUUID: string;
@@ -103,11 +91,9 @@ export interface LogFaceProps {
     districts: Location[];
     communes: Location[];
     villages: Location[];
-    addFilterArgs: typeof addFilterArgsActionCreator;
     removeFilterArgs: typeof removeFilterArgsActionCreator;
     fetchLocations: typeof fetchLocations;
     fetchUserLocations: typeof fetchUserLocations;
-    filterArgsInStore: Array<(smsData: SmsData) => boolean>;
     supersetService: typeof supersetFetch;
     userHierarchy?: TreeNode;
     userLocationId: string;
@@ -116,14 +102,12 @@ export interface LogFaceProps {
 const defaultProps: LogFaceProps = {
     fetchLocations: fetchLocations,
     fetchUserLocations: fetchUserLocations,
-    addFilterArgs: addFilterArgsActionCreator,
+    fetchLogFaceSmsCreator: fetchLogFaceSms,
     communes: [],
     dataFetched: false,
     districts: [],
-    fetchSmsDataActionCreator: fetchSms,
-    filterArgsInStore: [],
     module: PREGNANCY_MODULE,
-    numberOfRows: DEFAULT_NUMBER_OF_LOGFACE_ROWS,
+    numberOfRows: DEFAULT_PAGINATION_SIZE,
     provinces: [],
     removeFilterArgs: removeFilterArgsActionCreator,
     smsData: [],
@@ -142,10 +126,9 @@ export type LogFacePropsType = LogFaceProps & RouteComponentProps;
  */
 const LogFace = (props: LogFacePropsType) => {
     const {
-        fetchSmsDataActionCreator,
         module,
         numberOfRows,
-        removeFilterArgs,
+        fetchLogFaceSmsCreator,
         smsData,
         userLocationData,
         userUUID,
@@ -154,42 +137,19 @@ const LogFace = (props: LogFacePropsType) => {
     } = props;
     const { error, handleBrokenPage, broken } = useHandleBrokenPage();
     const [loading, setLoading] = React.useState<boolean>(true);
+    const supersetSlice = LogFaceSliceByModule[module];
 
     useEffect(() => {
-        removeFilterArgs();
-        fetchData(supersetService, true, true, false, true)
+        logFaceSupersetCall(module, supersetSlice, fetchLogFaceSmsCreator, supersetService)
             .catch((err) => {
                 handleBrokenPage(err);
             })
             .finally(() => setLoading(false));
+        fetchData(supersetService, true, true, false, false).catch((err) => {
+            handleBrokenPage(err);
+        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [removeFilterArgs, supersetService]);
-
-    useEffect(() => {
-        const intervalId: NodeJS.Timeout = setInterval(() => {
-            const smsDataInDescendingOrderByEventId: SmsData[] = smsData.sort(sortFunction);
-
-            // pick the largest ID if this smsDataInDescendingOrderByEventId list is not empty
-            if (smsDataInDescendingOrderByEventId.length) {
-                const largestEventID: string = smsDataInDescendingOrderByEventId[0].event_id;
-                const supersetParams = superset.getFormData(GET_FORM_DATA_ROW_LIMIT, [
-                    { comparator: largestEventID, operator: '>', subject: EVENT_ID },
-                ]);
-                supersetService(SUPERSET_SMS_DATA_SLICE, supersetParams)
-                    .then((result: SmsData[]) => {
-                        fetchSmsDataActionCreator(result);
-                    })
-                    .catch((err) => {
-                        toastToError(err.Message);
-                    });
-            }
-        }, SUPERSET_FETCH_TIMEOUT_INTERVAL);
-        return () => {
-            if (intervalId) {
-                clearInterval(intervalId);
-            }
-        };
-    }, [fetchSmsDataActionCreator, smsData, supersetService]);
+    }, [fetchLogFaceSmsCreator, module, supersetService, supersetSlice]);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const { t } = useTranslation();
@@ -198,19 +158,16 @@ const LogFace = (props: LogFacePropsType) => {
         updateUrlWithFilter(SEARCH_FILTER_PARAM, props, (event.target as HTMLInputElement).value);
     };
 
-    const onPageChangeHandler = (paginationData: PaginationData) => {
-        setCurrentPage(paginationData.currentPage);
+    const onPageChangeHandler = (page: { selected: number }) => {
+        setCurrentPage(page.selected);
     };
 
-    const routePaginatorProps: PaginatorProps = {
-        endLabel: 'last',
-        nextLabel: 'next',
+    const totalPageCount = Math.ceil(smsData.length / numberOfRows);
+    const paginationProps = {
+        ...getCommonPaginationProps(t),
+        pageCount: totalPageCount,
+
         onPageChange: onPageChangeHandler,
-        pageLimit: numberOfRows,
-        pageNeighbours: 3,
-        previousLabel: 'previous',
-        startLabel: 'first',
-        totalRecords: smsData.length,
     };
 
     if (broken) {
@@ -325,7 +282,10 @@ const LogFace = (props: LogFacePropsType) => {
                                                         getModuleLogFaceUrlLink(module),
                                                     )}
                                                 >
-                                                    <RiskColoring {...{ risk: dataObj.risk_level }} />
+                                                    <RiskColoring
+                                                        risk={dataObj.risk_level}
+                                                        displayValue={dataObj.logface_risk}
+                                                    />
                                                 </Link>
                                             </td>
                                         </tr>
@@ -341,9 +301,9 @@ const LogFace = (props: LogFacePropsType) => {
                 )}
             </div>
 
-            <div className="paginator">
-                <Paginator {...routePaginatorProps} />
-            </div>
+            <nav aria-label="Page navigation" className="pagination-container">
+                <ReactPaginate {...paginationProps} />
+            </nav>
         </div>
     );
 };
@@ -371,37 +331,28 @@ function getModuleLogFaceUrlLink(module: string) {
 
 export type MapStateToProps = Pick<
     LogFaceProps,
-    | 'communes'
-    | 'dataFetched'
-    | 'districts'
-    | 'filterArgsInStore'
-    | 'provinces'
-    | 'smsData'
-    | 'userLocationData'
-    | 'userUUID'
-    | 'villages'
+    'communes' | 'dataFetched' | 'districts' | 'provinces' | 'smsData' | 'userLocationData' | 'userUUID' | 'villages'
 >;
 
-export type MapDispatch = Pick<LogFaceProps, 'addFilterArgs' | 'fetchSmsDataActionCreator' | 'removeFilterArgs'>;
+export type MapDispatch = Pick<LogFaceProps, 'fetchLogFaceSmsCreator'>;
 
 const selectSmsData = getSmsDataByFilters();
 const nodeSelector = getNodesByNameOrId();
 const userHierarchySelector = getTreesByIds();
 
 const mapStateToProps = (state: Partial<Store>, ownProps: LogFacePropsType): MapStateToProps => {
-    const riskAccessor = ownProps.module === NUTRITION_MODULE ? 'nutrition_status' : 'risk_level';
-    const thisPageDefaultSmsTypeFilters = logFaceSmsTypesByModule[ownProps.module as string];
-
     const userLocationIdFilter = getQueryParams(ownProps.location)[LOCATION_FILTER_PARAM] as string;
     const riskCategoryFilter = getQueryParams(ownProps.location)[RISK_CATEGORY_FILTER_PARAM] as string;
     const smsTypeFilter = getQueryParams(ownProps.location)[SMS_TYPE_FILTER_PARAM] as string;
     const searchFilter = getQueryParams(ownProps.location)[SEARCH_FILTER_PARAM] as string;
     const userLocationNode = nodeSelector(state, { searchQuery: userLocationIdFilter })[0] as TreeNode | undefined;
+
     const filteredSmsData = selectSmsData(state, {
         locationNode: userLocationNode,
-        riskCategory: { accessor: riskAccessor, filterValue: riskCategoryFilter },
-        smsTypes: smsTypeFilter ? [smsTypeFilter] : thisPageDefaultSmsTypeFilters,
+        riskCategory: getRiskCatFilter(ownProps.module, riskCategoryFilter),
+        smsTypes: smsTypeFilter ? [smsTypeFilter] : undefined,
         searchFilter,
+        module: ownProps.module,
     });
     const userUUID = getUserId(state);
     const userHierarchy = userHierarchySelector(state, { rootJurisdictionId: [userUUID] })[0] as TreeNode | undefined;
@@ -422,9 +373,7 @@ const mapStateToProps = (state: Partial<Store>, ownProps: LogFacePropsType): Map
 };
 
 const mapPropsToActions: MapDispatch = {
-    addFilterArgs: addFilterArgsActionCreator,
-    fetchSmsDataActionCreator: fetchSms,
-    removeFilterArgs: removeFilterArgsActionCreator,
+    fetchLogFaceSmsCreator: fetchLogFaceSms,
 };
 
 const ConnectedLogFace = connect(mapStateToProps, mapPropsToActions)(LogFace);
