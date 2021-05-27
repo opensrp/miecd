@@ -1,6 +1,6 @@
 import { SmsData } from '../../sms_events';
 
-export const expectedSmsData = ([
+export const expectedSmsData = [
     {
         EventDate: '03/03/2020',
         sms_type: 'Pregnancy Registration',
@@ -601,4 +601,4 @@ export const expectedSmsData = ([
         growth_status: 'normal',
         feeding_category: 'inappropriately fed',
     },
-] as unknown) as SmsData;
+] as unknown as SmsData;
