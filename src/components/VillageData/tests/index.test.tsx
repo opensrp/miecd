@@ -51,9 +51,7 @@ describe('components/VillageData', () => {
             </Provider>,
         );
 
-        expect(wrapper.find('#navrow Pagination').text()).toMatchInlineSnapshot(
-            `"firstfirstpreviousprevious1234nextnextlastlast"`,
-        );
+        expect(wrapper.find('.pagination-container').text()).toMatchInlineSnapshot(`"previous1234  ...  2021next"`);
 
         // inspect entries shown on page 1
         wrapper.find('tbody#body tr').forEach((td) => {
@@ -61,7 +59,7 @@ describe('components/VillageData', () => {
         });
 
         // go to page 2
-        const page2PaginationItem = wrapper.find('PaginationItem').at(4).find('PaginationLink');
+        const page2PaginationItem = wrapper.find('.pagination-container ul li').at(3);
         expect(toJson(page2PaginationItem)).toMatchSnapshot('paginationItem for page 2');
 
         page2PaginationItem.simulate('click');
@@ -87,9 +85,7 @@ describe('components/VillageData', () => {
             </Provider>,
         );
 
-        expect(wrapper.find('#navrow Pagination').text()).toMatchInlineSnapshot(
-            `"firstfirstpreviousprevious1234nextnextlastlast"`,
-        );
+        expect(wrapper.find('.pagination-container').text()).toMatchInlineSnapshot(`"previous1234  ...  2021next"`);
 
         wrapper.find('tr').forEach((tr) => {
             expect(tr.text()).toMatchSnapshot('Nutrition Page');
@@ -110,9 +106,7 @@ describe('components/VillageData', () => {
             </Provider>,
         );
 
-        expect(wrapper.find('#navrow Pagination').text()).toMatchInlineSnapshot(
-            `"firstfirstpreviousprevious1234nextnextlastlast"`,
-        );
+        expect(wrapper.find('.pagination-container').text()).toMatchInlineSnapshot(`"previous1234  ...  2021next"`);
 
         wrapper.find('tr').forEach((tr) => {
             expect(tr.text()).toMatchSnapshot('Pregnancy Page');
@@ -134,9 +128,7 @@ describe('components/VillageData', () => {
             </Provider>,
         );
 
-        expect(wrapper.find('#navrow Pagination').text()).toMatchInlineSnapshot(
-            `"firstfirstpreviousprevious1234nextnextlastlast"`,
-        );
+        expect(wrapper.find('.pagination-container').text()).toMatchInlineSnapshot(`"previous1234  ...  2021next"`);
 
         wrapper.find('tr').forEach((tr) => {
             expect(tr.text()).toMatchSnapshot('NBC_AND_PNC_CHILD page');
@@ -157,9 +149,7 @@ describe('components/VillageData', () => {
             </Provider>,
         );
 
-        expect(wrapper.find('#navrow Pagination').text()).toMatchInlineSnapshot(
-            `"firstfirstpreviousprevious1234nextnextlastlast"`,
-        );
+        expect(wrapper.find('.pagination-container').text()).toMatchInlineSnapshot(`"previous1234  ...  2021next"`);
 
         wrapper.find('tr').forEach((tr) => {
             expect(tr.text()).toMatchSnapshot('nBC and PNC woman Page');

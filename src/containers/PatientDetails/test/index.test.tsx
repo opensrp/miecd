@@ -17,6 +17,7 @@ import { smsDataFixture } from 'store/ducks/tests/fixtures';
 import * as securityAuthenticate from '../../../store/ducks/tests/fixtures/securityAuthenticate.json';
 import { communes, districts, provinces, villages } from '../../HierarchichalDataTable/test/fixtures';
 import { userLocations } from 'containers/LogFace/tests/userLocationFixtures';
+import { authenticateUser } from '@onaio/session-reducer';
 
 // /** register the superset reducer */
 reducerRegistry.register(reducerName, smsReducer);
@@ -47,7 +48,19 @@ const locationProps = {
 };
 
 describe('containers/LogFace extended', () => {
-    // const commonProps = { module: PREGNANCY };
+    beforeAll(() => {
+        store.dispatch(
+            authenticateUser(
+                true,
+                {
+                    email: 'bob@example.com',
+                    name: 'Bobbie',
+                    username: 'RobertBaratheon',
+                },
+                { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } },
+            ),
+        );
+    });
 
     beforeEach(() => {
         jest.resetAllMocks();
@@ -58,7 +71,7 @@ describe('containers/LogFace extended', () => {
 
     it('shows loader and Breaks just fine', async () => {
         const supersetFetchMock = jest.fn(async () => []);
-        fetch.mockResponse(JSON.stringify([]));
+        fetch.mockReject(new Error('coughid'));
         const props = {
             ...locationProps,
             supersetService: supersetFetchMock,
@@ -72,8 +85,6 @@ describe('containers/LogFace extended', () => {
         );
 
         expect(wrapper.find('Ripple')).toHaveLength(1);
-
-        fetch.mockReject(new Error('coughid'));
 
         await act(async () => {
             await new Promise((resolve) => setImmediate(resolve));
@@ -100,7 +111,7 @@ describe('containers/LogFace extended', () => {
                 {
                     headers: {
                         accept: 'application/json',
-                        authorization: 'Bearer ',
+                        authorization: 'Bearer hunter2',
                         'content-type': 'application/json;charset=UTF-8',
                     },
                     method: 'GET',

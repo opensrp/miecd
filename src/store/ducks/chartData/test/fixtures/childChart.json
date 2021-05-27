@@ -1,0 +1,630 @@
+{
+    "cache_key": "74a664a14dc9f4d98f796f15a4bd7cfd",
+    "cached_dttm": "2021-05-19T10:02:29",
+    "cache_timeout": 300,
+    "error": null,
+    "form_data": {
+        "datasource": "3468__table",
+        "viz_type": "table",
+        "slice_id": 18913,
+        "url_params": {},
+        "granularity_sqla": "event_date",
+        "time_grain_sqla": "P1D",
+        "time_range": "No filter",
+        "groupby": [],
+        "metrics": [],
+        "percent_metrics": [],
+        "timeseries_limit_metric": null,
+        "row_limit": 10000,
+        "include_time": false,
+        "order_desc": true,
+        "all_columns": ["anc_id", "base_entity_id", "event_date", "event_type", "weight", "height", "event_id"],
+        "order_by_cols": [],
+        "adhoc_filters": [],
+        "table_timestamp_format": "%Y-%m-%d %H:%M:%S",
+        "page_length": 0,
+        "include_search": false,
+        "table_filter": false,
+        "align_pn": false,
+        "color_pn": true,
+        "where": "",
+        "having": "",
+        "having_filters": [],
+        "filters": []
+    },
+    "is_cached": true,
+    "query": "SELECT anc_id AS anc_id,\n       base_entity_id AS base_entity_id,\n       event_date AS event_date,\n       event_type AS event_type,\n       weight AS weight,\n       height AS height,\n       event_id AS event_id\nFROM dashboard_views.child_measurements_tracking\nLIMIT 10000;",
+    "status": "success",
+    "stacktrace": null,
+    "rowcount": 65,
+    "data": {
+        "records": [
+            {
+                "anc_id": "100T20",
+                "base_entity_id": "579f14c2-1f6c-4e62-b603-e727a6803b0c",
+                "event_date": "2019-11-16T15:11:27.040000",
+                "event_type": "PNC Child Registration",
+                "weight": 7.0,
+                "height": 53.0,
+                "event_id": "1573919667275"
+            },
+            {
+                "anc_id": "100RRK",
+                "base_entity_id": "5d9f9e3c-44c5-454d-8440-9c5645ec5225",
+                "event_date": "2019-11-15T08:49:12.434000",
+                "event_type": "Nutrition Report",
+                "weight": 9.0,
+                "height": 64.0,
+                "event_id": "1573807752690"
+            },
+            {
+                "anc_id": "100RRK",
+                "base_entity_id": "5d9f9e3c-44c5-454d-8440-9c5645ec5225",
+                "event_date": "2019-11-15T08:06:59.149000",
+                "event_type": "Nutrition Report",
+                "weight": 9.0,
+                "height": 64.0,
+                "event_id": "1573805219331"
+            },
+            {
+                "anc_id": "100RRK",
+                "base_entity_id": "5d9f9e3c-44c5-454d-8440-9c5645ec5225",
+                "event_date": "2019-11-15T08:02:26.376000",
+                "event_type": "Nutrition Report",
+                "weight": 9.0,
+                "height": 64.0,
+                "event_id": "1573804946554"
+            },
+            {
+                "anc_id": "100RRK",
+                "base_entity_id": "5d9f9e3c-44c5-454d-8440-9c5645ec5225",
+                "event_date": "2019-11-15T07:11:23.827000",
+                "event_type": "PNC Child Registration",
+                "weight": 9.0,
+                "height": 64.0,
+                "event_id": "1573804224043"
+            },
+            {
+                "anc_id": "100TNN",
+                "base_entity_id": "8f0cc9a9-d8a6-4a80-ae89-f972dc814a03",
+                "event_date": "2019-11-23T08:01:17.596000",
+                "event_type": "Nutrition Report",
+                "weight": 3.8,
+                "height": 54.0,
+                "event_id": "1574496077811"
+            },
+            {
+                "anc_id": "100TNN",
+                "base_entity_id": "8f0cc9a9-d8a6-4a80-ae89-f972dc814a03",
+                "event_date": "2019-11-22T18:11:50.214000",
+                "event_type": "PNC Child Registration",
+                "weight": 7.9,
+                "height": 64.0,
+                "event_id": "1574445964031"
+            },
+            {
+                "anc_id": "100T5T",
+                "base_entity_id": "afb972dd-38e2-483b-b772-faac84fb2d46",
+                "event_date": "2019-11-16T18:24:52.502000",
+                "event_type": "Birth Report",
+                "weight": 2.2,
+                "height": 48.0,
+                "event_id": "1573928692526"
+            },
+            {
+                "anc_id": "100RPM-20190920-01",
+                "base_entity_id": "c7233175-91d4-470d-86fb-537d2160f12e",
+                "event_date": "2019-11-15T12:11:44.182000",
+                "event_type": "Child Registration",
+                "weight": 2.2,
+                "height": 48.0,
+                "event_id": "1573820624563"
+            },
+            {
+                "anc_id": "100RH2-20191001-01",
+                "base_entity_id": "919e00df-6b7f-45bb-9ffb-5256ffd5dca4",
+                "event_date": "2019-11-14T16:11:12.049000",
+                "event_type": "Child Registration",
+                "weight": 2.2,
+                "height": 48.0,
+                "event_id": "1573750092278"
+            },
+            {
+                "anc_id": "100T3X",
+                "base_entity_id": "ff3fc579-7610-45a3-8c1f-47b15ff9b49d",
+                "event_date": "2019-11-16T15:11:14.855000",
+                "event_type": "PNC Child Registration",
+                "weight": 5.0,
+                "height": 53.0,
+                "event_id": "1573919714969"
+            },
+            {
+                "anc_id": "100RTH-20190923-01",
+                "base_entity_id": "2a83d996-bb82-4f6a-97b5-34d80ec7a6c1",
+                "event_date": "2019-11-15T12:51:44.037000",
+                "event_type": "Nutrition Report",
+                "weight": 3.3,
+                "height": 51.0,
+                "event_id": "1573822304230"
+            },
+            {
+                "anc_id": "100RTH-20190923-01",
+                "base_entity_id": "2a83d996-bb82-4f6a-97b5-34d80ec7a6c1",
+                "event_date": "2019-11-15T12:11:07.422000",
+                "event_type": "Child Registration",
+                "weight": 2.2,
+                "height": 48.0,
+                "event_id": "1573821787605"
+            },
+            {
+                "anc_id": "100RTH",
+                "base_entity_id": "7850432d-ad4c-411a-a6fe-76e94ca8ef58",
+                "event_date": "2019-11-15T12:40:22.275000",
+                "event_type": "Birth Report",
+                "weight": 2.2,
+                "height": 48.0,
+                "event_id": "1573821622304"
+            },
+            {
+                "anc_id": "100T5T-20190920-01",
+                "base_entity_id": "436a665c-59be-4e61-9ac4-8b7803789305",
+                "event_date": "2019-11-16T18:11:45.087000",
+                "event_type": "Child Registration",
+                "weight": 2.2,
+                "height": 48.0,
+                "event_id": "1573928805271"
+            },
+            {
+                "anc_id": "100RPM",
+                "base_entity_id": "718bb019-a604-4b06-b4e5-8b43c123d579",
+                "event_date": "2019-11-15T12:15:04.714000",
+                "event_type": "Birth Report",
+                "weight": 2.2,
+                "height": 48.0,
+                "event_id": "1573820104902"
+            },
+            {
+                "anc_id": "100RH2",
+                "base_entity_id": "75482583-315a-42b6-a07b-0beafa0100b1",
+                "event_date": "2019-11-22T18:04:47.600000",
+                "event_type": "Birth Report",
+                "weight": 2.9,
+                "height": 38.0,
+                "event_id": "1574445887881"
+            },
+            {
+                "anc_id": "100TPL",
+                "base_entity_id": "5ac4eaeb-d6e2-43d6-a2e8-08a73df3d6bb",
+                "event_date": "2019-11-23T08:30:17.019000",
+                "event_type": "Nutrition Report",
+                "weight": 6.7,
+                "height": 62.0,
+                "event_id": "1574497817198"
+            },
+            {
+                "anc_id": "100TPL",
+                "base_entity_id": "5ac4eaeb-d6e2-43d6-a2e8-08a73df3d6bb",
+                "event_date": "2019-11-23T17:05:33.833000",
+                "event_type": "Nutrition Report",
+                "weight": 6.7,
+                "height": 62.0,
+                "event_id": "1574528734108"
+            },
+            {
+                "anc_id": "100TPL",
+                "base_entity_id": "5ac4eaeb-d6e2-43d6-a2e8-08a73df3d6bb",
+                "event_date": "2019-11-23T08:32:46.020000",
+                "event_type": "Nutrition Report",
+                "weight": 6.7,
+                "height": 62.0,
+                "event_id": "1574497966064"
+            },
+            {
+                "anc_id": "100TPL",
+                "base_entity_id": "5ac4eaeb-d6e2-43d6-a2e8-08a73df3d6bb",
+                "event_date": "2019-11-23T08:11:47.627000",
+                "event_type": "PNC Child Registration",
+                "weight": 4.9,
+                "height": 56.0,
+                "event_id": "1574497307923"
+            },
+            {
+                "anc_id": "100RH2-20190601-03",
+                "base_entity_id": "96bc5937-d0ce-498b-9473-b95904b76a20",
+                "event_date": "2019-11-22T18:48:40.114000",
+                "event_type": "Nutrition Report",
+                "weight": 3.3,
+                "height": 51.0,
+                "event_id": "1574448520418"
+            },
+            {
+                "anc_id": "100RH2-20190601-03",
+                "base_entity_id": "96bc5937-d0ce-498b-9473-b95904b76a20",
+                "event_date": "2019-11-23T07:56:51.738000",
+                "event_type": "Nutrition Report",
+                "weight": 3.8,
+                "height": 54.0,
+                "event_id": "1574495812044"
+            },
+            {
+                "anc_id": "100RH2-20190601-03",
+                "base_entity_id": "96bc5937-d0ce-498b-9473-b95904b76a20",
+                "event_date": "2019-11-23T07:46:46.653000",
+                "event_type": "Nutrition Report",
+                "weight": 3.8,
+                "height": 54.0,
+                "event_id": "1574495206930"
+            },
+            {
+                "anc_id": "100RH2-20190601-03",
+                "base_entity_id": "96bc5937-d0ce-498b-9473-b95904b76a20",
+                "event_date": "2019-11-22T18:11:18.942000",
+                "event_type": "Child Registration",
+                "weight": 2.2,
+                "height": 48.0,
+                "event_id": "1574445978987"
+            },
+            {
+                "anc_id": "100TF6",
+                "base_entity_id": "22303637-5dda-4a4c-8417-084214439aaa",
+                "event_date": "2019-12-16T04:01:06.542000",
+                "event_type": "Birth Report",
+                "weight": 3.3,
+                "height": 48.0,
+                "event_id": "1576468866885"
+            },
+            {
+                "anc_id": "100TRJ",
+                "base_entity_id": "eec17328-eede-4e9d-9649-71fa91bf0c49",
+                "event_date": "2019-11-23T08:31:01.224000",
+                "event_type": "Nutrition Report",
+                "weight": 8.7,
+                "height": 62.0,
+                "event_id": "1574497861255"
+            },
+            {
+                "anc_id": "100TRJ",
+                "base_entity_id": "eec17328-eede-4e9d-9649-71fa91bf0c49",
+                "event_date": "2019-11-23T08:11:35.068000",
+                "event_type": "PNC Child Registration",
+                "weight": 5.9,
+                "height": 60.0,
+                "event_id": "1574497415304"
+            },
+            {
+                "anc_id": "100TTG",
+                "base_entity_id": "96dcfa07-6316-4868-9090-6388ce45760b",
+                "event_date": "2019-11-23T08:32:23.819000",
+                "event_type": "Nutrition Report",
+                "weight": 8.8,
+                "height": 69.0,
+                "event_id": "1574497944005"
+            },
+            {
+                "anc_id": "100TTG",
+                "base_entity_id": "96dcfa07-6316-4868-9090-6388ce45760b",
+                "event_date": "2019-11-23T08:11:47.508000",
+                "event_type": "PNC Child Registration",
+                "weight": 8.0,
+                "height": 67.0,
+                "event_id": "1574497487717"
+            },
+            {
+                "anc_id": "10063H",
+                "base_entity_id": "b6497ae6-eb77-4974-a6e9-d36a3f318067",
+                "event_date": "2021-04-22T12:21:08.344000",
+                "event_type": "Birth Report",
+                "weight": 4.9,
+                "height": 50.0,
+                "event_id": "1619094109112"
+            },
+            {
+                "anc_id": "101AWN",
+                "base_entity_id": "24c18ec2-90f3-41e0-b681-3dafe16427f6",
+                "event_date": "2021-04-23T06:04:37.466000",
+                "event_type": "Update Child Registration",
+                "weight": 2.2,
+                "height": 48.0,
+                "event_id": "1619159137685"
+            },
+            {
+                "anc_id": "101AVR",
+                "base_entity_id": "7cef4195-0dd6-4be7-b174-e9552efcd43e",
+                "event_date": "2021-04-23T08:15:59.417000",
+                "event_type": "Birth Report",
+                "weight": 4.9,
+                "height": 50.0,
+                "event_id": "1619165803652"
+            },
+            {
+                "anc_id": "100TUE",
+                "base_entity_id": "b6fb9552-17ae-4039-b001-6ca6b1d631c2",
+                "event_date": "2019-11-23T08:11:18.561000",
+                "event_type": "PNC Child Registration",
+                "weight": 8.0,
+                "height": 67.0,
+                "event_id": "1574497698777"
+            },
+            {
+                "anc_id": "100TVC",
+                "base_entity_id": "1816c0be-f6a9-4bd5-9d0f-eccb25b16df7",
+                "event_date": "2019-11-23T17:11:04.732000",
+                "event_type": "PNC Child Registration",
+                "weight": 8.0,
+                "height": 67.0,
+                "event_id": "1574528764960"
+            },
+            {
+                "anc_id": "100U2Y",
+                "base_entity_id": "a006fac7-2064-42e6-b94d-7348bab05970",
+                "event_date": "2019-12-11T06:12:48.459000",
+                "event_type": "PNC Child Registration",
+                "weight": 9.0,
+                "height": 64.0,
+                "event_id": "1576044108814"
+            },
+            {
+                "anc_id": "100U3W",
+                "base_entity_id": "ffc576d2-7ba5-49d4-b495-bf0535130538",
+                "event_date": "2019-12-11T12:44:48.237000",
+                "event_type": "Birth Report",
+                "weight": 4.9,
+                "height": 38.0,
+                "event_id": "1576068290459"
+            },
+            {
+                "anc_id": "100U03",
+                "base_entity_id": "4df4766e-2bb9-41e6-bf64-ec6f5b57e770",
+                "event_date": "2019-12-11T04:22:05.752000",
+                "event_type": "Birth Report",
+                "weight": 2.2,
+                "height": 48.0,
+                "event_id": "1576038125916"
+            },
+            {
+                "anc_id": "101CGF",
+                "base_entity_id": "152cb8f4-1e7f-4981-83cd-6614700bb16d",
+                "event_date": "2021-05-17T13:12:52.561000",
+                "event_type": "Birth Report",
+                "weight": 2.8,
+                "height": 30.0,
+                "event_id": "1621257172796"
+            },
+            {
+                "anc_id": "101CK8",
+                "base_entity_id": "238ae76c-7884-4bab-b9c0-f6e09141006b",
+                "event_date": "2021-05-18T13:05:35.108000",
+                "event_type": "PNC Child Registration",
+                "weight": 13.0,
+                "height": 40.0,
+                "event_id": "1621345535767"
+            },
+            {
+                "anc_id": "101CK8",
+                "base_entity_id": "238ae76c-7884-4bab-b9c0-f6e09141006b",
+                "event_date": "2021-05-18T14:37:11.656000",
+                "event_type": "Nutrition Report",
+                "weight": 13.0,
+                "height": 40.0,
+                "event_id": "1621348632036"
+            },
+            {
+                "anc_id": "101C8Y",
+                "base_entity_id": "cf3b3842-5fd3-4018-b6c4-69af23fec3ac",
+                "event_date": "2021-05-17T12:19:53.003000",
+                "event_type": "Birth Report",
+                "weight": 2.8,
+                "height": 98.0,
+                "event_id": "1621253993144"
+            },
+            {
+                "anc_id": "10000X",
+                "base_entity_id": "fff74f0f-6066-43e8-9cd0-4fc174ed1c0b",
+                "event_date": "2019-12-16T01:36:10.358000",
+                "event_type": "Birth Report",
+                "weight": 3.3,
+                "height": 48.0,
+                "event_id": "1576460170388"
+            },
+            {
+                "anc_id": "1000C6",
+                "base_entity_id": "f46ef9f4-e6ef-44c5-ab00-5a9b4edc4449",
+                "event_date": "2019-12-15T14:12:08.127000",
+                "event_type": "PNC Child Registration",
+                "weight": 9.0,
+                "height": 64.0,
+                "event_id": "1576419068484"
+            },
+            {
+                "anc_id": "100VNL",
+                "base_entity_id": "7bbd47d2-78fb-4b9d-afe4-8cccb7834fb5",
+                "event_date": "2019-12-15T14:25:02.388000",
+                "event_type": "Birth Report",
+                "weight": 2.2,
+                "height": 48.0,
+                "event_id": "1576419902562"
+            },
+            {
+                "anc_id": "100U4U",
+                "base_entity_id": "5492d7df-64e1-4ed1-9b49-e107a8900a5d",
+                "event_date": "2019-12-16T07:14:10.087000",
+                "event_type": "Birth Report",
+                "weight": 3.3,
+                "height": 48.0,
+                "event_id": "1576480450346"
+            },
+            {
+                "anc_id": "10018C",
+                "base_entity_id": "d4ad5f41-f25b-4b89-8816-0d0038ca9549",
+                "event_date": "2019-12-16T08:12:01.683000",
+                "event_type": "PNC Child Registration",
+                "weight": 4.3,
+                "height": 51.0,
+                "event_id": "1576485121902"
+            },
+            {
+                "anc_id": "100199",
+                "base_entity_id": "b5a5fd7a-78d9-48fd-a573-9e682a1445fc",
+                "event_date": "2019-12-16T08:12:03.047000",
+                "event_type": "PNC Child Registration",
+                "weight": 4.3,
+                "height": 51.0,
+                "event_id": "1576485123121"
+            },
+            {
+                "anc_id": "1001GV",
+                "base_entity_id": "a670eef6-74b8-4a9a-a03d-3ced696f1964",
+                "event_date": "2019-12-16T18:12:14.192000",
+                "event_type": "PNC Child Registration",
+                "weight": 2.2,
+                "height": 48.0,
+                "event_id": "1576521434393"
+            },
+            {
+                "anc_id": "10024K",
+                "base_entity_id": "e4c61752-41dd-442b-b290-beea56571263",
+                "event_date": "2019-12-17T09:35:39.486000",
+                "event_type": "Birth Report",
+                "weight": 4.9,
+                "height": 38.0,
+                "event_id": "1576575339675"
+            },
+            {
+                "anc_id": "1001X0",
+                "base_entity_id": "4caa9c9d-65ee-497a-95ad-b8b445970e8c",
+                "event_date": "2019-12-17T08:51:46.149000",
+                "event_type": "Birth Report",
+                "weight": 3.5,
+                "height": 48.0,
+                "event_id": "1576572981288"
+            },
+            {
+                "anc_id": "1003MF",
+                "base_entity_id": "938e30ca-e9d7-4267-9507-e9757d5c29f7",
+                "event_date": "2020-07-30T16:07:18.234000",
+                "event_type": "PNC Child Registration",
+                "weight": 9.0,
+                "height": 64.0,
+                "event_id": "1596125420780"
+            },
+            {
+                "anc_id": "1003ND",
+                "base_entity_id": "03024a5f-9cd8-4aa7-b71a-a81df3e41406",
+                "event_date": "2020-07-30T16:07:38.436000",
+                "event_type": "PNC Child Registration",
+                "weight": 9.0,
+                "height": 64.0,
+                "event_id": "1596125498736"
+            },
+            {
+                "anc_id": "1003PA",
+                "base_entity_id": "fca2cb5c-fd5e-4c57-b454-6e6f314a6d1f",
+                "event_date": "2020-07-30T16:07:06.862000",
+                "event_type": "PNC Child Registration",
+                "weight": 9.0,
+                "height": 64.0,
+                "event_id": "1596125587137"
+            },
+            {
+                "anc_id": "1003T6",
+                "base_entity_id": "d0aff6fe-6c4e-4ae4-b0e0-386074b86528",
+                "event_date": "2020-07-30T16:07:15.804000",
+                "event_type": "PNC Child Registration",
+                "weight": 4.0,
+                "height": 52.0,
+                "event_id": "1596125655915"
+            },
+            {
+                "anc_id": "1003U4",
+                "base_entity_id": "4bdee861-a771-4e44-bb24-f87c1444103e",
+                "event_date": "2020-07-30T16:07:57.712000",
+                "event_type": "PNC Child Registration",
+                "weight": 4.0,
+                "height": 52.0,
+                "event_id": "1596125997996"
+            },
+            {
+                "anc_id": "10053J",
+                "base_entity_id": "7cff5414-a5c0-4c6d-9ade-ecf6690ea33e",
+                "event_date": "2021-03-08T14:03:16.970000",
+                "event_type": "PNC Child Registration",
+                "weight": 3.3,
+                "height": 50.0,
+                "event_id": "1615214957269"
+            },
+            {
+                "anc_id": "10054G",
+                "base_entity_id": "95703662-e968-4bf0-b486-4f7ff1455a7a",
+                "event_date": "2021-03-08T14:03:11.188000",
+                "event_type": "PNC Child Registration",
+                "weight": 3.3,
+                "height": 50.0,
+                "event_id": "1615215071485"
+            },
+            {
+                "anc_id": "10052L",
+                "base_entity_id": "3cec69b1-861c-4bec-8a42-3ae72b360c07",
+                "event_date": "2021-03-08T14:03:56.134000",
+                "event_type": "PNC Child Registration",
+                "weight": 3.3,
+                "height": 50.0,
+                "event_id": "1615214097467"
+            },
+            {
+                "anc_id": "1004XW",
+                "base_entity_id": "62c1189c-23a6-414c-9961-c6ec3aca5f5d",
+                "event_date": "2020-12-06T04:12:38.795000",
+                "event_type": "PNC Child Registration",
+                "weight": 4.3,
+                "height": 51.0,
+                "event_id": "1607227839937"
+            },
+            {
+                "anc_id": "10051N",
+                "base_entity_id": "eb227691-e88e-4121-ba3f-f5bf4e33b778",
+                "event_date": "2020-12-06T04:12:15.229000",
+                "event_type": "PNC Child Registration",
+                "weight": 4.0,
+                "height": 53.0,
+                "event_id": "1607228655501"
+            },
+            {
+                "anc_id": "10050R",
+                "base_entity_id": "558e583b-b8cb-46ad-8542-0ad801c80649",
+                "event_date": "2020-12-06T04:12:29.883000",
+                "event_type": "PNC Child Registration",
+                "weight": 3.3,
+                "height": 50.0,
+                "event_id": "1607228190597"
+            },
+            {
+                "anc_id": "1004YU",
+                "base_entity_id": "489efa22-871e-4d1a-a2b1-7c5f8f671537",
+                "event_date": "2020-12-09T05:12:02.219000",
+                "event_type": "PNC Child Registration",
+                "weight": 3.3,
+                "height": 50.0,
+                "event_id": "1607490244430"
+            },
+            {
+                "anc_id": "101AJC",
+                "base_entity_id": "bd06d0aa-fae5-41f1-9f4c-dfa30424d9e0",
+                "event_date": "2021-04-22T15:04:08.447000",
+                "event_type": "Update Child Registration",
+                "weight": 2.2,
+                "height": 48.0,
+                "event_id": "1619104928816"
+            },
+            {
+                "anc_id": "101AUU",
+                "base_entity_id": "67e7c662-3834-4fa2-8b2e-da3c3c8139d7",
+                "event_date": "2021-04-23T05:04:35.791000",
+                "event_type": "PNC Child Registration",
+                "weight": 7.9,
+                "height": 64.0,
+                "event_id": "1619155609560"
+            }
+        ],
+        "columns": ["anc_id", "base_entity_id", "event_date", "event_type", "weight", "height", "event_id"]
+    }
+}

@@ -113,6 +113,12 @@ export const SUPERSET_PREGNANCY_DATA_EXPORT =
     'https://discover.ona.io/superset/explore_json/?form_data={"slice_id":2263}&csv=true';
 
 // slice IDs
+export const PREGNANCY_LOGFACE_SLICE = 'pregnancyLogface';
+
+export const NBC_AND_PNC_LOGFACE_SLICE = 'nbcPncLogFace';
+
+export const NUTRITION_LOGFACE_SLICE = 'nutritionLogface';
+
 export const PROVINCE_SLICE = 'province';
 
 export const DISTRICT_SLICE = 'district';
@@ -126,3 +132,17 @@ export const LOCATION_SLICES = [PROVINCE_SLICE, DISTRICT_SLICE, COMMUNE_SLICE, V
 export const SUPERSET_SMS_DATA_SLICE = 'smsData';
 
 export const USER_LOCATION_DATA_SLICE = 'userLocation';
+
+export const BACKEND_ACTIVE = false;
+
+export const EXPRESS_OAUTH_LOGOUT_URL = 'http://localhost:3000/logout';
+
+export const KEYCLOAK_LOGOUT_URL =
+    'https://keycloak-test-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/logout';
+
+/** Express server settings */
+export const EXPRESS_OAUTH_GET_STATE_URL = 'http://localhost:3000/oauth/state';
+
+export const CHILD_CHART_SLICE = 'childChartSlice';
+
+export const MOTHER_CHART_SLICE = 'motherChartSlice';

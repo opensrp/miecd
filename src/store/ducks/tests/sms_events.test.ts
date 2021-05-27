@@ -1,19 +1,24 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
+import { NUTRITION_MODULE, PREGNANCY_MODULE } from '../../../constants';
 import { SmsFilterFunction } from 'types';
 import { smsDataFixtures } from '../../../containers/Compartments/test/fixtures';
 import store from '../../index';
 import reducer, {
     addFilterArgs,
+    fetchLogFaceSms,
     fetchSms,
     getFilterArgs,
     getFilteredSmsData,
     getSmsData,
+    logFaceSmsBaseSelector,
     reducerName,
     removeFilterArgs,
+    RemoveLogFaceSms,
     removeSms,
     SmsData,
     smsDataFetched,
 } from '../sms_events';
+import { nutritionSmsFixtures, PregnancyReportFixture } from './fixtures';
 import { expectedSmsData } from './fixures/smsEvents';
 
 reducerRegistry.register(reducerName, reducer);
@@ -152,5 +157,48 @@ describe('reducers/sms_events/getFilteredSmsData', () => {
                 return element.height < 48;
             }),
         );
+    });
+});
+
+const selectByModule = logFaceSmsBaseSelector();
+describe('reducers/sms_events.reselect', () => {
+    afterEach(() => {
+        store.dispatch(RemoveLogFaceSms());
+    });
+
+    it('logface events added by module work correctly', () => {
+        const nutrition1 = nutritionSmsFixtures[0];
+        const pregnancy1 = PregnancyReportFixture[0];
+        store.dispatch(fetchLogFaceSms([nutrition1], NUTRITION_MODULE));
+        expect(selectByModule(store.getState(), { module: PREGNANCY_MODULE })).toEqual([]);
+        expect(selectByModule(store.getState(), { module: NUTRITION_MODULE })).toEqual([
+            {
+                ...nutrition1,
+                EventDate: '23/04/2021',
+            },
+        ]);
+        store.dispatch(fetchLogFaceSms([pregnancy1], PREGNANCY_MODULE));
+        expect(selectByModule(store.getState(), { module: PREGNANCY_MODULE })).toEqual([
+            {
+                ...pregnancy1,
+                EventDate: '11/05/2021',
+            },
+        ]);
+        expect(selectByModule(store.getState(), { module: NUTRITION_MODULE })).toEqual([
+            {
+                ...nutrition1,
+                EventDate: '23/04/2021',
+            },
+        ]);
+        expect(selectByModule(store.getState(), {})).toEqual([
+            {
+                ...nutrition1,
+                EventDate: '23/04/2021',
+            },
+            {
+                ...pregnancy1,
+                EventDate: '11/05/2021',
+            },
+        ]);
     });
 });
