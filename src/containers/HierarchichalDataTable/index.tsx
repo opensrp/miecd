@@ -56,7 +56,7 @@ import smsReducer, {
     NbcPncSmsData,
     getFilterArgs,
 } from '../../store/ducks/sms_events';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, TFunction } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { CompartmentsSmsFilterFunction } from '../../types';
 import { queryKeyAndSmsSlice } from '../../configs/settings';
@@ -531,6 +531,35 @@ const getTotals = (dataToShow: LocationWithData[], module: moduleType) => {
     return dataToShow.reduce(reducer, totalsMap);
 };
 
+/**
+ * compose message to show unavailability of drill down children
+ * @param headerTitle array of header strings
+ * @param currentLevel a number between 0-3 representing the current drill down level
+ * @param t the react-i18next translation function
+ * @returns a string in the form of 'The Ayun commune doesn't seem to have villages'
+ */
+const unavailableChildren = (headerTitle: string[], currentLevel: 0 | 1 | 2 | 3, t: TFunction) => {
+    // translate level number to level name
+    const levelToName = (levelNo: 0 | 1 | 2 | 3, t: TFunction, plural?: boolean) => {
+        let levelName: 'provinces' | 'province' | 'districts' | 'district' | 'communes' | 'commune' | 'villages';
+
+        if (levelNo === 0) levelName = plural ? 'provinces' : 'province';
+        else if (levelNo === 1) levelName = plural ? 'districts' : 'district';
+        else if (levelNo === 2) levelName = plural ? 'communes' : 'commune';
+        else levelName = 'villages';
+
+        return t(levelName);
+    };
+
+    // compose message from last item in header, current and previous drill down level
+    const unavailableMessage = `The ${headerTitle[headerTitle.length - 1]} ${levelToName(
+        (currentLevel - 1) as 0 | 1 | 2 | 3,
+        t,
+    )} doesn't seem to have ${levelToName(currentLevel, t, true)}`;
+
+    return `${t(unavailableMessage)}`;
+};
+
 export default function HierarchicalDataTable() {
     const [populatedLocationData, setPopulatedLocationData] = useState<LocationWithData[] | undefined>(undefined);
     const [villageData, setVillageData] = useState<CompartmentSmsTypes[] | undefined>(undefined);
@@ -919,7 +948,7 @@ export default function HierarchicalDataTable() {
                                 )}
                             </thead>
                             <tbody id="body">
-                                {populatedLocationData ? (
+                                {populatedLocationData?.length ? (
                                     populatedLocationData.map((element: LocationWithData) => {
                                         return (
                                             <tr
@@ -1019,7 +1048,8 @@ export default function HierarchicalDataTable() {
                                     })
                                 ) : (
                                     <tr id="no-rows">
-                                        <td>{t('There seems to be no rows here')}</td>
+                                        {/* compose message to show unavailability of drill down children */}
+                                        <td>{unavailableChildren(headerTitle, current_level as 0 | 1 | 2 | 3, t)}</td>
                                     </tr>
                                 )}
                                 {(() => {

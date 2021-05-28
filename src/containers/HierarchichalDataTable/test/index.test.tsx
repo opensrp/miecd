@@ -383,4 +383,26 @@ describe('HierarchichalDataTable', () => {
 
         wrapper.unmount();
     });
+    it('shows friendly error if drill down level is unavailable', async () => {
+        const queryClient = new QueryClient();
+
+        // fetch Nutrition sms slice
+        fetchMock.get(`https://somesuperseturl.org/superset/slice_json/6`, pregnancySmsData);
+
+        // mount level 3 for commune node_id with no villages "The 'Ayun' commune"
+        const wrapper = renderWithProviders(ConnectedHierarchicalDataTable, {
+            store,
+            queryClient,
+            initialEntry: '/Pregnancy/all/11 Total Pregnancies/3/down/4f03186d-674c-44c5-8d74-9351272df429/0',
+        });
+
+        // flush promises
+        await waitForPromises();
+        wrapper.update();
+
+        // expect to find the no rows td with the error message
+        expect(wrapper.find('#no-rows td').text()).toMatchInlineSnapshot(
+            `"The Provinces commune doesn't seem to have villages"`,
+        );
+    });
 });
