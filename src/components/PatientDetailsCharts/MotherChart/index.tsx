@@ -45,7 +45,6 @@ function MotherChart(props: MotherChartTypes) {
     useEffect(() => {
         const patientId = props.match.params.patient_id;
         chartSupersetCall(MOTHER_CHART_SLICE, addMotherDataCreator, supersetService, chartFormDataFilters(patientId))
-            .then(() => setLoading(false))
             .catch((e) => handleBrokenPage(e))
             .finally(() => setLoading(false));
         // eslint-disable-next-line react-hooks/exhaustive-deps

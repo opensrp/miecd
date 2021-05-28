@@ -39,9 +39,6 @@ function ChildChart(props: ChildChartTypes) {
     useEffect(() => {
         const patientId = props.match.params.patient_id;
         chartSupersetCall(CHILD_CHART_SLICE, addChildDataCreator, supersetService, chartFormDataFilters(patientId))
-            .then(() => {
-                setLoading(false);
-            })
             .catch((e) => {
                 handleBrokenPage(e);
             })
