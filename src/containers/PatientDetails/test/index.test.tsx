@@ -1,13 +1,11 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { ConnectedRouter } from 'connected-react-router';
-import { PATIENT_DETAIL_URL, PREGNANCY, PREGNANCY_LOGFACE_URL } from '../../../constants';
-import { LogFacePropsType } from 'containers/LogFace';
+import { PATIENT_DETAIL_URL } from '../../../constants';
 import toJson from 'enzyme-to-json';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
-import { MemoryRouter, Route, RouteComponentProps, Router } from 'react-router';
 import { clearLocationSlice } from 'store/ducks/locations';
 import { mountWithTranslations } from '../../../helpers/testUtils';
 import smsReducer, { reducerName, removeSms } from '../../../store/ducks/sms_events';
