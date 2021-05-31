@@ -25,6 +25,7 @@ import {
     EC_FAMILY_MEMBER,
     EC_WOMAN,
     HIERARCHICAL_DATA_URL,
+    MODULE_SEARCH_PARAM_KEY,
     NBC_AND_PNC_CHILD,
     NBC_AND_PNC_COMPARTMENTS_URL,
     NBC_AND_PNC_WOMAN,
@@ -63,7 +64,8 @@ import { split, trim, replace } from 'lodash';
 import * as React from 'react';
 import { TFunction } from 'i18next';
 import { ActionCreator } from 'redux';
-import { SupersetFormData } from '@onaio/superset-connector/dist/types';
+import { SupersetFormData } from '@onaio/superset-connector';
+import { stringifyUrl } from 'query-string';
 export type { Dictionary };
 
 /** Custom function to get oAuth user info depending on the oAuth2 provider
@@ -474,14 +476,15 @@ export function getLinkToHierarchicalDataTable(
  * @param {SmsData} smsData - an object representing a single smsEvent
  * @param {string} prependWith- the url we want to prepend this link/string with.
  */
-export function getLinkToPatientDetail(smsData: LogFaceSmsType, prependWith: string) {
+export function getLinkToPatientDetail(smsData: LogFaceSmsType, prependWith: string, module: LogFaceModules) {
+    let url = '#';
     if (smsData.client_type === EC_CHILD) {
-        return `${prependWith}/${CHILD_PATIENT_DETAIL}/${smsData.anc_id}`;
+        url = `${prependWith}/${CHILD_PATIENT_DETAIL}/${smsData.anc_id}`;
     }
     if (smsData.client_type === EC_WOMAN || smsData.client_type === EC_FAMILY_MEMBER) {
-        return `${prependWith}/${PATIENT_DETAIL}/${smsData.anc_id}`;
+        url = `${prependWith}/${PATIENT_DETAIL}/${smsData.anc_id}`;
     }
-    return `#`;
+    return stringifyUrl({ url, query: { [MODULE_SEARCH_PARAM_KEY]: module } });
 }
 
 /**

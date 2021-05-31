@@ -268,6 +268,7 @@ const LogFace = (props: LogFacePropsType) => {
                                                     to={getLinkToPatientDetail(
                                                         dataObj,
                                                         getModuleLogFaceUrlLink(module),
+                                                        module,
                                                     )}
                                                 >
                                                     {dataObj.anc_id}
@@ -280,6 +281,7 @@ const LogFace = (props: LogFacePropsType) => {
                                                     to={getLinkToPatientDetail(
                                                         dataObj,
                                                         getModuleLogFaceUrlLink(module),
+                                                        module,
                                                     )}
                                                 >
                                                     <RiskColoring
