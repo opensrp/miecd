@@ -1,22 +1,21 @@
 import ListView from '@onaio/list-view';
-import NoRecord from 'components/NoRecord';
+import { ConnectedChildChart } from 'components/PatientDetailsCharts/ChildChart';
+import { ConnectedMotherChart } from 'components/PatientDetailsCharts/MotherChart';
 import { keyBy, uniqWith } from 'lodash';
 import React, { useState } from 'react';
 import { TFunction, Trans, useTranslation } from 'react-i18next';
+import { RouteComponentProps } from 'react-router';
 import Select from 'react-select';
 import { Row } from 'reactstrap';
 import {
     ANC_REPORT,
     BIRTH_REPORT,
     GESTATION_PERIOD,
-    getMonthNames,
     NUTRITION_REGISTRATION,
     NUTRITION_REPORT,
     PREGNANCY_REGISTRATION,
 } from '../../constants';
-import { sortByEventDate } from '../../helpers/utils';
 import { SmsData } from '../../store/ducks/sms_events';
-import { Chart } from '../WeightAndHeightChart';
 import './index.css';
 
 interface ReportTableProps {
@@ -29,7 +28,7 @@ const defaultProps = {
     isChild: false,
 };
 
-export type ReportTableTypes = ReportTableProps;
+export type ReportTableTypes = ReportTableProps & RouteComponentProps<{ patient_id: string }>;
 
 function ReportTable(props: ReportTableTypes) {
     const { singlePatientEvents, isChild } = props;
@@ -56,7 +55,6 @@ function ReportTable(props: ReportTableTypes) {
         tdClass: 'report-table__td',
     };
 
-    const currentSmsDataChunk = smsChunks[currentSmsChunkIndex];
     const filterOptions = pregnancyOptionsFilter(smsChunks, t);
     const filterValue = keyBy(filterOptions, (x) => x.value)[currentSmsChunkIndex];
 
@@ -87,42 +85,7 @@ function ReportTable(props: ReportTableTypes) {
             <Row id="tableRow">
                 <ListView {...listViewProps} />
             </Row>
-            {currentSmsDataChunk.length > 0 ? (
-                <div id="chart">
-                    {isChild ? (
-                        <Chart
-                            dataArray={getWeightHeightDataSeries(currentSmsDataChunk, t)}
-                            chartWrapperId="child-nutrition-chart-1"
-                            title={t('Weight Height Monitoring')}
-                            legendString={t('Weight Height')}
-                            units={t('cm')}
-                            yAxisLabel={t('weight and height')}
-                        />
-                    ) : (
-                        <>
-                            <Chart
-                                dataArray={getWeightDataSeries(currentSmsDataChunk, t)}
-                                chartWrapperId="weight-chart-1"
-                                title={t('Weight Monitoring')}
-                                legendString={t('Weight')}
-                                units={t('kg')}
-                                yAxisLabel={t('weight')}
-                            />
-
-                            <Chart
-                                dataArray={getBloodPSeriesForChart(currentSmsDataChunk, t)}
-                                chartWrapperId="blood-pressure"
-                                title="Blood Pressure"
-                                legendString={t('Blood pressure')}
-                                units=""
-                                yAxisLabel={t('Blood Pressure')}
-                            />
-                        </>
-                    )}
-                </div>
-            ) : (
-                <NoRecord message={t('No data found')} />
-            )}
+            {isChild ? <ConnectedChildChart {...props} /> : <ConnectedMotherChart {...props} />}
         </>
     );
 }
@@ -186,78 +149,6 @@ export const chunkByGravida = (smsEvents: SmsData[]) => {
         return false;
     });
     return finalChunks;
-};
-
-/** create a chart data series containing the weight and height data series from smsEvents */
-export const getWeightHeightDataSeries = (smsEvents: SmsData[], t: TFunction) => {
-    const categories: string[] = [];
-    const dataSeries: { data: (number | undefined)[]; name: string }[] = [
-        { data: [], name: 'weight' },
-        { data: [], name: 'height' },
-    ];
-    // make sure events are sorted from oldest to latest
-    const sortedSmsEvents = sortByEventDate(smsEvents).reverse();
-
-    for (const data of sortedSmsEvents) {
-        const calendarCategoryObj = {
-            month: new Date(data.event_date).getMonth(),
-            year: new Date(data.event_date).getFullYear(),
-        };
-        if (data.weight && data.height) {
-            categories.push(`${getMonthNames(t)[calendarCategoryObj.month]}/${calendarCategoryObj.year}`);
-            dataSeries[0].data.push(data.weight);
-            dataSeries[1].data.push(data.height);
-        }
-    }
-    return {
-        categories,
-        dataSeries,
-    };
-};
-
-/** create a chart data series containing the weight data series from smsEvents */
-export const getWeightDataSeries = (smsEvents: SmsData[], t: TFunction) => {
-    const dataSeries = getWeightHeightDataSeries(smsEvents, t);
-    const weightDataSeries = {
-        categories: dataSeries.categories,
-        dataSeries: [dataSeries.dataSeries[0]],
-    };
-
-    return weightDataSeries;
-};
-
-/** create a data series containing the diastolic and systolic data series from smsEvents */
-export const getBloodPSeriesForChart = (smsEvents: SmsData[], t: TFunction) => {
-    const categories: string[] = [];
-    const dataSeries: { data: (number | undefined)[]; name: string }[] = [
-        { data: [], name: 'systolic' },
-        { data: [], name: 'diastolic' },
-    ];
-    // make sure events are sorted from oldest to latest
-    const sortedSmsEvents = sortByEventDate(smsEvents).reverse();
-
-    const regex = /\d{2,3}\S{0,3}\d{2,3}/;
-    const singleBpValueRegex = /\d{2,3}/g;
-
-    for (const data of sortedSmsEvents) {
-        const calendarCategoryObj = {
-            month: new Date(data.EventDate).getMonth(),
-            year: new Date(data.EventDate).getFullYear(),
-        };
-        const hasValidBp = regex.test(data.bp);
-        if (!hasValidBp) {
-            continue;
-        }
-        categories.push(`${getMonthNames(t)[calendarCategoryObj.month]}/${calendarCategoryObj.year}`);
-        const matchedValues = [...Array.from(data.bp.matchAll(singleBpValueRegex))];
-
-        dataSeries[0].data.push(Number(matchedValues[0]));
-        dataSeries[1].data.push(Number(matchedValues[1]));
-    }
-    return {
-        categories,
-        dataSeries,
-    };
 };
 
 /** generate filter option filters from chunked smsEvents */

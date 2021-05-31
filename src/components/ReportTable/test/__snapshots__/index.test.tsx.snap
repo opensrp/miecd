@@ -1,5 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ReportTable renders correctly: Filter panel 1`] = `
+<div
+  id="filter-panel"
+>
+  <p>
+    <Trans
+      t={[Function]}
+    >
+      Showing reports for: 
+    </Trans>
+  </p>
+  <div
+    className="filters"
+  >
+    <Component
+      classNamePrefix="patient-details-filters"
+      id="pregnancy-filter"
+      isClearable={true}
+      onChange={[Function]}
+      options={
+        Array [
+          Object {
+            "label": "Current Pregnancy",
+            "value": 0,
+          },
+        ]
+      }
+      placeholder="Select pregnancy"
+      value={
+        Object {
+          "label": "Current Pregnancy",
+          "value": 0,
+        }
+      }
+    >
+      <select
+        data-testid="select"
+        onChange={[Function]}
+      >
+        <option
+          key="0"
+          value={0}
+        >
+          Current Pregnancy
+        </option>
+      </select>
+    </Component>
+  </div>
+</div>
+`;
+
 exports[`ReportTable works okay: after filter pregnancies 1`] = `"ReportDateReporterMessage"`;
 
 exports[`ReportTable works okay: after filter pregnancies 2`] = `

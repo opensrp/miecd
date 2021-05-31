@@ -8,7 +8,7 @@ div#chart-wrapper {
     stroke-width: 2px;
 }
 
-#chart > .card {
+.chart-card {
     margin-bottom: 30px;
     width: 100%;
 }

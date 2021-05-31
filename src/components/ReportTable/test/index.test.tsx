@@ -1,20 +1,34 @@
-import { shallow } from 'enzyme';
-import toJson from 'enzyme-to-json';
-import ReportTable, {
-    chunkByGravida,
-    filterEventsByType,
-    getWeightHeightDataSeries,
-    getBloodPSeriesForChart,
-    pregnancyOptionsFilter,
-    getWeightDataSeries,
-} from '..';
-import { mountWithTranslations } from '../../../helpers/testUtils';
-import { backDatedEvents, singlePatientEvents } from './fixtures';
-import { smsDataFixture } from '../../../store/ducks/tests/fixtures/index';
+import ReportTable from '..';
 import { Dictionary } from '@onaio/utils';
+import { mountWithTranslations } from 'helpers/testUtils';
+import { createBrowserHistory } from 'history';
 import React from 'react';
+import store from 'store';
+import toJson from 'enzyme-to-json';
+import { Provider } from 'react-redux';
+import { Router } from 'react-router';
+import { backDatedEvents } from './fixtures';
+import { smsDataFixture } from '../../../store/ducks/tests/fixtures/index';
+import { act } from 'react-dom/test-utils';
 
 jest.mock('highcharts');
+
+const history = createBrowserHistory();
+const locationProps = {
+    history,
+    location: {
+        hash: '',
+        pathname: `chart`,
+        search: '',
+        state: {},
+    },
+    match: {
+        isExact: true,
+        params: { patient_id: '1002KL' },
+        path: `chart`,
+        url: `chart`,
+    },
+};
 
 jest.mock('react-select', () => ({ options, onChange }: Dictionary) => {
     function handleChange(event: Dictionary) {
@@ -32,49 +46,35 @@ jest.mock('react-select', () => ({ options, onChange }: Dictionary) => {
         </select>
     );
 });
+
 describe('ReportTable', () => {
     beforeEach(() => {
         jest.resetAllMocks();
     });
 
-    // eslint-disable-next-line jest/expect-expect
-    it('must render without crashing', () => {
-        shallow(<ReportTable singlePatientEvents={[]} />);
-    });
-
-    it('works okay', () => {
+    it('works okay', async () => {
         const smsDataProps = smsDataFixture.filter((sms) => sms.anc_id.toLowerCase() === '1002lj');
         const smsData = [...smsDataProps, ...backDatedEvents];
         const props = {
+            ...locationProps,
             singlePatientEvents: smsData,
             isChild: false,
         };
-        const wrapper = mountWithTranslations(<ReportTable {...props} />);
-        wrapper.find('table tr').forEach((tr) => {
-            expect(tr.text()).toMatchSnapshot('initial current pregnancies');
+        const wrapper = mountWithTranslations(
+            <Provider store={store}>
+                <Router history={history}>
+                    <ReportTable {...props} />
+                </Router>
+            </Provider>,
+        );
+
+        await act(async () => {
+            await new Promise((r) => setImmediate(r));
+            wrapper.update();
         });
 
-        expect(wrapper.find('Chart').at(0).props()).toEqual({
-            chartWrapperId: 'weight-chart-1',
-            dataArray: { categories: ['September/2019'], dataSeries: [{ data: [54], name: 'weight' }] },
-            legendString: 'Weight',
-            title: 'Weight Monitoring',
-            units: 'kg',
-            yAxisLabel: 'weight',
-        });
-        expect(wrapper.find('Chart').at(1).props()).toEqual({
-            chartWrapperId: 'blood-pressure',
-            dataArray: {
-                categories: ['September/2018'],
-                dataSeries: [
-                    { data: [123], name: 'systolic' },
-                    { data: [78], name: 'diastolic' },
-                ],
-            },
-            legendString: 'Blood pressure',
-            title: 'Blood Pressure',
-            units: '',
-            yAxisLabel: 'Blood Pressure',
+        wrapper.find('table tr').forEach((tr) => {
+            expect(tr.text()).toMatchSnapshot('initial current pregnancies');
         });
 
         expect(toJson(wrapper.find('select'))).toMatchSnapshot('pregnancy filter');
@@ -86,71 +86,48 @@ describe('ReportTable', () => {
         wrapper.find('table tr').forEach((tr) => {
             expect(tr.text()).toMatchSnapshot('after filter pregnancies');
         });
-        expect(wrapper.find('Chart').at(0).props()).toEqual({
-            chartWrapperId: 'weight-chart-1',
-            dataArray: { categories: ['March/2020'], dataSeries: [{ data: [78], name: 'weight' }] },
-            legendString: 'Weight',
-            title: 'Weight Monitoring',
-            units: 'kg',
-            yAxisLabel: 'weight',
-        });
-        expect(wrapper.find('Chart').at(1).props()).toEqual({
-            chartWrapperId: 'blood-pressure',
-            dataArray: {
-                categories: ['March/2020'],
-                dataSeries: [
-                    { data: [120], name: 'systolic' },
-                    { data: [80], name: 'diastolic' },
-                ],
-            },
-            legendString: 'Blood pressure',
-            title: 'Blood Pressure',
-            units: '',
-            yAxisLabel: 'Blood Pressure',
-        });
-    });
-});
-
-describe('ReportTable utils', () => {
-    const sampleT = (t: string) => t;
-    it('filter events by type', () => {
-        let response = filterEventsByType(singlePatientEvents, true);
-        expect(response.map((x) => x.event_id)).toEqual(['1569576788502']);
-        response = filterEventsByType(singlePatientEvents, false);
-        expect(response.map((x) => x.event_id)).toEqual(['1569575715416', '1569575947489']);
     });
 
-    it('get weight and height series', () => {
-        let response = getWeightHeightDataSeries(singlePatientEvents, sampleT);
-        expect(response).toEqual({
-            categories: ['September/2019', 'September/2019', 'September/2019'],
-            dataSeries: [
-                { data: [2, 78, 2], name: 'weight' },
-                { data: [48, 165, 48], name: 'height' },
-            ],
+    it('renders correctly', async () => {
+        const props = {
+            ...locationProps,
+        };
+        const wrapper = mountWithTranslations(
+            <Provider store={store}>
+                <Router history={history}>
+                    <ReportTable {...props} />
+                </Router>
+            </Provider>,
+        );
+        await act(async () => {
+            await new Promise((r) => setImmediate(r));
+            wrapper.update();
         });
-        response = getWeightDataSeries(singlePatientEvents, sampleT);
-        expect(response).toEqual({
-            categories: ['September/2019', 'September/2019', 'September/2019'],
-            dataSeries: [{ data: [2, 78, 2], name: 'weight' }],
-        });
+
+        expect(toJson(wrapper.find('#filter-panel'))).toMatchSnapshot('Filter panel');
+        expect(wrapper.find('#tableRow table')).toHaveLength(1);
+        expect(wrapper.find('MotherChart')).toHaveLength(1);
+        expect(wrapper.find('ChildChart')).toHaveLength(0);
     });
-    it('get blood pressure data series', () => {
-        const response = getBloodPSeriesForChart(singlePatientEvents, sampleT);
-        expect(response).toEqual({
-            categories: ['September/2019', 'September/2019', 'September/2019'],
-            dataSeries: [
-                { data: [120, 118, 118], name: 'systolic' },
-                { data: [80, 78, 78], name: 'diastolic' },
-            ],
+    it('renders child chart', async () => {
+        const props = {
+            ...locationProps,
+            isChild: true,
+        };
+        const wrapper = mountWithTranslations(
+            <Provider store={store}>
+                <Router history={history}>
+                    <ReportTable {...props} />
+                </Router>
+            </Provider>,
+        );
+
+        await act(async () => {
+            await new Promise((r) => setImmediate(r));
+            wrapper.update();
         });
-    });
-    it('pregnancyOptionsFilter', () => {
-        const chunkedSms = chunkByGravida(singlePatientEvents);
-        const response = pregnancyOptionsFilter(chunkedSms, sampleT);
-        expect(response).toEqual([
-            { label: 'pregnancy 1', value: 0 },
-            { label: 'Current Pregnancy', value: 1 },
-        ]);
+
+        expect(wrapper.find('MotherChart')).toHaveLength(0);
+        expect(wrapper.find('ChildChart')).toHaveLength(1);
     });
 });
