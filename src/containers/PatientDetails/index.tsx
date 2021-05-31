@@ -9,7 +9,7 @@ import { useLastLocation } from 'react-router-last-location';
 import { Store } from 'redux';
 import BasicInformation, { LabelValuePair } from '../../components/BasicInformation';
 import ReportTable from '../../components/ReportTable';
-import { BACKPAGE_ICON, COMMUNE, DISTRICT, PROVINCE, VILLAGE } from '../../constants';
+import { BACKPAGE_ICON, COMMUNE, DISTRICT, MODULE_SEARCH_PARAM_KEY, PROVINCE, VILLAGE } from '../../constants';
 import * as React from 'react';
 import './index.css';
 import { keyBy } from 'lodash';
@@ -23,6 +23,8 @@ import { getSmsDataByFilters, LogFaceSmsType, selectSmsDataByPatientId } from '.
 import smsReducer, { reducerName as smsReducerName, SmsData } from '../../store/ducks/sms_events';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { PatientDetailsReport } from 'components/PatientDetailsReports';
+import { parse } from 'query-string';
+import { LogFaceModules } from 'configs/settings';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -277,9 +279,12 @@ type MapStateToProps = Pick<
 const mapStateToProps = (state: Partial<Store>, ownProps: PatientDetailProps): MapStateToProps => {
     const patientId = ownProps.match.params.patient_id;
 
+    const module = parse(ownProps.location.search)[MODULE_SEARCH_PARAM_KEY] as LogFaceModules | undefined;
+
     const smsData = selectSmsDataByPatientId(state, patientId);
     const logFaceReports = smsByFilters(state, {
         patientId: patientId,
+        module,
     });
 
     return {
