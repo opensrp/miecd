@@ -317,14 +317,14 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
         className="default-width"
       >
         <Link
-          to="/pregnancy_log_face/patient_detail/101C71"
+          to="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
         >
           <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101C71"
+            href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
             navigate={[Function]}
           >
             <a
-              href="/pregnancy_log_face/patient_detail/101C71"
+              href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
               onClick={[Function]}
             >
               101C71
@@ -387,14 +387,14 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
         className="default-width"
       >
         <Link
-          to="/pregnancy_log_face/patient_detail/101C63"
+          to="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
         >
           <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101C63"
+            href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
             navigate={[Function]}
           >
             <a
-              href="/pregnancy_log_face/patient_detail/101C63"
+              href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
               onClick={[Function]}
             >
               <RiskColoring
@@ -448,14 +448,14 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
         className="default-width"
       >
         <Link
-          to="/pregnancy_log_face/patient_detail/101C71"
+          to="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
         >
           <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101C71"
+            href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
             navigate={[Function]}
           >
             <a
-              href="/pregnancy_log_face/patient_detail/101C71"
+              href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
               onClick={[Function]}
             >
               101C71
@@ -493,14 +493,14 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
         className="default-width"
       >
         <Link
-          to="/pregnancy_log_face/patient_detail/1004R7"
+          to="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
         >
           <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/1004R7"
+            href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
             navigate={[Function]}
           >
             <a
-              href="/pregnancy_log_face/patient_detail/1004R7"
+              href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
               onClick={[Function]}
             >
               <RiskColoring
@@ -554,14 +554,14 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
         className="default-width"
       >
         <Link
-          to="/pregnancy_log_face/patient_detail/1004R7"
+          to="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
         >
           <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/1004R7"
+            href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
             navigate={[Function]}
           >
             <a
-              href="/pregnancy_log_face/patient_detail/1004R7"
+              href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
               onClick={[Function]}
             >
               1004R7
@@ -609,14 +609,14 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
         className="default-width"
       >
         <Link
-          to="/pregnancy_log_face/patient_detail/101C71"
+          to="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
         >
           <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101C71"
+            href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
             navigate={[Function]}
           >
             <a
-              href="/pregnancy_log_face/patient_detail/101C71"
+              href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
               onClick={[Function]}
             >
               <RiskColoring
@@ -670,14 +670,14 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
         className="default-width"
       >
         <Link
-          to="/pregnancy_log_face/patient_detail/1004R7"
+          to="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
         >
           <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/1004R7"
+            href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
             navigate={[Function]}
           >
             <a
-              href="/pregnancy_log_face/patient_detail/1004R7"
+              href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
               onClick={[Function]}
             >
               1004R7
@@ -725,14 +725,14 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
         className="default-width"
       >
         <Link
-          to="/pregnancy_log_face/patient_detail/101C71"
+          to="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
         >
           <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101C71"
+            href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
             navigate={[Function]}
           >
             <a
-              href="/pregnancy_log_face/patient_detail/101C71"
+              href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
               onClick={[Function]}
             >
               <RiskColoring
@@ -786,14 +786,14 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
         className="default-width"
       >
         <Link
-          to="/pregnancy_log_face/patient_detail/101C63"
+          to="/pregnancy_log_face/patient_detail/101C63?module=Pregnancy"
         >
           <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101C63"
+            href="/pregnancy_log_face/patient_detail/101C63?module=Pregnancy"
             navigate={[Function]}
           >
             <a
-              href="/pregnancy_log_face/patient_detail/101C63"
+              href="/pregnancy_log_face/patient_detail/101C63?module=Pregnancy"
               onClick={[Function]}
             >
               101C63
@@ -831,14 +831,14 @@ exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
         className="default-width"
       >
         <Link
-          to="/pregnancy_log_face/patient_detail/1004R7"
+          to="/pregnancy_log_face/patient_detail/101C63?module=Pregnancy"
         >
           <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/1004R7"
+            href="/pregnancy_log_face/patient_detail/101C63?module=Pregnancy"
             navigate={[Function]}
           >
             <a
-              href="/pregnancy_log_face/patient_detail/1004R7"
+              href="/pregnancy_log_face/patient_detail/101C63?module=Pregnancy"
               onClick={[Function]}
             >
               <RiskColoring
@@ -906,14 +906,14 @@ exports[`containers/LogFace extended renders correctly: tables 5`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101C71"
+    to="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101C71"
+      href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101C71"
+        href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
         onClick={[Function]}
       >
         101C71
@@ -985,14 +985,14 @@ exports[`containers/LogFace extended renders correctly: tables 8`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101C63"
+    to="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101C63"
+      href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101C63"
+        href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
         onClick={[Function]}
       >
         <RiskColoring
@@ -1057,14 +1057,14 @@ exports[`containers/LogFace extended renders correctly: tables 13`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101C71"
+    to="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101C71"
+      href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101C71"
+        href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
         onClick={[Function]}
       >
         101C71
@@ -1111,14 +1111,14 @@ exports[`containers/LogFace extended renders correctly: tables 16`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/1004R7"
+    to="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/1004R7"
+      href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/1004R7"
+        href="/pregnancy_log_face/patient_detail/101C71?module=Pregnancy"
         onClick={[Function]}
       >
         <RiskColoring
@@ -1183,14 +1183,14 @@ exports[`containers/LogFace extended renders correctly: tables 21`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/1004R7"
+    to="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/1004R7"
+      href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/1004R7"
+        href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
         onClick={[Function]}
       >
         1004R7
@@ -1247,14 +1247,14 @@ exports[`containers/LogFace extended renders correctly: tables 24`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101C71"
+    to="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101C71"
+      href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101C71"
+        href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
         onClick={[Function]}
       >
         <RiskColoring
@@ -1319,14 +1319,14 @@ exports[`containers/LogFace extended renders correctly: tables 29`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/1004R7"
+    to="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/1004R7"
+      href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/1004R7"
+        href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
         onClick={[Function]}
       >
         1004R7
@@ -1383,14 +1383,14 @@ exports[`containers/LogFace extended renders correctly: tables 32`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101C71"
+    to="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101C71"
+      href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101C71"
+        href="/pregnancy_log_face/patient_detail/1004R7?module=Pregnancy"
         onClick={[Function]}
       >
         <RiskColoring
@@ -1455,14 +1455,14 @@ exports[`containers/LogFace extended renders correctly: tables 37`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101C63"
+    to="/pregnancy_log_face/patient_detail/101C63?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101C63"
+      href="/pregnancy_log_face/patient_detail/101C63?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101C63"
+        href="/pregnancy_log_face/patient_detail/101C63?module=Pregnancy"
         onClick={[Function]}
       >
         101C63
@@ -1509,14 +1509,14 @@ exports[`containers/LogFace extended renders correctly: tables 40`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/1004R7"
+    to="/pregnancy_log_face/patient_detail/101C63?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/1004R7"
+      href="/pregnancy_log_face/patient_detail/101C63?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/1004R7"
+        href="/pregnancy_log_face/patient_detail/101C63?module=Pregnancy"
         onClick={[Function]}
       >
         <RiskColoring
