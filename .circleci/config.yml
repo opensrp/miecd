@@ -4,45 +4,45 @@
 #
 version: 2
 jobs:
-  build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:14.16
+    build:
+        docker:
+            # specify the version you desire here
+            - image: circleci/node:14.16
 
-        environment:
-          SKIP_PREFLIGHT_CHECK: 'true'
-          NODE_OPTIONS: --max_old_space_size=4096
+              environment:
+                  NODE_OPTIONS: --max_old_space_size=4096
 
-    working_directory: ~/repo
+        working_directory: ~/repo
 
-    steps:
-      - checkout
+        steps:
+            - checkout
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+            # Download and cache dependencies
+            - restore_cache:
+                  keys:
+                      - v1-dependencies-{{ checksum "package.json" }}
+                      # fallback to using the latest cache if no exact match is found
+                      - v1-dependencies-
 
-      - run: yarn install
+            - run: yarn install
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - save_cache:
+                  paths:
+                      - node_modules
+                  key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run:
-          name: Run linter
-          command: yarn lint
-      
-      - run:
-          name: Run test with coverage
-          command: yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles
+            - run:
+                  name: Run linter
+                  command: yarn lint
 
-      - run:
-          name: upload coverage to coveralls
-          command: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+            - run:
+                  name: Run test with coverage
+                  command: yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles
 
-      - store_artifacts:
-          path: coverage
+            - run:
+                  name: upload coverage to coveralls
+                  command: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+
+            - store_artifacts:
+                  path: coverage
+        parallelism: 4

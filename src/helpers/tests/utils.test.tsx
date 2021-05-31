@@ -5,13 +5,16 @@ import {
     parseMessage,
     sortByEventDate,
     fetchSupersetData,
+    fetchOpenSrpData,
+    getLocationId,
+    getFilterFunctionAndLocationLevel,
 } from '../utils';
 import { OpenSRPAPIResponse } from './fixtures';
 import fetchMock from 'fetch-mock';
 import store from '../../store/index';
 import { authenticateUser } from '@onaio/session-reducer';
-import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import { CompartmentSmsTypes } from '../../store/ducks/sms_events';
+import { authorizeSuperset } from '../../store/ducks/superset';
 import {
     villages,
     communes,
@@ -21,6 +24,8 @@ import {
     pregnancySmsData,
     nutritionSmsData,
     nbcPncSmsData,
+    userUUID,
+    securityAuthenticate,
 } from '../../containers/HierarchichalDataTable/test/fixtures';
 
 jest.mock('@onaio/gatekeeper', () => {
@@ -115,27 +120,50 @@ describe('src/helpers', () => {
             { event_date: '2020-04-27T15:19:04.173000' },
         ]);
     });
+
+    it('gets location id of logged in user', () => {
+        // uuid corresponding to vietnam country
+        const userLocationId = getLocationId(userLocationDetails.data.records, userUUID);
+        // expect vietnam country id
+        expect(userLocationId).toMatchInlineSnapshot(`"d1865325-11e6-4e39-817b-e676c1affecf"`);
+
+        // random uuid
+        const randomUserLocationId = getLocationId(
+            userLocationDetails.data.records,
+            'random-515ad0e9-fccd-4cab-8861-0ef3ecb831e0',
+        );
+        // expect empty string (no matching id)
+        expect(randomUserLocationId).toMatchInlineSnapshot(`""`);
+    });
+
+    it('calculates filter function and location level for logged in user', () => {
+        // get location level and location filter function
+        // user location id from previous test (vietnam country)
+        const { locationLevel, locationFilterFunction } = getFilterFunctionAndLocationLevel(
+            'd1865325-11e6-4e39-817b-e676c1affecf',
+            [villages.data.records, districts.data.records, communes.data.records, villages.data.records],
+        );
+        // expect level 0 (country - shows countries provinces)
+        expect(locationLevel).toMatchInlineSnapshot(`0`);
+        // faux filter function allowing everything through (for level country)
+        expect(locationFilterFunction).toBeTruthy();
+    });
 });
 
 describe('src/helpers/utils.tsx', () => {
     beforeAll(() => {
-        const OpenSRPAPIResponse = {
-            oAuth2Data: {
-                access_token: 'hunter2',
-                expires_in: '35999',
-                state: 'opensrp',
-                token_type: 'bearer',
-            },
-            preferredName: 'Superset User',
-            roles: ['Provider'],
-            username: 'admin',
-        };
-        const { authenticated, user, extraData } = getOpenSRPUserInfo(OpenSRPAPIResponse);
-        store.dispatch(authenticateUser(authenticated, user, extraData));
-    });
-
-    beforeEach(() => {
-        fetchMock.get(`https://somesuperseturl.org/oauth-authorized/opensrp`, {});
+        store.dispatch(
+            authenticateUser(
+                true,
+                {
+                    email: 'demo@example.com',
+                    name: 'demo',
+                    username: 'demo',
+                },
+                { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } },
+            ),
+        );
+        store.dispatch(authorizeSuperset(true));
     });
 
     afterEach(() => {
@@ -184,5 +212,11 @@ describe('src/helpers/utils.tsx', () => {
         // fetch userLocationDetails
         const userLocationDetailsResp = await fetchSupersetData<CompartmentSmsTypes>('5');
         expect(userLocationDetailsResp).toMatchObject(userLocationDetails.data.records);
+    });
+
+    it('fetches superset auth data', async () => {
+        fetchMock.get(`https://someopensrpbaseurl/opensrp/security/authenticate/`, securityAuthenticate);
+        const supersetAuthData = await fetchOpenSrpData('');
+        expect(supersetAuthData).toMatchObject(supersetAuthData);
     });
 });

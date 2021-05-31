@@ -568,6 +568,11 @@ export async function fetchSupersetData<ReturnType>(supersetSlice: string): Prom
         });
 }
 
+/**
+ * helper function to fetch data from the auth endpoint
+ * @param endpoint authentication endpoint
+ * @returns auth data
+ */
 export async function fetchOpenSrpData(endpoint: string) {
     const openSrpService = new OpenSRPService(OPENSRP_SECURITY_AUTHENTICATE);
     return (

@@ -37,6 +37,7 @@ import smsReducer, {
     PregnancySmsData,
 } from '../../../store/ducks/sms_events';
 import store from '../../../store/index';
+import { authorizeSuperset } from '../../../store/ducks/superset';
 import {
     villages,
     communes,
@@ -50,7 +51,6 @@ import {
 } from '../../HierarchichalDataTable/test/fixtures';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { authenticateUser } from '@onaio/session-reducer';
-import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import fetchMock from 'fetch-mock';
 
 const history = createBrowserHistory();
@@ -59,24 +59,22 @@ reducerRegistry.register(locationsReducerName, locationsReducer);
 
 describe('Compartments', () => {
     beforeAll(() => {
-        const OpenSRPAPIResponse = {
-            oAuth2Data: {
-                access_token: 'hunter2',
-                expires_in: '3599',
-                state: 'opensrp',
-                token_type: 'bearer',
-            },
-            preferredName: 'Superset User',
-            roles: ['Provider'],
-            username: 'admin',
-        };
-        const { authenticated, user, extraData } = getOpenSRPUserInfo(OpenSRPAPIResponse);
-        store.dispatch(authenticateUser(authenticated, user, extraData));
+        store.dispatch(
+            authenticateUser(
+                true,
+                {
+                    email: 'demo@example.com',
+                    name: 'demo',
+                    username: 'demo',
+                },
+                { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } },
+            ),
+        );
+        store.dispatch(authorizeSuperset(true));
     });
 
     beforeEach(() => {
         fetchMock
-            .get(`https://somesuperseturl.org/oauth-authorized/opensrp`, {})
             .get(`https://someopensrpbaseurl/opensrp/security/authenticate/`, securityAuthenticate)
             .get(`https://somesuperseturl.org/superset/slice_json/1`, villages)
             .get(`https://somesuperseturl.org/superset/slice_json/2`, communes)
