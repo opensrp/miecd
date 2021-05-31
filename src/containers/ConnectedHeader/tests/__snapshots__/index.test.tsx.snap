@@ -46,13 +46,13 @@ Object {
         tag="ul"
         vertical={false}
       >
-        <NavLink
+        <ForwardRef
           activeClassName="active"
           className="nav-link"
           to="/login"
         >
           Login
-        </NavLink>
+        </ForwardRef>
         <LanguageSwitcher
           allLanguageOptions={
             Object {
@@ -153,13 +153,13 @@ Object {
               tag="button"
               toggle={true}
             >
-              <NavLink
+              <ForwardRef
                 activeClassName="active"
                 className="nav-link"
                 to="/logout"
               >
                 Sign Out
-              </NavLink>
+              </ForwardRef>
             </DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
