@@ -12,10 +12,8 @@ export const mountWithTranslations: typeof mount = (component: React.ReactNode, 
  * Utility to await promises to resolve in tests
  * @param ms time in ms
  */
-export async function waitForPromises(ms = 0) {
-    await act(() => {
-        return new Promise((resolve) => {
-            setTimeout(resolve, ms);
-        });
+export async function waitForPromises() {
+    await act(async () => {
+        await new Promise((res) => setImmediate(res));
     });
 }
