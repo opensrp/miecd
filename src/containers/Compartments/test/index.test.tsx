@@ -9,6 +9,9 @@ import ConnectedCompartments, {
     childrenAgeRangeFilterFunction,
     filterByDateInNextNWeeks,
     getNumberOfSmsWithRisk,
+    filterByDateInTheFuture,
+    filterByEcChild,
+    filterByEcWomanOrFamilyMember,
 } from '..';
 import {
     NBC_AND_PNC,
@@ -35,6 +38,7 @@ import smsReducer, {
     reducerName as smsReducerName,
     NutritionSmsData,
     PregnancySmsData,
+    NbcPncSmsData,
 } from '../../../store/ducks/sms_events';
 import store from '../../../store/index';
 import { authorizeSuperset } from '../../../store/ducks/superset';
@@ -292,7 +296,7 @@ describe('components/Compartments/childrenAgeRangeFilterFunction', () => {
     });
 });
 
-describe('components/Copartments/filterByDateInNextNWeeks', () => {
+describe('components/Compartments/filter functions', () => {
     it('returns the correct sms data items within range filterByDateInNextNWeeks', () => {
         MockDate.set(new Date('01/01/2020').getTime());
         const smsData = [
@@ -318,6 +322,58 @@ describe('components/Copartments/filterByDateInNextNWeeks', () => {
         expect(smsData.filter(filterByDateInNextNWeeks(15)).length).toEqual(10);
         expect(smsData.filter(filterByDateInNextNWeeks(20)).length).toEqual(11);
         expect(smsData.filter(filterByDateInNextNWeeks(25)).length).toEqual(11);
+    });
+
+    it('filters by date in the future', () => {
+        MockDate.set(new Date('01/01/2020').getTime());
+        const smsData = [
+            { lmp_edd: '01/15/2019' },
+            { lmp_edd: '02/09/2018' },
+            { lmp_edd: '04/08/2017' },
+            { lmp_edd: '04/09/2016' },
+            { lmp_edd: '01/02/2020' },
+            { lmp_edd: '01/03/2020' },
+            { lmp_edd: '01/05/2020' },
+            { lmp_edd: '01/08/2020' },
+            { lmp_edd: '01/09/2020' },
+            { lmp_edd: '01/12/2020' },
+            { lmp_edd: '01/18/2020' },
+        ] as unknown as PregnancySmsData[];
+
+        const dataInFuture = smsData.filter(filterByDateInTheFuture);
+        expect(dataInFuture.length).toEqual(7);
+    });
+
+    it('filters by newborns', () => {
+        const smsData = [
+            { client_type: 'ec_child' },
+            { client_type: 'ec_family_member' },
+            { client_type: 'ec_woman' },
+            { client_type: 'ec_child' },
+            { client_type: 'ec_woman' },
+            { client_type: 'ec_family_member' },
+            { client_type: 'ec_child' },
+            { client_type: 'ec_woman' },
+        ] as unknown as NbcPncSmsData[];
+
+        const newBornData = smsData.filter(filterByEcChild);
+        expect(newBornData.length).toEqual(3);
+    });
+
+    it('filters by woman or family member', () => {
+        const smsData = [
+            { client_type: 'ec_child' },
+            { client_type: 'ec_family_member' },
+            { client_type: 'ec_woman' },
+            { client_type: 'ec_child' },
+            { client_type: 'ec_woman' },
+            { client_type: 'ec_family_member' },
+            { client_type: 'ec_child' },
+            { client_type: 'ec_woman' },
+        ] as unknown as NbcPncSmsData[];
+
+        const womanData = smsData.filter(filterByEcWomanOrFamilyMember);
+        expect(womanData.length).toEqual(5);
     });
 });
 

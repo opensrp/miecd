@@ -588,7 +588,7 @@ export const filterByDateInNextNWeeks = (n: number) => {
  * @param dataItem
  * @param {SmsData} dataItem sms data item
  */
-const filterByDateInTheFuture = (dataItem: PregnancySmsData): boolean => {
+export const filterByDateInTheFuture = (dataItem: PregnancySmsData): boolean => {
     return Date.parse(dataItem.lmp_edd.toString()) - Date.now() > 0;
 };
 
@@ -596,7 +596,7 @@ const filterByDateInTheFuture = (dataItem: PregnancySmsData): boolean => {
  * @param {SmsData} dataItem an SmsData item to be filtered in/out.
  * @return {boolean} should the dataItem be filtered in/out.
  */
-const filterByEcChild = (dataItem: NbcPncSmsData): boolean => {
+export const filterByEcChild = (dataItem: NbcPncSmsData): boolean => {
     return dataItem.client_type === EC_CHILD;
 };
 
@@ -605,7 +605,7 @@ const filterByEcChild = (dataItem: NbcPncSmsData): boolean => {
  * @param {SmsData} dataItem an SmsData item to be filtered in/out.
  * @return {boolean} should the dataItem be filtered in/out.
  */
-const filterByEcWomanOrFamilyMember = (dataItem: NbcPncSmsData): boolean => {
+export const filterByEcWomanOrFamilyMember = (dataItem: NbcPncSmsData): boolean => {
     return dataItem.client_type === EC_WOMAN || dataItem.client_type === EC_FAMILY_MEMBER;
 };
 
