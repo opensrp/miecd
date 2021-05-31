@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import { useLastLocation } from 'react-router-last-location';
 import { Store } from 'redux';
 import BasicInformation, { LabelValuePair } from '../../components/BasicInformation';
-import ReportTable from '../../components/ReportTable';
 import { BACKPAGE_ICON, COMMUNE, DISTRICT, MODULE_SEARCH_PARAM_KEY, PROVINCE, VILLAGE } from '../../constants';
 import * as React from 'react';
 import './index.css';
@@ -25,6 +24,8 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { PatientDetailsReport } from 'components/PatientDetailsReports';
 import { parse } from 'query-string';
 import { LogFaceModules } from 'configs/settings';
+import { ConnectedChildChart } from 'components/PatientDetailsCharts/ChildChart';
+import { ConnectedMotherChart } from 'components/PatientDetailsCharts/MotherChart';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -105,7 +106,7 @@ const PatientDetails = (props: PatientDetailProps) => {
 
             <PatientDetailsReport patientsReports={logFaceReports} isChild={isChild}></PatientDetailsReport>
 
-            <ReportTable isChild={isChild} singlePatientEvents={smsData} />
+            {isChild ? <ConnectedChildChart {...props} /> : <ConnectedMotherChart {...props} />}
         </div>
     );
 };
