@@ -44,14 +44,14 @@ td {
 .table-container table th {
     color: #3a484f;
     font-family: Roboto;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 400;
 }
 
 .table-container table td {
     color: #7c7c7c;
     font-family: Roboto;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 400;
 }
 
@@ -95,7 +95,7 @@ td {
     border-left: 5px solid #0093db;
     color: #001429;
     font-family: Roboto;
-    font-size: 28px;
+    font-size: 30px;
     letter-spacing: -0.18px;
     line-height: 34px;
     margin-top: 24px;
@@ -162,7 +162,7 @@ td {
     text-decoration: none;
     padding: 5px 15px;
     font-family: Roboto;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 #export-button:hover {
@@ -176,7 +176,7 @@ td {
     box-shadow: 0 1px 3px 1px rgba(127, 131, 155, 0.15), 0 1px 2px 0 rgba(127, 131, 155, 0.3);
     height: 40px;
     font-family: Roboto;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     line-height: 16px;
     text-align: left;
@@ -185,14 +185,14 @@ td {
 .dropdown button span {
     padding-right: 35px;
     color: #666666;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
 }
 
 .filters .logface-page-filter span {
     color: #212121;
     font-family: Roboto;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 400;
     line-height: 17px;
     opacity: 0.8;
@@ -205,7 +205,6 @@ td {
     max-width: 300px;
     background: url(/static/media/search-icon.51c97554.svg) no-repeat;
     background-position: 16px 50%;
-    padding-left: 40px;
     background-color: white;
 }
 
@@ -216,7 +215,7 @@ td {
 .filter-panel input.logface-search::placeholder {
     color: #c2c2c2;
     font-family: Roboto;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .btn-secondary {

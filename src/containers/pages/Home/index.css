@@ -23,7 +23,7 @@
 
 .welcome-text h1 {
     color: #1b314b;
-    font-size: 32px;
+    font-size: 34px;
     font-weight: 500;
     text-align: center;
 }
@@ -73,6 +73,7 @@
     border-radius: 24px;
     width: 100%;
     color: #4d54b4;
+    font-size: 22px;
 }
 
 .home-main .button-style.default {
@@ -141,7 +142,7 @@ h4 p {
 
 .home-main #cont-size h1 {
     color: #001429;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 500;
     letter-spacing: -0.27px;
     line-height: 29px;
@@ -154,7 +155,7 @@ h4 p {
 
 .home-main #cont-size h4 {
     color: #637381;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 500;
     letter-spacing: 0.1px;
     line-height: 22px;

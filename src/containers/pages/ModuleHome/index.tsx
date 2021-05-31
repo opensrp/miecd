@@ -59,7 +59,10 @@ class ModuleHome extends React.Component<Props & WithTranslation> {
                             <hr />
                             <div className="sub-container-message">
                                 <div id="cont-size">
-                                    <p>{t('This is the aggregation and categorization of patients data')}</p>
+                                    <p>
+                                        {t('This is the aggregation and categorization of patients data')}&nbsp; &nbsp;
+                                        &nbsp;
+                                    </p>
                                 </div>
                                 <div id="cont-sized">
                                     <Link to={this.props.compartmentUrl}>

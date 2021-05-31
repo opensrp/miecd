@@ -18,7 +18,7 @@ div#titleDiv {
 .patient-details .back-page:hover {
     color: #0292d3;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 500;
 }
 
@@ -36,7 +36,7 @@ div#titleDiv {
 }
 
 .patient-details a .fa-xs {
-    font-size: 17px;
+    font-size: 18px;
     margin-right: 15px;
 }
 

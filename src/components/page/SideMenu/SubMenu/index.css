@@ -29,11 +29,15 @@
     padding-left: 33px;
 }
 
+.nav-item-extend > .nav-link span {
+    font-size: 15px;
+}
+
 .side-nav-item.nav {
     max-width: initial;
     background-color: initial;
     font-family: 'Roboto';
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
 }
 

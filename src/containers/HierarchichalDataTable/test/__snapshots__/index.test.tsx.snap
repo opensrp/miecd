@@ -27,7 +27,7 @@ exports[`HierarchichalDataTable renders correctly: hierarchichalDataTable 1`] = 
         <th
           className="default-width"
         >
-          risk
+          Risk
         </th>
         <th
           className="default-width"
