@@ -147,7 +147,7 @@ function Chart(props: Props) {
     }, [chartWrapperId, dataArray, units, yAxisLabel]);
 
     return (
-        <Card>
+        <Card className="chart-card">
             <CardTitle>{title}</CardTitle>
             <div id={chartWrapperId} />
         </Card>
