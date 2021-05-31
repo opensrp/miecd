@@ -98,7 +98,7 @@ const PatientDetails = (props: PatientDetailProps) => {
             </div>
             <BasicInformation labelValuePairs={basicInformationValuePairs} />
 
-            <ReportTable isChild={isChild} singlePatientEvents={smsData} />
+            <ReportTable {...props} isChild={isChild} singlePatientEvents={smsData} />
         </div>
     );
 };
