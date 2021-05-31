@@ -142,7 +142,7 @@ function getBasicInformationProps(
     const defaultNA = t('N/A');
     const defaultEdd = t('could not find any edd');
     const defaultAge = defaultNA;
-    const mostRecentReport = sortedSmsData[0];
+    const mostRecentReport = sortedSmsData[0] ?? {};
 
     if (mostRecentReport.lmp_edd && !edd) {
         edd = `${mostRecentReport.lmp_edd}`;
