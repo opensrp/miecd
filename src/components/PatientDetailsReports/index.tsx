@@ -8,7 +8,7 @@ import { Dictionary, sortByEventDate } from '../../helpers/utils';
 import { LogFaceSmsType, NutritionLogFaceSms, PregnancyLogFaceSms } from '../../store/ducks/sms_events';
 import React from 'react';
 
-interface ReportTableProps {
+interface PatientDetailsReportProps {
     patientsReports: (PregnancyLogFaceSms | NutritionLogFaceSms)[];
     isChild: boolean;
 }
@@ -18,7 +18,7 @@ const defaultProps = {
     isChild: false,
 };
 
-export type ReportTableTypes = ReportTableProps;
+export type ReportTableTypes = PatientDetailsReportProps;
 
 /** renders a table that shows reports received for a certain patient:
  * in case of Mother, there is an added filter by the pregnancy(gravida count)
@@ -101,7 +101,9 @@ PatientDetailsReport.defaultProps = defaultProps;
 
 export { PatientDetailsReport };
 
-/** helps chunk and group smsEvents by the pregnancies that they belong to */
+/** helps chunk and group smsEvents by the pregnancies that they belong to
+ * @param smsEvents - sms events for this patient
+ */
 export const chunkByGravida = (smsEvents: PregnancyLogFaceSms[]) => {
     const sortedSms = sortByEventDate(smsEvents);
 
@@ -115,7 +117,9 @@ export const chunkByGravida = (smsEvents: PregnancyLogFaceSms[]) => {
     return smsByPregnancyId;
 };
 
-/** generate filter option filters from chunked smsEvents */
+/** generate filter option filters from chunked smsEvents
+ * @param chunkedSms - smsEvents grouped by their gravida
+ */
 export const pregnancyOptionsFilter = (chunkedSms: Dictionary<PregnancyLogFaceSms[]>, t: TFunction) => {
     const options: Dictionary[] = [];
     const listOfProps = Object.keys(chunkedSms);

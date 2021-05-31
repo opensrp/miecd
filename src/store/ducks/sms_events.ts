@@ -14,7 +14,7 @@ import { LogFaceModules } from '../../configs/settings';
 export const reducerName = 'SmsReducer';
 export type ClientType = typeof EC_CHILD | typeof EC_FAMILY_MEMBER | typeof EC_WOMAN;
 
-export interface baseLogFaceSms {
+export interface BaseLogFaceSms {
     event_id: string;
     EventDate: string;
     health_worker_location_name: string;
@@ -33,7 +33,7 @@ export interface baseLogFaceSms {
 }
 
 // describes smsEvents received from the slices serving the logface with data.
-export interface PregnancyLogFaceSms extends baseLogFaceSms {
+export interface PregnancyLogFaceSms extends BaseLogFaceSms {
     pregnancy_id: string;
 }
 
