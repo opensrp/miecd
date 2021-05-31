@@ -146,7 +146,7 @@ describe('src/helpers', () => {
         // expect level 0 (country - shows countries provinces)
         expect(locationLevel).toMatchInlineSnapshot(`0`);
         // faux filter function allowing everything through (for level country)
-        expect(locationFilterFunction.toString()).toMatchInlineSnapshot(`"() => true"`);
+        expect(locationFilterFunction).toBeTruthy();
     });
 });
 
