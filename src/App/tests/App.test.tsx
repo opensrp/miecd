@@ -1,11 +1,8 @@
-import { EXPRESS_LOGIN_URL } from 'constants';
 import { mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Router } from 'react-router';
-import CustomOauthLogin from '../../components/CustomAuthLogin';
 import store from '../../store';
 import App from '../App';
 
