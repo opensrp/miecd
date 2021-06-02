@@ -46,7 +46,7 @@ import {
     NO_UNDERSCORE_RISK,
     RISK_LEVEL,
 } from '../../constants';
-import { getModuleLink, fetchSupersetData } from '../../helpers/utils';
+import { getModuleLink, fetchSupersetData, useHandleBrokenPage } from '../../helpers/utils';
 import locationsReducer, { Location, reducerName } from '../../store/ducks/locations';
 import smsReducer, {
     reducerName as smsReducerName,
@@ -570,6 +570,8 @@ export default function HierarchicalDataTable() {
     // get filter arguments in store
     const filterArgsInStore = useSelector((state) => getFilterArgs(state));
 
+    const { error: brokenError, handleBrokenPage, broken } = useHandleBrokenPage();
+
     // get translation function
     const { t } = useTranslation();
 
@@ -599,16 +601,12 @@ export default function HierarchicalDataTable() {
     const QueryKeyAndSmsSlice = queryKeyAndSmsSlice(module);
 
     // fetch and cache current module sms slice
-    const {
-        data: moduleSms,
-        isLoading: moduleSmsSliceLoading,
-        error: moduleSmsSliceError,
-    } = useQuery(
+    const { data: moduleSms, isLoading: moduleSmsSliceLoading } = useQuery(
         QueryKeyAndSmsSlice.queryKey,
         () => fetchSupersetData<CompartmentSmsTypes>(QueryKeyAndSmsSlice.smsSlice),
         {
             select: (res: CompartmentSmsTypes[]) => res,
-            onError: (err: Error) => err,
+            onError: (err: Error) => handleBrokenPage(err),
         },
     );
 
@@ -638,38 +636,38 @@ export default function HierarchicalDataTable() {
 
     // fetch all location slices
     // todo: switch to useQueries once select is supported (because of type inference)
-    const {
-        data: villages,
-        isLoading: villagesLoading,
-        error: villagesError,
-    } = useQuery(FETCH_VILLAGES, () => fetchSupersetData<Location>(VILLAGE_SLICE), {
-        select: (res: Location[]) => res,
-        onError: (err: Error) => err,
-    });
-    const {
-        data: communes,
-        isLoading: communesLoading,
-        error: communesError,
-    } = useQuery(FETCH_COMMUNES, () => fetchSupersetData<Location>(COMMUNE_SLICE), {
-        select: (res: Location[]) => res,
-        onError: (err: Error) => err,
-    });
-    const {
-        data: districts,
-        isLoading: districtsLoading,
-        error: districtsError,
-    } = useQuery(FETCH_DISTRICTS, () => fetchSupersetData<Location>(DISTRICT_SLICE), {
-        select: (res: Location[]) => res,
-        onError: (err: Error) => err,
-    });
-    const {
-        data: provinces,
-        isLoading: provincesLoading,
-        error: provincesError,
-    } = useQuery(FETCH_PROVINCES, () => fetchSupersetData<Location>(PROVINCE_SLICE), {
-        select: (res: Location[]) => res,
-        onError: (err: Error) => err,
-    });
+    const { data: villages, isLoading: villagesLoading } = useQuery(
+        FETCH_VILLAGES,
+        () => fetchSupersetData<Location>(VILLAGE_SLICE),
+        {
+            select: (res: Location[]) => res,
+            onError: (err: Error) => handleBrokenPage(err),
+        },
+    );
+    const { data: communes, isLoading: communesLoading } = useQuery(
+        FETCH_COMMUNES,
+        () => fetchSupersetData<Location>(COMMUNE_SLICE),
+        {
+            select: (res: Location[]) => res,
+            onError: (err: Error) => handleBrokenPage(err),
+        },
+    );
+    const { data: districts, isLoading: districtsLoading } = useQuery(
+        FETCH_DISTRICTS,
+        () => fetchSupersetData<Location>(DISTRICT_SLICE),
+        {
+            select: (res: Location[]) => res,
+            onError: (err: Error) => handleBrokenPage(err),
+        },
+    );
+    const { data: provinces, isLoading: provincesLoading } = useQuery(
+        FETCH_PROVINCES,
+        () => fetchSupersetData<Location>(PROVINCE_SLICE),
+        {
+            select: (res: Location[]) => res,
+            onError: (err: Error) => handleBrokenPage(err),
+        },
+    );
 
     useEffect(() => {
         if (communes && districts && provinces && villages && moduleSmsSlice) {
@@ -864,32 +862,7 @@ export default function HierarchicalDataTable() {
         return aLink;
     };
 
-    if (moduleSmsSliceError || villagesError || communesError || districtsError || provincesError) {
-        // generate error object
-        const genErrorObject = (error: Error) => ({
-            name: error.name,
-            message: error.message,
-        });
-
-        let errorObject = {
-            name: '',
-            message: '',
-        };
-
-        if (moduleSmsSliceError) {
-            errorObject = genErrorObject(moduleSmsSliceError);
-        } else if (villagesError) {
-            errorObject = genErrorObject(villagesError);
-        } else if (communesError) {
-            errorObject = genErrorObject(communesError);
-        } else if (districtsError) {
-            errorObject = genErrorObject(districtsError);
-        } else if (provincesError) {
-            errorObject = genErrorObject(provincesError);
-        }
-
-        return <ErrorPage title={errorObject.name} message={errorObject.message} />;
-    }
+    if (broken) return <ErrorPage title={brokenError?.name} message={brokenError?.message} />;
 
     if (
         moduleSmsSliceLoading ||

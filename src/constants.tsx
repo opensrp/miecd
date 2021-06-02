@@ -157,6 +157,9 @@ export const RISK_CATEGORY_FILTER_PARAM = 'riskCategory';
 export const SMS_TYPE_FILTER_PARAM = 'smsType';
 export const SEARCH_FILTER_PARAM = 'search';
 
+// errors
+export const FETCH_ERROR_MESSAGE = 'Network response was not ok';
+
 // react-query queryKey's
 // compartment slices
 export const FETCH_COMPARTMENTS_PREGNANCY_SLICE = 'FETCH_COMPARTMENTS_PREGNANCY_SLICE';

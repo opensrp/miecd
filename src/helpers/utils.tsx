@@ -40,6 +40,7 @@ import {
     VIETNAM,
     VIETNAM_COUNTRY_LOCATION_ID,
     VILLAGE,
+    FETCH_ERROR_MESSAGE,
 } from '../constants';
 import { OpenSRPService } from '../services/opensrp';
 import supersetFetch from '../services/superset';
@@ -550,16 +551,11 @@ export async function fetchData(
  * @returns an array of slice type
  */
 export async function fetchSupersetData<ReturnType>(supersetSlice: string): Promise<ReturnType[]> {
-    // error object
-    const UserException = (message: string) => ({
-        name: 'NoResponseData',
-        message: message,
-    });
     // fetch
     return supersetFetch(supersetSlice)
         .then((response: ReturnType[] | undefined) => {
             if (!response) {
-                throw UserException(`No data found for slice ${supersetSlice}`);
+                throw new Error(FETCH_ERROR_MESSAGE);
             }
             return response;
         })
@@ -581,8 +577,7 @@ export async function fetchOpenSrpData(endpoint: string) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             .then((response: any) => {
                 if (!response) {
-                    const errorMessage = { name: 'NoResponseData', message: 'No user data found' };
-                    throw errorMessage;
+                    throw new Error(FETCH_ERROR_MESSAGE);
                 }
                 return response;
             })

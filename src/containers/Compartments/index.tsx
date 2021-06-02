@@ -48,6 +48,7 @@ import {
     fetchSupersetData,
     fetchOpenSrpData,
     Dictionary,
+    useHandleBrokenPage,
 } from '../../helpers/utils';
 
 import { Location, UserLocation } from '../../store/ducks/locations';
@@ -102,6 +103,7 @@ interface NutritionDataCircleCardProps {
 export const Compartments = ({ module }: Props) => {
     const dispatch = useDispatch();
     const filterArgsInStore = useSelector((state) => getFilterArgs(state));
+    const { error: brokenError, handleBrokenPage, broken } = useHandleBrokenPage();
 
     // remove current filters when component mounts
     useEffect(() => {
@@ -112,72 +114,64 @@ export const Compartments = ({ module }: Props) => {
     const QueryKeyAndSmsSlice = queryKeyAndSmsSlice(module);
 
     // fetch and cache current module sms slice
-    const {
-        data: moduleSmsSlice,
-        isLoading: moduleSmsSliceLoading,
-        error: moduleSmsSliceError,
-    } = useQuery(
+    const { data: moduleSmsSlice, isLoading: moduleSmsSliceLoading } = useQuery(
         QueryKeyAndSmsSlice.queryKey,
         () => fetchSupersetData<CompartmentSmsTypes>(QueryKeyAndSmsSlice.smsSlice),
         {
             select: (res: CompartmentSmsTypes[]) => res,
-            onError: (err: Error) => err,
+            onError: (err: Error) => handleBrokenPage(err),
         },
     );
 
     // fetch all location slices
     // todo: switch to useQueries once select is supported
-    const {
-        data: villages,
-        isLoading: villagesLoading,
-        error: villagesError,
-    } = useQuery(FETCH_VILLAGES, () => fetchSupersetData<Location>(VILLAGE_SLICE), {
-        select: (res: Location[]) => res,
-        onError: (err: Error) => err,
-    });
-    const {
-        data: communes,
-        isLoading: communesLoading,
-        error: communesError,
-    } = useQuery(FETCH_COMMUNES, () => fetchSupersetData<Location>(COMMUNE_SLICE), {
-        select: (res: Location[]) => res,
-        onError: (err: Error) => err,
-    });
-    const {
-        data: districts,
-        isLoading: districtsLoading,
-        error: districtsError,
-    } = useQuery(FETCH_DISTRICTS, () => fetchSupersetData<Location>(DISTRICT_SLICE), {
-        select: (res: Location[]) => res,
-        onError: (err: Error) => err,
-    });
-    const {
-        data: provinces,
-        isLoading: provincesLoading,
-        error: provincesError,
-    } = useQuery(FETCH_PROVINCES, () => fetchSupersetData<Location>(PROVINCE_SLICE), {
-        select: (res: Location[]) => res,
-        onError: (err: Error) => err,
-    });
+    const { data: villages, isLoading: villagesLoading } = useQuery(
+        FETCH_VILLAGES,
+        () => fetchSupersetData<Location>(VILLAGE_SLICE),
+        {
+            select: (res: Location[]) => res,
+            onError: (err: Error) => handleBrokenPage(err),
+        },
+    );
+    const { data: communes, isLoading: communesLoading } = useQuery(
+        FETCH_COMMUNES,
+        () => fetchSupersetData<Location>(COMMUNE_SLICE),
+        {
+            select: (res: Location[]) => res,
+            onError: (err: Error) => handleBrokenPage(err),
+        },
+    );
+    const { data: districts, isLoading: districtsLoading } = useQuery(
+        FETCH_DISTRICTS,
+        () => fetchSupersetData<Location>(DISTRICT_SLICE),
+        {
+            select: (res: Location[]) => res,
+            onError: (err: Error) => handleBrokenPage(err),
+        },
+    );
+    const { data: provinces, isLoading: provincesLoading } = useQuery(
+        FETCH_PROVINCES,
+        () => fetchSupersetData<Location>(PROVINCE_SLICE),
+        {
+            select: (res: Location[]) => res,
+            onError: (err: Error) => handleBrokenPage(err),
+        },
+    );
 
     // fetch user location details
-    const {
-        data: userLocationData,
-        isLoading: userLocationLoading,
-        error: userLocationError,
-    } = useQuery(FETCH_USER_LOCATION, () => fetchSupersetData<UserLocation>(USER_LOCATION_DATA_SLICE), {
-        select: (res: UserLocation[]) => res,
-        onError: (err: Error) => err,
-    });
+    const { data: userLocationData, isLoading: userLocationLoading } = useQuery(
+        FETCH_USER_LOCATION,
+        () => fetchSupersetData<UserLocation>(USER_LOCATION_DATA_SLICE),
+        {
+            select: (res: UserLocation[]) => res,
+            onError: (err: Error) => handleBrokenPage(err),
+        },
+    );
 
     // fetch user UUID
-    const {
-        data: userUUID,
-        isLoading: userUUIDLoading,
-        error: userUUIDError,
-    } = useQuery(FETCH_USER_ID, () => fetchOpenSrpData(''), {
+    const { data: userUUID, isLoading: userUUIDLoading } = useQuery(FETCH_USER_ID, () => fetchOpenSrpData(''), {
         select: (res: Dictionary) => res.user.baseEntityId as string,
-        onError: (err: Error) => err,
+        onError: (err: Error) => handleBrokenPage(err),
     });
 
     const [filteredData, setFilteredData] = useState<CompartmentSmsTypes[]>([]);
@@ -461,44 +455,7 @@ export const Compartments = ({ module }: Props) => {
 
     const { t } = useTranslation();
 
-    if (
-        moduleSmsSliceError ||
-        villagesError ||
-        communesError ||
-        districtsError ||
-        provincesError ||
-        userLocationError ||
-        userUUIDError
-    ) {
-        // generate error object
-        const genErrorObject = (error: Error) => ({
-            name: error.name,
-            message: error.message,
-        });
-
-        let errorObject = {
-            name: '',
-            message: '',
-        };
-
-        if (moduleSmsSliceError) {
-            errorObject = genErrorObject(moduleSmsSliceError);
-        } else if (villagesError) {
-            errorObject = genErrorObject(villagesError);
-        } else if (communesError) {
-            errorObject = genErrorObject(communesError);
-        } else if (districtsError) {
-            errorObject = genErrorObject(districtsError);
-        } else if (provincesError) {
-            errorObject = genErrorObject(provincesError);
-        } else if (userLocationError) {
-            errorObject = genErrorObject(userLocationError);
-        } else if (userUUIDError) {
-            errorObject = genErrorObject(userUUIDError);
-        }
-
-        return <ErrorPage title={errorObject?.name} message={errorObject?.message} />;
-    }
+    if (broken) return <ErrorPage title={brokenError?.name} message={brokenError?.message} />;
 
     if (
         !circleCardComponent.length ||
