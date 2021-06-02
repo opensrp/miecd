@@ -47,7 +47,7 @@ export const BaseSuccessfulLoginComponent: React.FC<RouteComponentProps> = (prop
         }
         if (nextPath === '/') {
             const user = getUser(store.getState());
-            toastToSuccess(t(`Welcome back, ${user.username}`));
+            toastToSuccess(`${t('Welcome back,')} ${user.username}`);
         }
     }
     return <Redirect to={pathToRedirectTo} />;

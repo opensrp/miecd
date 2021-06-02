@@ -903,18 +903,18 @@ export default function HierarchicalDataTable() {
                                 {module !== NUTRITION ? (
                                     <tr>
                                         <th className="default-width" />
-                                        <th className="default-width">{t('Red Alert')}</th>
+                                        <th className="default-width">{t('Red alert')}</th>
                                         <th className="default-width">{t('Risk')}</th>
-                                        <th className="default-width">{t('No Risk')}</th>
+                                        <th className="default-width">{t('No risk')}</th>
                                         <th className="default-width totals">{t('Total')}</th>
                                     </tr>
                                 ) : (
                                     <tr>
                                         <th className="default-width" />
                                         <th className="default-width">{t('Stunted')}</th>
-                                        <th className="default-width">{t('Severe Wasting')}</th>
+                                        <th className="default-width">{t('Severe wasting')}</th>
                                         <th className="default-width">{t('Overweight')}</th>
-                                        <th className="default-width">{t('Inappropriately Fed')}</th>
+                                        <th className="default-width">{t('Inappropriately fed')}</th>
                                         <th className="default-width">{t('Normal')}</th>
                                         <th className="default-width totals">{t('Total')}</th>
                                     </tr>

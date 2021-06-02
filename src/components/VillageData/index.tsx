@@ -59,7 +59,7 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
             <>
                 <Row className="village villageDataRow">
                     <Card className="table-card">
-                        <CardTitle className="commune-name">{t(this.props.communeName)}</CardTitle>
+                        <CardTitle className="commune-name">{this.props.communeName}</CardTitle>
                         <CardBody>
                             <Table striped borderless>
                                 <thead id="header">

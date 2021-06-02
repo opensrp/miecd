@@ -32,7 +32,7 @@ export class Analysis extends React.Component<AnalysisPropTypes, State> {
         return (
             <div className="analysis">
                 <div>
-                    <h2 className="analysis-title">{t(`${this.props.module} - Analysis`)}</h2>
+                    <h2 className="analysis-title">{`${this.props.module} - ${t('Analysis')}`}</h2>
                 </div>
                 <div className="analysis-wrapper">
                     {this.state.loading ? <Ripple /> : null}

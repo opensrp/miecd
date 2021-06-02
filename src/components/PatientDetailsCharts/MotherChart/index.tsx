@@ -61,19 +61,19 @@ function MotherChart(props: MotherChartTypes) {
                     <Chart
                         dataArray={getWeightDataSeries(motherChartData, t)}
                         chartWrapperId="weight-chart-1"
-                        title={t('Wight Monitoring')}
+                        title={t('Weight monitoring')}
                         legendString={t('Weight')}
                         units={t('kg')}
-                        yAxisLabel={t('weight')}
+                        yAxisLabel={t('Weight')}
                     />
 
                     <Chart
                         dataArray={getBloodPSeriesForChart(motherChartData, t)}
                         chartWrapperId="blood-pressure"
-                        title="Blood Pressure"
+                        title="Blood pressure"
                         legendString={t('Blood pressure')}
                         units=""
-                        yAxisLabel={t('Blood Pressure')}
+                        yAxisLabel={t('Blood pressure')}
                     />
                 </>
             ) : (

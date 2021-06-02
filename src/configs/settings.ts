@@ -204,7 +204,7 @@ export const nutritionModuleRiskFilterLookup = (t: TFunction) => {
             filterValue: ['underweight'],
         },
         normal: {
-            label: t('normal'),
+            label: t('Normal'),
             accessor: 'nutrition_status',
             filterValue: ['normal'],
         },

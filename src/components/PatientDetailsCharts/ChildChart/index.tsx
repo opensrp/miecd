@@ -57,10 +57,10 @@ function ChildChart(props: ChildChartTypes) {
                     <Chart
                         dataArray={getWeightHeightDataSeries(childChartData, t)}
                         chartWrapperId="child-nutrition-chart-1"
-                        title={t('Weight Height Monitoring')}
-                        legendString={t('Weight Height')}
+                        title={t('Weight and Height Monitoring')}
+                        legendString={t('Weight and Height')}
                         units={t('cm')}
-                        yAxisLabel={t('weight and height')}
+                        yAxisLabel={t('Weight and Height')}
                     />
                 </div>
             ) : (
