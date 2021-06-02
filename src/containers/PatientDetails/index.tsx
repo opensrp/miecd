@@ -8,8 +8,7 @@ import { Link } from 'react-router-dom';
 import { useLastLocation } from 'react-router-last-location';
 import { Store } from 'redux';
 import BasicInformation, { LabelValuePair } from '../../components/BasicInformation';
-import ReportTable from '../../components/ReportTable';
-import { BACKPAGE_ICON, COMMUNE, DISTRICT, PROVINCE, VILLAGE } from '../../constants';
+import { BACKPAGE_ICON, COMMUNE, DISTRICT, MODULE_SEARCH_PARAM_KEY, PROVINCE, VILLAGE } from '../../constants';
 import * as React from 'react';
 import './index.css';
 import { keyBy } from 'lodash';
@@ -19,9 +18,14 @@ import { ErrorPage } from 'components/ErrorPage';
 import Ripple from 'components/page/Loading';
 import { getLocationsOfLevel, Location } from '../../store/ducks/locations';
 import locationsReducer, { reducerName as locationReducerName } from '../../store/ducks/locations';
-import { selectSmsDataByPatientId } from '../../store/ducks/sms_events';
+import { getSmsDataByFilters, LogFaceSmsType, selectSmsDataByPatientId } from '../../store/ducks/sms_events';
 import smsReducer, { reducerName as smsReducerName, SmsData } from '../../store/ducks/sms_events';
 import reducerRegistry from '@onaio/redux-reducer-registry';
+import { PatientDetailsReport } from 'components/PatientDetailsReports';
+import { parse } from 'query-string';
+import { LogFaceModules } from 'configs/settings';
+import { ConnectedChildChart } from 'components/PatientDetailsCharts/ChildChart';
+import { ConnectedMotherChart } from 'components/PatientDetailsCharts/MotherChart';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -38,6 +42,7 @@ interface PatientDetailProps extends RouteComponentProps<RouteParams> {
     communes: Location[];
     villages: Location[];
     supersetService: typeof supersetFetch;
+    logFaceReports: LogFaceSmsType[];
 }
 
 const defaultProps = {
@@ -48,10 +53,11 @@ const defaultProps = {
     communes: [],
     villages: [],
     supersetService: supersetFetch,
+    logFaceReports: [],
 };
 
 const PatientDetails = (props: PatientDetailProps) => {
-    const { isChild, smsData, communes, villages, districts, provinces, supersetService } = props;
+    const { isChild, smsData, communes, villages, districts, provinces, supersetService, logFaceReports } = props;
     const [loading, setLoading] = React.useState(true);
     const { error, handleBrokenPage, broken } = useHandleBrokenPage();
     const { t } = useTranslation();
@@ -98,7 +104,9 @@ const PatientDetails = (props: PatientDetailProps) => {
             </div>
             <BasicInformation labelValuePairs={basicInformationValuePairs} />
 
-            <ReportTable {...props} isChild={isChild} singlePatientEvents={smsData} />
+            <PatientDetailsReport patientsReports={logFaceReports} isChild={isChild}></PatientDetailsReport>
+
+            {isChild ? <ConnectedChildChart {...props} /> : <ConnectedMotherChart {...props} />}
         </div>
     );
 };
@@ -135,7 +143,7 @@ function getBasicInformationProps(
     const defaultNA = t('N/A');
     const defaultEdd = t('could not find any edd');
     const defaultAge = defaultNA;
-    const mostRecentReport = sortedSmsData[0];
+    const mostRecentReport = sortedSmsData[0] ?? {};
 
     if (mostRecentReport.lmp_edd && !edd) {
         edd = `${mostRecentReport.lmp_edd}`;
@@ -263,11 +271,22 @@ export const getPathFromSupersetLocs = (
 PatientDetails.defaultProps = defaultProps;
 export { PatientDetails };
 
-type MapStateToProps = Pick<PatientDetailProps, 'smsData' | 'communes' | 'districts' | 'provinces' | 'villages'>;
+const smsByFilters = getSmsDataByFilters();
+
+type MapStateToProps = Pick<
+    PatientDetailProps,
+    'smsData' | 'communes' | 'districts' | 'provinces' | 'villages' | 'logFaceReports'
+>;
 const mapStateToProps = (state: Partial<Store>, ownProps: PatientDetailProps): MapStateToProps => {
     const patientId = ownProps.match.params.patient_id;
 
+    const module = parse(ownProps.location.search)[MODULE_SEARCH_PARAM_KEY] as LogFaceModules | undefined;
+
     const smsData = selectSmsDataByPatientId(state, patientId);
+    const logFaceReports = smsByFilters(state, {
+        patientId: patientId,
+        module,
+    });
 
     return {
         smsData,
@@ -275,6 +294,7 @@ const mapStateToProps = (state: Partial<Store>, ownProps: PatientDetailProps): M
         districts: getLocationsOfLevel(state, DISTRICT),
         provinces: getLocationsOfLevel(state, PROVINCE),
         villages: getLocationsOfLevel(state, VILLAGE),
+        logFaceReports,
     };
 };
 

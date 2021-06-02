@@ -156,7 +156,7 @@ describe('containers/LogFace extended', () => {
             expect(toJson(cell)).toMatchSnapshot('Basic Info key value');
         });
 
-        expect(wrapper.find('ReportTable')).toHaveLength(1);
+        expect(wrapper.find('PatientDetailsReport')).toHaveLength(1);
 
         expect(toJson(wrapper.find('#titleDiv'))).toMatchSnapshot('titleDiv');
 

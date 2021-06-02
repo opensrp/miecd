@@ -154,6 +154,7 @@ export const EVENT_DATE_DATE_FORMAT = 'yyyy-MM-dd';
 export const SMS_MESSAGE_DATE_DATE_FORMAT = 'dd-MM-yyyy';
 export const LOCATION_FILTER_PARAM = 'locationSearch';
 export const RISK_CATEGORY_FILTER_PARAM = 'riskCategory';
+export const MODULE_SEARCH_PARAM_KEY = 'module';
 export const SMS_TYPE_FILTER_PARAM = 'smsType';
 export const SEARCH_FILTER_PARAM = 'search';
 

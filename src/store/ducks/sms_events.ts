@@ -14,7 +14,6 @@ import { LogFaceModules } from '../../configs/settings';
 export const reducerName = 'SmsReducer';
 export type ClientType = typeof EC_CHILD | typeof EC_FAMILY_MEMBER | typeof EC_WOMAN;
 
-// describes smsEvents received from the slices serving the logface with data.
 export interface BaseLogFaceSms {
     event_id: string;
     EventDate: string;
@@ -33,14 +32,19 @@ export interface BaseLogFaceSms {
     client_type: ClientType;
 }
 
+// describes smsEvents received from the slices serving the logface with data.
+export interface PregnancyLogFaceSms extends BaseLogFaceSms {
+    pregnancy_id: string;
+}
+
 // describes smsEvents received from the slices serving the Nutrition logface with data.
-export interface NutritionLogFaceSms extends BaseLogFaceSms {
+export interface NutritionLogFaceSms extends PregnancyLogFaceSms {
     nutrition_status: string;
     growth_status: string;
     feeding_category: string;
 }
 
-export type LogFaceSmsType = BaseLogFaceSms | NutritionLogFaceSms;
+export type LogFaceSmsType = PregnancyLogFaceSms | NutritionLogFaceSms;
 
 /** Interfaces for SMS record objects as received from discover*/
 export interface PregnancySmsData {
