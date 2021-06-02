@@ -22,10 +22,9 @@ describe('DataCircleCard', () => {
             highRisk: 10,
             lowRisk: 10,
             noRisk: 10,
-            title: 'Total Pregnancies',
+            title: '2 Total Pregnancies',
             userLocationId: 'd1865325-11e6-4e39-817b-e676c1affecf',
             permissionLevel: 0,
-            totalNumber: 2,
         };
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -44,10 +43,9 @@ describe('DataCircleCard', () => {
             highRisk: 10,
             lowRisk: 10,
             noRisk: 10,
-            title: 'Total Pregnancies',
+            title: '2 Total Pregnancies',
             userLocationId: 'd1865325-11e6-4e39-817b-e676c1affecf',
             permissionLevel: 0,
-            totalNumber: 2,
         };
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -74,10 +72,9 @@ describe('DataCircleCard', () => {
             highRisk: 10,
             lowRisk: 10,
             noRisk: 10,
-            title: 'Total Pregnancies',
+            title: '2 Total Pregnancies',
             userLocationId: 'd1865325-11e6-4e39-817b-e676c1affecf',
             permissionLevel: 0,
-            totalNumber: 2,
         };
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -104,10 +101,9 @@ describe('DataCircleCard', () => {
             highRisk: 10,
             lowRisk: 10,
             noRisk: 10,
-            title: 'Total Pregnancies',
+            title: '14 Total Pregnancies',
             userLocationId: 'd1865325-11e6-4e39-817b-e676c1affecf',
             permissionLevel: 0,
-            totalNumber: 14,
         };
         const wrapper = mountWithTranslations(
             <Provider store={store}>
@@ -119,7 +115,7 @@ describe('DataCircleCard', () => {
 
         // expect card title to match snapshot
         const cardTitle = wrapper.find('CardTitle .card_title').text();
-        expect(cardTitle).toBe('14 Total Pregnancies');
+        expect(cardTitle).toMatchInlineSnapshot(`"14 Total Pregnancies"`);
 
         wrapper.unmount();
     });

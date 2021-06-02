@@ -1,5 +1,32 @@
-import { formatAge, getNumberSuffix, oAuthUserInfoGetter, parseMessage, sortByEventDate } from '../utils';
+import {
+    formatAge,
+    getNumberSuffix,
+    oAuthUserInfoGetter,
+    parseMessage,
+    sortByEventDate,
+    fetchSupersetData,
+    fetchOpenSrpData,
+    getLocationId,
+    getFilterFunctionAndLocationLevel,
+} from '../utils';
 import { OpenSRPAPIResponse } from './fixtures';
+import fetchMock from 'fetch-mock';
+import store from '../../store/index';
+import { authenticateUser } from '@onaio/session-reducer';
+import { CompartmentSmsTypes } from '../../store/ducks/sms_events';
+import { authorizeSuperset } from '../../store/ducks/superset';
+import {
+    villages,
+    communes,
+    districts,
+    provinces,
+    userLocationDetails,
+    pregnancySmsData,
+    nutritionSmsData,
+    nbcPncSmsData,
+    userUUID,
+    securityAuthenticate,
+} from '../../containers/HierarchichalDataTable/test/fixtures';
 
 jest.mock('@onaio/gatekeeper', () => {
     const actual = jest.requireActual('@onaio/gatekeeper');
@@ -92,5 +119,104 @@ describe('src/helpers', () => {
             { event_date: '2021-04-27T15:19:04.173000' },
             { event_date: '2020-04-27T15:19:04.173000' },
         ]);
+    });
+
+    it('gets location id of logged in user', () => {
+        // uuid corresponding to vietnam country
+        const userLocationId = getLocationId(userLocationDetails.data.records, userUUID);
+        // expect vietnam country id
+        expect(userLocationId).toMatchInlineSnapshot(`"d1865325-11e6-4e39-817b-e676c1affecf"`);
+
+        // random uuid
+        const randomUserLocationId = getLocationId(
+            userLocationDetails.data.records,
+            'random-515ad0e9-fccd-4cab-8861-0ef3ecb831e0',
+        );
+        // expect empty string (no matching id)
+        expect(randomUserLocationId).toMatchInlineSnapshot(`""`);
+    });
+
+    it('calculates filter function and location level for logged in user', () => {
+        // get location level and location filter function
+        // user location id from previous test (vietnam country)
+        const { locationLevel, locationFilterFunction } = getFilterFunctionAndLocationLevel(
+            'd1865325-11e6-4e39-817b-e676c1affecf',
+            [villages.data.records, districts.data.records, communes.data.records, villages.data.records],
+        );
+        // expect level 0 (country - shows countries provinces)
+        expect(locationLevel).toMatchInlineSnapshot(`0`);
+        // faux filter function allowing everything through (for level country)
+        expect(locationFilterFunction).toBeTruthy();
+    });
+});
+
+describe('src/helpers/utils.tsx', () => {
+    beforeAll(() => {
+        store.dispatch(
+            authenticateUser(
+                true,
+                {
+                    email: 'demo@example.com',
+                    name: 'demo',
+                    username: 'demo',
+                },
+                { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } },
+            ),
+        );
+        store.dispatch(authorizeSuperset(true));
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
+        jest.clearAllMocks();
+        fetchMock.restore();
+    });
+
+    it('fetches slices from superset', async () => {
+        // pregnancy, nbcPnc, Nutrition sms slice
+        fetchMock
+            .get(`https://somesuperseturl.org/superset/slice_json/6`, pregnancySmsData)
+            .get(`https://somesuperseturl.org/superset/slice_json/7`, nbcPncSmsData)
+            .get(`https://somesuperseturl.org/superset/slice_json/8`, nutritionSmsData);
+
+        // location slices
+        fetchMock
+            .get(`https://somesuperseturl.org/superset/slice_json/1`, villages)
+            .get(`https://somesuperseturl.org/superset/slice_json/2`, communes)
+            .get(`https://somesuperseturl.org/superset/slice_json/3`, districts)
+            .get(`https://somesuperseturl.org/superset/slice_json/4`, provinces);
+
+        // userLocations slice
+        fetchMock.get(`https://somesuperseturl.org/superset/slice_json/5`, userLocationDetails);
+
+        // fetch pregnancy,nbcPnc,Nutrition
+        const pregnancyResp = await fetchSupersetData<CompartmentSmsTypes>('6');
+        const nbcPncResp = await fetchSupersetData<CompartmentSmsTypes>('7');
+        const nutritionResp = await fetchSupersetData<CompartmentSmsTypes>('8');
+
+        expect(pregnancyResp).toMatchObject(pregnancySmsData.data.records);
+        expect(nbcPncResp).toMatchObject(nbcPncSmsData.data.records);
+        expect(nutritionResp).toMatchObject(nutritionSmsData.data.records);
+
+        // fetch villages,communes,districts,provinces
+        const villagesResp = await fetchSupersetData<CompartmentSmsTypes>('1');
+        const communesResp = await fetchSupersetData<CompartmentSmsTypes>('2');
+        const districtsResp = await fetchSupersetData<CompartmentSmsTypes>('3');
+        const provincesResp = await fetchSupersetData<CompartmentSmsTypes>('4');
+
+        expect(villagesResp).toMatchObject(villages.data.records);
+        expect(communesResp).toMatchObject(communes.data.records);
+        expect(districtsResp).toMatchObject(districts.data.records);
+        expect(provincesResp).toMatchObject(provinces.data.records);
+
+        // fetch userLocationDetails
+        const userLocationDetailsResp = await fetchSupersetData<CompartmentSmsTypes>('5');
+        expect(userLocationDetailsResp).toMatchObject(userLocationDetails.data.records);
+    });
+
+    it('fetches superset auth data', async () => {
+        fetchMock.get(`https://someopensrpbaseurl/opensrp/security/authenticate/`, securityAuthenticate);
+        const supersetAuthData = await fetchOpenSrpData('');
+        expect(supersetAuthData).toMatchObject(supersetAuthData);
     });
 });

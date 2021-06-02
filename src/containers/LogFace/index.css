@@ -203,9 +203,10 @@ td {
     margin-top: 35px;
     min-width: 200px;
     max-width: 300px;
-    background: url(/static/media/search-icon.51c97554.svg) no-repeat;
-    background-position: 16px 50%;
+    background: url(/src/assets/images/search-icon.svg) no-repeat;
+    background-position: right center;
     background-color: white;
+    padding-left: 0.2rem;
 }
 
 .filter-panel input.logface-search:focus {

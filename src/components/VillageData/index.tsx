@@ -3,16 +3,16 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import ReactPaginate from 'react-paginate';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardTitle, Row, Table } from 'reactstrap';
+import { CompartmentSmsTypes, PregnancySmsData, NutritionSmsData, NbcPncSmsData } from '../../store/ducks/sms_events';
 import { DEFAULT_PAGINATION_SIZE, NBC_AND_PNC_CHILD, NBC_AND_PNC_WOMAN, NUTRITION, PREGNANCY } from '../../constants';
 import { getCommonPaginationProps, getModuleLink, getNumberOfDaysSinceDate } from '../../helpers/utils';
-import { SmsData } from '../../store/ducks/sms_events';
 import RiskColoring from '../RiskColoring';
 import './index.css';
 
 export interface Props {
     current_level: number;
-    smsData: SmsData[];
-    module: string;
+    smsData: CompartmentSmsTypes[];
+    module: typeof PREGNANCY | typeof NBC_AND_PNC_CHILD | typeof NBC_AND_PNC_WOMAN | typeof NUTRITION;
     communeName: string;
 }
 
@@ -22,7 +22,7 @@ interface State {
 
 const defaultProps: Props = {
     current_level: 0,
-    module: '',
+    module: PREGNANCY,
     smsData: [],
     communeName: '',
 };
@@ -146,105 +146,119 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
     }
 
     /**
-     * Returns a <tr></tr> for an SmsData object passed to it
+     * Returns a <tr></tr> for an CompartmentSmsTypes object passed to it
      * which is used to build the table above.
      * for the PREGNANCY module
-     * @param {SmsData} dataItem - an SmsData object used to generate a table row
+     * @param {CompartmentSmsTypes} dataItem - an CompartmentSmsTypes object used to generate a table row
      * @return {JSX.Element} table row
      */
-    public pregnancyMapFunction = (dataItem: SmsData): JSX.Element => {
+    public pregnancyMapFunction = (dataItem: CompartmentSmsTypes): JSX.Element => {
         return (
-            <tr key={dataItem.event_id}>
+            <tr key={(dataItem as PregnancySmsData).event_id}>
                 <td className="default-width">
-                    <Link to={`${getModuleLink(this.props.module)}/patient_detail/${dataItem.anc_id}`}>
-                        {dataItem.anc_id}
+                    <Link
+                        to={`${getModuleLink(this.props.module)}/patient_detail/${
+                            (dataItem as PregnancySmsData).anc_id
+                        }`}
+                    >
+                        {(dataItem as PregnancySmsData).anc_id}
                     </Link>
                 </td>
-                <td className="default-width">{dataItem.age}</td>
-                <td className="default-width">{dataItem.location}</td>
-                <td className="default-width">{dataItem.mother_symptoms}</td>
-                <td className="default-width">{dataItem.previous_risks}</td>
-                <td className="default-width">{dataItem.lmp_edd}</td>
-                <td className="default-width">{dataItem.planned_delivery_location}</td>
+                <td className="default-width">{(dataItem as PregnancySmsData).age}</td>
+                <td className="default-width">{(dataItem as PregnancySmsData).location_name}</td>
+                <td className="default-width">{(dataItem as PregnancySmsData).mother_symptoms}</td>
+                <td className="default-width">{(dataItem as PregnancySmsData).previous_risks}</td>
+                <td className="default-width">{(dataItem as PregnancySmsData).lmp_edd}</td>
+                <td className="default-width">{(dataItem as PregnancySmsData).planned_delivery_location}</td>
                 <td className="default-width">
-                    <RiskColoring {...{ risk: dataItem.logface_risk }} />
+                    <RiskColoring {...{ risk: (dataItem as PregnancySmsData).risk_level }} />
                 </td>
             </tr>
         );
     };
 
     /**
-     * Returns a <tr></tr> for an SmsData object passed to it
+     * Returns a <tr></tr> for an CompartmentSmsTypes object passed to it
      * which is used to build the table above.
      * for the NUTRITION module
-     * @param {SmsData} dataItem - an SmsData object used to generate a table row
+     * @param {CompartmentSmsTypes} dataItem - an CompartmentSmsTypes object used to generate a table row
      * @return {JSX.Element} table row
      */
-    public nutritionMapFunction = (dataItem: SmsData): JSX.Element => {
+    public nutritionMapFunction = (dataItem: CompartmentSmsTypes): JSX.Element => {
         return (
-            <tr key={dataItem.event_id}>
+            <tr key={(dataItem as NutritionSmsData).event_id}>
                 <td className="default-width">
-                    <Link to={`${getModuleLink(this.props.module)}/child_patient_detail/${dataItem.anc_id}`}>
-                        {dataItem.anc_id}
+                    <Link
+                        to={`${getModuleLink(this.props.module)}/child_patient_detail/${
+                            (dataItem as NutritionSmsData).anc_id
+                        }`}
+                    >
+                        {(dataItem as NutritionSmsData).anc_id}
                     </Link>
                 </td>
-                <td className="default-width">{dataItem.age}</td>
-                <td className="default-width">{dataItem.location}</td>
+                <td className="default-width">{(dataItem as NutritionSmsData).age}</td>
+                <td className="default-width">{(dataItem as NutritionSmsData).location_name}</td>
                 <td className="default-width">
-                    <RiskColoring {...{ risk: dataItem.logface_risk }} />
+                    <RiskColoring {...{ risk: (dataItem as NutritionSmsData).nutrition_status }} />
                 </td>
             </tr>
         );
     };
 
     /**
-     * Returns a <tr></tr> for an SmsData object passed to it
+     * Returns a <tr></tr> for an CompartmentSmsTypes object passed to it
      * which is used to build the table above.
      * for the NBC & PNC_CHILD module
-     * @param {SmsData} dataItem - an SmsData object used to generate a table row
+     * @param {CompartmentSmsTypes} dataItem - an CompartmentSmsTypes object used to generate a table row
      * @return {JSX.Element} table row
      */
-    public nbcAndPncChildMapFunction = (dataItem: SmsData): JSX.Element => {
+    public nbcAndPncChildMapFunction = (dataItem: CompartmentSmsTypes): JSX.Element => {
         return (
-            <tr key={dataItem.event_id}>
+            <tr key={(dataItem as NbcPncSmsData).event_id}>
                 <td className="default-width">
-                    <Link to={`${getModuleLink(this.props.module)}/child_patient_detail/${dataItem.anc_id}`}>
-                        {dataItem.anc_id}
+                    <Link
+                        to={`${getModuleLink(this.props.module)}/child_patient_detail/${
+                            (dataItem as NbcPncSmsData).anc_id
+                        }`}
+                    >
+                        {(dataItem as NbcPncSmsData).anc_id}
                     </Link>
                 </td>
-                <td className="default-width">{getNumberOfDaysSinceDate(dataItem.date_of_birth)}</td>
-                <td className="default-width">{dataItem.location}</td>
-                <td className="default-width">{dataItem.child_symptoms}</td>
-                <td className="default-width">{dataItem.delivery_location}</td>
+                <td className="default-width">{getNumberOfDaysSinceDate((dataItem as NbcPncSmsData).dob)}</td>
+                <td className="default-width">{(dataItem as NbcPncSmsData).location_name}</td>
+                <td className="default-width">{(dataItem as NbcPncSmsData).child_symptoms}</td>
+                <td className="default-width">{(dataItem as NbcPncSmsData).delivery_location}</td>
                 <td className="default-width">
-                    <RiskColoring {...{ risk: dataItem.logface_risk }} />
+                    <RiskColoring {...{ risk: (dataItem as NbcPncSmsData).risk_level }} />
                 </td>
             </tr>
         );
     };
 
     /**
-     * Returns a <tr></tr> for an SmsData object passed to it
+     * Returns a <tr></tr> for an CompartmentSmsTypes object passed to it
      * which is used to build the table above.
      * for the NBC & PNC_MOTHER module
-     * @param {SmsData} dataItem - an SmsData object used to generate a table row
+     * @param {CompartmentSmsTypes} dataItem - an CompartmentSmsTypes object used to generate a table row
      * @return {JSX.Element} table row
      */
-    public nbcAndPncMotherMapFunction = (dataItem: SmsData): JSX.Element => {
+    public nbcAndPncMotherMapFunction = (dataItem: CompartmentSmsTypes): JSX.Element => {
         return (
-            <tr key={dataItem.event_id}>
+            <tr key={(dataItem as NbcPncSmsData).event_id}>
                 <td className="default-width">
-                    <Link to={`${getModuleLink(this.props.module)}/patient_detail/${dataItem.anc_id}`}>
-                        {dataItem.anc_id}
+                    <Link
+                        to={`${getModuleLink(this.props.module)}/patient_detail/${(dataItem as NbcPncSmsData).anc_id}`}
+                    >
+                        {(dataItem as NbcPncSmsData).anc_id}
                     </Link>
                 </td>
-                <td className="default-width">{dataItem.age}</td>
-                <td className="default-width">{dataItem.location}</td>
-                <td className="default-width">{dataItem.mother_symptoms}</td>
-                <td className="default-width">{dataItem.previous_risks}</td>
-                <td className="default-width">{dataItem.delivery_location}</td>
+                <td className="default-width">{(dataItem as NbcPncSmsData).age}</td>
+                <td className="default-width">{(dataItem as NbcPncSmsData).location_name}</td>
+                <td className="default-width">{(dataItem as NbcPncSmsData).mother_symptoms}</td>
+                <td className="default-width">{(dataItem as NbcPncSmsData).previous_risks}</td>
+                <td className="default-width">{(dataItem as NbcPncSmsData).delivery_location}</td>
                 <td className="default-width">
-                    <RiskColoring {...{ risk: dataItem.logface_risk }} />
+                    <RiskColoring {...{ risk: (dataItem as NbcPncSmsData).risk_level }} />
                 </td>
             </tr>
         );

@@ -53,7 +53,7 @@ import {
     UserLocation,
     userLocationDataFetched,
 } from '../store/ducks/locations';
-import { fetchSms, LogFaceSmsType, SmsData, smsDataFetched } from '../store/ducks/sms_events';
+import { fetchSms, LogFaceSmsType, SmsData, smsDataFetched, CompartmentSmsTypes } from '../store/ducks/sms_events';
 import { Dictionary } from '@onaio/utils';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
@@ -147,8 +147,9 @@ export function getLocationId(userLocationData: UserLocation[], userUUID: string
         userLocationData.length &&
         userLocationData.find((userLocationDataItem: UserLocation) => userLocationDataItem.provider_id === userUUID);
     if (userDetailObj) {
-        return userDetailObj.location_id;
+        return userDetailObj.location_id as string;
     }
+    return '';
 }
 
 /**
@@ -164,7 +165,7 @@ export const locationIdIn = (locationId: string, locations: Location[]) => {
  * An object representing the filter function and location level for a logged in user.
  */
 export interface FilterFunctionAndLocationLevel {
-    locationFilterFunction: (smsData: SmsData) => boolean;
+    locationFilterFunction: (CompartmentSmsData: CompartmentSmsTypes) => boolean;
     locationLevel: number;
 }
 
@@ -182,7 +183,7 @@ export function getFilterFunctionAndLocationLevel(
     userLocationId: string,
     [provinces, districts, communes, villages]: Location[][],
 ): FilterFunctionAndLocationLevel {
-    let locationFilterFunction: (smsData: SmsData) => boolean = () => {
+    let locationFilterFunction: (CompartmentSmsData: CompartmentSmsTypes) => boolean = () => {
         return false;
     };
 
@@ -195,10 +196,10 @@ export function getFilterFunctionAndLocationLevel(
 
     if (locationIdIn(userLocationId, provinces)) {
         userLocationLevel = 1;
-        locationFilterFunction = (smsData: SmsData): boolean => {
+        locationFilterFunction = (CompartmentSmsData: CompartmentSmsTypes): boolean => {
             // tslint:disable-next-line: no-shadowed-variable
             const village = villages.find((location: Location) => {
-                return location.location_id === smsData.location_id;
+                return location.location_id === CompartmentSmsData.location_id;
             });
             if (village) {
                 return (
@@ -211,10 +212,10 @@ export function getFilterFunctionAndLocationLevel(
 
     if (locationIdIn(userLocationId, districts)) {
         userLocationLevel = 2;
-        locationFilterFunction = (smsData: SmsData): boolean => {
+        locationFilterFunction = (CompartmentSmsData: CompartmentSmsTypes): boolean => {
             // tslint:disable-next-line: no-shadowed-variable
             const village = villages.find((location: Location) => {
-                return location.location_id === smsData.location_id;
+                return location.location_id === CompartmentSmsData.location_id;
             });
             if (village) {
                 return userLocationId === getDistrict(village as Location & { level: typeof VILLAGE }, communes);
@@ -225,10 +226,10 @@ export function getFilterFunctionAndLocationLevel(
 
     if (locationIdIn(userLocationId, communes)) {
         userLocationLevel = 3;
-        locationFilterFunction = (smsData: SmsData): boolean => {
+        locationFilterFunction = (CompartmentSmsData: CompartmentSmsTypes): boolean => {
             // tslint:disable-next-line: no-shadowed-variable
             const village = villages.find((location: Location) => {
-                return location.location_id === smsData.location_id;
+                return location.location_id === CompartmentSmsData.location_id;
             });
             if (village) {
                 return userLocationId === getCommune(village as Location & { level: typeof VILLAGE });
@@ -239,8 +240,8 @@ export function getFilterFunctionAndLocationLevel(
 
     if (locationIdIn(userLocationId, villages)) {
         userLocationLevel = 4;
-        locationFilterFunction = (smsData: SmsData): boolean => {
-            return userLocationId === smsData.location_id;
+        locationFilterFunction = (CompartmentSmsData: CompartmentSmsTypes): boolean => {
+            return userLocationId === CompartmentSmsData.location_id;
         };
     }
 
@@ -541,6 +542,48 @@ export async function fetchData(
     return Promise.all(promises).catch((err) => {
         throw err;
     });
+}
+
+/**
+ * Helper function to fetch superset/discover slices and return without dispatch
+ * @param supersetSlice superset/discover slice number
+ * @returns an array of slice type
+ */
+export async function fetchSupersetData<ReturnType>(supersetSlice: string, t: TFunction): Promise<ReturnType[]> {
+    // fetch
+    return supersetFetch(supersetSlice)
+        .then((response: ReturnType[] | undefined) => {
+            if (!response) {
+                throw new Error(t('Network response was not ok'));
+            }
+            return response;
+        })
+        .catch((error) => {
+            throw error;
+        });
+}
+
+/**
+ * helper function to fetch data from the auth endpoint
+ * @param endpoint authentication endpoint
+ * @returns auth data
+ */
+export async function fetchOpenSrpData(endpoint: string, t: TFunction) {
+    const openSrpService = new OpenSRPService(OPENSRP_SECURITY_AUTHENTICATE);
+    return (
+        openSrpService
+            .read(endpoint)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .then((response: any) => {
+                if (!response) {
+                    throw new Error(t('Network response was not ok'));
+                }
+                return response;
+            })
+            .catch((error) => {
+                throw error;
+            })
+    );
 }
 
 /** convert milliseconds to years (rounded off to two decimal places)

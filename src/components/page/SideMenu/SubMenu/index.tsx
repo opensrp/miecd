@@ -145,9 +145,11 @@ export class SubMenu extends React.Component<subMenuPropsTypes, SubMenuState> {
     private setModuleLabel = () => {
         const labelAlreadySet = this.props.collapsedModuleLabel === this.props.parentNav.label;
 
-        labelAlreadySet && this.props.setCollapsedModuleLabel !== undefined
-            ? this.props.setCollapsedModuleLabel('')
-            : this.props.setCollapsedModuleLabel?.(this.props.parentNav.label);
+        if (labelAlreadySet && this.props.setCollapsedModuleLabel !== undefined) {
+            this.props.setCollapsedModuleLabel('');
+        } else {
+            this.props.setCollapsedModuleLabel?.(this.props.parentNav.label);
+        }
     };
 }
 

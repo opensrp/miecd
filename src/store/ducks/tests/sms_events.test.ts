@@ -19,7 +19,7 @@ import reducer, {
     smsDataFetched,
 } from '../sms_events';
 import { nutritionSmsFixtures, PregnancyReportFixture } from './fixtures';
-import { expectedSmsData } from './fixures/smsEvents';
+import { expectedSmsData } from './fixtures/smsEvents';
 
 reducerRegistry.register(reducerName, reducer);
 

@@ -31,9 +31,7 @@ jest.mock('react-select', () => {
 });
 
 describe('selectLocationFilter', () => {
-    const userLocationTree = generateJurisdictionTree(
-        (securityAuthenticate.locations as unknown) as RawOpenSRPHierarchy,
-    );
+    const userLocationTree = generateJurisdictionTree(securityAuthenticate.locations as unknown as RawOpenSRPHierarchy);
     const demoUserLocationId = 'd1865325-11e6-4e39-817b-e676c1affecf';
 
     it('works correctly', () => {

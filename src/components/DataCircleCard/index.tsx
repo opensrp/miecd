@@ -16,10 +16,11 @@ import {
     RISK,
     SEVERE_WASTING,
     STUNTED,
+    NORMAL,
 } from '../../constants';
 import { getLinkToHierarchicalDataTable, Dictionary } from '../../helpers/utils';
 import reducer, { reducerName, addFilterArgs } from '../../store/ducks/sms_events';
-import { SmsFilterFunction } from '../../types';
+import { CompartmentsSmsFilterFunction } from '../../types';
 import './index.css';
 import { useTranslation } from 'react-i18next';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -37,13 +38,13 @@ interface Props extends RouteComponentProps {
     wasting?: number;
     overweight?: number;
     inappropriateFeeding?: number;
+    normal?: number;
     title: string;
     addFilterArgsActionCreator?: typeof addFilterArgs;
-    filterArgs?: SmsFilterFunction[];
-    module: typeof PREGNANCY | typeof NBC_AND_PNC_CHILD | typeof NBC_AND_PNC_WOMAN | typeof NUTRITION | '';
+    filterArgs?: CompartmentsSmsFilterFunction[];
+    module: typeof PREGNANCY | typeof NBC_AND_PNC_CHILD | typeof NBC_AND_PNC_WOMAN | typeof NUTRITION;
     userLocationId: string;
     permissionLevel: number;
-    totalNumber: number;
 }
 
 /**
@@ -65,13 +66,13 @@ function DataCircleCard({
     wasting,
     overweight,
     inappropriateFeeding,
+    normal,
     title,
     addFilterArgsActionCreator = addFilterArgs,
     filterArgs,
     module,
     userLocationId,
     permissionLevel,
-    totalNumber,
 }: Props) {
     const { t } = useTranslation();
     const pregnancyAndPncCircleSpec: CircleSpecProps[] = [
@@ -120,6 +121,12 @@ function DataCircleCard({
             riskType: INAPPROPRIATELY_FED,
             riskValue: inappropriateFeeding,
         },
+        {
+            class: 'normal',
+            riskLabel: t('Normal'),
+            riskType: NORMAL,
+            riskValue: normal,
+        },
     ];
 
     return (
@@ -134,7 +141,7 @@ function DataCircleCard({
                         }
                     }}
                 >
-                    <h5 className="card_title">{t(`${totalNumber} ${title}`)}</h5>
+                    <h5 className="card_title">{t(title)}</h5>
                 </Link>
             </CardTitle>
             <CardBody className="circlesRow">

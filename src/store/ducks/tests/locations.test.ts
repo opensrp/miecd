@@ -1,6 +1,6 @@
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { COMMUNE, DISTRICT, PROVINCE, VILLAGE } from '../../../constants';
-import { districts, provinces, userLocationDetails } from '../../../containers/HierarchichalDataTable/test/fixtures';
+import { districts, provinces, userLocationDetails } from './fixtures/fixtures';
 import store from '../../index';
 import reducer, {
     fetchLocations,

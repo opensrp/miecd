@@ -39,10 +39,6 @@ import {
     PREGNANCY,
     NUTRITION,
     NBC_AND_PNC,
-    NEWBORN_REPORT,
-    NUTRITION_REGISTRATION,
-    NUTRITION_REPORT,
-    PREGNANCY_REGISTRATION,
 } from '../constants';
 import Compartments from '../containers/Compartments';
 import ConnectedHierarchicalDataTable from '../containers/HierarchichalDataTable';
@@ -51,9 +47,7 @@ import Analysis from '../containers/pages/Analysis';
 import Home from '../containers/pages/Home';
 import ModuleHome from '../containers/pages/ModuleHome';
 import ConnectedPatientDetails from '../containers/PatientDetails';
-import { SmsData } from '../store/ducks/sms_events';
 import './App.css';
-import { SmsFilterFunction } from '../types';
 import { Trans, useTranslation } from 'react-i18next';
 import { CustomLogout } from 'components/Logout';
 import CustomConnectedAPICallBack, { SuccessfulLoginComponent } from 'components/CustomCallback';
@@ -175,18 +169,7 @@ export const Routes = (props: RoutesProps) => {
                             exact
                             path={PREGNANCY_COMPARTMENTS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={() => (
-                                <Compartments
-                                    filterArgs={
-                                        [
-                                            (smsData: SmsData) => {
-                                                return smsData.sms_type === PREGNANCY_REGISTRATION;
-                                            },
-                                        ] as SmsFilterFunction[]
-                                    }
-                                    module={PREGNANCY_MODULE}
-                                />
-                            )}
+                            component={() => <Compartments module={PREGNANCY_MODULE} />}
                         />
                         <ConnectedPrivateRoute
                             redirectPath={APP_CALLBACK_URL}
@@ -194,18 +177,7 @@ export const Routes = (props: RoutesProps) => {
                             exact
                             path={NBC_AND_PNC_COMPARTMENTS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={() => (
-                                <Compartments
-                                    filterArgs={
-                                        [
-                                            (smsData: SmsData) => {
-                                                return smsData.sms_type === NEWBORN_REPORT;
-                                            },
-                                        ] as SmsFilterFunction[]
-                                    }
-                                    module={NBC_AND_PNC_MODULE}
-                                />
-                            )}
+                            component={() => <Compartments module={NBC_AND_PNC_MODULE} />}
                         />
                         <ConnectedPrivateRoute
                             redirectPath={APP_CALLBACK_URL}
@@ -213,21 +185,7 @@ export const Routes = (props: RoutesProps) => {
                             exact
                             path={NUTRITION_COMPARTMENTS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={() => (
-                                <Compartments
-                                    filterArgs={
-                                        [
-                                            (smsData: SmsData) => {
-                                                return (
-                                                    smsData.sms_type === NUTRITION_REPORT ||
-                                                    smsData.sms_type === NUTRITION_REGISTRATION
-                                                );
-                                            },
-                                        ] as SmsFilterFunction[]
-                                    }
-                                    module={NUTRITION_MODULE}
-                                />
-                            )}
+                            component={() => <Compartments module={NUTRITION_MODULE} />}
                         />
                         <ConnectedPrivateRoute
                             redirectPath={APP_CALLBACK_URL}

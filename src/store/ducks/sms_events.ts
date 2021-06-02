@@ -3,7 +3,7 @@ import { keyBy, values } from 'lodash';
 import { AnyAction, Store } from 'redux';
 import { EC_CHILD, EC_FAMILY_MEMBER, EC_WOMAN, EVENT_DATE_DATE_FORMAT, EVENT_ID } from '../../constants';
 import { groupBy, formatDateStrings, sortByEventDate } from '../../helpers/utils';
-import { SmsFilterFunction } from '../../types';
+import { SmsFilterFunction, CompartmentsSmsFilterFunction } from '../../types';
 import { Dictionary } from '@onaio/utils';
 import { createSelector } from 'reselect';
 import { TreeNode } from './locationHierarchy/types';
@@ -41,6 +41,82 @@ export interface NutritionLogFaceSms extends BaseLogFaceSms {
 }
 
 export type LogFaceSmsType = BaseLogFaceSms | NutritionLogFaceSms;
+
+/** Interfaces for SMS record objects as received from discover*/
+export interface PregnancySmsData {
+    anc_id: string;
+    base_entity_id: string;
+    event_date: string;
+    event_type: string;
+    contact: string;
+    anc_visit_date: string;
+    next_anc_date: string;
+    parity: number;
+    gravidity: number;
+    height: number;
+    weight: number;
+    mother_symptoms: string;
+    previous_risks: string;
+    bmi: number;
+    lmp: string;
+    lmp_edd: string;
+    risk_level: string;
+    health_worker_id: string;
+    team: string;
+    event_id: string;
+    bp: string;
+    location_id: string;
+    planned_delivery_location: string;
+    location_name: string;
+    age: string;
+}
+
+export interface NutritionSmsData {
+    anc_id: string;
+    base_entity_id: string;
+    event_date: string;
+    muac: number;
+    weight: number;
+    height: number;
+    status: string;
+    supplements: string;
+    health_worker_id: string;
+    team: string;
+    event_id: string;
+    weight_z_score: number;
+    height_z_score: number;
+    nutrition_status: string;
+    growth_status: string;
+    feeding_category: string;
+    location_id: string;
+    age: string;
+    dob: string;
+    location_name: string;
+}
+
+export interface NbcPncSmsData {
+    anc_id: string;
+    base_entity_id: string;
+    event_date: string;
+    event_type: string;
+    client_type: string;
+    child_symptoms: string;
+    mother_symptoms: string;
+    breastfeeding: string;
+    intervention: string;
+    risk_level: string;
+    health_worker_id: string;
+    team: string;
+    event_id: string;
+    location_id: string;
+    location_name: string;
+    previous_risks: string;
+    delivery_location: string;
+    age: string;
+    dob: string;
+}
+
+export type CompartmentSmsTypes = PregnancySmsData | NutritionSmsData | NbcPncSmsData;
 
 /** Interface for SMS record object as received from discover */
 export interface SmsData extends NutritionLogFaceSms, Dictionary {
@@ -109,7 +185,7 @@ export interface RemoveFilterArgs extends AnyAction {
 
 /** Interface for AddFilterArgs */
 export interface AddFilterArgsAction extends AnyAction {
-    filterArgs: SmsFilterFunction[];
+    filterArgs: CompartmentsSmsFilterFunction[];
     type: typeof ADD_FILTER_ARGS;
 }
 
@@ -170,7 +246,7 @@ export const removeSms: RemoveSmsAction = {
 };
 
 /** Add filter args action creator */
-export const addFilterArgs = (filterArgs: SmsFilterFunction[]): AddFilterArgsAction => {
+export const addFilterArgs = (filterArgs: CompartmentsSmsFilterFunction[]): AddFilterArgsAction => {
     return {
         filterArgs,
         type: ADD_FILTER_ARGS as typeof ADD_FILTER_ARGS,
@@ -279,7 +355,7 @@ export function smsDataFetched(state: Partial<Store>): boolean {
  * @param {SmsFilterFunction[]}  filterArgs - an array of SMS_FILTER_FUNCTIONs.
  * @return {SmsData[]} - an array of SmsData objects that have passed the filtration criteria of all the filterArgs.
  */
-export function getFilteredSmsData(state: Partial<Store>, filterArgs: SmsFilterFunction[]): SmsData[] {
+export function getFilteredSmsData(state: Partial<Store>, filterArgs: CompartmentsSmsFilterFunction[]): SmsData[] {
     let results = values((state as any)[reducerName].smsData);
     for (const filterArgsIndex in filterArgs) {
         if (filterArgsIndex) {
@@ -290,7 +366,7 @@ export function getFilteredSmsData(state: Partial<Store>, filterArgs: SmsFilterF
 }
 
 /** Returns the filterArgs currently in the store */
-export function getFilterArgs(state: Partial<Store>): SmsFilterFunction[] {
+export function getFilterArgs(state: Partial<Store>): CompartmentsSmsFilterFunction[] {
     if ((state as any)[reducerName].filterArgs) {
         return (state as any)[reducerName].filterArgs;
     }

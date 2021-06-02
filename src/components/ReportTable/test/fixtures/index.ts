@@ -1,6 +1,6 @@
 import { SmsData } from 'store/ducks/sms_events';
 
-export const backDatedEvents = ([
+export const backDatedEvents = [
     {
         EventDate: '2018-09-25',
         sms_type: 'Pregnancy Detection',
@@ -198,4 +198,4 @@ export const backDatedEvents = ([
         health_worker_contact: 'telegram:782996367',
         team: ' NULL',
     },
-] as unknown) as SmsData[];
+] as unknown as SmsData[];
