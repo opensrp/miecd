@@ -126,7 +126,7 @@ export const pregnancyOptionsFilter = (chunkedSms: Dictionary<PregnancyLogFaceSm
     const keySegmentsLength = listOfProps.length;
 
     listOfProps.map((key, index) => {
-        const label = index === 0 ? t('Current pregnancy') : t(`pregnancy ${keySegmentsLength - index}`);
+        const label = index === 0 ? t('Current pregnancy') : `${t('pregnancy')} ${keySegmentsLength - index}`;
         const thisOption = {
             value: key,
             label,
