@@ -914,7 +914,7 @@ export default function HierarchicalDataTable() {
                                         <th className="default-width">{t('Stunted')}</th>
                                         <th className="default-width">{t('Severe wasting')}</th>
                                         <th className="default-width">{t('Overweight')}</th>
-                                        <th className="default-width">{t('Inappropriately fed')}</th>
+                                        <th className="default-width">{t('Inappropriate Feeding')}</th>
                                         <th className="default-width">{t('Normal')}</th>
                                         <th className="default-width totals">{t('Total')}</th>
                                     </tr>
