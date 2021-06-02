@@ -32,74 +32,38 @@ class ModuleHome extends React.Component<Props & WithTranslation> {
                     <h1>{this.props.title}</h1>
                     <p>{this.props.description}</p>
                 </div>
-                <div className="components-list">
-                    <div className="spacer">
-                        <div className="home-sub-containers">
-                            <div className="sub-container-heading">
-                                <p>{t('Log face')}</p>
-                            </div>
-                            <hr />
-                            <div className="sub-container-message">
-                                <div id="cont-size">
-                                    <p>{t('Display of all messages received from MIECD in chronological order')}</p>
-                                </div>
-                                <div id="cont-sized">
-                                    <Link to={this.props.logFaceUrl}>
-                                        <button className="button-style ">{t('View')}</button>
-                                    </Link>
-                                </div>
-                            </div>
+                <div className="module-home-cards">
+                    <div className="card">
+                        <h5 className="card-header">{t('Log face')}</h5>
+                        <div className="card-body">
+                            <p>{t('Display of all messages received from MIECD in chronological order')}</p>
+                            <Link to={this.props.logFaceUrl}>
+                                <button className="button-style ">{t('View')}</button>
+                            </Link>
                         </div>
                     </div>
-                    <div className="spacer">
-                        <div className="home-sub-containers">
-                            <div className="sub-container-heading">
-                                <p>{t('Compartments')}</p>
-                            </div>
-                            <hr />
-                            <div className="sub-container-message">
-                                <div id="cont-size">
-                                    <p>
-                                        {t('This is the aggregation and categorization of patients data')}&nbsp; &nbsp;
-                                        &nbsp;
-                                    </p>
-                                </div>
-                                <div id="cont-sized">
-                                    <Link to={this.props.compartmentUrl}>
-                                        <button
-                                            className={`button-style ${
-                                                this.props.deactivateLinks ? 'deactivated' : ''
-                                            }`}
-                                        >
-                                            {t('View')}
-                                        </button>
-                                    </Link>
-                                </div>
-                            </div>
+
+                    <div className="card">
+                        <h5 className="card-header">{t('Compartments')}</h5>
+                        <div className="card-body">
+                            <p>{t('This is the aggregation and categorization of patients data')}</p>
+                            <Link to={this.props.compartmentUrl}>
+                                <button className={`button-style ${this.props.deactivateLinks ? 'deactivated' : ''}`}>
+                                    {t('View')}
+                                </button>
+                            </Link>
                         </div>
                     </div>
-                    <div className="spacer">
-                        <div className="home-sub-containers">
-                            <div className="sub-container-heading">
-                                <p>{t('Analysis')}</p>
-                            </div>
-                            <hr />
-                            <div className="sub-container-message">
-                                <div id="cont-size">
-                                    <p>{t('Important analysis and indicators generated from collected data')}</p>
-                                </div>
-                                <div id="cont-sized">
-                                    <Link to={this.props.analysisUrl}>
-                                        <button
-                                            className={`button-style ${
-                                                this.props.deactivateLinks ? 'deactivated' : ''
-                                            }`}
-                                        >
-                                            {t('View')}
-                                        </button>
-                                    </Link>
-                                </div>
-                            </div>
+
+                    <div className="card">
+                        <h5 className="card-header">{t('Analysis')}</h5>
+                        <div className="card-body">
+                            <p>{t('Important analysis and indicators generated from collected data')}</p>
+                            <Link to={this.props.analysisUrl}>
+                                <button className={`button-style ${this.props.deactivateLinks ? 'deactivated' : ''}`}>
+                                    {t('View')}
+                                </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
