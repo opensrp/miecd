@@ -28,6 +28,7 @@ import {
     MODULE_SEARCH_PARAM_KEY,
     NBC_AND_PNC_CHILD,
     NBC_AND_PNC_COMPARTMENTS_URL,
+    NBC_AND_PNC_MODULE,
     NBC_AND_PNC_WOMAN,
     NUTRITION,
     NUTRITION_COMPARTMENTS_URL,
@@ -36,6 +37,7 @@ import {
     PATIENT_DETAIL,
     PREGNANCY,
     PREGNANCY_COMPARTMENTS_URL,
+    PREGNANCY_MODULE,
     PROVINCE,
     SMS_MESSAGE_DATE_DATE_FORMAT,
     VIETNAM,
@@ -800,5 +802,16 @@ export const getCommonPaginationProps = (t: TFunction) => {
         pageLinkClassName: 'page-link',
         previousLinkClassName: 'page-link',
         nextLinkClassName: 'page-link',
+    };
+};
+
+/** translate the module names themselves
+ * @param t - the translator functions
+ */
+export const translatedModuleLabel = (t: TFunction) => {
+    return {
+        [PREGNANCY_MODULE]: t('Pregnancy'),
+        [NUTRITION_MODULE]: t('Nutrition'),
+        [NBC_AND_PNC_MODULE]: t('NBC & PNC'),
     };
 };
