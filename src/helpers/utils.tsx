@@ -40,7 +40,6 @@ import {
     VIETNAM,
     VIETNAM_COUNTRY_LOCATION_ID,
     VILLAGE,
-    FETCH_ERROR_MESSAGE,
 } from '../constants';
 import { OpenSRPService } from '../services/opensrp';
 import supersetFetch from '../services/superset';
@@ -550,12 +549,12 @@ export async function fetchData(
  * @param supersetSlice superset/discover slice number
  * @returns an array of slice type
  */
-export async function fetchSupersetData<ReturnType>(supersetSlice: string): Promise<ReturnType[]> {
+export async function fetchSupersetData<ReturnType>(supersetSlice: string, t: TFunction): Promise<ReturnType[]> {
     // fetch
     return supersetFetch(supersetSlice)
         .then((response: ReturnType[] | undefined) => {
             if (!response) {
-                throw new Error(FETCH_ERROR_MESSAGE);
+                throw new Error(t('Network response was not ok'));
             }
             return response;
         })
@@ -569,7 +568,7 @@ export async function fetchSupersetData<ReturnType>(supersetSlice: string): Prom
  * @param endpoint authentication endpoint
  * @returns auth data
  */
-export async function fetchOpenSrpData(endpoint: string) {
+export async function fetchOpenSrpData(endpoint: string, t: TFunction) {
     const openSrpService = new OpenSRPService(OPENSRP_SECURITY_AUTHENTICATE);
     return (
         openSrpService
@@ -577,7 +576,7 @@ export async function fetchOpenSrpData(endpoint: string) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             .then((response: any) => {
                 if (!response) {
-                    throw new Error(FETCH_ERROR_MESSAGE);
+                    throw new Error(t('Network response was not ok'));
                 }
                 return response;
             })

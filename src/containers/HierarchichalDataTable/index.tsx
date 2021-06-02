@@ -603,7 +603,7 @@ export default function HierarchicalDataTable() {
     // fetch and cache current module sms slice
     const { data: moduleSms, isLoading: moduleSmsSliceLoading } = useQuery(
         QueryKeyAndSmsSlice.queryKey,
-        () => fetchSupersetData<CompartmentSmsTypes>(QueryKeyAndSmsSlice.smsSlice),
+        () => fetchSupersetData<CompartmentSmsTypes>(QueryKeyAndSmsSlice.smsSlice, t),
         {
             select: (res: CompartmentSmsTypes[]) => res,
             onError: (err: Error) => handleBrokenPage(err),
@@ -638,7 +638,7 @@ export default function HierarchicalDataTable() {
     // todo: switch to useQueries once select is supported (because of type inference)
     const { data: villages, isLoading: villagesLoading } = useQuery(
         FETCH_VILLAGES,
-        () => fetchSupersetData<Location>(VILLAGE_SLICE),
+        () => fetchSupersetData<Location>(VILLAGE_SLICE, t),
         {
             select: (res: Location[]) => res,
             onError: (err: Error) => handleBrokenPage(err),
@@ -646,7 +646,7 @@ export default function HierarchicalDataTable() {
     );
     const { data: communes, isLoading: communesLoading } = useQuery(
         FETCH_COMMUNES,
-        () => fetchSupersetData<Location>(COMMUNE_SLICE),
+        () => fetchSupersetData<Location>(COMMUNE_SLICE, t),
         {
             select: (res: Location[]) => res,
             onError: (err: Error) => handleBrokenPage(err),
@@ -654,7 +654,7 @@ export default function HierarchicalDataTable() {
     );
     const { data: districts, isLoading: districtsLoading } = useQuery(
         FETCH_DISTRICTS,
-        () => fetchSupersetData<Location>(DISTRICT_SLICE),
+        () => fetchSupersetData<Location>(DISTRICT_SLICE, t),
         {
             select: (res: Location[]) => res,
             onError: (err: Error) => handleBrokenPage(err),
@@ -662,7 +662,7 @@ export default function HierarchicalDataTable() {
     );
     const { data: provinces, isLoading: provincesLoading } = useQuery(
         FETCH_PROVINCES,
-        () => fetchSupersetData<Location>(PROVINCE_SLICE),
+        () => fetchSupersetData<Location>(PROVINCE_SLICE, t),
         {
             select: (res: Location[]) => res,
             onError: (err: Error) => handleBrokenPage(err),

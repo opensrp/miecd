@@ -116,7 +116,7 @@ export const Compartments = ({ module }: Props) => {
     // fetch and cache current module sms slice
     const { data: moduleSmsSlice, isLoading: moduleSmsSliceLoading } = useQuery(
         QueryKeyAndSmsSlice.queryKey,
-        () => fetchSupersetData<CompartmentSmsTypes>(QueryKeyAndSmsSlice.smsSlice),
+        () => fetchSupersetData<CompartmentSmsTypes>(QueryKeyAndSmsSlice.smsSlice, t),
         {
             select: (res: CompartmentSmsTypes[]) => res,
             onError: (err: Error) => handleBrokenPage(err),
@@ -127,7 +127,7 @@ export const Compartments = ({ module }: Props) => {
     // todo: switch to useQueries once select is supported
     const { data: villages, isLoading: villagesLoading } = useQuery(
         FETCH_VILLAGES,
-        () => fetchSupersetData<Location>(VILLAGE_SLICE),
+        () => fetchSupersetData<Location>(VILLAGE_SLICE, t),
         {
             select: (res: Location[]) => res,
             onError: (err: Error) => handleBrokenPage(err),
@@ -135,7 +135,7 @@ export const Compartments = ({ module }: Props) => {
     );
     const { data: communes, isLoading: communesLoading } = useQuery(
         FETCH_COMMUNES,
-        () => fetchSupersetData<Location>(COMMUNE_SLICE),
+        () => fetchSupersetData<Location>(COMMUNE_SLICE, t),
         {
             select: (res: Location[]) => res,
             onError: (err: Error) => handleBrokenPage(err),
@@ -143,7 +143,7 @@ export const Compartments = ({ module }: Props) => {
     );
     const { data: districts, isLoading: districtsLoading } = useQuery(
         FETCH_DISTRICTS,
-        () => fetchSupersetData<Location>(DISTRICT_SLICE),
+        () => fetchSupersetData<Location>(DISTRICT_SLICE, t),
         {
             select: (res: Location[]) => res,
             onError: (err: Error) => handleBrokenPage(err),
@@ -151,7 +151,7 @@ export const Compartments = ({ module }: Props) => {
     );
     const { data: provinces, isLoading: provincesLoading } = useQuery(
         FETCH_PROVINCES,
-        () => fetchSupersetData<Location>(PROVINCE_SLICE),
+        () => fetchSupersetData<Location>(PROVINCE_SLICE, t),
         {
             select: (res: Location[]) => res,
             onError: (err: Error) => handleBrokenPage(err),
@@ -161,7 +161,7 @@ export const Compartments = ({ module }: Props) => {
     // fetch user location details
     const { data: userLocationData, isLoading: userLocationLoading } = useQuery(
         FETCH_USER_LOCATION,
-        () => fetchSupersetData<UserLocation>(USER_LOCATION_DATA_SLICE),
+        () => fetchSupersetData<UserLocation>(USER_LOCATION_DATA_SLICE, t),
         {
             select: (res: UserLocation[]) => res,
             onError: (err: Error) => handleBrokenPage(err),
@@ -169,7 +169,7 @@ export const Compartments = ({ module }: Props) => {
     );
 
     // fetch user UUID
-    const { data: userUUID, isLoading: userUUIDLoading } = useQuery(FETCH_USER_ID, () => fetchOpenSrpData(''), {
+    const { data: userUUID, isLoading: userUUIDLoading } = useQuery(FETCH_USER_ID, () => fetchOpenSrpData('', t), {
         select: (res: Dictionary) => res.user.baseEntityId as string,
         onError: (err: Error) => handleBrokenPage(err),
     });
