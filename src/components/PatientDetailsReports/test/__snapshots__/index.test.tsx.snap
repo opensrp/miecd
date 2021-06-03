@@ -49,7 +49,7 @@ exports[`PatientDetailsReport can switch pregnancies: select snapshot 1`] = `
     key="1618905587899"
     value="1618905587899"
   >
-    pregnancy 1
+    Pregnancy 1
   </option>
 </select>
 `;

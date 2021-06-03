@@ -550,7 +550,7 @@ const unavailableChildren = (headerTitle: string[], currentLevel: 0 | 1 | 2 | 3,
 
     // compose message from last item in header, current and previous drill down level
     const unavailableMessage = format(
-        t("The %d %s doesn't seem to have %s"),
+        t("The %s %s doesn't seem to have %s"),
         headerTitle[headerTitle.length - 1],
         levelToName((currentLevel - 1) as 0 | 1 | 2 | 3, t),
         levelToName(currentLevel, t, true),

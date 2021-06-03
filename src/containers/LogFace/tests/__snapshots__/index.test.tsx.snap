@@ -39,7 +39,7 @@ exports[`containers/LogFace extended filters work correctly for Nutrition: risk 
     key="normal"
     value="normal"
   >
-    normal
+    Normal
   </option>
 </select>
 `;
