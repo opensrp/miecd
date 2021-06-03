@@ -64,7 +64,7 @@ function MotherChart(props: MotherChartTypes) {
                         title={t('Mother’s weight tracking ')}
                         legendString={t('Weight')}
                         units={t('kg')}
-                        yAxisLabel={t('Weight')}
+                        yAxisLabel={t("Mother's weight")}
                     />
 
                     <Chart

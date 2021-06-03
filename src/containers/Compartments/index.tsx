@@ -345,7 +345,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, newBorn, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, newBorn, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, newBorn, RISK_LEVEL),
-                title: format(t('%d %s'), newBorn.length, t('Total newborn', { count: newBorn.length })),
+                title: format(t('total_newborn.%d %s'), newBorn.length, t('Total newborn', { count: newBorn.length })),
             });
 
             setDataCircleCardWomanData({
@@ -358,7 +358,11 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, woman, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, woman, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, woman, RISK_LEVEL),
-                title: format(t('%d %s'), woman.length, t('Total mother in PNC', { count: woman.length })),
+                title: format(
+                    t('total_mother_in_pnc.%d %s'),
+                    woman.length,
+                    t('Total mother in PNC', { count: woman.length }),
+                ),
             });
         }
     }, [filteredData, module, t, userLocationLevel]);
