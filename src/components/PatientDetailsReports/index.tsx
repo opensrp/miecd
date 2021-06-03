@@ -7,6 +7,7 @@ import { Row } from 'reactstrap';
 import { Dictionary, sortByEventDate } from '../../helpers/utils';
 import { LogFaceSmsType, NutritionLogFaceSms, PregnancyLogFaceSms } from '../../store/ducks/sms_events';
 import React from 'react';
+import { format } from 'util';
 
 interface PatientDetailsReportProps {
     patientsReports: (PregnancyLogFaceSms | NutritionLogFaceSms)[];
@@ -126,7 +127,7 @@ export const pregnancyOptionsFilter = (chunkedSms: Dictionary<PregnancyLogFaceSm
     const keySegmentsLength = listOfProps.length;
 
     listOfProps.map((key, index) => {
-        const label = index === 0 ? t('Current pregnancy') : `${t('pregnancy')} ${keySegmentsLength - index}`;
+        const label = index === 0 ? t('Current pregnancy') : format(t('Pregnancy %d'), keySegmentsLength - index);
         const thisOption = {
             value: key,
             label,

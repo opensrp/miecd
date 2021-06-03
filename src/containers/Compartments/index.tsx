@@ -71,6 +71,7 @@ import {
 } from '../../configs/env';
 import { CompartmentsSmsFilterFunction } from '../../types';
 import { queryKeyAndSmsSlice } from '../../configs/settings';
+import { format } from 'util';
 
 interface Props {
     module: typeof PREGNANCY | typeof NBC_AND_PNC | typeof NUTRITION;
@@ -280,7 +281,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, birthsInTheFuture, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, birthsInTheFuture, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, birthsInTheFuture, RISK_LEVEL),
-                title: `${birthsInTheFuture.length} ${t('Total Pregnancies')}`,
+                title: format(t('%d Total pregnancies'), birthsInTheFuture.length),
             } as PregnancyAndNBCDataCircleCardProps);
 
             setpregnaciesDueIn2WeeksProps({
@@ -293,7 +294,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, last2WeeksSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, last2WeeksSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, last2WeeksSmsData, RISK_LEVEL),
-                title: `${last2WeeksSmsData.length} ${t('Total Pregnancies due in 2 weeks')}`,
+                title: format(t('%d Total Pregnancies due in 2 weeks'), last2WeeksSmsData.length),
             });
 
             setpregnanciesDueIn1WeekProps({
@@ -306,7 +307,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, last1WeekSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, last1WeekSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, last1WeekSmsData, RISK_LEVEL),
-                title: `${last1WeekSmsData.length} ${t('Total Pregnancies due in 1 week')}`,
+                title: format(t('%d Total Pregnancies due in 1 week'), last1WeekSmsData.length),
             });
         }
     }, [filteredData, module, t, userLocationLevel]);
@@ -344,7 +345,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, newBorn, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, newBorn, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, newBorn, RISK_LEVEL),
-                title: `${newBorn.length} ${t('Total Newborn', { count: newBorn.length })}`,
+                title: format(t('%d %s'), newBorn.length, t('Total newborn', { count: newBorn.length })),
             });
 
             setDataCircleCardWomanData({
@@ -357,7 +358,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, woman, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, woman, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, woman, RISK_LEVEL),
-                title: `${woman.length} ${t('Total Mother', { count: woman.length })} ${t('in PNC')}`,
+                title: format(t('%d %s'), woman.length, t('Total mother in PNC', { count: woman.length })),
             });
         }
     }, [filteredData, module, t, userLocationLevel]);
@@ -401,7 +402,7 @@ export const Compartments = ({ module }: Props) => {
                 stunting: getNumberOfSmsWithRisk(STUNTED, childrenUnder5, GROWTH_STATUS),
                 wasting: getNumberOfSmsWithRisk(SEVERE_WASTING, childrenUnder5, NUTRITION_STATUS),
                 normal: getNumberOfSmsWithRisk(NORMAL, childrenUnder5, NUTRITION_STATUS),
-                title: `${childrenUnder5.length} ${t('Total Children Under 5')}`,
+                title: format(t('%d Total children under 5'), childrenUnder5.length),
             });
 
             setDataCircleCardNutrition2({
@@ -413,7 +414,7 @@ export const Compartments = ({ module }: Props) => {
                 stunting: getNumberOfSmsWithRisk(STUNTED, childrenUnder2, GROWTH_STATUS),
                 wasting: getNumberOfSmsWithRisk(SEVERE_WASTING, childrenUnder2, NUTRITION_STATUS),
                 normal: getNumberOfSmsWithRisk(NORMAL, childrenUnder2, NUTRITION_STATUS),
-                title: `${childrenUnder2.length} ${t('Total Children Under 2')}`,
+                title: format(t('%d Total children under 2'), childrenUnder2.length),
             });
         }
     }, [filteredData, module, t, userLocationLevel]);

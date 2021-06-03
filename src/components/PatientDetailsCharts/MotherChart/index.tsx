@@ -61,7 +61,7 @@ function MotherChart(props: MotherChartTypes) {
                     <Chart
                         dataArray={getWeightDataSeries(motherChartData, t)}
                         chartWrapperId="weight-chart-1"
-                        title={t('Weight monitoring')}
+                        title={t('Mother’s weight tracking ')}
                         legendString={t('Weight')}
                         units={t('kg')}
                         yAxisLabel={t('Weight')}
@@ -70,7 +70,7 @@ function MotherChart(props: MotherChartTypes) {
                     <Chart
                         dataArray={getBloodPSeriesForChart(motherChartData, t)}
                         chartWrapperId="blood-pressure"
-                        title="Blood pressure"
+                        title={t('Mother’s Blood pressure tracking')}
                         legendString={t('Blood pressure')}
                         units=""
                         yAxisLabel={t('Blood pressure')}

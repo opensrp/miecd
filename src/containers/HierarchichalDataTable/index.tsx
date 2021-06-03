@@ -14,8 +14,6 @@ import { VILLAGE_SLICE, COMMUNE_SLICE, DISTRICT_SLICE, PROVINCE_SLICE } from '..
 import {
     ALL,
     BACKPAGE_ICON,
-    COMMUNE,
-    DISTRICT,
     FEEDING_CATEGORY,
     GROWTH_STATUS,
     HIERARCHICAL_DATA_URL,
@@ -29,7 +27,6 @@ import {
     NUTRITION,
     NUTRITION_STATUS,
     OVERWEIGHT,
-    PROVINCE,
     RED,
     RED_ALERT_CLASSNAME,
     RISK,
@@ -37,7 +34,6 @@ import {
     STUNTED,
     NORMAL,
     UP,
-    VILLAGE,
     FETCH_VILLAGES,
     FETCH_COMMUNES,
     FETCH_DISTRICTS,
@@ -60,6 +56,7 @@ import { useTranslation, TFunction } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { CompartmentsSmsFilterFunction } from '../../types';
 import { queryKeyAndSmsSlice } from '../../configs/settings';
+import { format } from 'util';
 
 reducerRegistry.register(reducerName, locationsReducer);
 reducerRegistry.register(smsReducerName, smsReducer);
@@ -541,23 +538,25 @@ const getTotals = (dataToShow: LocationWithData[], module: moduleType) => {
 const unavailableChildren = (headerTitle: string[], currentLevel: 0 | 1 | 2 | 3, t: TFunction) => {
     // translate level number to level name
     const levelToName = (levelNo: 0 | 1 | 2 | 3, t: TFunction, plural?: boolean) => {
-        let levelName: 'provinces' | 'province' | 'districts' | 'district' | 'communes' | 'commune' | 'villages';
+        let levelName: string;
 
-        if (levelNo === 0) levelName = plural ? 'provinces' : 'province';
-        else if (levelNo === 1) levelName = plural ? 'districts' : 'district';
-        else if (levelNo === 2) levelName = plural ? 'communes' : 'commune';
-        else levelName = 'villages';
+        if (levelNo === 0) levelName = plural ? t('provinces') : t('province');
+        else if (levelNo === 1) levelName = plural ? t('districts') : t('district');
+        else if (levelNo === 2) levelName = plural ? t('communes') : t('commune');
+        else levelName = t('villages');
 
-        return t(levelName);
+        return levelName;
     };
 
     // compose message from last item in header, current and previous drill down level
-    const unavailableMessage = `The ${headerTitle[headerTitle.length - 1]} ${levelToName(
-        (currentLevel - 1) as 0 | 1 | 2 | 3,
-        t,
-    )} doesn't seem to have ${levelToName(currentLevel, t, true)}`;
+    const unavailableMessage = format(
+        t("The %d %s doesn't seem to have %s"),
+        headerTitle[headerTitle.length - 1],
+        levelToName((currentLevel - 1) as 0 | 1 | 2 | 3, t),
+        levelToName(currentLevel, t, true),
+    );
 
-    return `${t(unavailableMessage)}`;
+    return unavailableMessage;
 };
 
 export default function HierarchicalDataTable() {
@@ -809,20 +808,21 @@ export default function HierarchicalDataTable() {
         }
     }, [populatedLocationData, risk_highlighter, moduleSmsSlice]);
 
-    const getLevelString = () => {
+    const getLevelString = (t: TFunction) => {
+        const province = t('Province');
         if (current_level === 0) {
-            return PROVINCE;
+            return province;
         }
         if (current_level === 1) {
-            return DISTRICT;
+            return t('District');
         }
         if (current_level === 2) {
-            return COMMUNE;
+            return t('Commune');
         }
         if (current_level === 3) {
-            return VILLAGE;
+            return t('Village');
         }
-        return PROVINCE;
+        return province;
     };
 
     const dontDisplayProvince = () => permissionLevel > 0;
@@ -1031,7 +1031,7 @@ export default function HierarchicalDataTable() {
                                     return 'no_risk' in totals ? (
                                         <tr key="total" className="totals-row">
                                             <td className="default-width" id="total">
-                                                {t(`Total (${getLevelString()})`)}
+                                                {format(t('Total %s', getLevelString(t)))}
                                             </td>
                                             <td
                                                 className={`default-width ${
@@ -1059,7 +1059,7 @@ export default function HierarchicalDataTable() {
                                     ) : (
                                         <tr key="total" className="totals-row">
                                             <td className="default-width" id="total">
-                                                {t(`Total (${getLevelString()})`)}
+                                                {format(t('Total %s', getLevelString(t)))}
                                             </td>
                                             <td
                                                 className={`default-width ${
