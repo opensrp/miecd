@@ -32,7 +32,7 @@ export type ChildChartTypes = ChildChartProps & RouteComponentProps<{ patient_id
 /** renders chart that has the child weight and height  */
 function ChildChart(props: ChildChartTypes) {
     const { supersetService, addChildDataCreator, childChartData } = props;
-    const { error, handleBrokenPage, broken } = useHandleBrokenPage();
+    const { handleBrokenPage, broken } = useHandleBrokenPage();
     const [loading, setLoading] = React.useState<boolean>(childChartData.length === 0);
     const { t } = useTranslation();
 
@@ -47,7 +47,7 @@ function ChildChart(props: ChildChartTypes) {
     }, [addChildDataCreator, props.match.params.patient_id, supersetService]);
 
     if (loading || broken) {
-        return <BrokenLoadingChartPage error={error} broken={broken} loading={loading} />;
+        return <BrokenLoadingChartPage broken={broken} loading={loading} />;
     }
 
     return (
@@ -57,10 +57,10 @@ function ChildChart(props: ChildChartTypes) {
                     <Chart
                         dataArray={getWeightHeightDataSeries(childChartData, t)}
                         chartWrapperId="child-nutrition-chart-1"
-                        title={t('Weight Height Monitoring')}
-                        legendString={t('Weight Height')}
+                        title={t('Weight and height tracking')}
+                        legendString={t('Weight and height')}
                         units={t('cm')}
-                        yAxisLabel={t('weight and height')}
+                        yAxisLabel={t('Weight and height')}
                     />
                 </div>
             ) : (

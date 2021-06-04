@@ -15,157 +15,111 @@ exports[`PregnancyHome must render correctly 1`] = `
     </p>
   </div>
   <div
-    className="components-list"
+    className="module-home-cards"
   >
     <div
-      className="spacer"
+      className="card"
     >
-      <div
-        className="home-sub-containers"
+      <h5
+        className="card-header"
       >
-        <div
-          className="sub-container-heading"
+        Log face
+      </h5>
+      <div
+        className="card-body"
+      >
+        <p>
+          Display of all messages received from MIECD in chronological order
+        </p>
+        <Link
+          to="#"
         >
-          <p>
-            Log face
-          </p>
-        </div>
-        <hr />
-        <div
-          className="sub-container-message"
-        >
-          <div
-            id="cont-size"
+          <LinkAnchor
+            href="/"
+            navigate={[Function]}
           >
-            <p>
-              Display of all messages received from MIECD in chronological order
-            </p>
-          </div>
-          <div
-            id="cont-sized"
-          >
-            <Link
-              to="#"
+            <a
+              href="/"
+              onClick={[Function]}
             >
-              <LinkAnchor
-                href="/"
-                navigate={[Function]}
+              <button
+                className="button-style "
               >
-                <a
-                  href="/"
-                  onClick={[Function]}
-                >
-                  <button
-                    className="button-style "
-                  >
-                    View
-                  </button>
-                </a>
-              </LinkAnchor>
-            </Link>
-          </div>
-        </div>
+                View
+              </button>
+            </a>
+          </LinkAnchor>
+        </Link>
       </div>
     </div>
     <div
-      className="spacer"
+      className="card"
     >
-      <div
-        className="home-sub-containers"
+      <h5
+        className="card-header"
       >
-        <div
-          className="sub-container-heading"
+        Compartments
+      </h5>
+      <div
+        className="card-body"
+      >
+        <p>
+          This is the aggregation and categorization of patients data
+        </p>
+        <Link
+          to="/pregnancy_compartments"
         >
-          <p>
-            Compartments
-          </p>
-        </div>
-        <hr />
-        <div
-          className="sub-container-message"
-        >
-          <div
-            id="cont-size"
+          <LinkAnchor
+            href="/pregnancy_compartments"
+            navigate={[Function]}
           >
-            <p>
-              This is the aggregation and categorization of patients data
-                   
-            </p>
-          </div>
-          <div
-            id="cont-sized"
-          >
-            <Link
-              to="/pregnancy_compartments"
+            <a
+              href="/pregnancy_compartments"
+              onClick={[Function]}
             >
-              <LinkAnchor
-                href="/pregnancy_compartments"
-                navigate={[Function]}
+              <button
+                className="button-style "
               >
-                <a
-                  href="/pregnancy_compartments"
-                  onClick={[Function]}
-                >
-                  <button
-                    className="button-style "
-                  >
-                    View
-                  </button>
-                </a>
-              </LinkAnchor>
-            </Link>
-          </div>
-        </div>
+                View
+              </button>
+            </a>
+          </LinkAnchor>
+        </Link>
       </div>
     </div>
     <div
-      className="spacer"
+      className="card"
     >
-      <div
-        className="home-sub-containers"
+      <h5
+        className="card-header"
       >
-        <div
-          className="sub-container-heading"
+        Analysis
+      </h5>
+      <div
+        className="card-body"
+      >
+        <p>
+          Important analysis and indicators generated from collected data
+        </p>
+        <Link
+          to="/pregnancy_analysis"
         >
-          <p>
-            Analysis
-          </p>
-        </div>
-        <hr />
-        <div
-          className="sub-container-message"
-        >
-          <div
-            id="cont-size"
+          <LinkAnchor
+            href="/pregnancy_analysis"
+            navigate={[Function]}
           >
-            <p>
-              Important analysis and indicators generated from collected data
-            </p>
-          </div>
-          <div
-            id="cont-sized"
-          >
-            <Link
-              to="/pregnancy_analysis"
+            <a
+              href="/pregnancy_analysis"
+              onClick={[Function]}
             >
-              <LinkAnchor
-                href="/pregnancy_analysis"
-                navigate={[Function]}
+              <button
+                className="button-style "
               >
-                <a
-                  href="/pregnancy_analysis"
-                  onClick={[Function]}
-                >
-                  <button
-                    className="button-style "
-                  >
-                    View
-                  </button>
-                </a>
-              </LinkAnchor>
-            </Link>
-          </div>
-        </div>
+                View
+              </button>
+            </a>
+          </LinkAnchor>
+        </Link>
       </div>
     </div>
   </div>

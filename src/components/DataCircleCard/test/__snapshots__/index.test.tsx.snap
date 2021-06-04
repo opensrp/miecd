@@ -24,7 +24,7 @@ exports[`DataCircleCard card body link works: card title link 1`] = `
       <span
         className="risk-level"
       >
-        Red Alert
+        Red alert
       </span>
     </a>
   </LinkAnchor>
@@ -122,7 +122,7 @@ exports[`DataCircleCard must render correctly 1`] = `
               <span
                 className="risk-level"
               >
-                Red Alert
+                Red alert
               </span>
             </a>
           </LinkAnchor>
@@ -180,7 +180,7 @@ exports[`DataCircleCard must render correctly 1`] = `
               <span
                 className="risk-level"
               >
-                No Risk
+                No risk
               </span>
             </a>
           </LinkAnchor>

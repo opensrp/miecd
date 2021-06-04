@@ -38,7 +38,7 @@ export type MotherChartTypes = MotherChartProps & RouteComponentProps<{ patient_
 /** renders chart that has the mothers weight and blood pressure  */
 function MotherChart(props: MotherChartTypes) {
     const { supersetService, addMotherDataCreator, motherChartData } = props;
-    const { error, handleBrokenPage, broken } = useHandleBrokenPage();
+    const { handleBrokenPage, broken } = useHandleBrokenPage();
     const [loading, setLoading] = React.useState<boolean>(motherChartData.length === 0);
     const { t } = useTranslation();
 
@@ -51,7 +51,7 @@ function MotherChart(props: MotherChartTypes) {
     }, [addMotherDataCreator, props.match.params.patient_id, supersetService]);
 
     if (loading || broken) {
-        return <BrokenLoadingChartPage error={error} broken={broken} loading={loading} />;
+        return <BrokenLoadingChartPage broken={broken} loading={loading} />;
     }
 
     return (
@@ -61,19 +61,19 @@ function MotherChart(props: MotherChartTypes) {
                     <Chart
                         dataArray={getWeightDataSeries(motherChartData, t)}
                         chartWrapperId="weight-chart-1"
-                        title={t('Wight Monitoring')}
+                        title={t('Mother’s weight tracking')}
                         legendString={t('Weight')}
                         units={t('kg')}
-                        yAxisLabel={t('weight')}
+                        yAxisLabel={t("Mother's weight")}
                     />
 
                     <Chart
                         dataArray={getBloodPSeriesForChart(motherChartData, t)}
                         chartWrapperId="blood-pressure"
-                        title="Blood Pressure"
+                        title={t('Mother’s Blood pressure tracking')}
                         legendString={t('Blood pressure')}
                         units=""
-                        yAxisLabel={t('Blood Pressure')}
+                        yAxisLabel={t('Blood pressure')}
                     />
                 </>
             ) : (

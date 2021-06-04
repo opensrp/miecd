@@ -240,6 +240,12 @@ td {
     border-radius: 0 !important;
 }
 
+.logface-filters__placeholder {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .hierarchy-actions {
     padding: 5px;
 }

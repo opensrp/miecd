@@ -71,6 +71,7 @@ import {
 } from '../../configs/env';
 import { CompartmentsSmsFilterFunction } from '../../types';
 import { queryKeyAndSmsSlice } from '../../configs/settings';
+import { format } from 'util';
 
 interface Props {
     module: typeof PREGNANCY | typeof NBC_AND_PNC | typeof NUTRITION;
@@ -104,6 +105,7 @@ export const Compartments = ({ module }: Props) => {
     const dispatch = useDispatch();
     const filterArgsInStore = useSelector((state) => getFilterArgs(state));
     const { error: brokenError, handleBrokenPage, broken } = useHandleBrokenPage();
+    const { t } = useTranslation();
 
     // remove current filters when component mounts
     useEffect(() => {
@@ -279,7 +281,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, birthsInTheFuture, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, birthsInTheFuture, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, birthsInTheFuture, RISK_LEVEL),
-                title: `${birthsInTheFuture.length} Total Pregnancies`,
+                title: format(t('%d Total pregnancies'), birthsInTheFuture.length),
             } as PregnancyAndNBCDataCircleCardProps);
 
             setpregnaciesDueIn2WeeksProps({
@@ -292,7 +294,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, last2WeeksSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, last2WeeksSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, last2WeeksSmsData, RISK_LEVEL),
-                title: `${last2WeeksSmsData.length} Total Pregnancies due in 2 weeks`,
+                title: format(t('%d Total Pregnancies due in 2 weeks'), last2WeeksSmsData.length),
             });
 
             setpregnanciesDueIn1WeekProps({
@@ -305,10 +307,10 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, last1WeekSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, last1WeekSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, last1WeekSmsData, RISK_LEVEL),
-                title: `${last1WeekSmsData.length} Total Pregnancies due in 1 week`,
+                title: format(t('%d Total Pregnancies due in 1 week'), last1WeekSmsData.length),
             });
         }
-    }, [filteredData, module, userLocationLevel]);
+    }, [filteredData, module, t, userLocationLevel]);
 
     const [dataCircleCardChildData, setDataCircleCardChildData] = useState<PregnancyAndNBCDataCircleCardProps>({
         noRisk: 0,
@@ -343,7 +345,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, newBorn, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, newBorn, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, newBorn, RISK_LEVEL),
-                title: `${newBorn.length} Total Newborn${newBorn.length > 1 ? 's' : ''}`,
+                title: format(t('total_newborn.%d %s'), newBorn.length, t('Total newborn', { count: newBorn.length })),
             });
 
             setDataCircleCardWomanData({
@@ -356,10 +358,14 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, woman, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, woman, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, woman, RISK_LEVEL),
-                title: `${woman.length} Total Mother${woman.length > 1 ? 's' : ''} in PNC`,
+                title: format(
+                    t('total_mother_in_pnc.%d %s'),
+                    woman.length,
+                    t('Total mother in PNC', { count: woman.length }),
+                ),
             });
         }
-    }, [filteredData, module, userLocationLevel]);
+    }, [filteredData, module, t, userLocationLevel]);
 
     const [dataCircleCardNutrition1, setDataCircleCardNutrition1] = useState<NutritionDataCircleCardProps>({
         filterArgs: [],
@@ -400,7 +406,7 @@ export const Compartments = ({ module }: Props) => {
                 stunting: getNumberOfSmsWithRisk(STUNTED, childrenUnder5, GROWTH_STATUS),
                 wasting: getNumberOfSmsWithRisk(SEVERE_WASTING, childrenUnder5, NUTRITION_STATUS),
                 normal: getNumberOfSmsWithRisk(NORMAL, childrenUnder5, NUTRITION_STATUS),
-                title: `${childrenUnder5.length} Total Children Under 5`,
+                title: format(t('%d Total children under 5'), childrenUnder5.length),
             });
 
             setDataCircleCardNutrition2({
@@ -412,10 +418,10 @@ export const Compartments = ({ module }: Props) => {
                 stunting: getNumberOfSmsWithRisk(STUNTED, childrenUnder2, GROWTH_STATUS),
                 wasting: getNumberOfSmsWithRisk(SEVERE_WASTING, childrenUnder2, NUTRITION_STATUS),
                 normal: getNumberOfSmsWithRisk(NORMAL, childrenUnder2, NUTRITION_STATUS),
-                title: `${childrenUnder2.length} Total Children Under 2`,
+                title: format(t('%d Total children under 2'), childrenUnder2.length),
             });
         }
-    }, [filteredData, module, userLocationLevel]);
+    }, [filteredData, module, t, userLocationLevel]);
 
     const [circleCardComponent, setCircleCardComponent] = useState<ReactNodeArray>([]);
 
@@ -452,8 +458,6 @@ export const Compartments = ({ module }: Props) => {
         pregnanciesDueIn1WeekProps,
         userLocationId,
     ]);
-
-    const { t } = useTranslation();
 
     if (broken) return <ErrorPage title={brokenError?.name} message={brokenError?.message} />;
 

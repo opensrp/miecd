@@ -2,12 +2,6 @@
     margin-top: 75px;
 }
 
-.module-home-main .components-list {
-    display: flex;
-    height: 40vh;
-    margin-top: 72px;
-}
-
 .nav {
     background-color: rgb(246, 254, 255);
     max-width: 25%;
@@ -17,11 +11,27 @@
 
 .main-container {
     display: flex;
-    font-size: 16px;
 }
 
 .module-home-main {
     padding: 50px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 80%;
+    font-size: 1.2rem;
+}
+
+.module-home-cards {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.module-home-cards .card {
+    width: 25%;
+    min-width: 320px;
+    margin-bottom: 10px;
 }
 
 .welcome-text {
@@ -63,62 +73,8 @@
     background: #0189cb;
 }
 
-.home-sub-containers {
-    padding: 10px;
-    background-color: #ffffff;
-    border: 1px solid #dadce0;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px 0 #d7d7e0;
-    width: 320px;
-    height: 284px;
-}
-
-.sub-container-heading {
-    color: #001429;
-    font-family: Roboto;
-    line-height: 26px;
-    text-align: left;
-    padding-left: 14px;
-}
-
-.sub-container-heading p {
-    margin-bottom: 10px;
-    margin-top: 8px;
-    font-size: 24px;
-}
-
-.sub-container-message {
-    font-size: 1.2rem;
-    padding: 14px;
-    font-family: Roboto;
-}
-
-.spacer {
-    height: 300px;
-    width: 33.3%;
-}
-
 h4 p {
     text-align: left;
-}
-
-#cont-size {
-    height: 50%;
-    color: #637381;
-}
-
-.home-sub-containers hr {
-    margin-left: -10px;
-    margin-right: -10px;
-}
-
-#cont-sized {
-    top: 15px;
-    background: #0093db;
-    position: relative;
-    text-align: center;
-    border-radius: 2px;
-    cursor: pointer;
 }
 
 @media screen and (max-width: 1100px) {

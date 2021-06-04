@@ -222,10 +222,10 @@ describe('Compartments', () => {
         expect(cardGroups).toHaveLength(2);
 
         // first card group title to be Total Newborns
-        expect(cardGroups.at(0).find('.card_title').text()).toMatch(/Total Newborn/);
+        expect(cardGroups.at(0).find('.card_title').text()).toMatch(/\d Total newborn./);
 
         // second card group title to be Total Mother in PNC
-        expect(cardGroups.at(1).find('.card_title').text()).toMatch(/Total Mother in PNC/);
+        expect(cardGroups.at(1).find('.card_title').text()).toMatch(/\d Total mother in PNC/);
 
         wrapper.unmount();
     });
@@ -268,10 +268,10 @@ describe('Compartments', () => {
         expect(cardGroups).toHaveLength(2);
 
         // first card group title to be Total Children Under 5
-        expect(cardGroups.at(0).find('.card_title').text()).toMatch(/Total Children Under 5/);
+        expect(cardGroups.at(0).find('.card_title').text()).toMatch(/\d Total children under 5/);
 
         // second card group title to be Total Children Under 2
-        expect(cardGroups.at(1).find('.card_title').text()).toMatch(/Total Children Under 2/);
+        expect(cardGroups.at(1).find('.card_title').text()).toMatch(/\d Total children under 2/);
 
         wrapper.unmount();
     });

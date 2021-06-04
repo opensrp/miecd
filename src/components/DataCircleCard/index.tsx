@@ -78,7 +78,7 @@ function DataCircleCard({
     const pregnancyAndPncCircleSpec: CircleSpecProps[] = [
         {
             class: 'red',
-            riskLabel: t('Red Alert'),
+            riskLabel: t('Red alert'),
             riskType: RED,
             riskValue: redAlert,
         },
@@ -90,7 +90,7 @@ function DataCircleCard({
         },
         {
             class: 'green',
-            riskLabel: t('No Risk'),
+            riskLabel: t('No risk'),
             riskType: NO,
             riskValue: noRisk,
         },
@@ -141,7 +141,7 @@ function DataCircleCard({
                         }
                     }}
                 >
-                    <h5 className="card_title">{t(title)}</h5>
+                    <h5 className="card_title">{title}</h5>
                 </Link>
             </CardTitle>
             <CardBody className="circlesRow">

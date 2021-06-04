@@ -60,7 +60,7 @@ describe('ConnectedChildChart', () => {
         });
 
         expect(wrapper.find('Ripple')).toHaveLength(0);
-        expect(wrapper.text()).toMatchInlineSnapshot(`"Chart could not load, an error occurred. coughid"`);
+        expect(wrapper.text()).toMatchInlineSnapshot(`"Chart could not load, an error occurred."`);
 
         expect(supersetFetchMock).toHaveBeenCalledWith('childChartSlice', {
             adhoc_filters: [
@@ -104,10 +104,10 @@ describe('ConnectedChildChart', () => {
                     { data: [67, 69], name: 'height' },
                 ],
             },
-            legendString: 'Weight Height',
-            title: 'Weight Height Monitoring',
+            legendString: 'Weight and height',
+            title: 'Weight and height tracking',
             units: 'cm',
-            yAxisLabel: 'weight and height',
+            yAxisLabel: 'Weight and height',
         });
     });
 });

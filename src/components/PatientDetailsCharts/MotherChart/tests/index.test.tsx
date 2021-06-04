@@ -60,7 +60,7 @@ describe('connectedMotherChart', () => {
         });
 
         expect(wrapper.find('Ripple')).toHaveLength(0);
-        expect(wrapper.text()).toMatchInlineSnapshot(`"Chart could not load, an error occurred. coughid"`);
+        expect(wrapper.text()).toMatchInlineSnapshot(`"Chart could not load, an error occurred."`);
 
         expect(supersetFetchMock).toHaveBeenCalledWith('motherChartSlice', {
             adhoc_filters: [
@@ -102,9 +102,9 @@ describe('connectedMotherChart', () => {
                 dataSeries: [{ data: [78, 44], name: 'weight' }],
             },
             legendString: 'Weight',
-            title: 'Wight Monitoring',
+            title: 'Mother’s weight tracking',
             units: 'kg',
-            yAxisLabel: 'weight',
+            yAxisLabel: "Mother's weight",
         });
         expect(wrapper.find('Chart').at(1).props()).toEqual({
             chartWrapperId: 'blood-pressure',
@@ -116,9 +116,9 @@ describe('connectedMotherChart', () => {
                 ],
             },
             legendString: 'Blood pressure',
-            title: 'Blood Pressure',
+            title: 'Mother’s Blood pressure tracking',
             units: '',
-            yAxisLabel: 'Blood Pressure',
+            yAxisLabel: 'Blood pressure',
         });
     });
 });

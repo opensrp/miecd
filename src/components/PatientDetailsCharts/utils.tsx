@@ -54,14 +54,14 @@ export interface BrokenLoadingChartPageProps {
 }
 
 /** dry component for showing loader or broken page */
-export const BrokenLoadingChartPage = ({ error, loading, broken }: BrokenLoadingChartPageProps) => {
+export const BrokenLoadingChartPage = ({ loading, broken }: BrokenLoadingChartPageProps) => {
     const { t } = useTranslation();
     if (loading) {
         return <Ripple></Ripple>;
     }
 
     if (broken) {
-        return <NoRecord message={t(`Chart could not load, an error occurred. ${error?.message ?? ''}`)} />;
+        return <NoRecord message={`${t('Chart could not load, an error occurred.')}`} />;
     }
     return null;
 };

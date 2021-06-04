@@ -35,6 +35,7 @@ import {
     logFaceSupersetCall,
     getRiskCatFilter,
     getCommonPaginationProps,
+    translatedModuleLabel,
 } from '../../helpers/utils';
 import supersetFetch from '../../services/superset';
 import {
@@ -181,7 +182,7 @@ const LogFace = (props: LogFacePropsType) => {
     return (
         <div className="logface-content">
             <div>
-                <h2 id="logface_title">{t(`Log Face - ${module}`)}</h2>
+                <h2 id="logface_title">{`${t('Log Face')} - ${translatedModuleLabel(t)[module]}`}</h2>
             </div>
             <div className="filter-panel">
                 <div className="filters">
