@@ -221,3 +221,77 @@ export const OpenSRPAPIResponse = {
     roles: ['Provider'],
     userName: 'superset-user',
 };
+
+export const chartRecord1 = {
+    event_id: '1596125655915',
+    EventDate: '2020-07-30',
+    health_worker_location_name: 'Th\u00f4n 2',
+    sms_type: 'Nutrition Registration',
+    anc_id: '1003T6',
+    patient_name: 'Lo',
+    age: '1y  0m',
+    message: 'Name = Lo Van  Anh \nPhone Number =  \nHealth Insurance = 4 \nMUAC = 15 \nWeight = 4 \nHeight = 52',
+    logface_risk: 'Not Set',
+    health_worker_name: 'Amanda Beck',
+    event_date: '2020-07-30T16:07:15.804000',
+    risk_level: ' NULL',
+    nutrition_status: 'severe wasting',
+    location_id: '6a736d69-70ab-48de-ade9-7caab17e9088',
+    message_vietnamese: 0,
+};
+export const chartRecord2 = {
+    event_id: '1596125587137',
+    EventDate: '2020-07-30',
+    health_worker_location_name: 'Th\u00f4n 2',
+    sms_type: 'Nutrition Registration',
+    anc_id: '1003PA',
+    patient_name: 'Bran',
+    age: '1y  0m',
+    message:
+        'Name = Bran Kamundi  Fosa \nPhone Number =  \nHealth Insurance = NA \nMUAC = 10 \nWeight = 9 \nHeight = 64',
+    logface_risk: 'Not Set',
+    health_worker_name: 'Amanda Beck',
+    event_date: '2020-07-30T16:07:06.862000',
+    risk_level: ' NULL',
+    nutrition_status: 'normal',
+    location_id: '6a736d69-70ab-48de-ade9-7caab17e9088',
+    message_vietnamese: 0,
+};
+
+export const chartRecord3 = {
+    event_id: '1576521434393',
+    EventDate: '2019-12-16',
+    health_worker_location_name: 'Th\u00f4n Kon  Sang',
+    sms_type: 'Nutrition Registration',
+    anc_id: '1001GV',
+    patient_name: 'Luta',
+    age: '1y  4m',
+    message: 'Name = Luta   maria \nPhone Number =  \nHealth Insurance = na \nMUAC = 11 \nWeight = 2.2 \nHeight = 48',
+    logface_risk: 'Not Set',
+    health_worker_name: 'Mr. Amby Mint Pepper',
+    event_date: '2019-12-16T18:12:14.192000',
+    risk_level: ' NULL',
+    nutrition_status: 'severe wasting',
+    location_id: '4995bfc1-be78-4e73-b5c3-5b5c2ba37b13',
+    message_vietnamese: 0,
+};
+export const chartRecord4 = {
+    event_id: '1576485123121',
+    EventDate: '2018-12-16',
+    health_worker_location_name: 'Th\u00f4n 1',
+    sms_type: 'Nutrition Registration',
+    anc_id: '100199',
+    patient_name: 'lo',
+    age: '6m 18d',
+    message:
+        'Name = lo a  giang \nPhone Number =  \nHealth Insurance = 944896925 \nMUAC = 15 \nWeight = 4.3 \nHeight = 51',
+    logface_risk: 'Not Set',
+    health_worker_name: '',
+    event_date: '2018-12-16T08:12:03.047000',
+    risk_level: ' NULL',
+    nutrition_status: 'severe wasting',
+    location_id: '96f15f3f-7a85-485f-a23d-3d2d720d6127',
+    message_vietnamese: 0,
+};
+
+export const chartRecords = [chartRecord1, chartRecord2, chartRecord3, chartRecord4];

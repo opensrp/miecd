@@ -8,8 +8,9 @@ import {
     fetchOpenSrpData,
     getLocationId,
     getFilterFunctionAndLocationLevel,
+    inThePast24Months,
 } from '../utils';
-import { OpenSRPAPIResponse } from './fixtures';
+import { chartRecord1, chartRecord2, chartRecord3, chartRecords, OpenSRPAPIResponse } from './fixtures';
 import fetchMock from 'fetch-mock';
 import store from '../../store/index';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -27,6 +28,7 @@ import {
     userUUID,
     securityAuthenticate,
 } from '../../containers/HierarchichalDataTable/test/fixtures';
+import MockDate from 'mockdate';
 
 jest.mock('@onaio/gatekeeper', () => {
     const actual = jest.requireActual('@onaio/gatekeeper');
@@ -104,6 +106,13 @@ describe('src/helpers', () => {
         expect(response).toEqual('24 age.months');
         response = formatAge('3y 9m 0d', (t: string) => t);
         expect(response).toEqual('3 age.years');
+    });
+
+    it('filters records within the last 2 years correctly', () => {
+        MockDate.set('2021-06-04T11:51:37.190Z');
+        const response = inThePast24Months(chartRecords);
+        expect(response).toHaveLength(3);
+        expect(response).toEqual([chartRecord1, chartRecord2, chartRecord3]);
     });
 
     it('sorts by event dates correctly', () => {

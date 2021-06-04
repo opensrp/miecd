@@ -60,7 +60,7 @@ import { fetchSms, LogFaceSmsType, SmsData, smsDataFetched, CompartmentSmsTypes 
 import { Dictionary } from '@onaio/utils';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
-import { format, parse } from 'date-fns';
+import { format, isWithinInterval, parse, subYears, toDate } from 'date-fns';
 import { fetchTree } from '../store/ducks/locationHierarchy';
 import { split, trim, replace } from 'lodash';
 import * as React from 'react';
@@ -814,4 +814,16 @@ export const translatedModuleLabel = (t: TFunction) => {
         [NUTRITION_MODULE]: t('Nutrition'),
         [NBC_AND_PNC_MODULE]: t('NBC & PNC'),
     };
+};
+
+/** filters events whose event_dates are within he last 24 months interval
+ * @param records - the sms records
+ * */
+export const inThePast24Months = <T extends { event_date: string }>(records: T[]) => {
+    const currentDate = new Date();
+    const twoYearsBack = subYears(toDate(currentDate), 2);
+    return records.filter((record) => {
+        const thisDate = new Date(record.event_date);
+        return isWithinInterval(thisDate, { start: twoYearsBack, end: currentDate });
+    });
 };
