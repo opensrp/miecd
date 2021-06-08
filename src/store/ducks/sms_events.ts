@@ -44,8 +44,18 @@ export interface NutritionLogFaceSms extends PregnancyLogFaceSms {
     feeding_category: string;
 }
 
+/** common fields to compartment sms */
+export interface BaseCompartmentsSms {
+    health_insurance: string;
+    event_id: string;
+    ethnicity: string;
+    household: string;
+    toilet: string;
+    handwashing: string;
+}
+
 /** Interfaces for SMS record objects as received from discover*/
-export interface PregnancySmsData {
+export interface PregnancySmsData extends BaseCompartmentsSms {
     anc_id: string;
     base_entity_id: string;
     event_date: string;
@@ -73,7 +83,7 @@ export interface PregnancySmsData {
     age: string;
 }
 
-export interface NutritionSmsData {
+export interface NutritionSmsData extends BaseCompartmentsSms {
     anc_id: string;
     base_entity_id: string;
     event_date: string;
@@ -96,7 +106,7 @@ export interface NutritionSmsData {
     location_name: string;
 }
 
-export interface NbcPncSmsData {
+export interface NbcPncSmsData extends BaseCompartmentsSms {
     anc_id: string;
     base_entity_id: string;
     event_date: string;

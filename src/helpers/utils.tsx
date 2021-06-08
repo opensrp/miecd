@@ -554,9 +554,16 @@ export async function fetchData(
  * @param supersetSlice superset/discover slice number
  * @returns an array of slice type
  */
-export async function fetchSupersetData<ReturnType>(supersetSlice: string, t: TFunction): Promise<ReturnType[]> {
-    // fetch
-    return supersetFetch(supersetSlice)
+export async function fetchSupersetData<ReturnType>(
+    supersetSlice: string,
+    t: TFunction,
+    supersetOptions: SupersetFormData | null = null,
+    supersetService: typeof supersetFetch = supersetFetch,
+): Promise<ReturnType[]> {
+    const asyncOperation = supersetOptions
+        ? supersetService(supersetSlice, supersetOptions)
+        : supersetService(supersetSlice);
+    return asyncOperation
         .then((response: ReturnType[] | undefined) => {
             if (!response) {
                 throw new Error(t('Network response was not ok'));

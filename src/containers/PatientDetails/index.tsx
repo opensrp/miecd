@@ -11,21 +11,35 @@ import BasicInformation, { LabelValuePair } from '../../components/BasicInformat
 import { BACKPAGE_ICON, COMMUNE, DISTRICT, MODULE_SEARCH_PARAM_KEY, PROVINCE, VILLAGE } from '../../constants';
 import * as React from 'react';
 import './index.css';
-import { keyBy } from 'lodash';
-import { fetchData, useHandleBrokenPage } from 'helpers/utils';
+import { flatten, keyBy } from 'lodash';
+import { fetchData, fetchSupersetData, sortByEventDate, useHandleBrokenPage } from 'helpers/utils';
 import supersetFetch from '../../services/superset';
 import { ErrorPage } from 'components/ErrorPage';
 import Ripple from 'components/page/Loading';
 import { getLocationsOfLevel, Location } from '../../store/ducks/locations';
 import locationsReducer, { reducerName as locationReducerName } from '../../store/ducks/locations';
-import { getSmsDataByFilters, LogFaceSmsType, selectSmsDataByPatientId } from '../../store/ducks/sms_events';
-import smsReducer, { reducerName as smsReducerName, SmsData } from '../../store/ducks/sms_events';
+import {
+    CompartmentSmsTypes,
+    getSmsDataByFilters,
+    LogFaceSmsType,
+    NbcPncSmsData,
+    NutritionSmsData,
+    PregnancySmsData,
+} from '../../store/ducks/sms_events';
+import smsReducer, { reducerName as smsReducerName } from '../../store/ducks/sms_events';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { PatientDetailsReport } from 'components/PatientDetailsReports';
 import { parse } from 'query-string';
 import { LogFaceModules } from 'configs/settings';
 import { ConnectedChildChart } from 'components/PatientDetailsCharts/ChildChart';
 import { ConnectedMotherChart } from 'components/PatientDetailsCharts/MotherChart';
+import { useQueries } from 'react-query';
+import {
+    COMPARTMENTS_NBC_AND_PNC_SLICE,
+    COMPARTMENTS_NUTRITION_SLICE,
+    COMPARTMENTS_PREGNANCY_SLICE,
+} from 'configs/env';
+import superset from '@onaio/superset-connector/dist/types';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -36,7 +50,6 @@ interface RouteParams {
 
 interface PatientDetailProps extends RouteComponentProps<RouteParams> {
     isChild: boolean;
-    smsData: SmsData[];
     provinces: Location[];
     districts: Location[];
     communes: Location[];
@@ -46,7 +59,6 @@ interface PatientDetailProps extends RouteComponentProps<RouteParams> {
 }
 
 const defaultProps = {
-    smsData: [],
     isChild: false,
     provinces: [],
     districts: [],
@@ -57,7 +69,7 @@ const defaultProps = {
 };
 
 const PatientDetails = (props: PatientDetailProps) => {
-    const { isChild, smsData, communes, villages, districts, provinces, supersetService, logFaceReports } = props;
+    const { isChild, communes, villages, districts, provinces, supersetService, logFaceReports } = props;
     const [loading, setLoading] = React.useState(true);
     const { error, handleBrokenPage, broken } = useHandleBrokenPage();
     const { t } = useTranslation();
@@ -74,6 +86,29 @@ const PatientDetails = (props: PatientDetailProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const supersetFilterOptions = superset.getFormData(
+        1,
+        [
+            {
+                comparator: patientId,
+                operator: '==',
+                subject: 'anc_id',
+            },
+        ],
+        { event_date: false },
+    );
+
+    const basicInfoQueries = useQueries(
+        [COMPARTMENTS_NBC_AND_PNC_SLICE, COMPARTMENTS_NUTRITION_SLICE, COMPARTMENTS_PREGNANCY_SLICE].map((slice) => {
+            return {
+                queryKey: ['patientDetails', patientId],
+                queryFn: () => fetchSupersetData<CompartmentSmsTypes>(slice, t, supersetFilterOptions, supersetService),
+            };
+        }),
+    );
+
+    const mostRecentReports = flatten(basicInfoQueries.map((query) => query.data)) as CompartmentSmsTypes[];
+
     if (loading) {
         return <Ripple />;
     }
@@ -85,7 +120,7 @@ const PatientDetails = (props: PatientDetailProps) => {
     const basicInformationValuePairs = getBasicInformationProps(
         patientId,
         isChild,
-        smsData,
+        mostRecentReports,
         t,
         communes,
         districts,
@@ -114,94 +149,36 @@ const PatientDetails = (props: PatientDetailProps) => {
 function getBasicInformationProps(
     patientId: string,
     isChild: boolean,
-    sortedSmsData: SmsData[],
+    recentSmsData: CompartmentSmsTypes[],
     t: TFunction,
     communes: Location[],
     districts: Location[],
     villages: Location[],
     provinces: Location[],
 ): LabelValuePair[] {
-    let edd,
+    const defaultNA = t('N/A');
+    const defaultAge = defaultNA;
+    const mostRecentReport = sortByEventDate(recentSmsData)[0] ?? {};
+
+    const {
+        lmp_edd: edd,
+        event_id: smsId,
         age,
-        height,
-        weight,
-        firstName,
-        secondName,
-        lastName,
         gravidity,
         parity,
-        childRisk,
-        motherRisk,
-        healthInsuranceNum,
-        handWashing,
+        risk_level: motherRiskCat,
+        health_insurance: healthInsuranceNum,
+        height,
+        weight,
+        handwashing: handWashing,
         household,
         toilet,
         ethnicity,
-        gender,
-        bloodPressure,
-        muac;
-    const defaultNA = t('N/A');
-    const defaultEdd = t('could not find any edd');
-    const defaultAge = defaultNA;
-    const mostRecentReport = sortedSmsData[0] ?? {};
-
-    if (mostRecentReport.lmp_edd && !edd) {
-        edd = `${mostRecentReport.lmp_edd}`;
-    }
-    if (mostRecentReport.age && !age) {
-        edd = `${mostRecentReport.age}`;
-    }
-    if (mostRecentReport.gravidity && !gravidity) {
-        gravidity = mostRecentReport.gravidity;
-    }
-    if (mostRecentReport.parity && !parity) {
-        parity = mostRecentReport.parity;
-    }
-    if (mostRecentReport.nutrition_status && !childRisk) {
-        childRisk = mostRecentReport.nutrition_status;
-    }
-    if (mostRecentReport.risk_level && !motherRisk) {
-        motherRisk = mostRecentReport.risk_level;
-    }
-    if (mostRecentReport.first_name && !firstName) {
-        firstName = mostRecentReport.first_name;
-    }
-    if (mostRecentReport.second_name && !secondName) {
-        secondName = ` ${mostRecentReport.second_name}`;
-    }
-    if (mostRecentReport.last_name && !lastName) {
-        lastName = ` ${mostRecentReport.last_name}`;
-    }
-    if (mostRecentReport.health_insurance_id && !healthInsuranceNum) {
-        healthInsuranceNum = ` ${mostRecentReport.health_insurance_id}`;
-    }
-    if (mostRecentReport.height && !height) {
-        height = ` ${mostRecentReport.height}`;
-    }
-    if (mostRecentReport.weight && !weight) {
-        weight = ` ${mostRecentReport.weight}`;
-    }
-    if (mostRecentReport.handwashing && !handWashing) {
-        handWashing = ` ${mostRecentReport.handwashing}`;
-    }
-    if (mostRecentReport.household && !household) {
-        household = ` ${mostRecentReport.household}`;
-    }
-    if (mostRecentReport.toilet && !toilet) {
-        toilet = ` ${mostRecentReport.toilet}`;
-    }
-    if (mostRecentReport.ethnicity && !ethnicity) {
-        ethnicity = ` ${mostRecentReport.ethnicity}`;
-    }
-    if (mostRecentReport.gender && !gender) {
-        gender = ` ${mostRecentReport.gender}`;
-    }
-    if (mostRecentReport.muac && !muac) {
-        muac = ` ${mostRecentReport.muac}`;
-    }
-    if (mostRecentReport.bp && !bloodPressure) {
-        bloodPressure = ` ${mostRecentReport.bp}`;
-    }
+        delivery_location: deliveryLocation,
+        previous_risks: previousRisks,
+        mother_symptoms: motherSymptoms,
+        child_symptoms: childSymptoms,
+    } = mostRecentReport as NutritionSmsData & PregnancySmsData & NbcPncSmsData;
 
     const locationPath = getPathFromSupersetLocs(
         provinces,
@@ -212,7 +189,7 @@ function getBasicInformationProps(
     );
     const location = locationPath.map((location) => location.location_name).join(', ');
     const commonLabels = [
-        { label: t('Name'), value: `${firstName ?? ''}${secondName ?? ''}${lastName ?? ''}` },
+        { label: t('SMS ID'), value: smsId },
         { label: t('Patient ID'), value: patientId },
         { label: t('Age'), value: age ?? defaultAge },
         { label: t('Location'), value: location ?? defaultNA },
@@ -227,18 +204,15 @@ function getBasicInformationProps(
     const basicInformationProps = !isChild
         ? ([
               ...commonLabels,
-              { label: t('Current Blood Pressure'), value: bloodPressure ?? defaultNA },
-              { label: t('Current Gravidity'), value: gravidity ?? defaultNA },
-              { label: t('Current EDD'), value: edd ?? defaultEdd },
               { label: t('Current Parity'), value: parity ?? defaultNA },
-              { label: t('Previous Pregnancy Risk'), value: motherRisk ?? defaultNA },
+              { label: t('Current Gravidity'), value: gravidity ?? defaultNA },
+              { label: t('Current EDD'), value: edd ?? defaultNA },
+              { label: t('Current Risk categorization'), value: motherRiskCat ?? defaultNA },
+              { label: t('Delivery plan/ Location of delivery'), value: deliveryLocation ?? defaultNA },
+              { label: t('Previous risks and Existing conditions'), value: previousRisks ?? defaultNA },
+              { label: t('Current risks'), value: motherSymptoms ?? defaultNA },
           ] as LabelValuePair[])
-        : ([
-              ...commonLabels,
-              { label: t('Current MUAC'), value: muac ?? defaultNA },
-              { label: t('Gender'), value: gender ?? defaultNA },
-              { label: t('risk categorization'), value: childRisk ?? defaultNA },
-          ] as LabelValuePair[]);
+        : ([...commonLabels, { label: t('Current risks'), value: childSymptoms ?? defaultNA }] as LabelValuePair[]);
     return basicInformationProps;
 }
 
@@ -273,23 +247,18 @@ export { PatientDetails };
 
 const smsByFilters = getSmsDataByFilters();
 
-type MapStateToProps = Pick<
-    PatientDetailProps,
-    'smsData' | 'communes' | 'districts' | 'provinces' | 'villages' | 'logFaceReports'
->;
+type MapStateToProps = Pick<PatientDetailProps, 'communes' | 'districts' | 'provinces' | 'villages' | 'logFaceReports'>;
 const mapStateToProps = (state: Partial<Store>, ownProps: PatientDetailProps): MapStateToProps => {
     const patientId = ownProps.match.params.patient_id;
 
     const module = parse(ownProps.location.search)[MODULE_SEARCH_PARAM_KEY] as LogFaceModules | undefined;
 
-    const smsData = selectSmsDataByPatientId(state, patientId);
     const logFaceReports = smsByFilters(state, {
         patientId: patientId,
         module,
     });
 
     return {
-        smsData,
         communes: getLocationsOfLevel(state, COMMUNE),
         districts: getLocationsOfLevel(state, DISTRICT),
         provinces: getLocationsOfLevel(state, PROVINCE),

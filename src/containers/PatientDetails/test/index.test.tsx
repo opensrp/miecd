@@ -45,7 +45,7 @@ const locationProps = {
     },
 };
 
-describe('containers/LogFace extended', () => {
+describe('containers/PatientDetails extended', () => {
     beforeAll(() => {
         store.dispatch(
             authenticateUser(
@@ -128,7 +128,10 @@ describe('containers/LogFace extended', () => {
             .mockResolvedValueOnce(districts)
             .mockResolvedValueOnce(communes)
             .mockResolvedValueOnce(villages)
-            .mockResolvedValueOnce(smsDataFixture);
+            .mockResolvedValueOnce(smsDataFixture)
+            .mockResolvedValueOnce([])
+            .mockResolvedValueOnce([])
+            .mockResolvedValueOnce([]);
         fetch.mockResponse(JSON.stringify(securityAuthenticate));
         const props = {
             ...locationProps,
