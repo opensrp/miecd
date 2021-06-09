@@ -85,7 +85,8 @@ function Chart(props: Props) {
                             if (this.y < previousY) {
                                 changeSign = '-';
                             }
-                            change = `${changeSign}${Math.abs(previousY - this.y)}`;
+                            //toFixed; try to deal with e.g 3.3 - 2.2 != 1.1
+                            change = `${changeSign}${Number(Math.abs(previousY - this.y)).toFixed(1)}`;
                         }
 
                         return `${this.x}: <b>${this.y}</b> ${units} (${change})`;
