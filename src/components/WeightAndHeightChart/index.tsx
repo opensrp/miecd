@@ -109,6 +109,7 @@ function Chart(props: Props) {
 
                 xAxis: {
                     labels: {
+                        autoRotationLimit: 120,
                         style: {
                             fontSize: '1rem',
                         },
