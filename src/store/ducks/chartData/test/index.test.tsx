@@ -12,6 +12,9 @@ import {
     removeMotherData,
 } from '..';
 import { childChartFixture, motherChartFixture } from './fixtures';
+import MockDate from 'mockdate';
+
+MockDate.set('2021-06-04T11:51:37.190Z');
 
 reducerRegistry.register(sliceName, chartReducer);
 

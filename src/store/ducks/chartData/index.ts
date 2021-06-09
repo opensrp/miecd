@@ -99,8 +99,9 @@ export const getMotherChartDataById = () =>
         let eventsOfInterest = [];
         if (patientId === undefined) {
             eventsOfInterest = allEvents;
+        } else {
+            eventsOfInterest = allEvents.filter((event) => event.anc_id === patientId);
         }
-        eventsOfInterest = allEvents.filter((event) => event.anc_id === patientId);
         return inThePast24Months(eventsOfInterest);
     });
 
@@ -110,7 +111,8 @@ export const getChildChartDataById = () =>
         let eventsOfInterest = [];
         if (patientId === undefined) {
             eventsOfInterest = allEvents;
+        } else {
+            eventsOfInterest = allEvents.filter((event) => event.anc_id === patientId);
         }
-        eventsOfInterest = allEvents.filter((event) => event.anc_id === patientId);
         return inThePast24Months(eventsOfInterest);
     });
