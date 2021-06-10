@@ -5,10 +5,6 @@
 #detailsCard {
     width: 100%;
 }
-/* 
-#detailsCard .row {
-    margin: 0 !important;
-} */
 
 .card-title {
     background-color: #ffffff;
@@ -24,7 +20,7 @@
 }
 
 .information__card_body_cell {
-    width: 25%;
+    width: 33%;
     min-width: 250px;
 }
 
