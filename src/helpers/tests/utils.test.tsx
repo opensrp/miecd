@@ -8,8 +8,9 @@ import {
     fetchOpenSrpData,
     getLocationId,
     getFilterFunctionAndLocationLevel,
+    inThePast24Months,
 } from '../utils';
-import { OpenSRPAPIResponse } from './fixtures';
+import { chartRecord1, chartRecord2, chartRecord3, chartRecords, OpenSRPAPIResponse } from './fixtures';
 import fetchMock from 'fetch-mock';
 import store from '../../store/index';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -27,6 +28,7 @@ import {
     userUUID,
     securityAuthenticate,
 } from '../../containers/HierarchichalDataTable/test/fixtures';
+import MockDate from 'mockdate';
 
 jest.mock('@onaio/gatekeeper', () => {
     const actual = jest.requireActual('@onaio/gatekeeper');
@@ -106,6 +108,13 @@ describe('src/helpers', () => {
         expect(response).toEqual('3 age.years');
     });
 
+    it('filters records within the last 2 years correctly', () => {
+        MockDate.set('2021-06-04T11:51:37.190Z');
+        const response = inThePast24Months(chartRecords);
+        expect(response).toHaveLength(3);
+        expect(response).toEqual([chartRecord1, chartRecord2, chartRecord3]);
+    });
+
     it('sorts by event dates correctly', () => {
         const mockEvent1 = { event_date: '2021-04-27T15:19:04.173000' };
         const mockEvent2 = { event_date: '2020-04-27T15:19:04.173000' };
@@ -151,6 +160,7 @@ describe('src/helpers', () => {
 });
 
 describe('src/helpers/utils.tsx', () => {
+    const customT = (t: string) => t;
     beforeAll(() => {
         store.dispatch(
             authenticateUser(
@@ -190,19 +200,19 @@ describe('src/helpers/utils.tsx', () => {
         fetchMock.get(`https://somesuperseturl.org/superset/slice_json/5`, userLocationDetails);
 
         // fetch pregnancy,nbcPnc,Nutrition
-        const pregnancyResp = await fetchSupersetData<CompartmentSmsTypes>('6');
-        const nbcPncResp = await fetchSupersetData<CompartmentSmsTypes>('7');
-        const nutritionResp = await fetchSupersetData<CompartmentSmsTypes>('8');
+        const pregnancyResp = await fetchSupersetData<CompartmentSmsTypes>('6', customT);
+        const nbcPncResp = await fetchSupersetData<CompartmentSmsTypes>('7', customT);
+        const nutritionResp = await fetchSupersetData<CompartmentSmsTypes>('8', customT);
 
         expect(pregnancyResp).toMatchObject(pregnancySmsData.data.records);
         expect(nbcPncResp).toMatchObject(nbcPncSmsData.data.records);
         expect(nutritionResp).toMatchObject(nutritionSmsData.data.records);
 
         // fetch villages,communes,districts,provinces
-        const villagesResp = await fetchSupersetData<CompartmentSmsTypes>('1');
-        const communesResp = await fetchSupersetData<CompartmentSmsTypes>('2');
-        const districtsResp = await fetchSupersetData<CompartmentSmsTypes>('3');
-        const provincesResp = await fetchSupersetData<CompartmentSmsTypes>('4');
+        const villagesResp = await fetchSupersetData<CompartmentSmsTypes>('1', customT);
+        const communesResp = await fetchSupersetData<CompartmentSmsTypes>('2', customT);
+        const districtsResp = await fetchSupersetData<CompartmentSmsTypes>('3', customT);
+        const provincesResp = await fetchSupersetData<CompartmentSmsTypes>('4', customT);
 
         expect(villagesResp).toMatchObject(villages.data.records);
         expect(communesResp).toMatchObject(communes.data.records);
@@ -210,13 +220,13 @@ describe('src/helpers/utils.tsx', () => {
         expect(provincesResp).toMatchObject(provinces.data.records);
 
         // fetch userLocationDetails
-        const userLocationDetailsResp = await fetchSupersetData<CompartmentSmsTypes>('5');
+        const userLocationDetailsResp = await fetchSupersetData<CompartmentSmsTypes>('5', customT);
         expect(userLocationDetailsResp).toMatchObject(userLocationDetails.data.records);
     });
 
     it('fetches superset auth data', async () => {
         fetchMock.get(`https://someopensrpbaseurl/opensrp/security/authenticate/`, securityAuthenticate);
-        const supersetAuthData = await fetchOpenSrpData('');
+        const supersetAuthData = await fetchOpenSrpData('', customT);
         expect(supersetAuthData).toMatchObject(supersetAuthData);
     });
 });

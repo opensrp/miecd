@@ -2,6 +2,7 @@
 import { createSelector, Store, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { keyBy, values } from 'lodash';
 import { Dictionary } from '@onaio/utils';
+import { inThePast24Months } from 'helpers/utils';
 export const sliceName = 'motherChartReducer';
 
 interface CommonFields {
@@ -95,17 +96,23 @@ const getPatientId = (_: Partial<Store>, props: ChartFilters) => props.patientId
 /** creates selector to get mother chart data filtered by patient id */
 export const getMotherChartDataById = () =>
     createSelector(getMotherData, getPatientId, (allEvents, patientId) => {
+        let eventsOfInterest = [];
         if (patientId === undefined) {
-            return allEvents;
+            eventsOfInterest = allEvents;
+        } else {
+            eventsOfInterest = allEvents.filter((event) => event.anc_id === patientId);
         }
-        return allEvents.filter((event) => event.anc_id === patientId);
+        return inThePast24Months(eventsOfInterest);
     });
 
 /** creates selector to get child chart data filtered by patient id */
 export const getChildChartDataById = () =>
     createSelector(getChildData, getPatientId, (allEvents, patientId) => {
+        let eventsOfInterest = [];
         if (patientId === undefined) {
-            return allEvents;
+            eventsOfInterest = allEvents;
+        } else {
+            eventsOfInterest = allEvents.filter((event) => event.anc_id === patientId);
         }
-        return allEvents.filter((event) => event.anc_id === patientId);
+        return inThePast24Months(eventsOfInterest);
     });
