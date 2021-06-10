@@ -69,7 +69,7 @@ describe('connectedMotherChart', () => {
                     comparator: '1002KL',
                     expressionType: 'SIMPLE',
                     operator: '==',
-                    subject: 'patient_id',
+                    subject: 'anc_id',
                 },
             ],
             row_limit: 2000,

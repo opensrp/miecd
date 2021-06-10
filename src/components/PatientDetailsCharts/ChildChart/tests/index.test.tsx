@@ -69,7 +69,7 @@ describe('ConnectedChildChart', () => {
                     comparator: '100TTG',
                     expressionType: 'SIMPLE',
                     operator: '==',
-                    subject: 'patient_id',
+                    subject: 'anc_id',
                 },
             ],
             row_limit: 2000,
