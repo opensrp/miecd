@@ -146,3 +146,7 @@ export const EXPRESS_OAUTH_GET_STATE_URL = 'http://localhost:3000/oauth/state';
 export const CHILD_CHART_SLICE = 'childChartSlice';
 
 export const MOTHER_CHART_SLICE = 'motherChartSlice';
+
+export const COMPARTMENTS_PREGNANCY_SLICE = 'pregCompSlice';
+export const COMPARTMENTS_NBC_AND_PNC_SLICE = 'nbcCompSlice';
+export const COMPARTMENTS_NUTRITION_SLICE = 'nutritionCompSlice';

@@ -1,26 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/LogFace extended renders correctly: Basic Info key value 1`] = `
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 1`] = `
 <div
   className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
-  key="Name-Runny  NULL Danny"
+  key="SMS ID-undefined"
 >
   <span
     className="prop"
   >
      
-    Name
+    SMS ID
     :
   </span>
   <span
     className="value"
-  >
-    Runny  NULL Danny
-  </span>
+  />
 </div>
 `;
 
-exports[`containers/LogFace extended renders correctly: Basic Info key value 2`] = `
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 2`] = `
 <div
   className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
   key="Patient ID-"
@@ -38,7 +36,7 @@ exports[`containers/LogFace extended renders correctly: Basic Info key value 2`]
 </div>
 `;
 
-exports[`containers/LogFace extended renders correctly: Basic Info key value 3`] = `
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 3`] = `
 <div
   className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
   key="Age-N/A"
@@ -58,7 +56,7 @@ exports[`containers/LogFace extended renders correctly: Basic Info key value 3`]
 </div>
 `;
 
-exports[`containers/LogFace extended renders correctly: Basic Info key value 4`] = `
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 4`] = `
 <div
   className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
   key="Location-"
@@ -76,7 +74,7 @@ exports[`containers/LogFace extended renders correctly: Basic Info key value 4`]
 </div>
 `;
 
-exports[`containers/LogFace extended renders correctly: Basic Info key value 5`] = `
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 5`] = `
 <div
   className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
   key="Current Weight-N/A"
@@ -96,7 +94,7 @@ exports[`containers/LogFace extended renders correctly: Basic Info key value 5`]
 </div>
 `;
 
-exports[`containers/LogFace extended renders correctly: Basic Info key value 6`] = `
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 6`] = `
 <div
   className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
   key="Current Height-N/A"
@@ -116,10 +114,10 @@ exports[`containers/LogFace extended renders correctly: Basic Info key value 6`]
 </div>
 `;
 
-exports[`containers/LogFace extended renders correctly: Basic Info key value 7`] = `
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 7`] = `
 <div
   className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
-  key="Health Insurance number- NA"
+  key="Health Insurance number-N/A"
 >
   <span
     className="prop"
@@ -131,15 +129,15 @@ exports[`containers/LogFace extended renders correctly: Basic Info key value 7`]
   <span
     className="value"
   >
-     NA
+    N/A
   </span>
 </div>
 `;
 
-exports[`containers/LogFace extended renders correctly: Basic Info key value 8`] = `
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 8`] = `
 <div
   className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
-  key="Household Type-  NULL"
+  key="Household Type-N/A"
 >
   <span
     className="prop"
@@ -151,15 +149,15 @@ exports[`containers/LogFace extended renders correctly: Basic Info key value 8`]
   <span
     className="value"
   >
-      NULL
+    N/A
   </span>
 </div>
 `;
 
-exports[`containers/LogFace extended renders correctly: Basic Info key value 9`] = `
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 9`] = `
 <div
   className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
-  key="Ethnicity-  NULL"
+  key="Ethnicity-N/A"
 >
   <span
     className="prop"
@@ -171,15 +169,15 @@ exports[`containers/LogFace extended renders correctly: Basic Info key value 9`]
   <span
     className="value"
   >
-      NULL
+    N/A
   </span>
 </div>
 `;
 
-exports[`containers/LogFace extended renders correctly: Basic Info key value 10`] = `
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 10`] = `
 <div
   className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
-  key="HandWashing-  NULL"
+  key="HandWashing-N/A"
 >
   <span
     className="prop"
@@ -191,15 +189,15 @@ exports[`containers/LogFace extended renders correctly: Basic Info key value 10`
   <span
     className="value"
   >
-      NULL
+    N/A
   </span>
 </div>
 `;
 
-exports[`containers/LogFace extended renders correctly: Basic Info key value 11`] = `
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 11`] = `
 <div
   className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
-  key="Toilet-  NULL"
+  key="Toilet-N/A"
 >
   <span
     className="prop"
@@ -211,72 +209,12 @@ exports[`containers/LogFace extended renders correctly: Basic Info key value 11`
   <span
     className="value"
   >
-      NULL
-  </span>
-</div>
-`;
-
-exports[`containers/LogFace extended renders correctly: Basic Info key value 12`] = `
-<div
-  className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
-  key="Current Blood Pressure-  NULL"
->
-  <span
-    className="prop"
-  >
-     
-    Current Blood Pressure
-    :
-  </span>
-  <span
-    className="value"
-  >
-      NULL
-  </span>
-</div>
-`;
-
-exports[`containers/LogFace extended renders correctly: Basic Info key value 13`] = `
-<div
-  className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
-  key="Current Gravidity-N/A"
->
-  <span
-    className="prop"
-  >
-     
-    Current Gravidity
-    :
-  </span>
-  <span
-    className="value"
-  >
     N/A
   </span>
 </div>
 `;
 
-exports[`containers/LogFace extended renders correctly: Basic Info key value 14`] = `
-<div
-  className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
-  key="Current EDD-30y "
->
-  <span
-    className="prop"
-  >
-     
-    Current EDD
-    :
-  </span>
-  <span
-    className="value"
-  >
-    30y 
-  </span>
-</div>
-`;
-
-exports[`containers/LogFace extended renders correctly: Basic Info key value 15`] = `
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 12`] = `
 <div
   className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
   key="Current Parity-N/A"
@@ -296,27 +234,127 @@ exports[`containers/LogFace extended renders correctly: Basic Info key value 15`
 </div>
 `;
 
-exports[`containers/LogFace extended renders correctly: Basic Info key value 16`] = `
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 13`] = `
 <div
   className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
-  key="Previous Pregnancy Risk- NULL"
+  key="Current Gravidity-N/A"
 >
   <span
     className="prop"
   >
      
-    Previous Pregnancy Risk
+    Current Gravidity
     :
   </span>
   <span
     className="value"
   >
-     NULL
+    N/A
   </span>
 </div>
 `;
 
-exports[`containers/LogFace extended renders correctly: titleDiv 1`] = `
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 14`] = `
+<div
+  className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
+  key="Current EDD-N/A"
+>
+  <span
+    className="prop"
+  >
+     
+    Current EDD
+    :
+  </span>
+  <span
+    className="value"
+  >
+    N/A
+  </span>
+</div>
+`;
+
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 15`] = `
+<div
+  className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
+  key="Current Risk categorization-N/A"
+>
+  <span
+    className="prop"
+  >
+     
+    Current Risk categorization
+    :
+  </span>
+  <span
+    className="value"
+  >
+    N/A
+  </span>
+</div>
+`;
+
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 16`] = `
+<div
+  className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
+  key="Delivery plan/ Location of delivery-N/A"
+>
+  <span
+    className="prop"
+  >
+     
+    Delivery plan/ Location of delivery
+    :
+  </span>
+  <span
+    className="value"
+  >
+    N/A
+  </span>
+</div>
+`;
+
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 17`] = `
+<div
+  className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
+  key="Previous risks and Existing conditions-N/A"
+>
+  <span
+    className="prop"
+  >
+     
+    Previous risks and Existing conditions
+    :
+  </span>
+  <span
+    className="value"
+  >
+    N/A
+  </span>
+</div>
+`;
+
+exports[`containers/PatientDetails extended renders correctly: Basic Info key value 18`] = `
+<div
+  className="flex-fill d-flex flex-wrap information__card_body_cell p-1"
+  key="Current risks-N/A"
+>
+  <span
+    className="prop"
+  >
+     
+    Current risks
+    :
+  </span>
+  <span
+    className="value"
+  >
+    N/A
+  </span>
+</div>
+`;
+
+exports[`containers/PatientDetails extended renders correctly: titleDiv 1`] = `
 <div
   id="titleDiv"
 >

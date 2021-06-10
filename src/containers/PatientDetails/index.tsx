@@ -39,7 +39,7 @@ import {
     COMPARTMENTS_NUTRITION_SLICE,
     COMPARTMENTS_PREGNANCY_SLICE,
 } from 'configs/env';
-import superset from '@onaio/superset-connector/dist/types';
+import superset from '@onaio/superset-connector';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
@@ -101,7 +101,7 @@ const PatientDetails = (props: PatientDetailProps) => {
     const basicInfoQueries = useQueries(
         [COMPARTMENTS_NBC_AND_PNC_SLICE, COMPARTMENTS_NUTRITION_SLICE, COMPARTMENTS_PREGNANCY_SLICE].map((slice) => {
             return {
-                queryKey: ['patientDetails', patientId],
+                queryKey: [slice, patientId],
                 queryFn: () => fetchSupersetData<CompartmentSmsTypes>(slice, t, supersetFilterOptions, supersetService),
             };
         }),
@@ -174,7 +174,7 @@ function getBasicInformationProps(
         household,
         toilet,
         ethnicity,
-        delivery_location: deliveryLocation,
+        planned_delivery_location: deliveryLocation,
         previous_risks: previousRisks,
         mother_symptoms: motherSymptoms,
         child_symptoms: childSymptoms,
