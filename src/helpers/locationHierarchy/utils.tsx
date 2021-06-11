@@ -65,6 +65,6 @@ export const generateJurisdictionTree = (apiResponse: RawOpenSRPHierarchy): Tree
  *
  * @param trees - trees to be serialized
  */
-export const serializeTree = (trees: TreeNode[]) => {
+export const serializeTree = (trees: (TreeNode | undefined)[]) => {
     return JSON.stringify(trees.map((tree) => JSON.stringify(cycle.decycle(tree))));
 };
