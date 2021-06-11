@@ -2,8 +2,8 @@ import { Dictionary } from '@onaio/utils/dist/types/types';
 import toJson from 'enzyme-to-json';
 import { mountWithTranslations } from 'helpers/testUtils';
 import React from 'react';
-import { RawOpenSRPHierarchy } from 'store/ducks/locationHierarchy/types';
-import { generateJurisdictionTree } from 'store/ducks/locationHierarchy/utils';
+import { RawOpenSRPHierarchy } from 'helpers/locationHierarchy/types';
+import { generateJurisdictionTree } from 'helpers/locationHierarchy/utils';
 import * as securityAuthenticate from 'store/ducks/tests/fixtures/securityAuthenticate.json';
 import { SelectLocationFilter } from '..';
 
