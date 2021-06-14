@@ -158,10 +158,10 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                 <td className="default-width">
                     <Link
                         to={`${getModuleLink(this.props.module)}/patient_detail/${
-                            (dataItem as PregnancySmsData).anc_id
+                            (dataItem as PregnancySmsData).patient_id
                         }`}
                     >
-                        {(dataItem as PregnancySmsData).anc_id}
+                        {(dataItem as PregnancySmsData).patient_id}
                     </Link>
                 </td>
                 <td className="default-width">{(dataItem as PregnancySmsData).age}</td>
@@ -190,10 +190,10 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                 <td className="default-width">
                     <Link
                         to={`${getModuleLink(this.props.module)}/child_patient_detail/${
-                            (dataItem as NutritionSmsData).anc_id
+                            (dataItem as NutritionSmsData).patient_id
                         }`}
                     >
-                        {(dataItem as NutritionSmsData).anc_id}
+                        {(dataItem as NutritionSmsData).patient_id}
                     </Link>
                 </td>
                 <td className="default-width">{(dataItem as NutritionSmsData).age}</td>
@@ -218,10 +218,10 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                 <td className="default-width">
                     <Link
                         to={`${getModuleLink(this.props.module)}/child_patient_detail/${
-                            (dataItem as NbcPncSmsData).anc_id
+                            (dataItem as NbcPncSmsData).patient_id
                         }`}
                     >
-                        {(dataItem as NbcPncSmsData).anc_id}
+                        {(dataItem as NbcPncSmsData).patient_id}
                     </Link>
                 </td>
                 <td className="default-width">{getNumberOfDaysSinceDate((dataItem as NbcPncSmsData).dob)}</td>
@@ -247,9 +247,11 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
             <tr key={(dataItem as NbcPncSmsData).event_id}>
                 <td className="default-width">
                     <Link
-                        to={`${getModuleLink(this.props.module)}/patient_detail/${(dataItem as NbcPncSmsData).anc_id}`}
+                        to={`${getModuleLink(this.props.module)}/patient_detail/${
+                            (dataItem as NbcPncSmsData).patient_id
+                        }`}
                     >
-                        {(dataItem as NbcPncSmsData).anc_id}
+                        {(dataItem as NbcPncSmsData).patient_id}
                     </Link>
                 </td>
                 <td className="default-width">{(dataItem as NbcPncSmsData).age}</td>
