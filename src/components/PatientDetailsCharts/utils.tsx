@@ -16,7 +16,7 @@ export const chartFormDataFilters = (patientId: string) =>
         {
             comparator: patientId,
             operator: '==',
-            subject: 'patient_id',
+            subject: 'anc_id',
         },
     ]);
 
