@@ -30,7 +30,9 @@ describe('PatientDetailsReport', () => {
     });
 
     it('works okay', () => {
-        const patientsReports = PregnancyReportFixture.filter((sms) => sms.anc_id == '10063H') as NutritionLogFaceSms[];
+        const patientsReports = PregnancyReportFixture.filter(
+            (sms) => sms.patient_id == '10063H',
+        ) as NutritionLogFaceSms[];
         const props = {
             patientsReports,
             isChild: false,
@@ -42,7 +44,7 @@ describe('PatientDetailsReport', () => {
     });
     it('can switch pregnancies', () => {
         const patientsReports = PregnancyReportFixture.filter(
-            (sms) => sms.anc_id == '10063H' || sms.anc_id === '101AVR',
+            (sms) => sms.patient_id == '10063H' || sms.patient_id === '101AVR',
         ) as NutritionLogFaceSms[];
         const props = {
             patientsReports,

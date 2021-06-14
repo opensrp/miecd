@@ -6,7 +6,7 @@ import { groupBy, formatDateStrings, sortByEventDate } from '../../helpers/utils
 import { SmsFilterFunction, CompartmentsSmsFilterFunction } from '../../types';
 import { Dictionary } from '@onaio/utils';
 import { createSelector } from 'reselect';
-import { TreeNode } from './locationHierarchy/types';
+import { TreeNode } from '../../helpers/locationHierarchy/types';
 import intersect from 'fast_array_intersect';
 import { LogFaceModules } from '../../configs/settings';
 
@@ -19,7 +19,7 @@ export interface BaseLogFaceSms {
     EventDate: string;
     health_worker_location_name: string;
     sms_type: string;
-    anc_id: string;
+    patient_id: string;
     patient_name: string;
     age: string;
     message: string;
@@ -28,8 +28,9 @@ export interface BaseLogFaceSms {
     event_date: string;
     risk_level: string;
     location_id: string;
-    message_vietnamese: number;
     client_type: ClientType;
+    health_worker_contact: string;
+    message_vt: string;
 }
 
 // describes smsEvents received from the slices serving the logface with data.
@@ -42,6 +43,8 @@ export interface NutritionLogFaceSms extends PregnancyLogFaceSms {
     nutrition_status: string;
     growth_status: string;
     feeding_category: string;
+    child_risk_level: string;
+    gender: string;
 }
 
 /** common fields to compartment sms */
@@ -476,7 +479,7 @@ export const getSmsDataBySearch = () =>
             (dataItem) =>
                 dataItem.event_id.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
                 dataItem.health_worker_name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
-                dataItem.anc_id.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
+                dataItem.patient_id.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
         );
     });
 
@@ -486,7 +489,7 @@ export const getSmsDataByPatientId = () =>
         if (patientId === undefined) {
             return smsData;
         }
-        return smsData.filter((sms) => sms.anc_id === patientId);
+        return smsData.filter((sms) => sms.patient_id === patientId);
     });
 
 const selectSmsByLocation = getSmsDataByUserLocation();
