@@ -61,7 +61,6 @@ import { Dictionary } from '@onaio/utils';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { format, isWithinInterval, parse, subYears, toDate } from 'date-fns';
-import { fetchTree } from '../store/ducks/locationHierarchy';
 import { split, trim, replace } from 'lodash';
 import * as React from 'react';
 import { TFunction } from 'i18next';
@@ -292,25 +291,6 @@ export const getProvince = (
 };
 
 /**
- * @member {string} patientId the patient id
- * @member {SmsData[]} smsData an array of SmsData objects.
- */
-interface PatientIDAndSmsData {
-    patientId: string;
-    smsData: SmsData[];
-}
-/**
- * Filter smsData by patientID.
- * @param {PatientIDAndSmsData} patientIdAndSmsData an object with the patient id and smsData
- * @return {SmsData[]} filtered smsData
- */
-export const filterByPatientId = (patientIdAndSmsData: PatientIDAndSmsData): SmsData[] => {
-    return [...patientIdAndSmsData.smsData].filter((dataItem: SmsData): boolean => {
-        return dataItem.anc_id.toLocaleLowerCase().includes(patientIdAndSmsData.patientId.toLocaleLowerCase());
-    });
-};
-
-/**
  * sort SmsData[] by EventDate in descending order(i.e. the most recent events come first)
  * @param {SmsData[]} smsData an array of smsData objects to sort by event date
  */
@@ -481,10 +461,10 @@ export function getLinkToHierarchicalDataTable(
 export function getLinkToPatientDetail(smsData: LogFaceSmsType, prependWith: string, module: LogFaceModules) {
     let url = '#';
     if (smsData.client_type === EC_CHILD) {
-        url = `${prependWith}/${CHILD_PATIENT_DETAIL}/${smsData.anc_id}`;
+        url = `${prependWith}/${CHILD_PATIENT_DETAIL}/${smsData.patient_id}`;
     }
     if (smsData.client_type === EC_WOMAN || smsData.client_type === EC_FAMILY_MEMBER) {
-        url = `${prependWith}/${PATIENT_DETAIL}/${smsData.anc_id}`;
+        url = `${prependWith}/${PATIENT_DETAIL}/${smsData.patient_id}`;
     }
     return stringifyUrl({ url, query: { [MODULE_SEARCH_PARAM_KEY]: module } });
 }
@@ -511,9 +491,8 @@ export async function fetchData(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const userIdPromise = opensrpService.read('').then((response: any) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const userId = (response as any).user.attributes._PERSON_UUID;
+            const userId = (response as any).user.baseEntityId;
             store.dispatch(fetchUserId(userId));
-            store.dispatch(fetchTree(response.locations, userId));
         });
         promises.push(userIdPromise);
     }
