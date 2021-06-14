@@ -47,16 +47,6 @@ export interface NutritionLogFaceSms extends PregnancyLogFaceSms {
     gender: string;
 }
 
-/** common fields to compartment sms */
-export interface BaseCompartmentsSms {
-    health_insurance: string;
-    event_id: string;
-    ethnicity: string;
-    household: string;
-    toilet: string;
-    handwashing: string;
-}
-
 export interface BaseCompartmentSms {
     patient_id: string;
     base_entity_id: string;
@@ -65,6 +55,11 @@ export interface BaseCompartmentSms {
     team: string;
     age: string;
     event_id: string;
+    health_insurance: string;
+    ethnicity: string;
+    household: string;
+    toilet: string;
+    handwashing: string;
 }
 
 /** Interfaces for SMS record objects as received from discover*/
