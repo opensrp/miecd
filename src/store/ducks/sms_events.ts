@@ -57,11 +57,18 @@ export interface BaseCompartmentsSms {
     handwashing: string;
 }
 
-/** Interfaces for SMS record objects as received from discover*/
-export interface PregnancySmsData extends BaseCompartmentsSms {
-    anc_id: string;
+export interface BaseCompartmentSms {
+    patient_id: string;
     base_entity_id: string;
+    practitioner_name: string;
     event_date: string;
+    team: string;
+    age: string;
+    event_id: string;
+}
+
+/** Interfaces for SMS record objects as received from discover*/
+export interface PregnancySmsData extends BaseCompartmentSms {
     event_type: string;
     contact: string;
     anc_visit_date: string;
@@ -76,43 +83,30 @@ export interface PregnancySmsData extends BaseCompartmentsSms {
     lmp: string;
     lmp_edd: string;
     risk_level: string;
-    health_worker_id: string;
-    team: string;
-    event_id: string;
     bp: string;
     location_id: string;
     planned_delivery_location: string;
     location_name: string;
-    age: string;
 }
 
-export interface NutritionSmsData extends BaseCompartmentsSms {
-    anc_id: string;
-    base_entity_id: string;
-    event_date: string;
+export interface NutritionSmsData extends BaseCompartmentSms {
     muac: number;
     weight: number;
     height: number;
     status: string;
     supplements: string;
-    health_worker_id: string;
     team: string;
-    event_id: string;
     weight_z_score: number;
     height_z_score: number;
     nutrition_status: string;
     growth_status: string;
     feeding_category: string;
     location_id: string;
-    age: string;
     dob: string;
     location_name: string;
 }
 
-export interface NbcPncSmsData extends BaseCompartmentsSms {
-    anc_id: string;
-    base_entity_id: string;
-    event_date: string;
+export interface NbcPncSmsData extends BaseCompartmentSms {
     event_type: string;
     client_type: string;
     child_symptoms: string;
@@ -120,14 +114,11 @@ export interface NbcPncSmsData extends BaseCompartmentsSms {
     breastfeeding: string;
     intervention: string;
     risk_level: string;
-    health_worker_id: string;
     team: string;
-    event_id: string;
     location_id: string;
     location_name: string;
     previous_risks: string;
     delivery_location: string;
-    age: string;
     dob: string;
 }
 
