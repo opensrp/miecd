@@ -253,7 +253,7 @@ export const villageDataProps = {
 };
 
 export const pregnancyModuleData = {
-    anc_id: '101CN2',
+    patient_id: '101CN2',
     base_entity_id: '53c67924-382a-4090-829a-cb6657ba1176',
     event_date: '2021-05-19T08:25:14.961000',
     event_type: 'ANC Registration',
@@ -281,7 +281,7 @@ export const pregnancyModuleData = {
 };
 
 export const nutritionModuleData = {
-    anc_id: '100TPL',
+    patient_id: '100TPL',
     base_entity_id: '5ac4eaeb-d6e2-43d6-a2e8-08a73df3d6bb',
     event_date: '2019-11-23T08:30:17.019000',
     muac: 17,
@@ -304,7 +304,7 @@ export const nutritionModuleData = {
 };
 
 export const nbcPncChildModuleData = {
-    anc_id: '100T5T-20190920-01',
+    patient_id: '100T5T-20190920-01',
     base_entity_id: '436a665c-59be-4e61-9ac4-8b7803789305',
     event_date: '2019-11-16T18:27:40.698000',
     event_type: 'Newborn Report',
@@ -326,7 +326,7 @@ export const nbcPncChildModuleData = {
 };
 
 export const nbcPncMotherModuleData = {
-    anc_id: '100VNL',
+    patient_id: '100VNL',
     base_entity_id: '7bbd47d2-78fb-4b9d-afe4-8cccb7834fb5',
     event_date: '2019-12-15T12:55:38.704000',
     event_type: 'Newborn Report',
