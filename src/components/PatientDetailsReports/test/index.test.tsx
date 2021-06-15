@@ -31,7 +31,7 @@ describe('PatientDetailsReport', () => {
 
     it('works okay', () => {
         const patientsReports = PregnancyReportFixture.filter(
-            (sms) => sms.patient_id == '10063H',
+            (sms) => sms.patient_id == '101EHA',
         ) as NutritionLogFaceSms[];
         const props = {
             patientsReports,
@@ -44,7 +44,7 @@ describe('PatientDetailsReport', () => {
     });
     it('can switch pregnancies', () => {
         const patientsReports = PregnancyReportFixture.filter(
-            (sms) => sms.patient_id == '10063H' || sms.patient_id === '101AVR',
+            (sms) => sms.patient_id == '101EHA' || sms.patient_id === '101DYG',
         ) as NutritionLogFaceSms[];
         const props = {
             patientsReports,
