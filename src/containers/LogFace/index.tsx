@@ -35,30 +35,15 @@ import {
     translatedModuleLabel,
 } from '../../helpers/utils';
 import supersetFetch from '../../services/superset';
-import {
-    fetchLocations,
-    fetchUserLocations,
-    getLocationsOfLevel,
-    getUserLocationId,
-    getUserLocations,
-    Location,
-    UserLocation,
-} from '../../store/ducks/locations';
 import locationsReducer, { reducerName as locationReducerName } from '../../store/ducks/locations';
-import {
-    fetchLogFaceSms,
-    LogFaceSmsType,
-    removeFilterArgs as removeFilterArgsActionCreator,
-} from '../../store/ducks/sms_events';
-import smsReducer, { getFilterArgs, reducerName as smsReducerName, smsDataFetched } from '../../store/ducks/sms_events';
+import { fetchLogFaceSms } from '../../store/ducks/sms_events';
+import smsReducer, { reducerName as smsReducerName } from '../../store/ducks/sms_events';
 import './index.css';
 import { useTranslation, withTranslation } from 'react-i18next';
 import { ErrorPage } from 'components/ErrorPage';
-import { Store } from 'redux';
 import Select from 'react-select';
 import { updateUrlWithFilter } from './utils';
 import { SelectLocationFilter } from './SelectLocationFilter';
-import { TreeNode } from 'helpers/locationHierarchy/types';
 import { Dictionary } from '@onaio/utils';
 import ReactPaginate from 'react-paginate';
 import { useGetLogFaceFilteredSms, useUserAssignment } from 'helpers/dataHooks';
@@ -71,41 +56,16 @@ reducerRegistry.register(locationReducerName, locationsReducer);
  */
 export interface LogFaceProps {
     module: LogFaceModules;
-    smsData: LogFaceSmsType[];
     fetchLogFaceSmsCreator: typeof fetchLogFaceSms;
-    dataFetched: boolean;
     numberOfRows: number;
-    userUUID: string;
-    userLocationData: UserLocation[];
-    provinces: Location[];
-    districts: Location[];
-    communes: Location[];
-    villages: Location[];
-    removeFilterArgs: typeof removeFilterArgsActionCreator;
-    fetchLocations: typeof fetchLocations;
-    fetchUserLocations: typeof fetchUserLocations;
     supersetService: typeof supersetFetch;
-    userHierarchy?: TreeNode;
-    userLocationId: string;
 }
 
 const defaultProps: LogFaceProps = {
-    fetchLocations: fetchLocations,
-    fetchUserLocations: fetchUserLocations,
     fetchLogFaceSmsCreator: fetchLogFaceSms,
-    communes: [],
-    dataFetched: false,
-    districts: [],
     module: PREGNANCY_MODULE,
     numberOfRows: DEFAULT_PAGINATION_SIZE,
-    provinces: [],
-    removeFilterArgs: removeFilterArgsActionCreator,
-    smsData: [],
-    userLocationData: [],
-    userUUID: '',
-    villages: [],
     supersetService: supersetFetch,
-    userLocationId: '',
 };
 
 export type LogFacePropsType = LogFaceProps & RouteComponentProps;
@@ -155,7 +115,6 @@ const LogFace = (props: LogFacePropsType) => {
     const paginationProps = {
         ...getCommonPaginationProps(t),
         pageCount: totalPageCount,
-
         onPageChange: onPageChangeHandler,
     };
 
@@ -307,31 +266,12 @@ function getModuleLogFaceUrlLink(module: string) {
     }
 }
 
-export type MapStateToProps = Pick<
-    LogFaceProps,
-    'communes' | 'dataFetched' | 'districts' | 'provinces' | 'userLocationData' | 'villages'
->;
-
 export type MapDispatch = Pick<LogFaceProps, 'fetchLogFaceSmsCreator'>;
-
-const mapStateToProps = (state: Partial<Store>): MapStateToProps => {
-    const result = {
-        communes: getLocationsOfLevel(state, 'Commune'),
-        dataFetched: smsDataFetched(state),
-        districts: getLocationsOfLevel(state, 'District'),
-        filterArgsInStore: getFilterArgs(state),
-        provinces: getLocationsOfLevel(state, 'Province'),
-        userLocationData: getUserLocations(state),
-        villages: getLocationsOfLevel(state, 'Village'),
-        userLocationId: getUserLocationId(state),
-    };
-    return result;
-};
 
 const mapPropsToActions: MapDispatch = {
     fetchLogFaceSmsCreator: fetchLogFaceSms,
 };
 
-const ConnectedLogFace = connect(mapStateToProps, mapPropsToActions)(LogFace);
+const ConnectedLogFace = connect(undefined, mapPropsToActions)(LogFace);
 
 export default withTranslation()(ConnectedLogFace);

@@ -3,12 +3,12 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { ConnectedRouter } from 'connected-react-router';
 import toJson from 'enzyme-to-json';
 import { Provider } from 'react-redux';
-import ConnectedLogFace, { LogFacePropsType } from '..';
+import ConnectedLogFace from '..';
 import { NUTRITION_MODULE, PREGNANCY, PREGNANCY_LOGFACE_URL, PREGNANCY_MODULE } from '../../../constants';
-import { mountWithTranslations } from '../../../helpers/testUtils';
+import { mountWithProviders } from '../../../helpers/testUtils';
 import store from '../../../store';
 import reducer, { clearLocationSlice, fetchUserLocations, reducerName } from '../../../store/ducks/locations';
-import { LogFaceSmsType, RemoveLogFaceSms, removeSms } from '../../../store/ducks/sms_events';
+import { RemoveLogFaceSms, removeSms } from '../../../store/ducks/sms_events';
 import { userLocations } from './userLocationFixtures';
 import { act } from 'react-dom/test-utils';
 import * as securityAuthenticate from '../../../store/ducks/tests/fixtures/securityAuthenticate.json';
@@ -85,10 +85,7 @@ describe('containers/LogFace extended', () => {
     });
 
     it('renders correctly', async () => {
-        const supersetFetchMock = jest
-            .fn()
-            .mockResolvedValueOnce(PregnancyReportFixture)
-            .mockResolvedValueOnce(userLocations);
+        const supersetFetchMock = jest.fn().mockResolvedValueOnce(PregnancyReportFixture);
         fetch.mockResponse(JSON.stringify(securityAuthenticate));
         const props = {
             module: PREGNANCY_MODULE as LogFaceModules,
@@ -97,7 +94,7 @@ describe('containers/LogFace extended', () => {
         const container = document.createElement('div');
         document.body.appendChild(container);
 
-        const wrapper = mountWithTranslations(
+        const wrapper = mountWithProviders(
             <Provider store={store}>
                 <MemoryRouter initialEntries={[PREGNANCY_LOGFACE_URL]}>
                     <Route
@@ -118,7 +115,20 @@ describe('containers/LogFace extended', () => {
             wrapper.update();
         });
 
-        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(490);
+        expect(fetch.mock.calls).toEqual([
+            [
+                'https://test.smartregister.org/opensrp/rest//security/authenticate/',
+                {
+                    headers: {
+                        accept: 'application/json',
+                        authorization: 'Bearer hunter2',
+                        'content-type': 'application/json;charset=UTF-8',
+                    },
+                    method: 'GET',
+                },
+            ],
+        ]);
+
         expect(toJson(wrapper.find('table'))).toMatchSnapshot('table snapshot');
         wrapper.find('table tr td').forEach((td) => {
             expect(toJson(td)).toMatchSnapshot('tables');
@@ -133,14 +143,14 @@ describe('containers/LogFace extended', () => {
     });
 
     it('shows loader and Breaks just fine', async () => {
-        const supersetFetchMock = jest.fn(async () => []);
+        const supersetFetchMock = jest.fn(async () => Promise.reject('coughid'));
         fetch.mockReject(new Error('coughid'));
         const props = {
             ...commonProps,
             ...locationProps,
             supersetService: supersetFetchMock,
         };
-        const wrapper = mountWithTranslations(
+        const wrapper = mountWithProviders(
             <Provider store={store}>
                 <ConnectedRouter history={history}>
                     <ConnectedLogFace {...props} />
@@ -159,9 +169,9 @@ describe('containers/LogFace extended', () => {
         expect(wrapper.find('Ripple')).toHaveLength(0);
 
         // showing broken page due to error
-        expect(wrapper.text()).toMatchInlineSnapshot(`"An error occurredErrorcoughid"`);
+        expect(wrapper.text()).toMatchInlineSnapshot(`"An error occurred"`);
         // // and finally check the requests made
-        expect(supersetFetchMock.mock.calls).toEqual([['pregnancyLogface'], ['userLocation']]);
+        expect(supersetFetchMock.mock.calls).toEqual([['pregnancyLogface']]);
         expect(fetch.mock.calls).toEqual([
             [
                 'https://test.smartregister.org/opensrp/rest//security/authenticate/',
@@ -192,7 +202,7 @@ describe('containers/LogFace extended', () => {
         const container = document.createElement('div');
         document.body.appendChild(container);
 
-        const wrapper = mountWithTranslations(
+        const wrapper = mountWithProviders(
             <Provider store={store}>
                 <MemoryRouter initialEntries={[PREGNANCY_LOGFACE_URL]}>
                     <Route
@@ -213,17 +223,17 @@ describe('containers/LogFace extended', () => {
             wrapper.update();
         });
 
-        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(490);
+        expect((wrapper.find('s').props() as Dictionary).pageCount).toEqual(12);
 
         // start with search field
-        wrapper.find('#search').simulate('change', { target: { value: '100' } });
+        wrapper.find('#search').simulate('change', { target: { value: '101' } });
         wrapper.update();
 
         // check url changed correctly
-        expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual('?search=100');
+        expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual('?search=101');
 
         // just checking that there were some events filtered out.
-        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(482);
+        expect((wrapper.find('s').props() as Dictionary).pageCount).toEqual(12);
 
         expect(toJson(wrapper.find('#risk-filter select'))).toMatchSnapshot('risk filter');
 
@@ -233,11 +243,11 @@ describe('containers/LogFace extended', () => {
 
         // check url changed correctly
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
-            '?search=100&riskCategory=redAlert',
+            '?search=101&riskCategory=redAlert',
         );
 
         // just checking that there were some events filtered out.
-        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(35);
+        expect((wrapper.find('s').props() as Dictionary).pageCount).toEqual(1);
 
         // change sms type level
         wrapper
@@ -247,11 +257,11 @@ describe('containers/LogFace extended', () => {
 
         // check url changed correctly
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
-            '?search=100&riskCategory=redAlert&smsType=Birth%20Report',
+            '?search=101&riskCategory=redAlert&smsType=Birth%20Report',
         );
 
         // just checking that there were some events filtered out.
-        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(26);
+        expect((wrapper.find('s').props() as Dictionary).pageCount).toEqual(0);
 
         // play with locations
         expect(toJson(wrapper.find('SelectLocationFilter select'))).toMatchSnapshot('location filter');
@@ -262,7 +272,7 @@ describe('containers/LogFace extended', () => {
 
         // check url changed correctly
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
-            '?search=100&riskCategory=redAlert&smsType=Birth%20Report&locationSearch=eccfe905-0e03-4188-98bc-22f141cccd0e',
+            '?search=101&riskCategory=redAlert&smsType=Birth%20Report&locationSearch=eccfe905-0e03-4188-98bc-22f141cccd0e',
         );
         wrapper.unmount();
     });
@@ -281,7 +291,7 @@ describe('containers/LogFace extended', () => {
         const container = document.createElement('div');
         document.body.appendChild(container);
 
-        const wrapper = mountWithTranslations(
+        const wrapper = mountWithProviders(
             <Provider store={store}>
                 <MemoryRouter initialEntries={[PREGNANCY_LOGFACE_URL]}>
                     <Route
@@ -302,9 +312,7 @@ describe('containers/LogFace extended', () => {
             wrapper.update();
         });
 
-        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(
-            (nutritionSmsFixtures as LogFaceSmsType[]).length,
-        );
+        expect((wrapper.find('s').props() as Dictionary).pageCount).toEqual(10);
 
         // start with search field
         wrapper.find('#search').simulate('change', { target: { value: '100' } });
@@ -314,7 +322,7 @@ describe('containers/LogFace extended', () => {
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual('?search=100');
 
         // just checking that there were some events filtered out.
-        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(45);
+        expect((wrapper.find('s').props() as Dictionary).pageCount).toEqual(9);
 
         expect(toJson(wrapper.find('#risk-filter select'))).toMatchSnapshot('risk filter');
 
@@ -331,7 +339,7 @@ describe('containers/LogFace extended', () => {
         wrapper.update();
 
         // just checking that there were some events filtered out.
-        expect((wrapper.find('LogFace').props() as LogFacePropsType).smsData).toHaveLength(3);
+        expect((wrapper.find('s').props() as Dictionary).pageCount).toEqual(1);
 
         // change sms type level
         expect(toJson(wrapper.find('#sms-type-filter select'))).toMatchSnapshot('smsType filter');
