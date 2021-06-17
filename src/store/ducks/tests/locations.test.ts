@@ -14,7 +14,6 @@ import reducer, {
     removeLocations,
     userIdFetched,
     userLocationDataFetched,
-    userLocationIdFetched,
 } from '../locations';
 
 reducerRegistry.register(reducerName, reducer);
@@ -29,7 +28,6 @@ describe('reducers/location/reduer', () => {
         expect(getLocationsOfLevel(store.getState(), VILLAGE)).toEqual([]);
         expect(userIdFetched(store.getState())).toEqual(false);
         expect(userLocationDataFetched(store.getState())).toEqual(false);
-        expect(userLocationIdFetched(store.getState())).toEqual(false);
         expect(getUserLocationId(store.getState())).toEqual('');
         expect(getUserId(store.getState())).toEqual('');
         expect(getUserLocations(store.getState())).toEqual([]);
