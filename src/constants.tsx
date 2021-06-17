@@ -43,6 +43,23 @@ export const BACKEND_LOGIN_URL = '/fe/login';
 export const EXPRESS_LOGIN_URL = '/login';
 export const REACT_LOGIN_URL = '/login';
 export const EXPRESS_TOKEN_REFRESH_URL = '/refresh/token';
+// admin urls
+export const URL_ADMIN = '/admin';
+
+export const URL_USER = `${URL_ADMIN}/users`;
+export const URL_USER_GROUPS = `${URL_USER}/groups`;
+export const URL_USER_ROLES = `${URL_USER}/roles`;
+export const URL_USER_EDIT = `${URL_USER}/edit`;
+export const URL_TEAMS = `${URL_ADMIN}/teams`;
+export const URL_TEAM_ASSIGNMENT = `${URL_TEAMS}/team-assignment`;
+export const URL_TEAMS_EDIT = `${URL_TEAMS}/edit`;
+export const URL_TEAMS_ADD = `${URL_TEAMS}/add`;
+export const URL_LOCATION_UNIT = `${URL_ADMIN}/location/unit`;
+export const URL_LOCATION_UNIT_ADD = `${URL_LOCATION_UNIT}/add`;
+export const URL_LOCATION_UNIT_EDIT = `${URL_LOCATION_UNIT}/edit/:id`;
+export const URL_LOCATION_UNIT_GROUP = `${URL_ADMIN}/location/group`;
+export const URL_LOCATION_UNIT_GROUP_ADD = `${URL_LOCATION_UNIT_GROUP}/add`;
+export const URL_LOCATION_UNIT_GROUP_EDIT = `${URL_LOCATION_UNIT_GROUP}/edit/:id`;
 
 // string literals
 export const HIGH = 'high';
