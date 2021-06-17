@@ -181,7 +181,7 @@ describe('reducers/sms_events.reselect', () => {
         expect(selectByModule(store.getState(), { module: PREGNANCY_MODULE })).toEqual([
             {
                 ...pregnancy1,
-                EventDate: '11/05/2021',
+                EventDate: '13/06/2021',
             },
         ]);
         expect(selectByModule(store.getState(), { module: NUTRITION_MODULE })).toEqual([
@@ -197,7 +197,7 @@ describe('reducers/sms_events.reselect', () => {
             },
             {
                 ...pregnancy1,
-                EventDate: '11/05/2021',
+                EventDate: '13/06/2021',
             },
         ]);
     });

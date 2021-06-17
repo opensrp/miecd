@@ -3,10 +3,11 @@
  * - user can only filter for locations that they have been allowed access to,
  * we determine this by using the locationHierarchy of the user returned from security authenticate
  */
+import { TreeNode } from 'helpers/locationHierarchy/types';
+import { serializeTree } from 'helpers/locationHierarchy/utils';
 import React, { useEffect, useState, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select, { components } from 'react-select';
-import { TreeNode } from 'store/ducks/locationHierarchy/types';
 
 interface SelectLocationFilterProps {
     userLocationTree?: TreeNode;
@@ -35,13 +36,16 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
         // update options on prop changes
         const updateOptions = getOptions(userLocationTree, userLocationId);
         setOptions(updateOptions);
-    }, [userLocationId, userLocationTree]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userLocationId, serializeTree([userLocationTree])]);
 
     useEffect(() => {
         // don't close dropdown after user makes selection if selected node has children
         if (selectedNode) {
-            const hasChildren: boolean | undefined = selectedNode?.hasChildren();
+            const hasChildren: boolean | undefined = selectedNode.hasChildren();
             setMenuToClose(!hasChildren);
+        } else {
+            setMenuToClose(false);
         }
     }, [selectedNode]);
 
@@ -60,7 +64,6 @@ const SelectLocationFilter = (props: SelectLocationFilterProps) => {
             );
             setOptions(nextOptions);
             const path: TreeNode[] = thisNode?.getPath() as TreeNode[];
-            path.pop();
             setHierarchy(path);
         } else {
             //reset node selection-related state variables

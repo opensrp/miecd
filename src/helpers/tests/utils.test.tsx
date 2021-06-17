@@ -9,6 +9,9 @@ import {
     getLocationId,
     getFilterFunctionAndLocationLevel,
     inThePast24Months,
+    getCommune,
+    getModuleLink,
+    getLinkToPatientDetail,
 } from '../utils';
 import { chartRecord1, chartRecord2, chartRecord3, chartRecords, OpenSRPAPIResponse } from './fixtures';
 import fetchMock from 'fetch-mock';
@@ -29,6 +32,7 @@ import {
     securityAuthenticate,
 } from '../../containers/HierarchichalDataTable/test/fixtures';
 import MockDate from 'mockdate';
+import { EC_CHILD, PREGNANCY_MODULE } from '../../constants';
 
 jest.mock('@onaio/gatekeeper', () => {
     const actual = jest.requireActual('@onaio/gatekeeper');
@@ -41,6 +45,7 @@ jest.mock('@onaio/gatekeeper', () => {
 
 describe('src/helpers', () => {
     it('oauth User Info getter', () => {
+        expect(oAuthUserInfoGetter({})).toBeUndefined();
         let response = oAuthUserInfoGetter(OpenSRPAPIResponse);
         expect(response).toEqual('Called by Opensrp');
 
@@ -156,6 +161,23 @@ describe('src/helpers', () => {
         expect(locationLevel).toMatchInlineSnapshot(`0`);
         // faux filter function allowing everything through (for level country)
         expect(locationFilterFunction).toBeTruthy();
+    });
+
+    it('gets commune correctly', () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        expect(getCommune(villages.data.records[0] as any)).toEqual('091004fe-6e42-434e-8d3a-43f38e6b3eef');
+    });
+
+    it('get module link', () => {
+        expect(getModuleLink('')).toEqual('');
+    });
+
+    it('get patient details link for child', () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const mockData = { client_type: EC_CHILD } as any;
+        expect(getLinkToPatientDetail(mockData, '', PREGNANCY_MODULE)).toEqual(
+            '/child_patient_detail/undefined?module=Pregnancy',
+        );
     });
 });
 

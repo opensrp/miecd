@@ -39,9 +39,6 @@ export const FETCHED_USER_LOCATION = 'opensrp/reducer/FETCH_USER_LOCATION';
 /** FETCH_USER_LOCATION_ID action type */
 export const FETCHED_USER_ID = 'opensrp/reducer/FETCH_USER_ID';
 
-/** FETCH_USER_LOCATION_ID action type */
-export const FETCHED_USER_LOCATION_ID = 'opensrp/reducer/FETCH_USER_LOCATION_ID';
-
 /** FETCH_LOCATION action type */
 export const FETCHED_LOCATION = 'opensrp/reducer/FETCH_LOCATION';
 
@@ -63,11 +60,6 @@ export interface FetchUserIdAction extends AnyAction {
     type: typeof FETCHED_USER_ID;
 }
 
-/** Interface for FetchUserLocationIdAction */
-export interface FetchUserLocationIdAction extends AnyAction {
-    userLocationId: string;
-    type: typeof FETCHED_USER_LOCATION_ID;
-}
 /** Interface for FetchUserLocationAction */
 export interface FetchUserLocationsAction extends AnyAction {
     userLocations: { [key: string]: UserLocation };
@@ -86,12 +78,7 @@ export const removeLocations = {
 };
 
 /** Location action types */
-export type LocationActionTypes =
-    | FetchLocationsAction
-    | FetchUserLocationsAction
-    | FetchUserIdAction
-    | FetchUserLocationIdAction
-    | AnyAction;
+export type LocationActionTypes = FetchLocationsAction | FetchUserLocationsAction | FetchUserIdAction | AnyAction;
 
 // action creators
 
@@ -123,15 +110,6 @@ export const fetchUserId = (userId: string): FetchUserIdAction => {
         userId,
     };
     return fetchUserIdAction;
-};
-
-/** FETCH_USER_LOCATION_ID action creator */
-export const fetchUserLocationId = (userLocationId: string): FetchUserLocationIdAction => {
-    const fetchUserLocationIdAction = {
-        type: FETCHED_USER_LOCATION_ID as typeof FETCHED_USER_LOCATION_ID,
-        userLocationId,
-    };
-    return fetchUserLocationIdAction;
 };
 
 /** action to clear the full slice */
@@ -193,13 +171,6 @@ export default function locationsReducer(
                 userIdFetched: true,
             };
         }
-        case FETCHED_USER_LOCATION_ID: {
-            return {
-                ...state,
-                userLocationId: action.userLocationId,
-                userLocationIdFetched: true,
-            };
-        }
         case REMOVE_LOCATIONS:
             return {
                 ...state,
@@ -258,15 +229,6 @@ export function getLocationsOfLevel(state: Partial<Store>, level: string): Locat
     return values((state as Dictionary)[reducerName].locations).filter((location: Location) => {
         return location.level === level;
     });
-}
-
-/** Returns true if user locationId has been fetched.
- * @param {Partial<store>} state - the redux store
- * @return {boolean} - indicates if
- * userLocationId has been fectched or not.
- */
-export function userLocationIdFetched(state: Partial<Store>): boolean {
-    return (state as Dictionary)[reducerName].userLocationIdFetched;
 }
 
 /** Returns true if user location details has been fetched from superset

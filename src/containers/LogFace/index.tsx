@@ -3,8 +3,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { map } from 'lodash';
-import { useEffect, useState } from 'react';
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Table } from 'reactstrap';
@@ -27,96 +26,46 @@ import {
     SMS_TYPE_FILTER_PARAM,
 } from '../../constants';
 import {
-    fetchData,
     getLinkToPatientDetail,
     useHandleBrokenPage,
     parseMessage,
     formatAge,
     logFaceSupersetCall,
-    getRiskCatFilter,
     getCommonPaginationProps,
     translatedModuleLabel,
 } from '../../helpers/utils';
 import supersetFetch from '../../services/superset';
-import {
-    fetchLocations,
-    fetchUserLocations,
-    getLocationsOfLevel,
-    getUserId,
-    getUserLocationId,
-    getUserLocations,
-    Location,
-    UserLocation,
-} from '../../store/ducks/locations';
 import locationsReducer, { reducerName as locationReducerName } from '../../store/ducks/locations';
-import {
-    fetchLogFaceSms,
-    getSmsDataByFilters,
-    LogFaceSmsType,
-    removeFilterArgs as removeFilterArgsActionCreator,
-} from '../../store/ducks/sms_events';
-import smsReducer, { getFilterArgs, reducerName as smsReducerName, smsDataFetched } from '../../store/ducks/sms_events';
+import { fetchLogFaceSms } from '../../store/ducks/sms_events';
+import smsReducer, { reducerName as smsReducerName } from '../../store/ducks/sms_events';
 import './index.css';
 import { useTranslation, withTranslation } from 'react-i18next';
 import { ErrorPage } from 'components/ErrorPage';
-import { Store } from 'redux';
 import Select from 'react-select';
-import { getQueryParams, updateUrlWithFilter } from './utils';
+import { updateUrlWithFilter } from './utils';
 import { SelectLocationFilter } from './SelectLocationFilter';
-import {
-    getNodesByNameOrId,
-    getTreesByIds,
-    hierarchyReducer,
-    hierarchyReducerName,
-} from 'store/ducks/locationHierarchy';
-import { TreeNode } from 'store/ducks/locationHierarchy/types';
 import { Dictionary } from '@onaio/utils';
 import ReactPaginate from 'react-paginate';
+import { useGetLogFaceFilteredSms, useUserAssignment } from 'helpers/dataHooks';
 
 reducerRegistry.register(smsReducerName, smsReducer);
 reducerRegistry.register(locationReducerName, locationsReducer);
-reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 
 /**
  * Interface representing Logface props
  */
 export interface LogFaceProps {
     module: LogFaceModules;
-    smsData: LogFaceSmsType[];
     fetchLogFaceSmsCreator: typeof fetchLogFaceSms;
-    dataFetched: boolean;
     numberOfRows: number;
-    userUUID: string;
-    userLocationData: UserLocation[];
-    provinces: Location[];
-    districts: Location[];
-    communes: Location[];
-    villages: Location[];
-    removeFilterArgs: typeof removeFilterArgsActionCreator;
-    fetchLocations: typeof fetchLocations;
-    fetchUserLocations: typeof fetchUserLocations;
     supersetService: typeof supersetFetch;
-    userHierarchy?: TreeNode;
-    userLocationId: string;
 }
 
 const defaultProps: LogFaceProps = {
-    fetchLocations: fetchLocations,
-    fetchUserLocations: fetchUserLocations,
     fetchLogFaceSmsCreator: fetchLogFaceSms,
-    communes: [],
-    dataFetched: false,
-    districts: [],
     module: PREGNANCY_MODULE,
     numberOfRows: DEFAULT_PAGINATION_SIZE,
-    provinces: [],
-    removeFilterArgs: removeFilterArgsActionCreator,
-    smsData: [],
-    userLocationData: [],
-    userUUID: '',
-    villages: [],
     supersetService: supersetFetch,
-    userLocationId: '',
 };
 
 export type LogFacePropsType = LogFaceProps & RouteComponentProps;
@@ -126,16 +75,7 @@ export type LogFacePropsType = LogFaceProps & RouteComponentProps;
  * @param {LogFaceProps} props
  */
 const LogFace = (props: LogFacePropsType) => {
-    const {
-        module,
-        numberOfRows,
-        fetchLogFaceSmsCreator,
-        smsData,
-        userLocationData,
-        userUUID,
-        supersetService,
-        userHierarchy,
-    } = props;
+    const { module, numberOfRows, fetchLogFaceSmsCreator, supersetService } = props;
     const { error, handleBrokenPage, broken } = useHandleBrokenPage();
     const [loading, setLoading] = React.useState<boolean>(true);
     const supersetSlice = LogFaceSliceByModule[module];
@@ -146,14 +86,22 @@ const LogFace = (props: LogFacePropsType) => {
                 handleBrokenPage(err);
             })
             .finally(() => setLoading(false));
-        fetchData(supersetService, true, true, false, false).catch((err) => {
-            handleBrokenPage(err);
-        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchLogFaceSmsCreator, module, supersetService, supersetSlice]);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const { t } = useTranslation();
+
+    const { data: userAssignment } = useUserAssignment(t);
+    const smsData = useGetLogFaceFilteredSms(props.location, module, userAssignment?.userHierarchy);
+
+    if (broken) {
+        return <ErrorPage title={error?.name} message={error?.message} />;
+    }
+
+    if (loading) {
+        return <Ripple />;
+    }
 
     const handleTermChange = (event: React.FormEvent<HTMLInputElement>) => {
         updateUrlWithFilter(SEARCH_FILTER_PARAM, props, (event.target as HTMLInputElement).value);
@@ -167,17 +115,8 @@ const LogFace = (props: LogFacePropsType) => {
     const paginationProps = {
         ...getCommonPaginationProps(t),
         pageCount: totalPageCount,
-
         onPageChange: onPageChangeHandler,
     };
-
-    if (broken) {
-        return <ErrorPage title={error?.name} message={error?.message} />;
-    }
-
-    if (loading) {
-        return <Ripple />;
-    }
 
     return (
         <div className="logface-content">
@@ -212,10 +151,8 @@ const LogFace = (props: LogFacePropsType) => {
                     <div className="logface-page-filter">
                         <span>{t('Select Location')}</span>
                         <SelectLocationFilter
-                            userLocationTree={userHierarchy}
-                            userLocationId={
-                                userLocationData.filter((data) => data.provider_id === userUUID)[0]?.location_id
-                            }
+                            userLocationTree={userAssignment?.userHierarchy}
+                            userLocationId={userAssignment?.location?.uuid}
                             onLocationChange={(value) => updateUrlWithFilter(LOCATION_FILTER_PARAM, props, value)}
                         />
                     </div>
@@ -253,10 +190,7 @@ const LogFace = (props: LogFacePropsType) => {
                         </thead>
                         <tbody id="body">
                             {map(
-                                smsData.slice(
-                                    (currentPage - 1) * numberOfRows,
-                                    (currentPage - 1) * numberOfRows + numberOfRows,
-                                ),
+                                smsData.slice(currentPage * numberOfRows, currentPage * numberOfRows + numberOfRows),
                                 (dataObj) => {
                                     return (
                                         <tr key={dataObj.event_id}>
@@ -272,7 +206,7 @@ const LogFace = (props: LogFacePropsType) => {
                                                         module,
                                                     )}
                                                 >
-                                                    {dataObj.anc_id}
+                                                    {dataObj.patient_id}
                                                 </Link>
                                             </td>
                                             <td className="small-width">{formatAge(dataObj.age, t)}</td>
@@ -332,53 +266,12 @@ function getModuleLogFaceUrlLink(module: string) {
     }
 }
 
-export type MapStateToProps = Pick<
-    LogFaceProps,
-    'communes' | 'dataFetched' | 'districts' | 'provinces' | 'smsData' | 'userLocationData' | 'userUUID' | 'villages'
->;
-
 export type MapDispatch = Pick<LogFaceProps, 'fetchLogFaceSmsCreator'>;
-
-const selectSmsData = getSmsDataByFilters();
-const nodeSelector = getNodesByNameOrId();
-const userHierarchySelector = getTreesByIds();
-
-const mapStateToProps = (state: Partial<Store>, ownProps: LogFacePropsType): MapStateToProps => {
-    const userLocationIdFilter = getQueryParams(ownProps.location)[LOCATION_FILTER_PARAM] as string;
-    const riskCategoryFilter = getQueryParams(ownProps.location)[RISK_CATEGORY_FILTER_PARAM] as string;
-    const smsTypeFilter = getQueryParams(ownProps.location)[SMS_TYPE_FILTER_PARAM] as string;
-    const searchFilter = getQueryParams(ownProps.location)[SEARCH_FILTER_PARAM] as string;
-    const userLocationNode = nodeSelector(state, { searchQuery: userLocationIdFilter })[0] as TreeNode | undefined;
-
-    const filteredSmsData = selectSmsData(state, {
-        locationNode: userLocationNode,
-        riskCategory: getRiskCatFilter(ownProps.module, riskCategoryFilter),
-        smsTypes: smsTypeFilter ? [smsTypeFilter] : undefined,
-        searchFilter,
-        module: ownProps.module,
-    });
-    const userUUID = getUserId(state);
-    const userHierarchy = userHierarchySelector(state, { rootJurisdictionId: [userUUID] })[0] as TreeNode | undefined;
-    const result = {
-        communes: getLocationsOfLevel(state, 'Commune'),
-        dataFetched: smsDataFetched(state),
-        districts: getLocationsOfLevel(state, 'District'),
-        filterArgsInStore: getFilterArgs(state),
-        provinces: getLocationsOfLevel(state, 'Province'),
-        smsData: filteredSmsData,
-        userLocationData: getUserLocations(state),
-        userUUID,
-        userHierarchy,
-        villages: getLocationsOfLevel(state, 'Village'),
-        userLocationId: getUserLocationId(state),
-    };
-    return result;
-};
 
 const mapPropsToActions: MapDispatch = {
     fetchLogFaceSmsCreator: fetchLogFaceSms,
 };
 
-const ConnectedLogFace = connect(mapStateToProps, mapPropsToActions)(LogFace);
+const ConnectedLogFace = connect(undefined, mapPropsToActions)(LogFace);
 
 export default withTranslation()(ConnectedLogFace);

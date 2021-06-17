@@ -61,7 +61,6 @@ import { Dictionary } from '@onaio/utils';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { format, isWithinInterval, parse, subYears, toDate } from 'date-fns';
-import { fetchTree } from '../store/ducks/locationHierarchy';
 import { split, trim, replace } from 'lodash';
 import * as React from 'react';
 import { TFunction } from 'i18next';
@@ -88,27 +87,6 @@ export function oAuthUserInfoGetter(apiResponse: Dictionary): SessionState | voi
 }
 
 /**
- * Group objects in a list by some field as their key.
- * @param list a list of objects to be grouped into a single object with keys for each.
- * @param field a field to as the key by which the objects in the list will be attached.
- * @return returns an object that contains all the objects in the list passed to it with
- * keys as values of the field passed as the second argument.
- */
-export function groupBy(list: Dictionary[], field: string): Dictionary {
-    const dataMap: Dictionary = {};
-    list.forEach((listElement: Dictionary) => {
-        if (listElement[field]) {
-            if (!dataMap[listElement[field]]) {
-                dataMap[listElement[field]] = {
-                    ...listElement,
-                };
-            }
-        }
-    });
-    return dataMap;
-}
-
-/**
  * Append a number suffix such as 'st' for 1 and 'nd' for 2 and so on.
  * @param num
  */
@@ -125,21 +103,6 @@ export function getNumberSuffix(num: number): string {
     }
     return 'th';
 }
-
-/**
- * Sort function for a list of SmsData
- * @param firstE1
- * @param secondE1
- */
-export const sortFunction = (firstE1: SmsData, secondE1: SmsData): number => {
-    if (firstE1.event_id < secondE1.event_id) {
-        return 1;
-    }
-    if (firstE1.event_id > secondE1.event_id) {
-        return -1;
-    }
-    return 0;
-};
 
 /**
  *
@@ -292,25 +255,6 @@ export const getProvince = (
 };
 
 /**
- * @member {string} patientId the patient id
- * @member {SmsData[]} smsData an array of SmsData objects.
- */
-interface PatientIDAndSmsData {
-    patientId: string;
-    smsData: SmsData[];
-}
-/**
- * Filter smsData by patientID.
- * @param {PatientIDAndSmsData} patientIdAndSmsData an object with the patient id and smsData
- * @return {SmsData[]} filtered smsData
- */
-export const filterByPatientId = (patientIdAndSmsData: PatientIDAndSmsData): SmsData[] => {
-    return [...patientIdAndSmsData.smsData].filter((dataItem: SmsData): boolean => {
-        return dataItem.anc_id.toLocaleLowerCase().includes(patientIdAndSmsData.patientId.toLocaleLowerCase());
-    });
-};
-
-/**
  * sort SmsData[] by EventDate in descending order(i.e. the most recent events come first)
  * @param {SmsData[]} smsData an array of smsData objects to sort by event date
  */
@@ -329,26 +273,6 @@ export const sortByEventDate = <T extends { event_date: string }>(smsData: T[]) 
 export const getNumberOfDaysSinceDate = (date: string): number => {
     return Math.floor((new Date().getTime() - new Date(date).getTime()) / (1000 * 3600 * 24));
 };
-
-/**
- * The typical use of this util function is by a props that would like to check if its
- * location props(districts, villages, communes and provinces that are attached to the store)
- * all have Location data.
- *
- * returns true if villages, districts, communes and provinces all have a length greater than 0.
- * @param {Location[]} villages an array of village locations
- * @param {Location[]} communes an array of communes locations
- * @param {Location[]} districts an array of district locations
- * @param {Location[]} provinces an array of province locations
- */
-export function locationDataIsAvailable(
-    villages: Location[],
-    communes: Location[],
-    districts: Location[],
-    provinces: Location[],
-) {
-    return villages.length && districts.length && communes.length && provinces.length;
-}
 
 /*
  * an object representing information required to build the header breadcrumb and to filter out data
@@ -481,10 +405,10 @@ export function getLinkToHierarchicalDataTable(
 export function getLinkToPatientDetail(smsData: LogFaceSmsType, prependWith: string, module: LogFaceModules) {
     let url = '#';
     if (smsData.client_type === EC_CHILD) {
-        url = `${prependWith}/${CHILD_PATIENT_DETAIL}/${smsData.anc_id}`;
+        url = `${prependWith}/${CHILD_PATIENT_DETAIL}/${smsData.patient_id}`;
     }
     if (smsData.client_type === EC_WOMAN || smsData.client_type === EC_FAMILY_MEMBER) {
-        url = `${prependWith}/${PATIENT_DETAIL}/${smsData.anc_id}`;
+        url = `${prependWith}/${PATIENT_DETAIL}/${smsData.patient_id}`;
     }
     return stringifyUrl({ url, query: { [MODULE_SEARCH_PARAM_KEY]: module } });
 }
@@ -511,9 +435,8 @@ export async function fetchData(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const userIdPromise = opensrpService.read('').then((response: any) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const userId = (response as any).user.attributes._PERSON_UUID;
+            const userId = (response as any).user.baseEntityId;
             store.dispatch(fetchUserId(userId));
-            store.dispatch(fetchTree(response.locations, userId));
         });
         promises.push(userIdPromise);
     }

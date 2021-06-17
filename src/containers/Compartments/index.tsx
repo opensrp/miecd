@@ -36,22 +36,17 @@ import {
     FETCH_COMMUNES,
     FETCH_DISTRICTS,
     FETCH_PROVINCES,
-    FETCH_USER_LOCATION,
-    FETCH_USER_ID,
 } from '../../constants';
 import {
     buildHeaderBreadCrumb,
     convertMillisecondsToYear,
     getFilterFunctionAndLocationLevel,
-    getLocationId,
     HeaderBreadCrumb,
     fetchSupersetData,
-    fetchOpenSrpData,
-    Dictionary,
     useHandleBrokenPage,
 } from '../../helpers/utils';
 
-import { Location, UserLocation } from '../../store/ducks/locations';
+import { Location } from '../../store/ducks/locations';
 import {
     getFilterArgs,
     removeFilterArgs,
@@ -62,16 +57,11 @@ import {
     addFilterArgs,
 } from '../../store/ducks/sms_events';
 import './index.css';
-import {
-    VILLAGE_SLICE,
-    COMMUNE_SLICE,
-    DISTRICT_SLICE,
-    PROVINCE_SLICE,
-    USER_LOCATION_DATA_SLICE,
-} from '../../configs/env';
+import { VILLAGE_SLICE, COMMUNE_SLICE, DISTRICT_SLICE, PROVINCE_SLICE } from '../../configs/env';
 import { CompartmentsSmsFilterFunction } from '../../types';
 import { queryKeyAndSmsSlice } from '../../configs/settings';
 import { format } from 'util';
+import { useUserAssignment } from 'helpers/dataHooks';
 
 interface Props {
     module: typeof PREGNANCY | typeof NBC_AND_PNC | typeof NUTRITION;
@@ -161,20 +151,8 @@ export const Compartments = ({ module }: Props) => {
     );
 
     // fetch user location details
-    const { data: userLocationData, isLoading: userLocationLoading } = useQuery(
-        FETCH_USER_LOCATION,
-        () => fetchSupersetData<UserLocation>(USER_LOCATION_DATA_SLICE, t),
-        {
-            select: (res: UserLocation[]) => res,
-            onError: (err: Error) => handleBrokenPage(err),
-        },
-    );
-
-    // fetch user UUID
-    const { data: userUUID, isLoading: userUUIDLoading } = useQuery(FETCH_USER_ID, () => fetchOpenSrpData('', t), {
-        select: (res: Dictionary) => res.user.baseEntityId as string,
-        onError: (err: Error) => handleBrokenPage(err),
-    });
+    const { data: userData, isLoading: userDataLoading } = useUserAssignment(t);
+    const userLocationId = userData?.location?.uuid;
 
     const [filteredData, setFilteredData] = useState<CompartmentSmsTypes[]>([]);
     const [locationAndPath, setLocationAndPath] = useState<HeaderBreadCrumb>({
@@ -183,7 +161,6 @@ export const Compartments = ({ module }: Props) => {
         locationId: '',
         path: '',
     });
-    const [userLocationId, setUserLocationId] = useState<string>('');
     const [userLocationLevel, setUserLocationLevel] = useState<number>(4);
 
     const [allPregnanciesProps, setallPregnanciesProps] = useState<PregnancyAndNBCDataCircleCardProps>({
@@ -210,15 +187,6 @@ export const Compartments = ({ module }: Props) => {
         risk: 0,
         title: '',
     });
-
-    // update userLocationId if UUID of logged in user changes
-    useEffect(() => {
-        if (userLocationData && userUUID) {
-            // fetch user location id
-            const locationId = getLocationId(userLocationData, userUUID);
-            setUserLocationId(locationId);
-        }
-    }, [userUUID, userLocationData]);
 
     useEffect(() => {
         if (provinces && districts && communes && villages && userLocationId) {
@@ -468,8 +436,7 @@ export const Compartments = ({ module }: Props) => {
         communesLoading ||
         districtsLoading ||
         provincesLoading ||
-        userLocationLoading ||
-        userUUIDLoading
+        userDataLoading
     ) {
         return <Ripple />;
     }

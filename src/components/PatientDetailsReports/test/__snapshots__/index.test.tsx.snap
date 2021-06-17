@@ -5,33 +5,87 @@ exports[`PatientDetailsReport can switch pregnancies: after filter pregnancies 1
 exports[`PatientDetailsReport can switch pregnancies: initial current pregnancies 1`] = `"ReportDateReporterMessage"`;
 
 exports[`PatientDetailsReport can switch pregnancies: initial current pregnancies 2`] = `
-"Birth Report2021-04-23Husna HarizChild DOB = 23-04-2021 
-Child Gender = NU 
+"Birth Report2021-06-11Faith MutuaChild DOB = 13-04-2021 
+Child Gender = NAM 
 Delivery Location =  
-Newborn Symptoms = Lack of movement 
-Child Weight = 4.9 
-Child Length = 50 
-Child Risk =  
+Newborn Symptoms = Jaundice (psysiological) 
+Child Weight = 2.8 
+Child Length = 48 
+Child Risk = no_risk 
 Breastfeeding = No breastfeeding within 1 hour
-Mother Symptoms = Bu00ecnh thu01b0u1eddng"
+Mother Symptoms = Light vaginal bleeding"
 `;
 
 exports[`PatientDetailsReport can switch pregnancies: initial current pregnancies 3`] = `
-"Birth Report2021-04-23Husna HarizChild DOB = 23-04-2021 
-Child Gender = NU 
-Delivery Location =  
-Newborn Symptoms = Lack of movement 
-Child Weight = 4.9 
-Child Length = 50 
-Child Risk =  
-Breastfeeding = No breastfeeding within 1 hour
-Mother Symptoms = Bu00ecnh thu01b0u1eddng"
+"Delivery Planning2021-06-11Faith MutuaPlanned Delivery Location = At home 
+Current Symptoms = Vomiting"
 `;
 
 exports[`PatientDetailsReport can switch pregnancies: initial current pregnancies 4`] = `
-"Pregnancy Detection2021-04-23Husna HarizName = BENT SENT  ALEXA
-Phone Number = 0912782110 
-Health Insurance = KCO"
+"Social Determinants2021-06-11Faith MutuaPlanned Delivery Location = At home
+Household = Is a poor household
+Ethnicity = TAY
+Toilet = Has toilet
+Handwashing = No Handwashing facilities with soap"
+`;
+
+exports[`PatientDetailsReport can switch pregnancies: initial current pregnancies 5`] = `
+"Home ANC Visit2021-06-11Faith MutuaBlood Pressure = 120/80 
+Weight = 70 
+Current Symptoms = Stomachache,Premature Contraction 
+Supplements = Micronutrients Supplement: Yes "
+`;
+
+exports[`PatientDetailsReport can switch pregnancies: initial current pregnancies 6`] = `
+"ANC Visit2021-06-11Faith MutuaBlood Pressure = 120/80
+Weight = 69
+Current Symptoms = Premature Contraction
+Supplements = Micronutrients Supplement: Yes"
+`;
+
+exports[`PatientDetailsReport can switch pregnancies: initial current pregnancies 7`] = `
+"Home ANC Visit2021-06-11Faith MutuaBlood Pressure = 120/80 
+Weight = 70 
+Current Symptoms = Stomachache,Vomiting 
+Supplements = Micronutrients Supplement: Yes "
+`;
+
+exports[`PatientDetailsReport can switch pregnancies: initial current pregnancies 8`] = `
+"ANC Visit2021-06-11Faith MutuaBlood Pressure = 120/80
+Weight = 69
+Current Symptoms = Coughing
+Supplements = Micronutrients Supplement: Yes"
+`;
+
+exports[`PatientDetailsReport can switch pregnancies: initial current pregnancies 9`] = `
+"ANC Visit2021-06-11Faith MutuaBlood Pressure = 120/80
+Weight = 69
+Current Symptoms = Coughing
+Supplements = Micronutrients Supplement: Yes"
+`;
+
+exports[`PatientDetailsReport can switch pregnancies: initial current pregnancies 10`] = `
+"ANC Visit2021-06-11Faith MutuaBlood Pressure = 120/80
+Weight = 69
+Current Symptoms = Coughing
+Supplements = Micronutrients Supplement: Yes"
+`;
+
+exports[`PatientDetailsReport can switch pregnancies: initial current pregnancies 11`] = `
+"Pregnancy Registration2021-06-11Faith MutuaEDD = 27-06-2021
+Gravidity = 3
+Parity = 2
+Weight = 68 
+Height = 159
+BMI = 
+Previous Gynaecology History = Previous C-section
+Current Symptoms = Coughing"
+`;
+
+exports[`PatientDetailsReport can switch pregnancies: initial current pregnancies 12`] = `
+"Pregnancy Detection2021-06-11Faith MutuaName = MTANA   GEORGIA
+Phone Number = 0743654321 
+Health Insurance = 5864327890"
 `;
 
 exports[`PatientDetailsReport can switch pregnancies: select snapshot 1`] = `
@@ -40,14 +94,26 @@ exports[`PatientDetailsReport can switch pregnancies: select snapshot 1`] = `
   onChange={[Function]}
 >
   <option
-    key="1619157940156"
-    value="1619157940156"
+    key="1616424933497"
+    value="1616424933497"
   >
     Current pregnancy
   </option>
   <option
-    key="1618905587899"
-    value="1618905587899"
+    key="1616424933423"
+    value="1616424933423"
+  >
+    Pregnancy 3
+  </option>
+  <option
+    key="1616424933422"
+    value="1616424933422"
+  >
+    Pregnancy 2
+  </option>
+  <option
+    key="1616424933421"
+    value="1616424933421"
   >
     Pregnancy 1
   </option>
@@ -57,78 +123,85 @@ exports[`PatientDetailsReport can switch pregnancies: select snapshot 1`] = `
 exports[`PatientDetailsReport works okay: initial current pregnancies 1`] = `"ReportDateReporterMessage"`;
 
 exports[`PatientDetailsReport works okay: initial current pregnancies 2`] = `
-"Birth Report2021-04-22Husna HarizChild DOB = 22-04-2021 
-Child Gender = NU 
+"Birth Report2021-06-11Faith MutuaChild DOB = 13-04-2021 
+Child Gender = NAM 
 Delivery Location =  
-Newborn Symptoms = Lack of movement 
-Child Weight = 4.9 
-Child Length = 50 
-Child Risk = low 
+Newborn Symptoms = Jaundice (psysiological) 
+Child Weight = 2.8 
+Child Length = 48 
+Child Risk = no_risk 
 Breastfeeding = No breastfeeding within 1 hour
-Mother Symptoms = Bu00ecnh thu01b0u1eddng"
+Mother Symptoms = Light vaginal bleeding"
 `;
 
 exports[`PatientDetailsReport works okay: initial current pregnancies 3`] = `
-"Delivery Planning2021-04-22Husna HarizPlanned Delivery Location = Nhu00e0 
-Current Symptoms = Ho nhiu1ec1u hou1eb7c ho khan, HNgu00f4i ngu01b0u1ee3c"
+"Delivery Planning2021-06-11Faith MutuaPlanned Delivery Location = At home 
+Current Symptoms = Vomiting"
 `;
 
 exports[`PatientDetailsReport works okay: initial current pregnancies 4`] = `
-"Home ANC Visit2021-04-21Husna HarizBlood Pressure = 118/78 
-Weight = 70 
-Current Symptoms = Bu00ecnh thu01b0u1eddng 
-Supplements = Micronutrients Supplement: No 
-Risk = low 
-Contact = 3"
+"Social Determinants2021-06-11Faith MutuaPlanned Delivery Location = At home
+Household = Is a poor household
+Ethnicity = TAY
+Toilet = Has toilet
+Handwashing = No Handwashing facilities with soap"
 `;
 
 exports[`PatientDetailsReport works okay: initial current pregnancies 5`] = `
-"ANC Visit2021-04-21Husna HarizBlood Pressure = 118/78
-Weight = 60
-Current Symptoms = Bu00ecnh thu01b0u1eddng
-Supplements = Micronutrients Supplement: No
-Risk = low
-Contact = 2"
+"Home ANC Visit2021-06-11Faith MutuaBlood Pressure = 120/80 
+Weight = 70 
+Current Symptoms = Stomachache,Premature Contraction 
+Supplements = Micronutrients Supplement: Yes "
 `;
 
 exports[`PatientDetailsReport works okay: initial current pregnancies 6`] = `
-"ANC Visit2021-04-21Husna HarizBlood Pressure = 118/78
-Weight = 58
-Current Symptoms = Bu00ecnh thu01b0u1eddng
-Supplements = Bu1ed5 sung vi chu1ea5t: Cu00f3
-Risk = low
-Contact = 1"
+"ANC Visit2021-06-11Faith MutuaBlood Pressure = 120/80
+Weight = 69
+Current Symptoms = Premature Contraction
+Supplements = Micronutrients Supplement: Yes"
 `;
 
 exports[`PatientDetailsReport works okay: initial current pregnancies 7`] = `
-"Social Determinants2021-04-21Husna HarizPlanned Delivery Location = Bu1ec7nh viu1ec7n tu1ec9nh hou1eb7c Bu1ec7nh viu1ec7n Trung u01afu01a1ng 
-Household = Is a poor household
-Ethnicity = TEST1 TEST2 TEST3
-Toilet = Has toilet
-Handwashing = No Handwashing facilities with soap"
+"Home ANC Visit2021-06-11Faith MutuaBlood Pressure = 120/80 
+Weight = 70 
+Current Symptoms = Stomachache,Vomiting 
+Supplements = Micronutrients Supplement: Yes "
 `;
 
 exports[`PatientDetailsReport works okay: initial current pregnancies 8`] = `
-"Social Determinants2021-04-21Husna HarizPlanned Delivery Location = Bu1ec7nh viu1ec7n tu1ec9nh hou1eb7c Bu1ec7nh viu1ec7n Trung u01afu01a1ng 
-Household = Is a poor household
-Ethnicity = TEST1 TEST2 TEST3
-Toilet = Has toilet
-Handwashing = No Handwashing facilities with soap"
+"ANC Visit2021-06-11Faith MutuaBlood Pressure = 120/80
+Weight = 69
+Current Symptoms = Coughing
+Supplements = Micronutrients Supplement: Yes"
 `;
 
 exports[`PatientDetailsReport works okay: initial current pregnancies 9`] = `
-"Pregnancy Registration2021-04-21Husna HarizEDD = 08-08-2021
-Gravidity = 2
-Parity = 1
-Weight = 50.4 
-Height = 123
-BMI = 33.31350386674598
-Previous Gynaecology History = Bu00ecnh thu01b0u1eddng
-Current Symptoms = Bu00ecnh thu01b0u1eddng, Ho nhiu1ec1u hou1eb7c ho khan"
+"ANC Visit2021-06-11Faith MutuaBlood Pressure = 120/80
+Weight = 69
+Current Symptoms = Coughing
+Supplements = Micronutrients Supplement: Yes"
 `;
 
 exports[`PatientDetailsReport works okay: initial current pregnancies 10`] = `
-"Pregnancy Detection2021-04-20Husna HarizName = TAH PENNY  ALICE
-Phone Number = 0912312000 
-Health Insurance = 1000010101"
+"ANC Visit2021-06-11Faith MutuaBlood Pressure = 120/80
+Weight = 69
+Current Symptoms = Coughing
+Supplements = Micronutrients Supplement: Yes"
+`;
+
+exports[`PatientDetailsReport works okay: initial current pregnancies 11`] = `
+"Pregnancy Registration2021-06-11Faith MutuaEDD = 27-06-2021
+Gravidity = 3
+Parity = 2
+Weight = 68 
+Height = 159
+BMI = 
+Previous Gynaecology History = Previous C-section
+Current Symptoms = Coughing"
+`;
+
+exports[`PatientDetailsReport works okay: initial current pregnancies 12`] = `
+"Pregnancy Detection2021-06-11Faith MutuaName = MTANA   GEORGIA
+Phone Number = 0743654321 
+Health Insurance = 5864327890"
 `;

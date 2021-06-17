@@ -2,11 +2,11 @@
 import { keyBy, values } from 'lodash';
 import { AnyAction, Store } from 'redux';
 import { EC_CHILD, EC_FAMILY_MEMBER, EC_WOMAN, EVENT_DATE_DATE_FORMAT, EVENT_ID } from '../../constants';
-import { groupBy, formatDateStrings, sortByEventDate } from '../../helpers/utils';
+import { formatDateStrings, sortByEventDate } from '../../helpers/utils';
 import { SmsFilterFunction, CompartmentsSmsFilterFunction } from '../../types';
 import { Dictionary } from '@onaio/utils';
 import { createSelector } from 'reselect';
-import { TreeNode } from './locationHierarchy/types';
+import { TreeNode } from '../../helpers/locationHierarchy/types';
 import intersect from 'fast_array_intersect';
 import { LogFaceModules } from '../../configs/settings';
 
@@ -19,7 +19,7 @@ export interface BaseLogFaceSms {
     EventDate: string;
     health_worker_location_name: string;
     sms_type: string;
-    anc_id: string;
+    patient_id: string;
     patient_name: string;
     age: string;
     message: string;
@@ -28,8 +28,9 @@ export interface BaseLogFaceSms {
     event_date: string;
     risk_level: string;
     location_id: string;
-    message_vietnamese: number;
     client_type: ClientType;
+    health_worker_contact: string;
+    message_vt: string;
 }
 
 // describes smsEvents received from the slices serving the logface with data.
@@ -42,12 +43,19 @@ export interface NutritionLogFaceSms extends PregnancyLogFaceSms {
     nutrition_status: string;
     growth_status: string;
     feeding_category: string;
+    child_risk_level: string;
+    gender: string;
 }
 
-/** common fields to compartment sms */
-export interface BaseCompartmentsSms {
-    health_insurance: string;
+export interface BaseCompartmentSms {
+    patient_id: string;
+    base_entity_id: string;
+    practitioner_name: string;
+    event_date: string;
+    team: string;
+    age: string;
     event_id: string;
+    health_insurance: string;
     ethnicity: string;
     household: string;
     toilet: string;
@@ -55,10 +63,7 @@ export interface BaseCompartmentsSms {
 }
 
 /** Interfaces for SMS record objects as received from discover*/
-export interface PregnancySmsData extends BaseCompartmentsSms {
-    anc_id: string;
-    base_entity_id: string;
-    event_date: string;
+export interface PregnancySmsData extends BaseCompartmentSms {
     event_type: string;
     contact: string;
     anc_visit_date: string;
@@ -73,43 +78,30 @@ export interface PregnancySmsData extends BaseCompartmentsSms {
     lmp: string;
     lmp_edd: string;
     risk_level: string;
-    health_worker_id: string;
-    team: string;
-    event_id: string;
     bp: string;
     location_id: string;
     planned_delivery_location: string;
     location_name: string;
-    age: string;
 }
 
-export interface NutritionSmsData extends BaseCompartmentsSms {
-    anc_id: string;
-    base_entity_id: string;
-    event_date: string;
+export interface NutritionSmsData extends BaseCompartmentSms {
     muac: number;
     weight: number;
     height: number;
     status: string;
     supplements: string;
-    health_worker_id: string;
     team: string;
-    event_id: string;
     weight_z_score: number;
     height_z_score: number;
     nutrition_status: string;
     growth_status: string;
     feeding_category: string;
     location_id: string;
-    age: string;
     dob: string;
     location_name: string;
 }
 
-export interface NbcPncSmsData extends BaseCompartmentsSms {
-    anc_id: string;
-    base_entity_id: string;
-    event_date: string;
+export interface NbcPncSmsData extends BaseCompartmentSms {
     event_type: string;
     client_type: string;
     child_symptoms: string;
@@ -117,14 +109,11 @@ export interface NbcPncSmsData extends BaseCompartmentsSms {
     breastfeeding: string;
     intervention: string;
     risk_level: string;
-    health_worker_id: string;
     team: string;
-    event_id: string;
     location_id: string;
     location_name: string;
     previous_risks: string;
     delivery_location: string;
-    age: string;
     dob: string;
 }
 
@@ -248,7 +237,7 @@ export const fetchSms = (smsDataList: SmsData[] = []): FetchSmsAction => {
         EventDate: formatDateStrings(smsData.EventDate, EVENT_DATE_DATE_FORMAT),
     }));
     return {
-        smsData: groupBy(cleanedSms, EVENT_ID),
+        smsData: keyBy(cleanedSms, EVENT_ID),
         type: FETCHED_SMS as typeof FETCHED_SMS,
     };
 };
@@ -476,7 +465,7 @@ export const getSmsDataBySearch = () =>
             (dataItem) =>
                 dataItem.event_id.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
                 dataItem.health_worker_name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
-                dataItem.anc_id.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
+                dataItem.patient_id.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
         );
     });
 
@@ -486,7 +475,7 @@ export const getSmsDataByPatientId = () =>
         if (patientId === undefined) {
             return smsData;
         }
-        return smsData.filter((sms) => sms.anc_id === patientId);
+        return smsData.filter((sms) => sms.patient_id === patientId);
     });
 
 const selectSmsByLocation = getSmsDataByUserLocation();

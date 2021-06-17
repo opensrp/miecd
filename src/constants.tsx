@@ -86,6 +86,7 @@ export const EC_CHILD = 'ec_child';
 
 // smsTypes
 export const PREGNANCY_DETECTION = 'Pregnancy Detection';
+export const UPDATE_PREGNANCY_DETECTION = 'Update Pregnancy Detection';
 export const PREGNANCY_IDENTIFICATION = 'Pregnancy Identification';
 export const PREGNANCY_REGISTRATION = 'Pregnancy Registration';
 export const ANC_REPORT = 'ANC Report';
@@ -94,12 +95,14 @@ export const SOCIAL_DETERMINANTS = 'Social Determinants';
 export const DELIVERY_PLANNING = 'Delivery Planning';
 export const BIRTH_REPORT = 'Birth Report';
 export const DEATH_REPORT = 'Death Report';
+export const UPDATE_DEATH_REPORT = 'Update Death Report';
 export const RED_ALERT_REPORT = 'Red Alert Report';
 export const RESPONSE_REPORT = 'Response Report';
 export const REFUSAL_REPORT = 'Refusal Report';
 export const DEPARTURE_CODE = 'Departure Code';
 export const POSTNATAL_AND_NEWBORN_CARE = 'Postnatal and Newborn Care';
 export const NUTRITION_REGISTRATION = 'Nutrition Registration';
+export const UPDATE_NUTRITION_REGISTRATION = 'Update Nutrition Registration';
 export const MONTHLY_NUTRITION_REPORT = 'Monthly Nutrition Report';
 export const ACCOUNT_CHECK = 'Account Check';
 export const ANC_VISIT = 'ANC Visit';
