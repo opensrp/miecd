@@ -1,82 +1,80 @@
-import { shallow } from 'enzyme';
-import toJson from 'enzyme-to-json';
-import { createBrowserHistory } from 'history';
-import React from 'react';
-import { Router } from 'react-router';
-import SideMenu from '..';
-import { PREGNANCY } from '../../../../constants';
-import { mountWithTranslations } from '../../../../helpers/testUtils';
+import { filterFalsyRoutes } from '../routes';
 
-const history = createBrowserHistory();
+describe('routes', () => {
+    it('Test routes only return enabled values', () => {
+        const routes = filterFalsyRoutes([
+            {
+                children: [
+                    { key: 'child-x-a', title: 'a', url: '/child-x/a' },
+                    { key: 'child-x-t', title: 't', url: '/child-x/t' },
+                ],
+                key: 'child-x',
+                title: 'child-x',
+            },
+            {
+                children: [
+                    {
+                        children: [
+                            { key: 'childs-y', title: 'childs-y', url: '/admin/childs-y' },
+                            { key: 'childs-y-r', title: 'childs-y', url: '/admin/childs-y/r' },
+                        ],
+                        enabled: true,
+                        key: 'childs-y',
+                        title: 'childs-y',
+                    },
+                    {
+                        children: [
+                            { key: 'child-z-u', title: 'child-z-u', url: '/admin/child-z/u' },
+                            { key: 'child-z-g', title: 'child-z-g', url: '/admin/child-z/g' },
+                        ],
+                        enabled: undefined,
+                        key: 'child-z',
+                        title: 'child-z',
+                    },
+                    {
+                        enabled: false,
+                        key: 'child-i',
+                        title: 'child-i',
+                        url: '/admin/child-i',
+                        children: [
+                            { key: 'child-i-u', enabled: true, title: 'child-i-u', url: '/admin/child-i/u' },
+                            { key: 'child-i-g', enabled: true, title: 'child-i-g', url: '/admin/child-i/g' },
+                        ],
+                    },
+                ],
+                enabled: true,
+                key: 'admin',
+                title: 'Admin',
+                url: '/admin',
+            },
+        ]);
 
-jest.mock('../../../../configs/env');
-
-describe('components/page/SideMenu', () => {
-    beforeEach(() => {
-        jest.resetAllMocks();
-    });
-
-    // eslint-disable-next-line jest/expect-expect
-    it('renders without crashing', () => {
-        shallow(
-            <Router history={history}>
-                <SideMenu authenticated />
-            </Router>,
-        );
-    });
-
-    it('renders side menu correctly', () => {
-        const wrapper = mountWithTranslations(
-            <Router history={history}>
-                <SideMenu authenticated />
-            </Router>,
-        );
-        /** client Collapse SubMenu renders correctly */
-        expect(toJson(wrapper.find('Nav .side-collapse-nav').first())).toMatchSnapshot();
-        wrapper.unmount();
-    });
-
-    it('manages state correctly', () => {
-        const wrapper = mountWithTranslations(
-            <Router history={history}>
-                <SideMenu authenticated />
-            </Router>,
-        );
-
-        expect(wrapper.find('SideMenu').state('collapsedModuleLabel')).toEqual('');
-
-        wrapper.find('ul#Pregnancy').simulate('click');
-        expect(wrapper.find('SideMenu').state('collapsedModuleLabel')).toEqual(PREGNANCY);
-        wrapper.unmount();
-    });
-
-    it('sets the collapsedModuleLabel correctly from clicks on parentNavs', async () => {
-        // clicking changes the collapsedModuleLabel state and collapses
-        // nav to reveal child navigation
-
-        const wrapper = mountWithTranslations(
-            <Router history={history}>
-                <SideMenu authenticated />)
-            </Router>,
-        );
-
-        // how many parent navigationModules are initially collapsed
-        expect(wrapper.find('div.collapse')).toHaveLength(7);
-        expect(wrapper.find('div.collapse.show')).toHaveLength(0);
-        expect(wrapper.find('SubMenu').at(1).find('Collapse').prop('isOpen')).toBeFalsy();
-
-        // clicking on a parent nav changes the collapsedState for that navigation module
-        const pregnancyNav = wrapper.find('div#sub-menu-Pregnancy Nav.side-collapse-nav');
-        expect(pregnancyNav.length).toEqual(1);
-        pregnancyNav.simulate('click');
-        wrapper.update();
-
-        wrapper.find('SubMenu').forEach((div) => expect(expect(div.text()).toMatchSnapshot('sideMenu link labels')));
-
-        expect(wrapper.find('SubMenu').at(1).prop('collapsedModuleLabel')).toEqual('Pregnancy');
-
-        expect(wrapper.find('SubMenu').at(1).find('Collapse').prop('isOpen')).toBeTruthy();
-
-        wrapper.unmount();
+        expect(routes).toMatchObject([
+            {
+                children: [
+                    { key: 'child-x-a', title: 'a', url: '/child-x/a' },
+                    { key: 'child-x-t', title: 't', url: '/child-x/t' },
+                ],
+                key: 'child-x',
+                title: 'child-x',
+            },
+            {
+                children: [
+                    {
+                        children: [
+                            { key: 'childs-y', title: 'childs-y', url: '/admin/childs-y' },
+                            { key: 'childs-y-r', title: 'childs-y', url: '/admin/childs-y/r' },
+                        ],
+                        enabled: true,
+                        key: 'childs-y',
+                        title: 'childs-y',
+                    },
+                ],
+                enabled: true,
+                key: 'admin',
+                title: 'Admin',
+                url: '/admin',
+            },
+        ]);
     });
 });
