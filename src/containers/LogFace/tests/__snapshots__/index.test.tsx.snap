@@ -44,128 +44,6 @@ exports[`containers/LogFace extended filters work correctly for Nutrition: risk 
 </select>
 `;
 
-exports[`containers/LogFace extended filters work correctly for Nutrition: smsType filter 1`] = `
-<select
-  data-testid="select"
-  onChange={[Function]}
->
-  <option
-    key="Response Report"
-    value="Response Report"
-  >
-    Response Report
-  </option>
-  <option
-    key="Red Alert Report"
-    value="Red Alert Report"
-  >
-    Red Alert Report
-  </option>
-  <option
-    key="Social Determinants"
-    value="Social Determinants"
-  >
-    Social Determinants
-  </option>
-  <option
-    key="ANC Visit"
-    value="ANC Visit"
-  >
-    ANC Visit
-  </option>
-  <option
-    key="Delivery Planning"
-    value="Delivery Planning"
-  >
-    Delivery Planning
-  </option>
-  <option
-    key="Pregnancy Detection"
-    value="Pregnancy Detection"
-  >
-    Pregnancy Detection
-  </option>
-  <option
-    key="Pregnancy Identification"
-    value="Pregnancy Identification"
-  >
-    Pregnancy Identification
-  </option>
-  <option
-    key="Pregnancy Registration"
-    value="Pregnancy Registration"
-  >
-    Pregnancy Registration
-  </option>
-  <option
-    key="ANC Report"
-    value="ANC Report"
-  >
-    ANC Report
-  </option>
-  <option
-    key="Home Visit Report"
-    value="Home Visit Report"
-  >
-    Home Visit Report
-  </option>
-  <option
-    key="Birth Report"
-    value="Birth Report"
-  >
-    Birth Report
-  </option>
-  <option
-    key="Death Report"
-    value="Death Report"
-  >
-    Death Report
-  </option>
-  <option
-    key="Postnatal and Newborn Care"
-    value="Postnatal and Newborn Care"
-  >
-    Postnatal and Newborn Care
-  </option>
-  <option
-    key="Nutrition Registration"
-    value="Nutrition Registration"
-  >
-    Nutrition Registration
-  </option>
-  <option
-    key="Nutrition Report"
-    value="Nutrition Report"
-  >
-    Nutrition Report
-  </option>
-  <option
-    key="Monthly Nutrition Report"
-    value="Monthly Nutrition Report"
-  >
-    Monthly Nutrition Report
-  </option>
-  <option
-    key="Departure Code"
-    value="Departure Code"
-  >
-    Departure Code
-  </option>
-  <option
-    key="Refusal Report"
-    value="Refusal Report"
-  >
-    Refusal Report
-  </option>
-  <option
-    key="Account Check"
-    value="Account Check"
-  >
-    Account Check
-  </option>
-</select>
-`;
-
 exports[`containers/LogFace extended filters work correctly for pregnancy: location filter 1`] = `
 <select
   data-testid="select"
@@ -237,639 +115,7 @@ exports[`containers/LogFace extended renders correctly: search div 1`] = `
 />
 `;
 
-exports[`containers/LogFace extended renders correctly: table snapshot 1`] = `
-<table
-  className="table table-borderless table-striped"
->
-  <thead
-    id="header"
-  >
-    <tr>
-      <th
-        className="default-width"
-      >
-        Event Date
-      </th>
-      <th
-        className="default-width"
-      >
-        Location
-      </th>
-      <th
-        className="default-width"
-      >
-        SMS Type
-      </th>
-      <th
-        className="default-width"
-      >
-        Reporter
-      </th>
-      <th
-        className="default-width"
-      >
-        Patient
-      </th>
-      <th
-        className="small-width"
-      >
-        Age
-      </th>
-      <th
-        className="large-width"
-      >
-        Message
-      </th>
-      <th
-        className="default-width"
-      >
-        Risk Level
-      </th>
-    </tr>
-  </thead>
-  <tbody
-    id="body"
-  >
-    <tr
-      key="1616424933508"
-    >
-      <td
-        className="default-width"
-      >
-        11/06/2021
-      </td>
-      <td
-        className="default-width"
-      >
-        Thôn Kon Brỏi
-      </td>
-      <td
-        className="default-width"
-      >
-        Birth Report
-      </td>
-      <td
-        className="default-width"
-      >
-        Faith Mutua
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-              onClick={[Function]}
-            >
-              101EHA
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-      <td
-        className="small-width"
-      >
-        35 years
-      </td>
-      <td
-        className="large-width"
-      >
-        <ul>
-          <li
-            key="Child DOB : 13/04/2021-0"
-          >
-            Child DOB : 13/04/2021
-          </li>
-          <li
-            key="Child Gender : NAM-1"
-          >
-            Child Gender : NAM
-          </li>
-          <li
-            key="Delivery Location : -2"
-          >
-            Delivery Location : 
-          </li>
-          <li
-            key="Newborn Symptoms : Jaundice (psysiological)-3"
-          >
-            Newborn Symptoms : Jaundice (psysiological)
-          </li>
-          <li
-            key="Child Weight : 2.8kg-4"
-          >
-            Child Weight : 2.8kg
-          </li>
-          <li
-            key="Child Length : 48cm-5"
-          >
-            Child Length : 48cm
-          </li>
-          <li
-            key="Child Risk : no_risk-6"
-          >
-            Child Risk : no_risk
-          </li>
-          <li
-            key="Breastfeeding : No breastfeeding within 1 hour-7"
-          >
-            Breastfeeding : No breastfeeding within 1 hour
-          </li>
-          <li
-            key="Mother Symptoms : Light vaginal bleeding-8"
-          >
-            Mother Symptoms : Light vaginal bleeding
-          </li>
-        </ul>
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-              onClick={[Function]}
-            >
-              <RiskColoring
-                displayValue="No Risk"
-                risk="no_risk"
-              >
-                <span
-                  className="badge"
-                  style={
-                    Object {
-                      "backgroundColor": "#28a745",
-                    }
-                  }
-                >
-                  <div>
-                    <p>
-                      No Risk
-                    </p>
-                  </div>
-                </span>
-              </RiskColoring>
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-    </tr>
-    <tr
-      key="1616424933506"
-    >
-      <td
-        className="default-width"
-      >
-        11/06/2021
-      </td>
-      <td
-        className="default-width"
-      >
-        Thôn Kon Brỏi
-      </td>
-      <td
-        className="default-width"
-      >
-        Delivery Planning
-      </td>
-      <td
-        className="default-width"
-      >
-        Faith Mutua
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-              onClick={[Function]}
-            >
-              101EHA
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-      <td
-        className="small-width"
-      >
-        35 years
-      </td>
-      <td
-        className="large-width"
-      >
-        <ul>
-          <li
-            key="Planned Delivery Location : At home-0"
-          >
-            Planned Delivery Location : At home
-          </li>
-          <li
-            key="Current Symptoms : Vomiting-1"
-          >
-            Current Symptoms : Vomiting
-          </li>
-        </ul>
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-              onClick={[Function]}
-            >
-              <RiskColoring
-                displayValue="Risk"
-                risk="risk"
-              >
-                <span
-                  className="badge"
-                  style={
-                    Object {
-                      "backgroundColor": "#ffc107",
-                    }
-                  }
-                >
-                  <div>
-                    <p>
-                      Risk
-                    </p>
-                  </div>
-                </span>
-              </RiskColoring>
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-    </tr>
-    <tr
-      key="1616424933505"
-    >
-      <td
-        className="default-width"
-      >
-        11/06/2021
-      </td>
-      <td
-        className="default-width"
-      >
-        Thôn Kon Brỏi
-      </td>
-      <td
-        className="default-width"
-      >
-        Social Determinants
-      </td>
-      <td
-        className="default-width"
-      >
-        Faith Mutua
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-              onClick={[Function]}
-            >
-              101EHA
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-      <td
-        className="small-width"
-      >
-        35 years
-      </td>
-      <td
-        className="large-width"
-      >
-        <ul>
-          <li
-            key="Planned Delivery Location : At home-0"
-          >
-            Planned Delivery Location : At home
-          </li>
-          <li
-            key="Household : Is a poor household-1"
-          >
-            Household : Is a poor household
-          </li>
-          <li
-            key="Ethnicity : TAY-2"
-          >
-            Ethnicity : TAY
-          </li>
-          <li
-            key="Toilet : Has toilet-3"
-          >
-            Toilet : Has toilet
-          </li>
-          <li
-            key="Handwashing : No Handwashing facilities with soap-4"
-          >
-            Handwashing : No Handwashing facilities with soap
-          </li>
-        </ul>
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-              onClick={[Function]}
-            >
-              <RiskColoring
-                displayValue="Risk"
-                risk="risk"
-              >
-                <span
-                  className="badge"
-                  style={
-                    Object {
-                      "backgroundColor": "#ffc107",
-                    }
-                  }
-                >
-                  <div>
-                    <p>
-                      Risk
-                    </p>
-                  </div>
-                </span>
-              </RiskColoring>
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-    </tr>
-    <tr
-      key="1616424933504"
-    >
-      <td
-        className="default-width"
-      >
-        11/06/2021
-      </td>
-      <td
-        className="default-width"
-      >
-        Thôn Kon Brỏi
-      </td>
-      <td
-        className="default-width"
-      >
-        Home ANC Visit
-      </td>
-      <td
-        className="default-width"
-      >
-        Faith Mutua
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-              onClick={[Function]}
-            >
-              101EHA
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-      <td
-        className="small-width"
-      >
-        35 years
-      </td>
-      <td
-        className="large-width"
-      >
-        <ul>
-          <li
-            key="Blood Pressure : 120/80-0"
-          >
-            Blood Pressure : 120/80
-          </li>
-          <li
-            key="Weight : 70kg-1"
-          >
-            Weight : 70kg
-          </li>
-          <li
-            key="Current Symptoms : Stomachache,Premature Contraction-2"
-          >
-            Current Symptoms : Stomachache,Premature Contraction
-          </li>
-          <li
-            key="Supplements : Micronutrients Supplement: Yes-3"
-          >
-            Supplements : Micronutrients Supplement: Yes
-          </li>
-        </ul>
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-              onClick={[Function]}
-            >
-              <RiskColoring
-                displayValue="Risk"
-                risk="risk"
-              >
-                <span
-                  className="badge"
-                  style={
-                    Object {
-                      "backgroundColor": "#ffc107",
-                    }
-                  }
-                >
-                  <div>
-                    <p>
-                      Risk
-                    </p>
-                  </div>
-                </span>
-              </RiskColoring>
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-    </tr>
-    <tr
-      key="1616424933503"
-    >
-      <td
-        className="default-width"
-      >
-        11/06/2021
-      </td>
-      <td
-        className="default-width"
-      >
-        Thôn Kon Brỏi
-      </td>
-      <td
-        className="default-width"
-      >
-        ANC Visit
-      </td>
-      <td
-        className="default-width"
-      >
-        Faith Mutua
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-              onClick={[Function]}
-            >
-              101EHA
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-      <td
-        className="small-width"
-      >
-        35 years
-      </td>
-      <td
-        className="large-width"
-      >
-        <ul>
-          <li
-            key="Blood Pressure : 120/80-0"
-          >
-            Blood Pressure : 120/80
-          </li>
-          <li
-            key="Weight : 69kg-1"
-          >
-            Weight : 69kg
-          </li>
-          <li
-            key="Current Symptoms : Premature Contraction-2"
-          >
-            Current Symptoms : Premature Contraction
-          </li>
-          <li
-            key="Supplements : Micronutrients Supplement: Yes-3"
-          >
-            Supplements : Micronutrients Supplement: Yes
-          </li>
-        </ul>
-      </td>
-      <td
-        className="default-width"
-      >
-        <Link
-          to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-        >
-          <LinkAnchor
-            href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-            navigate={[Function]}
-          >
-            <a
-              href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
-              onClick={[Function]}
-            >
-              <RiskColoring
-                displayValue="Risk"
-                risk="risk"
-              >
-                <span
-                  className="badge"
-                  style={
-                    Object {
-                      "backgroundColor": "#ffc107",
-                    }
-                  }
-                >
-                  <div>
-                    <p>
-                      Risk
-                    </p>
-                  </div>
-                </span>
-              </RiskColoring>
-            </a>
-          </LinkAnchor>
-        </Link>
-      </td>
-    </tr>
-  </tbody>
-</table>
-`;
-
-exports[`containers/LogFace extended renders correctly: tables 1`] = `
+exports[`containers/LogFace extended renders correctly: table td 1`] = `
 <td
   className="default-width"
 >
@@ -877,7 +123,7 @@ exports[`containers/LogFace extended renders correctly: tables 1`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 2`] = `
+exports[`containers/LogFace extended renders correctly: table td 2`] = `
 <td
   className="default-width"
 >
@@ -885,7 +131,7 @@ exports[`containers/LogFace extended renders correctly: tables 2`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 3`] = `
+exports[`containers/LogFace extended renders correctly: table td 3`] = `
 <td
   className="default-width"
 >
@@ -893,7 +139,7 @@ exports[`containers/LogFace extended renders correctly: tables 3`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 4`] = `
+exports[`containers/LogFace extended renders correctly: table td 4`] = `
 <td
   className="default-width"
 >
@@ -901,7 +147,7 @@ exports[`containers/LogFace extended renders correctly: tables 4`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 5`] = `
+exports[`containers/LogFace extended renders correctly: table td 5`] = `
 <td
   className="default-width"
 >
@@ -923,7 +169,7 @@ exports[`containers/LogFace extended renders correctly: tables 5`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 6`] = `
+exports[`containers/LogFace extended renders correctly: table td 6`] = `
 <td
   className="small-width"
 >
@@ -931,7 +177,7 @@ exports[`containers/LogFace extended renders correctly: tables 6`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 7`] = `
+exports[`containers/LogFace extended renders correctly: table td 7`] = `
 <td
   className="large-width"
 >
@@ -985,7 +231,7 @@ exports[`containers/LogFace extended renders correctly: tables 7`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 8`] = `
+exports[`containers/LogFace extended renders correctly: table td 8`] = `
 <td
   className="default-width"
 >
@@ -1025,7 +271,7 @@ exports[`containers/LogFace extended renders correctly: tables 8`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 9`] = `
+exports[`containers/LogFace extended renders correctly: table td 9`] = `
 <td
   className="default-width"
 >
@@ -1033,7 +279,7 @@ exports[`containers/LogFace extended renders correctly: tables 9`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 10`] = `
+exports[`containers/LogFace extended renders correctly: table td 10`] = `
 <td
   className="default-width"
 >
@@ -1041,7 +287,7 @@ exports[`containers/LogFace extended renders correctly: tables 10`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 11`] = `
+exports[`containers/LogFace extended renders correctly: table td 11`] = `
 <td
   className="default-width"
 >
@@ -1049,7 +295,7 @@ exports[`containers/LogFace extended renders correctly: tables 11`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 12`] = `
+exports[`containers/LogFace extended renders correctly: table td 12`] = `
 <td
   className="default-width"
 >
@@ -1057,7 +303,7 @@ exports[`containers/LogFace extended renders correctly: tables 12`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 13`] = `
+exports[`containers/LogFace extended renders correctly: table td 13`] = `
 <td
   className="default-width"
 >
@@ -1079,7 +325,7 @@ exports[`containers/LogFace extended renders correctly: tables 13`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 14`] = `
+exports[`containers/LogFace extended renders correctly: table td 14`] = `
 <td
   className="small-width"
 >
@@ -1087,7 +333,7 @@ exports[`containers/LogFace extended renders correctly: tables 14`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 15`] = `
+exports[`containers/LogFace extended renders correctly: table td 15`] = `
 <td
   className="large-width"
 >
@@ -1106,7 +352,7 @@ exports[`containers/LogFace extended renders correctly: tables 15`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 16`] = `
+exports[`containers/LogFace extended renders correctly: table td 16`] = `
 <td
   className="default-width"
 >
@@ -1146,7 +392,7 @@ exports[`containers/LogFace extended renders correctly: tables 16`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 17`] = `
+exports[`containers/LogFace extended renders correctly: table td 17`] = `
 <td
   className="default-width"
 >
@@ -1154,7 +400,7 @@ exports[`containers/LogFace extended renders correctly: tables 17`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 18`] = `
+exports[`containers/LogFace extended renders correctly: table td 18`] = `
 <td
   className="default-width"
 >
@@ -1162,7 +408,7 @@ exports[`containers/LogFace extended renders correctly: tables 18`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 19`] = `
+exports[`containers/LogFace extended renders correctly: table td 19`] = `
 <td
   className="default-width"
 >
@@ -1170,7 +416,7 @@ exports[`containers/LogFace extended renders correctly: tables 19`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 20`] = `
+exports[`containers/LogFace extended renders correctly: table td 20`] = `
 <td
   className="default-width"
 >
@@ -1178,7 +424,7 @@ exports[`containers/LogFace extended renders correctly: tables 20`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 21`] = `
+exports[`containers/LogFace extended renders correctly: table td 21`] = `
 <td
   className="default-width"
 >
@@ -1200,7 +446,7 @@ exports[`containers/LogFace extended renders correctly: tables 21`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 22`] = `
+exports[`containers/LogFace extended renders correctly: table td 22`] = `
 <td
   className="small-width"
 >
@@ -1208,7 +454,7 @@ exports[`containers/LogFace extended renders correctly: tables 22`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 23`] = `
+exports[`containers/LogFace extended renders correctly: table td 23`] = `
 <td
   className="large-width"
 >
@@ -1242,7 +488,7 @@ exports[`containers/LogFace extended renders correctly: tables 23`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 24`] = `
+exports[`containers/LogFace extended renders correctly: table td 24`] = `
 <td
   className="default-width"
 >
@@ -1282,7 +528,7 @@ exports[`containers/LogFace extended renders correctly: tables 24`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 25`] = `
+exports[`containers/LogFace extended renders correctly: table td 25`] = `
 <td
   className="default-width"
 >
@@ -1290,7 +536,7 @@ exports[`containers/LogFace extended renders correctly: tables 25`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 26`] = `
+exports[`containers/LogFace extended renders correctly: table td 26`] = `
 <td
   className="default-width"
 >
@@ -1298,7 +544,7 @@ exports[`containers/LogFace extended renders correctly: tables 26`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 27`] = `
+exports[`containers/LogFace extended renders correctly: table td 27`] = `
 <td
   className="default-width"
 >
@@ -1306,7 +552,7 @@ exports[`containers/LogFace extended renders correctly: tables 27`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 28`] = `
+exports[`containers/LogFace extended renders correctly: table td 28`] = `
 <td
   className="default-width"
 >
@@ -1314,7 +560,7 @@ exports[`containers/LogFace extended renders correctly: tables 28`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 29`] = `
+exports[`containers/LogFace extended renders correctly: table td 29`] = `
 <td
   className="default-width"
 >
@@ -1336,7 +582,7 @@ exports[`containers/LogFace extended renders correctly: tables 29`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 30`] = `
+exports[`containers/LogFace extended renders correctly: table td 30`] = `
 <td
   className="small-width"
 >
@@ -1344,7 +590,7 @@ exports[`containers/LogFace extended renders correctly: tables 30`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 31`] = `
+exports[`containers/LogFace extended renders correctly: table td 31`] = `
 <td
   className="large-width"
 >
@@ -1373,7 +619,7 @@ exports[`containers/LogFace extended renders correctly: tables 31`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 32`] = `
+exports[`containers/LogFace extended renders correctly: table td 32`] = `
 <td
   className="default-width"
 >
@@ -1413,7 +659,7 @@ exports[`containers/LogFace extended renders correctly: tables 32`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 33`] = `
+exports[`containers/LogFace extended renders correctly: table td 33`] = `
 <td
   className="default-width"
 >
@@ -1421,7 +667,7 @@ exports[`containers/LogFace extended renders correctly: tables 33`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 34`] = `
+exports[`containers/LogFace extended renders correctly: table td 34`] = `
 <td
   className="default-width"
 >
@@ -1429,7 +675,7 @@ exports[`containers/LogFace extended renders correctly: tables 34`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 35`] = `
+exports[`containers/LogFace extended renders correctly: table td 35`] = `
 <td
   className="default-width"
 >
@@ -1437,7 +683,7 @@ exports[`containers/LogFace extended renders correctly: tables 35`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 36`] = `
+exports[`containers/LogFace extended renders correctly: table td 36`] = `
 <td
   className="default-width"
 >
@@ -1445,7 +691,7 @@ exports[`containers/LogFace extended renders correctly: tables 36`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 37`] = `
+exports[`containers/LogFace extended renders correctly: table td 37`] = `
 <td
   className="default-width"
 >
@@ -1467,7 +713,7 @@ exports[`containers/LogFace extended renders correctly: tables 37`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 38`] = `
+exports[`containers/LogFace extended renders correctly: table td 38`] = `
 <td
   className="small-width"
 >
@@ -1475,7 +721,7 @@ exports[`containers/LogFace extended renders correctly: tables 38`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 39`] = `
+exports[`containers/LogFace extended renders correctly: table td 39`] = `
 <td
   className="large-width"
 >
@@ -1504,7 +750,7 @@ exports[`containers/LogFace extended renders correctly: tables 39`] = `
 </td>
 `;
 
-exports[`containers/LogFace extended renders correctly: tables 40`] = `
+exports[`containers/LogFace extended renders correctly: table td 40`] = `
 <td
   className="default-width"
 >

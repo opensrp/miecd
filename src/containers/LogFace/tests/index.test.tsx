@@ -129,9 +129,8 @@ describe('containers/LogFace extended', () => {
             ],
         ]);
 
-        expect(toJson(wrapper.find('table'))).toMatchSnapshot('table snapshot');
         wrapper.find('table tr td').forEach((td) => {
-            expect(toJson(td)).toMatchSnapshot('tables');
+            expect(toJson(td)).toMatchSnapshot('table td');
         });
         expect(toJson(wrapper.find('input#search'))).toMatchSnapshot('search div');
         expect(toJson(wrapper.find('#logface_title'))).toMatchSnapshot('logface title');
@@ -342,7 +341,9 @@ describe('containers/LogFace extended', () => {
         expect((wrapper.find('s').props() as Dictionary).pageCount).toEqual(1);
 
         // change sms type level
-        expect(toJson(wrapper.find('#sms-type-filter select'))).toMatchSnapshot('smsType filter');
+        wrapper.find('#sms-type-filter select options').forEach((option) => {
+            expect(toJson(option)).toMatchSnapshot('smsType filter');
+        });
         wrapper
             .find('#sms-type-filter select')
             .simulate('change', { target: { value: 'Nutrition Report', name: 'Nutrition Report' } });
