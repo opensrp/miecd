@@ -2,7 +2,7 @@
 import { keyBy, values } from 'lodash';
 import { AnyAction, Store } from 'redux';
 import { EC_CHILD, EC_FAMILY_MEMBER, EC_WOMAN, EVENT_DATE_DATE_FORMAT, EVENT_ID } from '../../constants';
-import { groupBy, formatDateStrings, sortByEventDate } from '../../helpers/utils';
+import { formatDateStrings, sortByEventDate } from '../../helpers/utils';
 import { SmsFilterFunction, CompartmentsSmsFilterFunction } from '../../types';
 import { Dictionary } from '@onaio/utils';
 import { createSelector } from 'reselect';
@@ -237,7 +237,7 @@ export const fetchSms = (smsDataList: SmsData[] = []): FetchSmsAction => {
         EventDate: formatDateStrings(smsData.EventDate, EVENT_DATE_DATE_FORMAT),
     }));
     return {
-        smsData: groupBy(cleanedSms, EVENT_ID),
+        smsData: keyBy(cleanedSms, EVENT_ID),
         type: FETCHED_SMS as typeof FETCHED_SMS,
     };
 };

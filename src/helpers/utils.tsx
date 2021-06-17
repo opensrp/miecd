@@ -87,27 +87,6 @@ export function oAuthUserInfoGetter(apiResponse: Dictionary): SessionState | voi
 }
 
 /**
- * Group objects in a list by some field as their key.
- * @param list a list of objects to be grouped into a single object with keys for each.
- * @param field a field to as the key by which the objects in the list will be attached.
- * @return returns an object that contains all the objects in the list passed to it with
- * keys as values of the field passed as the second argument.
- */
-export function groupBy(list: Dictionary[], field: string): Dictionary {
-    const dataMap: Dictionary = {};
-    list.forEach((listElement: Dictionary) => {
-        if (listElement[field]) {
-            if (!dataMap[listElement[field]]) {
-                dataMap[listElement[field]] = {
-                    ...listElement,
-                };
-            }
-        }
-    });
-    return dataMap;
-}
-
-/**
  * Append a number suffix such as 'st' for 1 and 'nd' for 2 and so on.
  * @param num
  */
@@ -124,21 +103,6 @@ export function getNumberSuffix(num: number): string {
     }
     return 'th';
 }
-
-/**
- * Sort function for a list of SmsData
- * @param firstE1
- * @param secondE1
- */
-export const sortFunction = (firstE1: SmsData, secondE1: SmsData): number => {
-    if (firstE1.event_id < secondE1.event_id) {
-        return 1;
-    }
-    if (firstE1.event_id > secondE1.event_id) {
-        return -1;
-    }
-    return 0;
-};
 
 /**
  *
@@ -309,26 +273,6 @@ export const sortByEventDate = <T extends { event_date: string }>(smsData: T[]) 
 export const getNumberOfDaysSinceDate = (date: string): number => {
     return Math.floor((new Date().getTime() - new Date(date).getTime()) / (1000 * 3600 * 24));
 };
-
-/**
- * The typical use of this util function is by a props that would like to check if its
- * location props(districts, villages, communes and provinces that are attached to the store)
- * all have Location data.
- *
- * returns true if villages, districts, communes and provinces all have a length greater than 0.
- * @param {Location[]} villages an array of village locations
- * @param {Location[]} communes an array of communes locations
- * @param {Location[]} districts an array of district locations
- * @param {Location[]} provinces an array of province locations
- */
-export function locationDataIsAvailable(
-    villages: Location[],
-    communes: Location[],
-    districts: Location[],
-    provinces: Location[],
-) {
-    return villages.length && districts.length && communes.length && provinces.length;
-}
 
 /*
  * an object representing information required to build the header breadcrumb and to filter out data
