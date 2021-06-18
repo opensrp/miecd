@@ -75,7 +75,7 @@ div#titleDiv {
     box-shadow: 0 1px 3px 1px rgba(127, 131, 155, 0.15), 0 1px 2px 0 rgba(127, 131, 155, 0.3);
 }
 
-.patient-details .table-container thead tr th:not(:first-child) {
+.patient-details .table-container-div thead tr th:not(:first-child) {
     border-left: 1px solid #e8e8e8;
 }
 
@@ -104,7 +104,7 @@ div#titleDiv {
     border: 1px solid #e8e8e8;
 }
 
-.patient-details .table-container {
+.patient-details .table-container-div {
     width: 100%;
     box-shadow: initial;
     height: auto;
@@ -172,7 +172,7 @@ div#titleDiv {
     display: inline-block;
 }
 
-.table-container {
+.table-container-div {
     width: 100%;
 }
 tr .report-table__td:nth-child(1) {
