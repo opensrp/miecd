@@ -53,19 +53,6 @@
     font-family: 'Roboto', 'Helvetica';
 }
 
-.main-container {
-    display: flex;
-    font-family: 'Roboto', 'Helvetica';
-    font-size: 16px;
-    background: white;
-}
-
-.main-container .content {
-    height: 100%;
-    position: relative;
-    background: #f8fafe;
-}
-
 .home-main .button-style {
     border-radius: 24px;
     border: 1px solid #4d54b4;

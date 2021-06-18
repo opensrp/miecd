@@ -85,7 +85,7 @@
     line-height: 17px;
 }
 
-.compartment-data-table .table-container table #body {
+.compartment-data-table .table-container-div table #body {
     overflow: auto;
 }
 .color-blue td {
