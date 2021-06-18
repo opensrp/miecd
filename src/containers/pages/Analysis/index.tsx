@@ -1,60 +1,40 @@
-import * as React from 'react';
-import { WithTranslation, withTranslation } from 'react-i18next';
+import { getAnalysisDashboardEndpoint, LogFaceModules } from 'configs/settings';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Ripple from '../../../components/page/Loading';
 import './index.css';
 
-interface State {
-    loading: boolean;
+interface AnalysisProps {
+    module: LogFaceModules;
 }
 
-interface Props {
-    endpoint: string;
-    module: string;
-}
+const Analysis = (props: AnalysisProps) => {
+    const { module } = props;
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const { t } = useTranslation();
+    const analysisDashboardEndpoint = getAnalysisDashboardEndpoint(module);
 
-const defaultProps: Props = {
-    endpoint: '',
-    module: '',
-};
-export type AnalysisPropTypes = Props & WithTranslation;
-export class Analysis extends React.Component<AnalysisPropTypes, State> {
-    public static defaultProps = defaultProps;
+    const hideSpinner = () => setIsLoading(false);
 
-    constructor(props: AnalysisPropTypes) {
-        super(props);
-        this.state = {
-            loading: true,
-        };
-    }
-
-    public render() {
-        const { t } = this.props;
-        return (
-            <div className="analysis">
-                <div>
-                    <h2 className="analysis-title">{`${this.props.module} - ${t('Analysis')}`}</h2>
-                </div>
-                <div className="analysis-wrapper">
-                    {this.state.loading ? <Ripple /> : null}
-                    <iframe
-                        seamless
-                        scrolling="yes"
-                        frameBorder="0"
-                        onLoad={this.hideSpinner}
-                        src={this.props.endpoint}
-                        title="pregnancy sms events analysis"
-                        className="analysis-iframe"
-                    />
-                </div>
+    return (
+        <div className="analysis">
+            <div>
+                <h2 className="analysis-title">{`${module} - ${t('Analysis')}`}</h2>
             </div>
-        );
-    }
+            <div className="analysis-wrapper">
+                {isLoading ? <Ripple /> : null}
+                <iframe
+                    seamless
+                    scrolling="yes"
+                    frameBorder="0"
+                    onLoad={hideSpinner}
+                    src={analysisDashboardEndpoint}
+                    title="pregnancy sms events analysis"
+                    className="analysis-iframe"
+                />
+            </div>
+        </div>
+    );
+};
 
-    private hideSpinner = () => {
-        this.setState({
-            loading: false,
-        });
-    };
-}
-
-export default withTranslation()(Analysis);
+export default Analysis;
