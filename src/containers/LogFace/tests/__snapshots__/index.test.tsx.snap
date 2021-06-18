@@ -3,7 +3,7 @@
 exports[`containers/LogFace extended filters work correctly for Nutrition: Export button 1`] = `
 <a
   download={true}
-  href="http://supersetsuperset/explore_json/?form_data={\\"slice_id\\":nutritionLogface}&csv=true"
+  href="http://superset.org/superset/explore_json/?form_data={\\"slice_id\\":nutritionLogface}&csv=true"
   id="export-button"
 >
   Export data
@@ -109,7 +109,7 @@ exports[`containers/LogFace extended filters work correctly for pregnancy: risk 
 exports[`containers/LogFace extended renders correctly: Export button 1`] = `
 <a
   download={true}
-  href="http://supersetsuperset/explore_json/?form_data={\\"slice_id\\":pregnancyLogface}&csv=true"
+  href="http://superset.org/superset/explore_json/?form_data={\\"slice_id\\":pregnancyLogface}&csv=true"
   id="export-button"
 >
   Export data
@@ -813,7 +813,7 @@ exports[`containers/LogFace extended renders correctly: table td 40`] = `
 exports[`containers/LogFace extended sms type filter work correctly: Export button 1`] = `
 <a
   download={true}
-  href="http://supersetsuperset/explore_json/?form_data={\\"slice_id\\":nbcPncLogFace}&csv=true"
+  href="http://superset.org/superset/explore_json/?form_data={\\"slice_id\\":nbcPncLogFace}&csv=true"
   id="export-button"
 >
   Export data
