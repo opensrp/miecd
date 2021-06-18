@@ -147,6 +147,8 @@ describe('containers/LogFace extended', () => {
             expect(toJson(li)).toMatchSnapshot();
         });
 
+        expect(toJson(wrapper.find('#export-button'))).toMatchSnapshot('Export button');
+
         wrapper.unmount();
     });
 
@@ -362,6 +364,8 @@ describe('containers/LogFace extended', () => {
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
             '?riskCategory=overweight&smsType=Nutrition%20Report',
         );
+
+        expect(toJson(wrapper.find('#export-button'))).toMatchSnapshot('Export button');
         wrapper.unmount();
     });
 
@@ -426,6 +430,8 @@ describe('containers/LogFace extended', () => {
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
             '?smsType=Death%20Report',
         );
+
+        expect(toJson(wrapper.find('#export-button'))).toMatchSnapshot('Export button');
         wrapper.unmount();
     });
 });

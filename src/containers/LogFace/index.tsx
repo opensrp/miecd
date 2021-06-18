@@ -9,8 +9,13 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Table } from 'reactstrap';
 import Ripple from '../../components/page/Loading';
 import RiskColoring from '../../components/RiskColoring';
-import { SUPERSET_PREGNANCY_DATA_EXPORT } from '../../configs/env';
-import { LogFaceModules, LogFaceSliceByModule, riskCategories, SmsTypes } from '../../configs/settings';
+import {
+    LogFaceModules,
+    LogFaceSliceByModule,
+    riskCategories,
+    SmsTypes,
+    supersetPregnancyDataExportUrl,
+} from '../../configs/settings';
 import {
     DEFAULT_PAGINATION_SIZE,
     LOCATION_FILTER_PARAM,
@@ -167,7 +172,7 @@ const LogFace = (props: LogFacePropsType) => {
                             id="sms-type-filter"
                         />
                     </div>
-                    <a id="export-button" href={SUPERSET_PREGNANCY_DATA_EXPORT} download={true}>
+                    <a id="export-button" href={supersetPregnancyDataExportUrl(supersetSlice)} download={true}>
                         {t('Export data')}
                     </a>
                 </div>
