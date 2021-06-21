@@ -15,7 +15,7 @@ exports[`Analysis must render correctly NBC_AND_PNC: Analysis iframe 1`] = `
   onLoad={[Function]}
   scrolling="yes"
   seamless={true}
-  src="https://somesuperseturl.org/superset/dashboard/0/?standalone=true"
+  src="https://somesuperseturl.org/superset/dashboard/10/?standalone=true"
   title="pregnancy sms events analysis"
 />
 `;
@@ -35,7 +35,7 @@ exports[`Analysis must render correctly nutrition: Analysis iframe 1`] = `
   onLoad={[Function]}
   scrolling="yes"
   seamless={true}
-  src="https://somesuperseturl.org/superset/dashboard/0/?standalone=true"
+  src="https://somesuperseturl.org/superset/dashboard/11/?standalone=true"
   title="pregnancy sms events analysis"
 />
 `;
@@ -55,7 +55,7 @@ exports[`Analysis must render correctly pregnancy: Analysis iframe 1`] = `
   onLoad={[Function]}
   scrolling="yes"
   seamless={true}
-  src="https://somesuperseturl.org/superset/dashboard/0/?standalone=true"
+  src="https://somesuperseturl.org/superset/dashboard/9/?standalone=true"
   title="pregnancy sms events analysis"
 />
 `;
