@@ -13,19 +13,19 @@ describe('Analysis', () => {
 
     it('must render correctly nutrition', () => {
         const wrapper = mountWithTranslations(<Analysis module={NUTRITION_MODULE} />);
-        expect(toJson(wrapper.find('div.analysis h2'))).toMatchSnapshot('Analysis h2');
+        expect(wrapper.find('div.analysis h2').text()).toMatchSnapshot();
         expect(toJson(wrapper.find('div.analysis iframe'))).toMatchSnapshot('Analysis iframe');
     });
 
     it('must render correctly pregnancy', () => {
         const wrapper = mountWithTranslations(<Analysis module={PREGNANCY_MODULE} />);
-        expect(toJson(wrapper.find('div.analysis h2'))).toMatchSnapshot('Analysis h2');
+        expect(wrapper.find('div.analysis h2').text()).toMatchSnapshot();
         expect(toJson(wrapper.find('div.analysis iframe'))).toMatchSnapshot('Analysis iframe');
     });
 
     it('must render correctly NBC_AND_PNC', () => {
         const wrapper = mountWithTranslations(<Analysis module={NBC_AND_PNC_MODULE} />);
-        expect(toJson(wrapper.find('div.analysis h2'))).toMatchSnapshot('Analysis h2');
+        expect(wrapper.find('div.analysis h2').text()).toMatchSnapshot();
         expect(toJson(wrapper.find('div.analysis iframe'))).toMatchSnapshot('Analysis iframe');
     });
 });

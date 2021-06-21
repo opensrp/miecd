@@ -1,12 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Analysis must render correctly NBC_AND_PNC: Analysis h2 1`] = `
-<h2
-  className="analysis-title"
->
-  NBC & PNC - Analysis
-</h2>
-`;
+exports[`Analysis must render correctly NBC_AND_PNC 1`] = `"NBC & PNC - Analysis"`;
 
 exports[`Analysis must render correctly NBC_AND_PNC: Analysis iframe 1`] = `
 <iframe
@@ -20,13 +14,7 @@ exports[`Analysis must render correctly NBC_AND_PNC: Analysis iframe 1`] = `
 />
 `;
 
-exports[`Analysis must render correctly nutrition: Analysis h2 1`] = `
-<h2
-  className="analysis-title"
->
-  Nutrition - Analysis
-</h2>
-`;
+exports[`Analysis must render correctly nutrition 1`] = `"Nutrition - Analysis"`;
 
 exports[`Analysis must render correctly nutrition: Analysis iframe 1`] = `
 <iframe
@@ -40,13 +28,7 @@ exports[`Analysis must render correctly nutrition: Analysis iframe 1`] = `
 />
 `;
 
-exports[`Analysis must render correctly pregnancy: Analysis h2 1`] = `
-<h2
-  className="analysis-title"
->
-  Pregnancy - Analysis
-</h2>
-`;
+exports[`Analysis must render correctly pregnancy 1`] = `"Pregnancy - Analysis"`;
 
 exports[`Analysis must render correctly pregnancy: Analysis iframe 1`] = `
 <iframe
