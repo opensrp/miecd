@@ -139,23 +139,21 @@ exports[`containers/LogFace extended renders correctly: table td 1`] = `
 <td
   className="default-width"
 >
-  11/06/2021
+  13/06/2021
 </td>
 `;
 
 exports[`containers/LogFace extended renders correctly: table td 2`] = `
 <td
   className="default-width"
->
-  Thôn Kon Brỏi
-</td>
+/>
 `;
 
 exports[`containers/LogFace extended renders correctly: table td 3`] = `
 <td
   className="default-width"
 >
-  Birth Report
+  Update Pregnancy Detection
 </td>
 `;
 
@@ -163,7 +161,7 @@ exports[`containers/LogFace extended renders correctly: table td 4`] = `
 <td
   className="default-width"
 >
-  Faith Mutua
+  Husna Hariz
 </td>
 `;
 
@@ -172,17 +170,17 @@ exports[`containers/LogFace extended renders correctly: table td 5`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+    to="/pregnancy_log_face/patient_detail/101EL4?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+      href="/pregnancy_log_face/patient_detail/101EL4?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+        href="/pregnancy_log_face/patient_detail/101EL4?module=Pregnancy"
         onClick={[Function]}
       >
-        101EHA
+        101EL4
       </a>
     </LinkAnchor>
   </Link>
@@ -193,7 +191,7 @@ exports[`containers/LogFace extended renders correctly: table td 6`] = `
 <td
   className="small-width"
 >
-  35 years
+  45 years
 </td>
 `;
 
@@ -203,49 +201,19 @@ exports[`containers/LogFace extended renders correctly: table td 7`] = `
 >
   <ul>
     <li
-      key="Child DOB : 13/04/2021-0"
+      key="Name : SELANI   TANI-0"
     >
-      Child DOB : 13/04/2021
+      Name : SELANI   TANI
     </li>
     <li
-      key="Child Gender : NAM-1"
+      key="Phone Number : 0778910121-1"
     >
-      Child Gender : NAM
+      Phone Number : 0778910121
     </li>
     <li
-      key="Delivery Location : -2"
+      key="Health Insurance : 0083415011-2"
     >
-      Delivery Location : 
-    </li>
-    <li
-      key="Newborn Symptoms : Jaundice (psysiological)-3"
-    >
-      Newborn Symptoms : Jaundice (psysiological)
-    </li>
-    <li
-      key="Child Weight : 2.8kg-4"
-    >
-      Child Weight : 2.8kg
-    </li>
-    <li
-      key="Child Length : 48cm-5"
-    >
-      Child Length : 48cm
-    </li>
-    <li
-      key="Child Risk : no_risk-6"
-    >
-      Child Risk : no_risk
-    </li>
-    <li
-      key="Breastfeeding : No breastfeeding within 1 hour-7"
-    >
-      Breastfeeding : No breastfeeding within 1 hour
-    </li>
-    <li
-      key="Mother Symptoms : Light vaginal bleeding-8"
-    >
-      Mother Symptoms : Light vaginal bleeding
+      Health Insurance : 0083415011
     </li>
   </ul>
 </td>
@@ -256,31 +224,31 @@ exports[`containers/LogFace extended renders correctly: table td 8`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+    to="/pregnancy_log_face/patient_detail/101EL4?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+      href="/pregnancy_log_face/patient_detail/101EL4?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+        href="/pregnancy_log_face/patient_detail/101EL4?module=Pregnancy"
         onClick={[Function]}
       >
         <RiskColoring
-          displayValue="No Risk"
-          risk="no_risk"
+          displayValue="Not Set"
+          risk={null}
         >
           <span
             className="badge"
             style={
               Object {
-                "backgroundColor": "#28a745",
+                "backgroundColor": "#6c757d",
               }
             }
           >
             <div>
               <p>
-                No Risk
+                Not Set
               </p>
             </div>
           </span>
@@ -295,23 +263,21 @@ exports[`containers/LogFace extended renders correctly: table td 9`] = `
 <td
   className="default-width"
 >
-  11/06/2021
+  13/06/2021
 </td>
 `;
 
 exports[`containers/LogFace extended renders correctly: table td 10`] = `
 <td
   className="default-width"
->
-  Thôn Kon Brỏi
-</td>
+/>
 `;
 
 exports[`containers/LogFace extended renders correctly: table td 11`] = `
 <td
   className="default-width"
 >
-  Delivery Planning
+  Pregnancy Detection
 </td>
 `;
 
@@ -319,7 +285,7 @@ exports[`containers/LogFace extended renders correctly: table td 12`] = `
 <td
   className="default-width"
 >
-  Faith Mutua
+  Husna Hariz
 </td>
 `;
 
@@ -328,17 +294,17 @@ exports[`containers/LogFace extended renders correctly: table td 13`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+    to="/pregnancy_log_face/patient_detail/101EL4?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+      href="/pregnancy_log_face/patient_detail/101EL4?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+        href="/pregnancy_log_face/patient_detail/101EL4?module=Pregnancy"
         onClick={[Function]}
       >
-        101EHA
+        101EL4
       </a>
     </LinkAnchor>
   </Link>
@@ -349,7 +315,7 @@ exports[`containers/LogFace extended renders correctly: table td 14`] = `
 <td
   className="small-width"
 >
-  35 years
+  45 years
 </td>
 `;
 
@@ -359,14 +325,19 @@ exports[`containers/LogFace extended renders correctly: table td 15`] = `
 >
   <ul>
     <li
-      key="Planned Delivery Location : At home-0"
+      key="Name : SELANI   TANI-0"
     >
-      Planned Delivery Location : At home
+      Name : SELANI   TANI
     </li>
     <li
-      key="Current Symptoms : Vomiting-1"
+      key="Phone Number : 0778910121-1"
     >
-      Current Symptoms : Vomiting
+      Phone Number : 0778910121
+    </li>
+    <li
+      key="Health Insurance : KCO-2"
+    >
+      Health Insurance : KCO
     </li>
   </ul>
 </td>
@@ -377,31 +348,31 @@ exports[`containers/LogFace extended renders correctly: table td 16`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+    to="/pregnancy_log_face/patient_detail/101EL4?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+      href="/pregnancy_log_face/patient_detail/101EL4?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+        href="/pregnancy_log_face/patient_detail/101EL4?module=Pregnancy"
         onClick={[Function]}
       >
         <RiskColoring
-          displayValue="Risk"
-          risk="risk"
+          displayValue="Not Set"
+          risk={null}
         >
           <span
             className="badge"
             style={
               Object {
-                "backgroundColor": "#ffc107",
+                "backgroundColor": "#6c757d",
               }
             }
           >
             <div>
               <p>
-                Risk
+                Not Set
               </p>
             </div>
           </span>
@@ -423,16 +394,14 @@ exports[`containers/LogFace extended renders correctly: table td 17`] = `
 exports[`containers/LogFace extended renders correctly: table td 18`] = `
 <td
   className="default-width"
->
-  Thôn Kon Brỏi
-</td>
+/>
 `;
 
 exports[`containers/LogFace extended renders correctly: table td 19`] = `
 <td
   className="default-width"
 >
-  Social Determinants
+  Update Pregnancy Detection
 </td>
 `;
 
@@ -440,7 +409,7 @@ exports[`containers/LogFace extended renders correctly: table td 20`] = `
 <td
   className="default-width"
 >
-  Faith Mutua
+  Husna Hariz
 </td>
 `;
 
@@ -449,17 +418,17 @@ exports[`containers/LogFace extended renders correctly: table td 21`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+    to="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+      href="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+        href="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
         onClick={[Function]}
       >
-        101EHA
+        101EK6
       </a>
     </LinkAnchor>
   </Link>
@@ -470,7 +439,7 @@ exports[`containers/LogFace extended renders correctly: table td 22`] = `
 <td
   className="small-width"
 >
-  35 years
+  47 years
 </td>
 `;
 
@@ -480,29 +449,19 @@ exports[`containers/LogFace extended renders correctly: table td 23`] = `
 >
   <ul>
     <li
-      key="Planned Delivery Location : At home-0"
+      key="Name : LETOYA   AMANI-0"
     >
-      Planned Delivery Location : At home
+      Name : LETOYA   AMANI
     </li>
     <li
-      key="Household : Is a poor household-1"
+      key="Phone Number : 0771110121-1"
     >
-      Household : Is a poor household
+      Phone Number : 0771110121
     </li>
     <li
-      key="Ethnicity : TAY-2"
+      key="Health Insurance : 0083415045-2"
     >
-      Ethnicity : TAY
-    </li>
-    <li
-      key="Toilet : Has toilet-3"
-    >
-      Toilet : Has toilet
-    </li>
-    <li
-      key="Handwashing : No Handwashing facilities with soap-4"
-    >
-      Handwashing : No Handwashing facilities with soap
+      Health Insurance : 0083415045
     </li>
   </ul>
 </td>
@@ -513,31 +472,31 @@ exports[`containers/LogFace extended renders correctly: table td 24`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+    to="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+      href="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+        href="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
         onClick={[Function]}
       >
         <RiskColoring
-          displayValue="Risk"
-          risk="risk"
+          displayValue="Not Set"
+          risk={null}
         >
           <span
             className="badge"
             style={
               Object {
-                "backgroundColor": "#ffc107",
+                "backgroundColor": "#6c757d",
               }
             }
           >
             <div>
               <p>
-                Risk
+                Not Set
               </p>
             </div>
           </span>
@@ -559,16 +518,14 @@ exports[`containers/LogFace extended renders correctly: table td 25`] = `
 exports[`containers/LogFace extended renders correctly: table td 26`] = `
 <td
   className="default-width"
->
-  Thôn Kon Brỏi
-</td>
+/>
 `;
 
 exports[`containers/LogFace extended renders correctly: table td 27`] = `
 <td
   className="default-width"
 >
-  Home ANC Visit
+  Pregnancy Registration
 </td>
 `;
 
@@ -576,7 +533,7 @@ exports[`containers/LogFace extended renders correctly: table td 28`] = `
 <td
   className="default-width"
 >
-  Faith Mutua
+  Husna Hariz
 </td>
 `;
 
@@ -585,17 +542,17 @@ exports[`containers/LogFace extended renders correctly: table td 29`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+    to="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+      href="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+        href="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
         onClick={[Function]}
       >
-        101EHA
+        101EK6
       </a>
     </LinkAnchor>
   </Link>
@@ -606,7 +563,7 @@ exports[`containers/LogFace extended renders correctly: table td 30`] = `
 <td
   className="small-width"
 >
-  35 years
+  47 years
 </td>
 `;
 
@@ -616,24 +573,44 @@ exports[`containers/LogFace extended renders correctly: table td 31`] = `
 >
   <ul>
     <li
-      key="Blood Pressure : 120/80-0"
+      key="EDD : 27/07/2021-0"
     >
-      Blood Pressure : 120/80
+      EDD : 27/07/2021
     </li>
     <li
-      key="Weight : 70kg-1"
+      key="Gravidity : 2-1"
     >
-      Weight : 70kg
+      Gravidity : 2
     </li>
     <li
-      key="Current Symptoms : Stomachache,Premature Contraction-2"
+      key="Parity : 1-2"
     >
-      Current Symptoms : Stomachache,Premature Contraction
+      Parity : 1
     </li>
     <li
-      key="Supplements : Micronutrients Supplement: Yes-3"
+      key="Weight : 58kg-3"
     >
-      Supplements : Micronutrients Supplement: Yes
+      Weight : 58kg
+    </li>
+    <li
+      key="Height : 170cm-4"
+    >
+      Height : 170cm
+    </li>
+    <li
+      key="BMI : -5"
+    >
+      BMI : 
+    </li>
+    <li
+      key="Previous Gynaecology History : Diabetes-6"
+    >
+      Previous Gynaecology History : Diabetes
+    </li>
+    <li
+      key="Current Symptoms : Diarrhea-7"
+    >
+      Current Symptoms : Diarrhea
     </li>
   </ul>
 </td>
@@ -644,14 +621,14 @@ exports[`containers/LogFace extended renders correctly: table td 32`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+    to="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+      href="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+        href="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
         onClick={[Function]}
       >
         <RiskColoring
@@ -690,16 +667,14 @@ exports[`containers/LogFace extended renders correctly: table td 33`] = `
 exports[`containers/LogFace extended renders correctly: table td 34`] = `
 <td
   className="default-width"
->
-  Thôn Kon Brỏi
-</td>
+/>
 `;
 
 exports[`containers/LogFace extended renders correctly: table td 35`] = `
 <td
   className="default-width"
 >
-  ANC Visit
+  Pregnancy Detection
 </td>
 `;
 
@@ -707,7 +682,7 @@ exports[`containers/LogFace extended renders correctly: table td 36`] = `
 <td
   className="default-width"
 >
-  Faith Mutua
+  Husna Hariz
 </td>
 `;
 
@@ -716,17 +691,17 @@ exports[`containers/LogFace extended renders correctly: table td 37`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+    to="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+      href="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+        href="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
         onClick={[Function]}
       >
-        101EHA
+        101EK6
       </a>
     </LinkAnchor>
   </Link>
@@ -737,7 +712,7 @@ exports[`containers/LogFace extended renders correctly: table td 38`] = `
 <td
   className="small-width"
 >
-  35 years
+  47 years
 </td>
 `;
 
@@ -747,24 +722,19 @@ exports[`containers/LogFace extended renders correctly: table td 39`] = `
 >
   <ul>
     <li
-      key="Blood Pressure : 120/80-0"
+      key="Name : LETOYA   AMANI-0"
     >
-      Blood Pressure : 120/80
+      Name : LETOYA   AMANI
     </li>
     <li
-      key="Weight : 69kg-1"
+      key="Phone Number : 0771110121-1"
     >
-      Weight : 69kg
+      Phone Number : 0771110121
     </li>
     <li
-      key="Current Symptoms : Premature Contraction-2"
+      key="Health Insurance : KCO-2"
     >
-      Current Symptoms : Premature Contraction
-    </li>
-    <li
-      key="Supplements : Micronutrients Supplement: Yes-3"
-    >
-      Supplements : Micronutrients Supplement: Yes
+      Health Insurance : KCO
     </li>
   </ul>
 </td>
@@ -775,31 +745,31 @@ exports[`containers/LogFace extended renders correctly: table td 40`] = `
   className="default-width"
 >
   <Link
-    to="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+    to="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
   >
     <LinkAnchor
-      href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+      href="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
       navigate={[Function]}
     >
       <a
-        href="/pregnancy_log_face/patient_detail/101EHA?module=Pregnancy"
+        href="/pregnancy_log_face/patient_detail/101EK6?module=Pregnancy"
         onClick={[Function]}
       >
         <RiskColoring
-          displayValue="Risk"
-          risk="risk"
+          displayValue="Not Set"
+          risk={null}
         >
           <span
             className="badge"
             style={
               Object {
-                "backgroundColor": "#ffc107",
+                "backgroundColor": "#6c757d",
               }
             }
           >
             <div>
               <p>
-                Risk
+                Not Set
               </p>
             </div>
           </span>
