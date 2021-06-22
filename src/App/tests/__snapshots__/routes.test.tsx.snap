@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App Analysis routes are correctly registered: nbc and pnc module 1`] = `
+<Analysis
+  module="NBC & PNC"
+>
+  <div>
+    This is Analysis
+  </div>
+</Analysis>
+`;
+
+exports[`App Analysis routes are correctly registered: nutrition module 1`] = `
+<Analysis
+  module="Nutrition"
+>
+  <div>
+    This is Analysis
+  </div>
+</Analysis>
+`;
+
+exports[`App Analysis routes are correctly registered: pregnancy module 1`] = `
+<Analysis
+  module="Pregnancy"
+>
+  <div>
+    This is Analysis
+  </div>
+</Analysis>
+`;
