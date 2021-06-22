@@ -8,12 +8,7 @@ import { Store } from 'redux';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LastLocationProvider } from 'react-router-last-location';
 import SideMenu from '../components/page/SideMenu';
-import {
-    BACKEND_ACTIVE,
-    DISABLE_LOGIN_PROTECTION,
-    NBC_AND_PNC_ANALYSIS_ENDPOINT,
-    SUPERSET_PREGNANCY_ANALYSIS_ENDPOINT,
-} from '../configs/env';
+import { BACKEND_ACTIVE, DISABLE_LOGIN_PROTECTION } from '../configs/env';
 import { APP_CALLBACK_PATH, APP_CALLBACK_URL, APP_LOGIN_URL, AuthGrantType, providers } from '../configs/settings';
 import {
     CHILD_PATIENT_DETAIL_URL,
@@ -36,9 +31,6 @@ import {
     PREGNANCY_LOGFACE_URL,
     PREGNANCY_MODULE,
     PREGNANCY_URL,
-    PREGNANCY,
-    NUTRITION,
-    NBC_AND_PNC,
 } from '../constants';
 import Compartments from '../containers/Compartments';
 import ConnectedHierarchicalDataTable from '../containers/HierarchichalDataTable';
@@ -209,9 +201,7 @@ export const Routes = (props: RoutesProps) => {
                             exact
                             path={PREGNANCY_ANALYSIS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={() => (
-                                <Analysis endpoint={SUPERSET_PREGNANCY_ANALYSIS_ENDPOINT} module={PREGNANCY} />
-                            )}
+                            component={() => <Analysis module={PREGNANCY_MODULE} />}
                         />
                         <ConnectedPrivateRoute
                             redirectPath={APP_CALLBACK_URL}
@@ -219,7 +209,7 @@ export const Routes = (props: RoutesProps) => {
                             exact
                             path={NBC_AND_PNC_ANALYSIS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={() => <Analysis endpoint={NBC_AND_PNC_ANALYSIS_ENDPOINT} module={NBC_AND_PNC} />}
+                            component={() => <Analysis module={NBC_AND_PNC_MODULE} />}
                         />
                         <ConnectedPrivateRoute
                             redirectPath={APP_CALLBACK_URL}
@@ -227,9 +217,7 @@ export const Routes = (props: RoutesProps) => {
                             exact
                             path={NUTRITION_ANALYSIS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
-                            component={() => (
-                                <Analysis endpoint={SUPERSET_PREGNANCY_ANALYSIS_ENDPOINT} module={NUTRITION} />
-                            )}
+                            component={() => <Analysis module={NUTRITION_MODULE} />}
                         />
                         <ConnectedPrivateRoute
                             redirectPath={APP_CALLBACK_URL}

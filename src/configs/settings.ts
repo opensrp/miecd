@@ -60,6 +60,10 @@ import {
     COMPARTMENTS_PREGNANCY_SLICE,
     COMPARTMENTS_NBC_AND_PNC_SLICE,
     COMPARTMENTS_NUTRITION_SLICE,
+    SUPERSET_API_BASE,
+    SUPERSET_NBC_AND_PNC_ANALYSIS_DASHBOARD,
+    SUPERSET_NUTRITION_ANALYSIS_DASHBOARD,
+    SUPERSET_PREGNANCY_ANALYSIS_DASHBOARD,
 } from './env';
 import { Dictionary } from 'helpers/utils';
 
@@ -289,3 +293,19 @@ export const queryKeyAndSmsSlice = (module: moduleType) => ({
             ? COMPARTMENTS_NBC_AND_PNC_SLICE
             : COMPARTMENTS_NUTRITION_SLICE,
 });
+
+// analysis page i-frames
+export const getAnalysisDashboardEndpoint = (module: LogFaceModules) => {
+    const dashboardsByModule = {
+        [PREGNANCY_MODULE]: SUPERSET_PREGNANCY_ANALYSIS_DASHBOARD,
+        [NBC_AND_PNC_MODULE]: SUPERSET_NBC_AND_PNC_ANALYSIS_DASHBOARD,
+        [NUTRITION_MODULE]: SUPERSET_NUTRITION_ANALYSIS_DASHBOARD,
+    };
+
+    const dashboardNumber = dashboardsByModule[module];
+    return `${SUPERSET_API_BASE}superset/dashboard/${dashboardNumber}/?standalone=true`;
+};
+
+// csv export links
+export const supersetPregnancyDataExportUrl = (slice: string) =>
+    `${SUPERSET_API_BASE}superset/explore_json/?form_data={"slice_id":${slice}}&csv=true`;

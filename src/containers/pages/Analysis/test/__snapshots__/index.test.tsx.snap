@@ -1,74 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Analysis must render correctly: Analysis snapshot 1`] = `
-<div
-  className="analysis"
->
-  <div>
-    <h2
-      className="analysis-title"
-    >
-       - Analysis
-    </h2>
-  </div>
-  <div
-    className="analysis-wrapper"
-  >
-    <Ripple
-      borderColor="#ff5d00"
-      borderStyle="solid"
-      borderWidth="4px"
-      height="64px"
-      minHeight="80vh"
-      width="64px"
-    >
-      <div
-        className="lds-ripple-parent"
-        style={
-          Object {
-            "minHeight": "80vh",
-          }
-        }
-      >
-        <div
-          className="lds-ripple"
-          style={
-            Object {
-              "height": "64px",
-              "width": "64px",
-            }
-          }
-        >
-          <div
-            style={
-              Object {
-                "borderColor": "#ff5d00",
-                "borderStyle": "solid",
-                "borderWidth": "4px",
-              }
-            }
-          />
-          <div
-            style={
-              Object {
-                "borderColor": "#ff5d00",
-                "borderStyle": "solid",
-                "borderWidth": "4px",
-              }
-            }
-          />
-        </div>
-      </div>
-    </Ripple>
-    <iframe
-      className="analysis-iframe"
-      frameBorder="0"
-      onLoad={[Function]}
-      scrolling="yes"
-      seamless={true}
-      src="https://discover.ona.io/superset/dashboard/53/?standalone=true"
-      title="pregnancy sms events analysis"
-    />
-  </div>
-</div>
+exports[`Analysis must render correctly NBC_AND_PNC 1`] = `"NBC & PNC - Analysis"`;
+
+exports[`Analysis must render correctly NBC_AND_PNC: Analysis iframe 1`] = `
+<iframe
+  className="analysis-iframe"
+  frameBorder="0"
+  onLoad={[Function]}
+  scrolling="yes"
+  seamless={true}
+  src="https://somesuperseturl.org/superset/dashboard/10/?standalone=true"
+  title="pregnancy sms events analysis"
+/>
+`;
+
+exports[`Analysis must render correctly nutrition 1`] = `"Nutrition - Analysis"`;
+
+exports[`Analysis must render correctly nutrition: Analysis iframe 1`] = `
+<iframe
+  className="analysis-iframe"
+  frameBorder="0"
+  onLoad={[Function]}
+  scrolling="yes"
+  seamless={true}
+  src="https://somesuperseturl.org/superset/dashboard/11/?standalone=true"
+  title="pregnancy sms events analysis"
+/>
+`;
+
+exports[`Analysis must render correctly pregnancy 1`] = `"Pregnancy - Analysis"`;
+
+exports[`Analysis must render correctly pregnancy: Analysis iframe 1`] = `
+<iframe
+  className="analysis-iframe"
+  frameBorder="0"
+  onLoad={[Function]}
+  scrolling="yes"
+  seamless={true}
+  src="https://somesuperseturl.org/superset/dashboard/9/?standalone=true"
+  title="pregnancy sms events analysis"
+/>
 `;

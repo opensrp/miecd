@@ -66,7 +66,7 @@ export const ENABLE_LOCATION_PAGE = true;
 export const ENABLE_CLIENTS = true;
 
 /** The Superset API base */
-export const SUPERSET_API_BASE = 'http://superset';
+export const SUPERSET_API_BASE = 'http://example.com/';
 
 /** The Superset API endpoint */
 export const SUPERSET_API_ENDPOINT = 'slice';

@@ -107,14 +107,6 @@ export const OPENSRP_CLIENT_ENDPOINT = process.env.REACT_APP_OPENSRP_CLIENT_ENDP
 
 export const GET_FORM_DATA_ROW_LIMIT = Number(process.env.REACT_APP_GET_FORM_DATA_ROW_LIMIT) || 2000;
 
-// analysis page iframes
-export const SUPERSET_PREGNANCY_ANALYSIS_ENDPOINT = 'https://discover.ona.io/superset/dashboard/53/?standalone=true';
-export const NBC_AND_PNC_ANALYSIS_ENDPOINT = 'https://discover.ona.io/superset/dashboard/66/?standalone=true';
-
-// csv export links
-export const SUPERSET_PREGNANCY_DATA_EXPORT =
-    'https://discover.ona.io/superset/explore_json/?form_data={"slice_id":2263}&csv=true';
-
 // slice IDs
 export const PREGNANCY_LOGFACE_SLICE = process.env.REACT_APP_LOGFACE_PREGNANCY_SLICE || '0';
 
@@ -140,6 +132,7 @@ export const USER_LOCATION_DATA_SLICE = process.env.REACT_APP_USER_LOCATION_DATA
 export const COMPARTMENTS_PREGNANCY_SLICE = process.env.REACT_APP_COMPARTMENTS_PREGNANCY_SLICE || '0';
 export const COMPARTMENTS_NBC_AND_PNC_SLICE = process.env.REACT_APP_COMPARTMENTS_NBC_AND_PNC_SLICE || '0';
 export const COMPARTMENTS_NUTRITION_SLICE = process.env.REACT_APP_COMPARTMENTS_NUTRITION_SLICE || '0';
+
 export const BACKEND_ACTIVE = process.env.REACT_APP_BACKEND_ACTIVE === 'true';
 
 export const EXPRESS_OAUTH_LOGOUT_URL =
@@ -156,3 +149,10 @@ export const EXPRESS_OAUTH_GET_STATE_URL =
 export const CHILD_CHART_SLICE = process.env.REACT_APP_CHILD_CHART_SLICE || '0';
 
 export const MOTHER_CHART_SLICE = process.env.REACT_APP_MOTHER_CHART_SLICE || '0';
+
+export const SUPERSET_PREGNANCY_ANALYSIS_DASHBOARD = process.env.REACT_APP_SUPERSET_PREGNANCY_ANALYSIS_DASHBOARD || '0';
+
+export const SUPERSET_NBC_AND_PNC_ANALYSIS_DASHBOARD =
+    process.env.REACT_APP_SUPERSET_NBC_AND_PNC_ANALYSIS_DASHBOARD || '0';
+
+export const SUPERSET_NUTRITION_ANALYSIS_DASHBOARD = process.env.REACT_APP_SUPERSET_NUTRITION_ANALYSIS_DASHBOARD || '0';

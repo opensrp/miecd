@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`containers/LogFace extended filters work correctly for Nutrition: Export button 1`] = `
+<a
+  download={true}
+  href="http://example.com/superset/explore_json/?form_data={\\"slice_id\\":nutritionLogface}&csv=true"
+  id="export-button"
+>
+  Export data
+</a>
+`;
+
 exports[`containers/LogFace extended filters work correctly for Nutrition: risk filter 1`] = `
 <select
   data-testid="select"
@@ -94,6 +104,16 @@ exports[`containers/LogFace extended filters work correctly for pregnancy: risk 
     No risk
   </option>
 </select>
+`;
+
+exports[`containers/LogFace extended renders correctly: Export button 1`] = `
+<a
+  download={true}
+  href="http://example.com/superset/explore_json/?form_data={\\"slice_id\\":pregnancyLogface}&csv=true"
+  id="export-button"
+>
+  Export data
+</a>
 `;
 
 exports[`containers/LogFace extended renders correctly: logface title 1`] = `
@@ -788,4 +808,14 @@ exports[`containers/LogFace extended renders correctly: table td 40`] = `
     </LinkAnchor>
   </Link>
 </td>
+`;
+
+exports[`containers/LogFace extended sms type filter work correctly: Export button 1`] = `
+<a
+  download={true}
+  href="http://example.com/superset/explore_json/?form_data={\\"slice_id\\":nbcPncLogFace}&csv=true"
+  id="export-button"
+>
+  Export data
+</a>
 `;
