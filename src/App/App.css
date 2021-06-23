@@ -92,7 +92,8 @@ fieldset[disabled] .gatekeeper-btn.active {
 }
 
 .main-app-container .main-container {
-    min-height: 100vh;
+    position: relative;
+    top: 60px;
 }
 
 .main-app-container .navbar {
@@ -104,10 +105,12 @@ fieldset[disabled] .gatekeeper-btn.active {
 
 .main-app-container .content {
     width: 100%;
-    position: relative;
-    top: 60px;
+    min-height: 100vh;
+    background: inherit;
+    background-color: #f8f9fd;
 }
 
-.main-page-row {
-    background-color: #f8f9fd;
+.user-assignment__list .ant-row {
+    padding: 16px !important;
+    background: #ffffff;
 }

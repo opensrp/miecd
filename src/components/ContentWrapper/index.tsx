@@ -3,8 +3,10 @@ import './index.css';
 
 export interface ContentWrapperProps {
     children: ReactNode;
+    className?: string;
 }
 
 export const ContentWrapper = (props: ContentWrapperProps) => {
-    return <div className="content-wrapper">{props.children}</div>;
+    const { className } = props;
+    return <div className={`content-wrapper ${className ? className : ''}`}>{props.children}</div>;
 };

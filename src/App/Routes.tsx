@@ -7,14 +7,8 @@ import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LastLocationProvider } from 'react-router-last-location';
-import SideMenu from '../components/page/SideMenu';
 import ConnectedSidebar from '../components/page/SideMenu';
-import {
-    BACKEND_ACTIVE,
-    DISABLE_LOGIN_PROTECTION,
-    NBC_AND_PNC_ANALYSIS_ENDPOINT,
-    SUPERSET_PREGNANCY_ANALYSIS_ENDPOINT,
-} from '../configs/env';
+import { BACKEND_ACTIVE, DISABLE_LOGIN_PROTECTION } from '../configs/env';
 import { APP_CALLBACK_PATH, APP_CALLBACK_URL, APP_LOGIN_URL, AuthGrantType, providers } from '../configs/settings';
 import {
     CHILD_PATIENT_DETAIL_URL,
@@ -37,9 +31,6 @@ import {
     PREGNANCY_LOGFACE_URL,
     PREGNANCY_MODULE,
     PREGNANCY_URL,
-    PREGNANCY,
-    NUTRITION,
-    NBC_AND_PNC,
     URL_LOCATION_UNIT,
     URL_LOCATION_UNIT_ADD,
     URL_LOCATION_UNIT_EDIT,
@@ -154,6 +145,7 @@ export const Routes = () => {
             </span>
         </Trans>
     );
+    const userAssignmentClass = 'user-assignment__list';
 
     const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
 
@@ -434,7 +426,7 @@ export const Routes = () => {
                             path={URL_USER}
                             {...usersListProps}
                             component={(props: RouteComponentProps<UserGroupRouteParams>) => (
-                                <ContentWrapper>
+                                <ContentWrapper className={userAssignmentClass}>
                                     <ConnectedUserList {...{ ...props, ...usersListProps }} />
                                 </ContentWrapper>
                             )}
@@ -445,7 +437,7 @@ export const Routes = () => {
                             exact
                             path={URL_USER_GROUPS}
                             component={(props: RouteComponentProps<UserGroupRouteParams>) => (
-                                <ContentWrapper>
+                                <ContentWrapper className={userAssignmentClass}>
                                     <UserGroupsList {...{ ...props, ...baseProps }} />
                                 </ContentWrapper>
                             )}
@@ -456,7 +448,7 @@ export const Routes = () => {
                             exact
                             path={URL_USER_ROLES}
                             component={(props: RouteComponentProps) => (
-                                <ContentWrapper>
+                                <ContentWrapper className={userAssignmentClass}>
                                     <UserRolesList {...{ ...props, ...baseProps }} />
                                 </ContentWrapper>
                             )}
@@ -467,7 +459,7 @@ export const Routes = () => {
                             exact
                             path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
                             component={(props: RouteComponentProps<UserGroupRouteParams>) => (
-                                <ContentWrapper>
+                                <ContentWrapper className={userAssignmentClass}>
                                     <UserGroupsList {...{ ...props, ...baseProps }} />
                                 </ContentWrapper>
                             )}
