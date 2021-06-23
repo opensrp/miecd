@@ -94,7 +94,7 @@ const LogFace = (props: LogFacePropsType) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchLogFaceSmsCreator, module, supersetService, supersetSlice]);
 
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [currentPage, setCurrentPage] = useState<number>(0);
     const { t } = useTranslation();
 
     const { data: userAssignment } = useUserAssignment(t);
