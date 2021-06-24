@@ -35,7 +35,7 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
     constructor(props: VillageDataPropsType) {
         super(props);
         this.state = {
-            currentPage: 1,
+            currentPage: 0,
         };
     }
 
@@ -120,8 +120,8 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                                     {this.props.smsData.length
                                         ? this.props.smsData
                                               .slice(
-                                                  (this.state.currentPage - 1) * pageLimit,
-                                                  (this.state.currentPage - 1) * pageLimit + pageLimit,
+                                                  this.state.currentPage * pageLimit,
+                                                  this.state.currentPage * pageLimit + pageLimit,
                                               )
                                               .map(
                                                   this.props.module === PREGNANCY
