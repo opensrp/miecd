@@ -29,3 +29,163 @@ exports[`App Analysis routes are correctly registered: pregnancy module 1`] = `
   </div>
 </Analysis>
 `;
+
+exports[`App location units routes are correctly registered 1`] = `
+<MockLocationComponent
+  message="Location unit group list"
+>
+  <div>
+    Location unit group list
+  </div>
+</MockLocationComponent>
+`;
+
+exports[`App location units routes are correctly registered 2`] = `
+<MockLocationComponent
+  message="Location group add edit"
+>
+  <div>
+    Location group add edit
+  </div>
+</MockLocationComponent>
+`;
+
+exports[`App location units routes are correctly registered 3`] = `
+<MockLocationComponent
+  message="Location group add edit"
+>
+  <div>
+    Location group add edit
+  </div>
+</MockLocationComponent>
+`;
+
+exports[`App location units routes are correctly registered 4`] = `
+<MockLocationComponent
+  message="Edit location unit"
+>
+  <div>
+    Edit location unit
+  </div>
+</MockLocationComponent>
+`;
+
+exports[`App location units routes are correctly registered 5`] = `
+<MockLocationComponent
+  message="New location unit"
+>
+  <div>
+    New location unit
+  </div>
+</MockLocationComponent>
+`;
+
+exports[`App location units routes are correctly registered: user list 1`] = `
+<MockLocationComponent
+  message="Location list"
+>
+  <div>
+    Location list
+  </div>
+</MockLocationComponent>
+`;
+
+exports[`App teams routes are correctly registered 1`] = `
+<MockTeamAssignmentComponent
+  message="Teams assignment"
+>
+  <div>
+    Teams assignment
+  </div>
+</MockTeamAssignmentComponent>
+`;
+
+exports[`App teams routes are correctly registered 2`] = `
+<MockTeamsComponent
+  message="Teams add/edit"
+>
+  <div>
+    Teams add/edit
+  </div>
+</MockTeamsComponent>
+`;
+
+exports[`App teams routes are correctly registered 3`] = `
+<MockTeamsComponent
+  message="Teams add/edit"
+>
+  <div>
+    Teams add/edit
+  </div>
+</MockTeamsComponent>
+`;
+
+exports[`App teams routes are correctly registered: user list 1`] = `
+<MockTeamsComponent
+  message="Teams list"
+>
+  <div>
+    Teams list
+  </div>
+</MockTeamsComponent>
+`;
+
+exports[`App userManagement routes are correctly registered 1`] = `
+<MockUsersComponent
+  message="UserEdit"
+>
+  <div>
+    UserEdit
+  </div>
+</MockUsersComponent>
+`;
+
+exports[`App userManagement routes are correctly registered 2`] = `
+<MockUsersComponent
+  message="User credentials list"
+>
+  <div>
+    User credentials list
+  </div>
+</MockUsersComponent>
+`;
+
+exports[`App userManagement routes are correctly registered 3`] = `
+<MockUsersComponent
+  message="Edit user groups"
+>
+  <div>
+    Edit user groups
+  </div>
+</MockUsersComponent>
+`;
+
+exports[`App userManagement routes are correctly registered 4`] = `
+<MockUsersComponent
+  message="User groups list"
+>
+  <div>
+    User groups list
+  </div>
+</MockUsersComponent>
+`;
+
+exports[`App userManagement routes are correctly registered 5`] = `
+<MockUsersComponent
+  message="Edit user groups"
+>
+  <div>
+    Edit user groups
+  </div>
+</MockUsersComponent>
+`;
+
+exports[`App userManagement routes are correctly registered: user list 1`] = `
+<MockUsersComponent
+  message="Users list"
+>
+  <div>
+    Users list
+  </div>
+</MockUsersComponent>
+`;
