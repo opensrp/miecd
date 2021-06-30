@@ -40,7 +40,9 @@ describe('components/VillageData', () => {
                 </Router>
             </Provider>,
         );
-        expect(toJson(wrapper.find('tr'))).toMatchSnapshot('VillageData with data');
+        wrapper.find('tbody#body tr').forEach((tr) => {
+            expect(tr.text()).toMatchSnapshot('VillageData with data');
+        });
         wrapper.unmount();
     });
 
@@ -60,8 +62,8 @@ describe('components/VillageData', () => {
         expect(wrapper.find('.pagination-container').text()).toMatchInlineSnapshot(`"previous12next"`);
 
         // inspect entries shown on page 1
-        wrapper.find('tbody#body tr').forEach((td) => {
-            expect(td.text()).toMatchSnapshot('first Page');
+        wrapper.find('tbody#body tr').forEach((tr) => {
+            expect(tr.text()).toMatchSnapshot('first Page');
         });
 
         // go to page 2
@@ -72,8 +74,8 @@ describe('components/VillageData', () => {
         wrapper.update();
 
         // inspect entries shown on page 2
-        wrapper.find('tbody#body tr').forEach((td) => {
-            expect(td.text()).toMatchSnapshot('second Page');
+        wrapper.find('tbody#body tr').forEach((tr) => {
+            expect(tr.text()).toMatchSnapshot('second Page');
         });
         wrapper.unmount();
     });
