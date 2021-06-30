@@ -1,25 +1,39 @@
-import { shallow } from 'enzyme';
+import { NBC_AND_PNC_MODULE, NUTRITION_MODULE, PREGNANCY_MODULE } from '../../../constants';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import { mountWithTranslations } from '../../../helpers/testUtils';
 import RiskColoring from '../index';
+import { nutritionSmsFixtures, PregnancyReportFixture as pregnancyReportFixture } from 'store/ducks/tests/fixtures';
+
+const nutritionSms = {
+    ...nutritionSmsFixtures[0],
+    feeding_category: 'appropriately fed',
+    growth_status: 'stunted',
+};
 
 describe('RiskColoring', () => {
-    // eslint-disable-next-line jest/expect-expect
-    it('must render without crashing', () => {
-        shallow(<RiskColoring />);
+    it('renders correctly for nutrition module', () => {
+        const wrapper = mountWithTranslations(<RiskColoring module={NUTRITION_MODULE} dataObject={nutritionSms} />);
+        wrapper.find('RiskColoring .badge').forEach((badge) => {
+            expect(toJson(badge)).toMatchSnapshot();
+        });
     });
 
-    it('must show correct Risk level depending on the string passed as a prop', () => {
-        let wrapper = mountWithTranslations(<RiskColoring risk="high" />);
-        expect(toJson(wrapper.find('RiskColoring'))).toMatchSnapshot('hight_risk');
-        wrapper = mountWithTranslations(<RiskColoring risk="low" />);
-        expect(toJson(wrapper.find('RiskColoring'))).toMatchSnapshot('low_risk');
-        wrapper = mountWithTranslations(<RiskColoring risk="red" />);
-        expect(toJson(wrapper.find('RiskColoring'))).toMatchSnapshot('red_alert');
-        wrapper = mountWithTranslations(<RiskColoring risk="not set" />);
-        expect(toJson(wrapper.find('RiskColoring'))).toMatchSnapshot('not_set');
-        wrapper = mountWithTranslations(<RiskColoring />);
-        expect(toJson(wrapper.find('RiskColoring'))).toMatchSnapshot('default');
+    it('renders correctly for pregnancy module', () => {
+        const wrapper = mountWithTranslations(
+            <RiskColoring module={PREGNANCY_MODULE} dataObject={pregnancyReportFixture[0]} />,
+        );
+        wrapper.find('RiskColoring .badge').forEach((badge) => {
+            expect(toJson(badge)).toMatchSnapshot();
+        });
+    });
+
+    it('renders correctly for nbc and pnc module', () => {
+        const wrapper = mountWithTranslations(
+            <RiskColoring module={NBC_AND_PNC_MODULE} dataObject={pregnancyReportFixture[1]} />,
+        );
+        wrapper.find('RiskColoring .badge').forEach((badge) => {
+            expect(toJson(badge)).toMatchSnapshot();
+        });
     });
 });
