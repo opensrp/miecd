@@ -105,6 +105,10 @@ interface UserGroupRouteParams {
     userGroupId: string;
 }
 
+interface UserIdRouteParams {
+    userId: string;
+}
+
 const mapStateToProps = (state: Partial<Store>) => {
     return {
         authenticated: isAuthenticated(state),
@@ -515,7 +519,7 @@ export const Routes = () => {
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={URL_USER_CREATE}
-                            component={(props: RouteComponentProps<{ userId: string }>) => (
+                            component={(props: RouteComponentProps<UserIdRouteParams>) => (
                                 <ContentWrapper>
                                     <ConnectedCreateEditUser
                                         {...{ ...props, ...(createEditUserProps as unknown as EditUserProps) }}
@@ -528,7 +532,7 @@ export const Routes = () => {
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
-                            component={(props: RouteComponentProps<{ userId: string }>) => (
+                            component={(props: RouteComponentProps<UserIdRouteParams>) => (
                                 <ContentWrapper>
                                     <ConnectedCreateEditUser
                                         {...{ ...props, ...(createEditUserProps as unknown as EditUserProps) }}
