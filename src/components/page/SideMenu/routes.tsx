@@ -140,14 +140,16 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             otherProps: { icon: adminModuleNavIcon },
             title: t('admin'),
             key: 'admin',
-            enabled: true,
+            enabled:
+                (ENABLE_LOCATIONS || ENABLE_TEAMS || ENABLE_USERS) &&
+                roles &&
+                isAuthorized(roles, activeRoles.ADMIN?.split(',') ?? []),
             url: '/admin',
             children: [
                 {
                     title: t('User Management'),
                     key: 'users',
-                    enabled:
-                        ENABLE_USERS && roles && activeRoles.USERS && isAuthorized(roles, activeRoles.USERS.split(',')),
+                    enabled: ENABLE_USERS && roles && isAuthorized(roles, activeRoles.USERS?.split(',') ?? []),
                     children: [
                         { title: t('Users'), key: 'user', url: URL_USER },
                         { title: t('User groups'), key: 'user-groups', url: URL_USER_GROUPS },
@@ -157,7 +159,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
                 {
                     title: 'Locations',
                     key: 'location',
-                    enabled: ENABLE_LOCATIONS,
+                    enabled: ENABLE_LOCATIONS && roles && isAuthorized(roles, activeRoles.LOCATIONS?.split(',') ?? []),
                     children: [
                         { title: t('Location unit'), url: URL_LOCATION_UNIT, key: 'location-unit' },
                         {
@@ -170,7 +172,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
                 {
                     title: t('Team management'),
                     key: 'teams',
-                    enabled: ENABLE_TEAMS,
+                    enabled: ENABLE_TEAMS && roles && isAuthorized(roles, activeRoles.TEAMS?.split(',') ?? []),
                     children: [
                         { title: t('Teams'), url: URL_TEAMS, key: 'teams-list' },
                         {

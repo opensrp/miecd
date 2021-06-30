@@ -38,7 +38,7 @@ export const teamAssignmentProps = {
 
 export const createEditUserProps = {
     ...baseProps,
-    userFormHidden: [],
+    userFormRenderFields: ['contact'],
 };
 
 export const teamsEditProps = {
