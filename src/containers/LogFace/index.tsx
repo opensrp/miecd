@@ -224,10 +224,7 @@ const LogFace = (props: LogFacePropsType) => {
                                                         module,
                                                     )}
                                                 >
-                                                    <RiskColoring
-                                                        risk={dataObj.risk_level}
-                                                        displayValue={dataObj.logface_risk}
-                                                    />
+                                                    <RiskColoring module={module} dataObject={dataObj} />
                                                 </Link>
                                             </td>
                                         </tr>
