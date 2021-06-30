@@ -40,3 +40,9 @@ export const createEditUserProps = {
     ...baseProps,
     userFormHidden: [],
 };
+
+export const teamsEditProps = {
+    ...baseProps,
+    disableTeamMemberReassignment: true,
+    paginationSize: 1000,
+};

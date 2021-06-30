@@ -1762,23 +1762,23 @@
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
 
-"@opensrp/keycloak-service@^0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@opensrp/keycloak-service/-/keycloak-service-0.0.15.tgz#8b4bbef0f579adb6ee8d454a47be49e44cf2be5a"
-  integrity sha512-P1rp9ilW7SIrmuOcZXkKGVNXd6cFRmgCKJyTbTnT1yu3A7EwFs1ZyRarXkIE5cYmLwXgGRo01UgI06QZm/vQ2Q==
+"@opensrp/keycloak-service@^0.0.16":
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/@opensrp/keycloak-service/-/keycloak-service-0.0.16.tgz#182b9615a052b09b79ee3c6688a7102f42b885b4"
+  integrity sha512-dbHX+vbIUBZTX7Mhx0FDMZRxUqAEJbVeDEB+yjDIfjjCSqtryTUGcTcM1CQQGaO+i0HXaClOFEuhHcsRzdjqlw==
   dependencies:
-    "@opensrp/react-utils" "^0.0.10"
+    "@opensrp/react-utils" "^0.0.11"
 
-"@opensrp/location-management@^0.0.13":
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/@opensrp/location-management/-/location-management-0.0.13.tgz#1b41770dc92fa021b9115a7fe9bba0b2ca471349"
-  integrity sha512-ZjzEJfmwkuk6RVFaIjfxxQlKerX4QVni6QZ1UyghEaOgXwomtrZ1sttoQ18rfGCa4DKuTeu1ANScXQvgT1mtyg==
+"@opensrp/location-management@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@opensrp/location-management/-/location-management-0.0.14.tgz#be460e6b69c642d487456877378e5ebb2e1b0ddd"
+  integrity sha512-oUXXhAiuWHx4aO3WAXhG/2liIiBO27+1sEZL2W7jTT7B/4WEk0SuoWL8O8QUC0r2MvTH+/ofJYDWZ7/owh4rKQ==
   dependencies:
     "@onaio/session-reducer" "0.0.12"
     "@onaio/utils" "^0.0.1"
     "@opensrp/notifications" "^0.0.4"
     "@opensrp/pkg-config" "^0.0.9"
-    "@opensrp/react-utils" "^0.0.10"
+    "@opensrp/react-utils" "^0.0.11"
     "@opensrp/reducer-factory" "^0.0.13"
     "@opensrp/server-service" "^0.0.16"
     cycle "^1.0.3"
@@ -1806,10 +1806,10 @@
   dependencies:
     react-hooks-global-state "^1.0.1"
 
-"@opensrp/react-utils@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.10.tgz#94cd8dec89d63ec970661d0dd4b3e761efbb7685"
-  integrity sha512-RI2NAa1yPU0ayFjvtTLYn/sKK/9/NrKUeAGh0kbYNDkFwstCvxrXkBZORiv+sy0kpIkBjVBmtAM2mfjxsLxqIw==
+"@opensrp/react-utils@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.11.tgz#b506df2ecd83493d024f2a540875bf1985c16812"
+  integrity sha512-oYUL7j2TUJQPd4yOFZtUZWJzCXcqmPeaxbHKbMC1LyMvvFhhu2AjE/yhaDMccf1L4Mje2VGQOtA+z1jsaFY8DA==
   dependencies:
     "@onaio/connected-private-route" "^0.0.11"
     "@onaio/connected-reducer-registry" "^0.0.3"
@@ -1870,43 +1870,43 @@
     connected-react-router "^6.8.0"
     reselect "^4.0.0"
 
-"@opensrp/team-assignment@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@opensrp/team-assignment/-/team-assignment-0.0.4.tgz#51c4dd1b3b307fae288b7763f9949815465945da"
-  integrity sha512-uLBOt2LxV4mONQbcS66KfBPqPmEqO6nMNkeiWYX23SxxLG9CzPu6yrGE2SZV1yJmk/RtLrAthks+ItbWpVHuAA==
+"@opensrp/team-assignment@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@opensrp/team-assignment/-/team-assignment-0.0.5.tgz#428ca4249ee9c829c492785ce9c5b9532cdf7090"
+  integrity sha512-kKB8gw5AafZ6RB8q9F/DvHEIJ/mCq5mdbaFO0BcPjph/vzo1MnPiyjPQWUP5DOC99sMWEfOGEp1yjnen9qEK6A==
   dependencies:
     "@onaio/redux-reducer-registry" "^0.0.9"
     "@onaio/utils" "^0.0.1"
-    "@opensrp/location-management" "^0.0.13"
+    "@opensrp/location-management" "^0.0.14"
     "@opensrp/notifications" "^0.0.5"
-    "@opensrp/react-utils" "^0.0.10"
+    "@opensrp/react-utils" "^0.0.11"
     "@opensrp/reducer-factory" "^0.0.13"
     "@opensrp/server-service" "^0.0.17"
-    "@opensrp/team-management" "^0.0.7"
+    "@opensrp/team-management" "^0.0.8"
     antd "^4.6.3"
     formik "^2.1.5"
     formik-antd "2.0.1"
     react-helmet "^6.1.0"
     yup "^0.29.3"
 
-"@opensrp/team-management@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@opensrp/team-management/-/team-management-0.0.7.tgz#67e2c96f9cace87aad4f0bb673c89d4ae4d8b920"
-  integrity sha512-WqbP8ECanpZ6NYduI+fSIhoY0iQvdnFHwDY1TKKgM1J40GU3KARN0dohYjuf72jXI5ULfeTovdb8gOYSAZuDlA==
+"@opensrp/team-management@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@opensrp/team-management/-/team-management-0.0.8.tgz#a3a4b3a80dd612ac93d212eb02ccae868861c0f2"
+  integrity sha512-/4nBxGUO2+5nqZCXUPpKNlgHHO78AuC+XkXr99l350eGlW18dknvEXYsYJQynueGTHY9MNYbECwcprJYDUOCRQ==
   dependencies:
     "@opensrp/notifications" "^0.0.4"
     "@opensrp/pkg-config" "^0.0.9"
-    "@opensrp/react-utils" "^0.0.10"
+    "@opensrp/react-utils" "^0.0.11"
     "@opensrp/reducer-factory" "^0.0.13"
     "@opensrp/server-service" "^0.0.16"
     i18next "^19.8.4"
     react-i18next "^11.8.10"
     uuid "^8.3.1"
 
-"@opensrp/user-management@^0.1.17":
-  version "0.1.17"
-  resolved "https://registry.yarnpkg.com/@opensrp/user-management/-/user-management-0.1.17.tgz#13208005c4b800d48dafdfc16ed6eaaa356f16a8"
-  integrity sha512-JXONWGpO7fC0C1UPpntyAgfJ4orK1NJUOpAIg2V2ugfrDA5SIZFpsFhkZLkhjuo5nsO1ay5wqy8KqujGEsHkUA==
+"@opensrp/user-management@^0.1.18":
+  version "0.1.18"
+  resolved "https://registry.yarnpkg.com/@opensrp/user-management/-/user-management-0.1.18.tgz#ebca903e9890672000e56213a894b58795286734"
+  integrity sha512-VNLajZRDgUe3LtgYhuQAzPJnZp2ZU9GQQflXRdQgFpoqRB3Me0YDC6uNDLE9/g/kTIDRCfwOe+lltiJygP8BiA==
   dependencies:
     "@ant-design/icons" "^4.2.2"
     "@onaio/connected-reducer-registry" "^0.0.3"
@@ -1915,10 +1915,10 @@
     "@onaio/redux-reducer-registry" "^0.0.9"
     "@onaio/session-reducer" "^0.0.12"
     "@onaio/utils" "^0.0.1"
-    "@opensrp/keycloak-service" "^0.0.15"
+    "@opensrp/keycloak-service" "^0.0.16"
     "@opensrp/notifications" "^0.0.5"
     "@opensrp/pkg-config" "^0.0.9"
-    "@opensrp/react-utils" "^0.0.10"
+    "@opensrp/react-utils" "^0.0.11"
     "@opensrp/server-service" "^0.0.16"
     antd "^4.6.3"
     babel-plugin-transform-es2015-modules-commonjs "^6.26.2"

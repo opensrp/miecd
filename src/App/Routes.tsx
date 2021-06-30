@@ -74,6 +74,7 @@ import {
     teamAssignmentProps,
     usersListProps,
     baseProps,
+    teamsEditProps,
 } from './utils';
 import {
     ConnectedUserList,
@@ -494,7 +495,7 @@ export const Routes = () => {
                             path={URL_TEAMS_ADD}
                             component={(props: RouteComponentProps) => (
                                 <ContentWrapper>
-                                    <TeamsAddEdit {...{ ...props, ...baseProps }} />
+                                    <TeamsAddEdit {...{ ...props, ...teamsEditProps }} />
                                 </ContentWrapper>
                             )}
                         />
@@ -505,7 +506,7 @@ export const Routes = () => {
                             path={`${URL_TEAMS_EDIT}/:id`}
                             component={(props: RouteComponentProps) => (
                                 <ContentWrapper>
-                                    <TeamsAddEdit {...{ ...props, ...baseProps }} />
+                                    <TeamsAddEdit {...{ ...props, ...teamsEditProps }} />
                                 </ContentWrapper>
                             )}
                         />
