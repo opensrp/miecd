@@ -1,6 +1,16 @@
 /** This is the main configuration module */
 import { TFunction } from 'react-i18next';
-import { GREEN, RED, YELLOW } from './colors';
+import {
+    GREEN,
+    INAPPROPRIATE_FEEDING_RISK_COLOR,
+    NORMAL_RISK_COLOR,
+    OVERWEIGHT_RISK_COLOR,
+    RED,
+    STUNTING_RISK_COLOR,
+    UNDERWEIGHT_RISK_COLOR,
+    WASTING_RISK_COLOR,
+    YELLOW,
+} from './colors';
 import { AuthorizationGrantType, Providers } from '@onaio/gatekeeper';
 import {
     PREGNANCY_MODULE,
@@ -186,31 +196,37 @@ export const nutritionModuleRiskFilterLookup = (t: TFunction) => {
             label: t('Stunting'),
             accessor: 'growth_status',
             filterValue: ['stunted'],
+            color: STUNTING_RISK_COLOR,
         },
         wasting: {
             label: t('Wasting'),
             accessor: 'nutrition_status',
             filterValue: ['severe wasting'],
+            color: WASTING_RISK_COLOR,
         },
         overweight: {
             label: t('Overweight'),
             accessor: 'nutrition_status',
             filterValue: ['overweight'],
+            color: OVERWEIGHT_RISK_COLOR,
         },
         inappropriateFeeding: {
             label: t('Inappropriate Feeding'),
             accessor: 'feeding_category',
             filterValue: ['inappropriately fed'],
+            color: INAPPROPRIATE_FEEDING_RISK_COLOR,
         },
         underweight: {
             label: t('Underweight'),
             accessor: 'nutrition_status',
             filterValue: ['underweight'],
+            color: UNDERWEIGHT_RISK_COLOR,
         },
         normal: {
             label: t('Normal'),
             accessor: 'nutrition_status',
             filterValue: ['normal'],
+            color: NORMAL_RISK_COLOR,
         },
     };
 };
@@ -250,7 +266,13 @@ export const riskCategories = (t: TFunction) => {
     const convertToOptions = (category: Dictionary<Dictionary<string | string[]>>) => {
         const options = [];
         for (const key in category) {
-            options.push({ color: category[key].color, label: category[key].label, value: key } as Dictionary<string>);
+            options.push({
+                color: category[key].color,
+                label: category[key].label,
+                value: key,
+                filterValue: category[key].filterValue,
+                accessor: category[key].accessor,
+            } as Dictionary<string>);
         }
         return options;
     };
