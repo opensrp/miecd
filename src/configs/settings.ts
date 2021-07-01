@@ -48,6 +48,12 @@ import {
     BACKEND_LOGIN_URL,
     BACKEND_CALLBACK_PATH,
     REACT_CALLBACK_PATH,
+    DEPARTURE_REPORT,
+    HOME_ANC_VISIT,
+    NEWBORN_REPORT,
+    PNC_REPORT,
+    UPDATE_NUTRITION_REGISTRATION,
+    UPDATE_PREGNANCY_DETECTION,
 } from '../constants';
 import {
     BACKEND_ACTIVE,
@@ -110,28 +116,6 @@ export const toastConfig = {
     },
     duration: 2000,
 };
-
-export const SmsTypes = [
-    RESPONSE_REPORT,
-    RED_ALERT_REPORT,
-    SOCIAL_DETERMINANTS,
-    ANC_VISIT,
-    DELIVERY_PLANNING,
-    PREGNANCY_DETECTION,
-    PREGNANCY_IDENTIFICATION,
-    PREGNANCY_REGISTRATION,
-    ANC_REPORT,
-    HOME_VISIT_REPORT,
-    BIRTH_REPORT,
-    DEATH_REPORT,
-    POSTNATAL_AND_NEWBORN_CARE,
-    NUTRITION_REGISTRATION,
-    NUTRITION_REPORT,
-    MONTHLY_NUTRITION_REPORT,
-    DEPARTURE_CODE,
-    REFUSAL_REPORT,
-    ACCOUNT_CHECK,
-] as const;
 
 // sms types that match module pregnancy
 export const pregnancySmsTypes = [
@@ -296,6 +280,8 @@ type moduleType =
     | typeof NBC_AND_PNC_WOMAN
     | typeof NUTRITION;
 
+export type LogFaceModuleDictionary<T> = Record<LogFaceModules[number], T>;
+
 /**
  * factory function to generate react-query queryKey and function's sms slice depending on module
  * @param module compartments module type
@@ -331,3 +317,40 @@ export const getAnalysisDashboardEndpoint = (module: LogFaceModules) => {
 // csv export links
 export const supersetPregnancyDataExportUrl = (slice: string) =>
     `${SUPERSET_API_BASE}superset/explore_json/?form_data={"slice_id":${slice}}&csv=true`;
+
+export const smsTypeFilterByModule: LogFaceModuleDictionary<string[]> = {
+    [PREGNANCY_MODULE]: [
+        PREGNANCY_DETECTION,
+        PREGNANCY_REGISTRATION,
+        SOCIAL_DETERMINANTS,
+        ANC_VISIT,
+        DELIVERY_PLANNING,
+        BIRTH_REPORT,
+        DEATH_REPORT,
+        UPDATE_PREGNANCY_DETECTION,
+        HOME_ANC_VISIT,
+        RED_ALERT_REPORT,
+        RESPONSE_REPORT,
+        REFUSAL_REPORT,
+        DEPARTURE_REPORT,
+    ],
+    [NBC_AND_PNC_MODULE]: [
+        PNC_REPORT,
+        NEWBORN_REPORT,
+        DEPARTURE_REPORT,
+        DEATH_REPORT,
+        BIRTH_REPORT,
+        RED_ALERT_REPORT,
+        RESPONSE_REPORT,
+    ],
+    [NUTRITION_MODULE]: [
+        NUTRITION_REGISTRATION,
+        UPDATE_NUTRITION_REGISTRATION,
+        NUTRITION_REPORT,
+        DEPARTURE_REPORT,
+        DEATH_REPORT,
+        BIRTH_REPORT,
+        RED_ALERT_REPORT,
+        RESPONSE_REPORT,
+    ],
+};

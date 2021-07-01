@@ -7,10 +7,10 @@ import ConnectedLogFace from '..';
 import {
     DEATH_REPORT,
     NBC_AND_PNC_MODULE,
+    NEWBORN_REPORT,
     NUTRITION_MODULE,
-    NUTRITION_REGISTRATION,
+    PNC_REPORT,
     PREGNANCY,
-    PREGNANCY_DETECTION,
     PREGNANCY_LOGFACE_URL,
     PREGNANCY_MODULE,
 } from '../../../constants';
@@ -24,7 +24,6 @@ import * as securityAuthenticate from '../../../store/ducks/tests/fixtures/secur
 import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom';
 import { nutritionSmsFixtures, PregnancyReportFixture } from 'store/ducks/tests/fixtures';
 import { Dictionary } from '@onaio/utils';
-import React from 'react';
 import { LogFaceModules } from '../../../configs/settings';
 import { authenticateUser } from '@onaio/session-reducer';
 
@@ -403,22 +402,20 @@ describe('containers/LogFace extended', () => {
 
         wrapper
             .find('#sms-type-filter select')
-            .simulate('change', { target: { value: PREGNANCY_DETECTION, name: PREGNANCY_DETECTION } });
+            .simulate('change', { target: { value: NEWBORN_REPORT, name: NEWBORN_REPORT } });
         wrapper.update();
 
         // check url changed correctly
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
-            '?smsType=Pregnancy%20Detection',
+            '?smsType=Newborn%20Report',
         );
 
-        wrapper
-            .find('#sms-type-filter select')
-            .simulate('change', { target: { value: NUTRITION_REGISTRATION, name: NUTRITION_REGISTRATION } });
+        wrapper.find('#sms-type-filter select').simulate('change', { target: { value: PNC_REPORT, name: PNC_REPORT } });
         wrapper.update();
 
         // check url changed correctly
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
-            '?smsType=Nutrition%20Registration',
+            '?smsType=PNC%20Report',
         );
 
         wrapper
