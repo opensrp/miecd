@@ -4,7 +4,16 @@ import ReactPaginate from 'react-paginate';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardTitle, Row, Table } from 'reactstrap';
 import { CompartmentSmsTypes, PregnancySmsData, NutritionSmsData, NbcPncSmsData } from '../../store/ducks/sms_events';
-import { DEFAULT_PAGINATION_SIZE, NBC_AND_PNC_CHILD, NBC_AND_PNC_WOMAN, NUTRITION, PREGNANCY } from '../../constants';
+import {
+    DEFAULT_PAGINATION_SIZE,
+    NBC_AND_PNC_CHILD,
+    NBC_AND_PNC_MODULE,
+    NBC_AND_PNC_WOMAN,
+    NUTRITION,
+    NUTRITION_MODULE,
+    PREGNANCY,
+    PREGNANCY_MODULE,
+} from '../../constants';
 import { getCommonPaginationProps, getModuleLink, getNumberOfDaysSinceDate } from '../../helpers/utils';
 import RiskColoring from '../RiskColoring';
 import './index.css';
@@ -35,7 +44,7 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
     constructor(props: VillageDataPropsType) {
         super(props);
         this.state = {
-            currentPage: 1,
+            currentPage: 0,
         };
     }
 
@@ -120,8 +129,8 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                                     {this.props.smsData.length
                                         ? this.props.smsData
                                               .slice(
-                                                  (this.state.currentPage - 1) * pageLimit,
-                                                  (this.state.currentPage - 1) * pageLimit + pageLimit,
+                                                  this.state.currentPage * pageLimit,
+                                                  this.state.currentPage * pageLimit + pageLimit,
                                               )
                                               .map(
                                                   this.props.module === PREGNANCY
@@ -171,7 +180,7 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                 <td className="default-width">{(dataItem as PregnancySmsData).lmp_edd}</td>
                 <td className="default-width">{(dataItem as PregnancySmsData).planned_delivery_location}</td>
                 <td className="default-width">
-                    <RiskColoring {...{ risk: (dataItem as PregnancySmsData).risk_level }} />
+                    <RiskColoring dataObject={dataItem} module={PREGNANCY_MODULE} />
                 </td>
             </tr>
         );
@@ -199,7 +208,7 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                 <td className="default-width">{(dataItem as NutritionSmsData).age}</td>
                 <td className="default-width">{(dataItem as NutritionSmsData).location_name}</td>
                 <td className="default-width">
-                    <RiskColoring {...{ risk: (dataItem as NutritionSmsData).nutrition_status }} />
+                    <RiskColoring dataObject={dataItem} module={NUTRITION_MODULE} />
                 </td>
             </tr>
         );
@@ -229,7 +238,7 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                 <td className="default-width">{(dataItem as NbcPncSmsData).child_symptoms}</td>
                 <td className="default-width">{(dataItem as NbcPncSmsData).delivery_location}</td>
                 <td className="default-width">
-                    <RiskColoring {...{ risk: (dataItem as NbcPncSmsData).risk_level }} />
+                    <RiskColoring dataObject={dataItem} module={NBC_AND_PNC_MODULE} />
                 </td>
             </tr>
         );
@@ -260,7 +269,7 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                 <td className="default-width">{(dataItem as NbcPncSmsData).previous_risks}</td>
                 <td className="default-width">{(dataItem as NbcPncSmsData).delivery_location}</td>
                 <td className="default-width">
-                    <RiskColoring {...{ risk: (dataItem as NbcPncSmsData).risk_level }} />
+                    <RiskColoring dataObject={dataItem} module={NBC_AND_PNC_MODULE} />
                 </td>
             </tr>
         );

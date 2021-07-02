@@ -138,8 +138,8 @@ describe('containers/LogFace extended', () => {
             ],
         ]);
 
-        wrapper.find('table tr td').forEach((td) => {
-            expect(toJson(td)).toMatchSnapshot('table td');
+        wrapper.find('table tr').forEach((tr) => {
+            expect(tr.text()).toMatchSnapshot('table tr');
         });
         expect(toJson(wrapper.find('input#search'))).toMatchSnapshot('search div');
         expect(toJson(wrapper.find('#logface_title'))).toMatchSnapshot('logface title');

@@ -1,431 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/VillageData must render correctly with data: VillageData with data 1`] = `
-Array [
-  <tr>
-    <th
-      className="default-width"
-    >
-      Patient ID
-    </th>
-    <th
-      className="default-width"
-    >
-      Age
-    </th>
-    <th
-      className="default-width"
-    >
-      Location Of Residence
-    </th>
-    <th
-      className="default-width"
-    >
-      Current Symptoms
-    </th>
-    <th
-      className="default-width"
-    >
-      Previous Risks / Existing Medical Conditions
-    </th>
-    <th
-      className="default-width"
-    >
-      EDD
-    </th>
-    <th
-      className="default-width"
-    >
-      Planned Delivery Location
-    </th>
-    <th
-      className="default-width"
-    >
-      Risk Category
-    </th>
-  </tr>,
-  <tr
-    key="1621412715357"
-  >
-    <td
-      className="default-width"
-    >
-      <Link
-        to="/pregnancy_compartments/patient_detail/101CN2"
-      >
-        <LinkAnchor
-          href="/pregnancy_compartments/patient_detail/101CN2"
-          navigate={[Function]}
-        >
-          <a
-            href="/pregnancy_compartments/patient_detail/101CN2"
-            onClick={[Function]}
-          >
-            101CN2
-          </a>
-        </LinkAnchor>
-      </Link>
-    </td>
-    <td
-      className="default-width"
-    >
-      24 Years 04 Months 18 Days
-    </td>
-    <td
-      className="default-width"
-    >
-      Thôn Kon Hia 1
-    </td>
-    <td
-      className="default-width"
-    >
-      Coughing
-    </td>
-    <td
-      className="default-width"
-    >
-      Previous Miscarriage/ Stillborn / Pregnancy termination
-    </td>
-    <td
-      className="default-width"
-    >
-      2021-10-01
-    </td>
-    <td
-      className="default-width"
-    >
-      Not at home/facilities, ENROUTE
-    </td>
-    <td
-      className="default-width"
-    >
-      <RiskColoring
-        displayValue=""
-        risk="high"
-      >
-        <span
-          className="badge"
-          style={
-            Object {
-              "backgroundColor": "#ffc107",
-            }
-          }
-        >
-          <div>
-            <p>
-              high
-            </p>
-          </div>
-        </span>
-      </RiskColoring>
-    </td>
-  </tr>,
-  <tr
-    key="1620906795497"
-  >
-    <td
-      className="default-width"
-    >
-      <Link
-        to="/pregnancy_compartments/patient_detail/101C8Y"
-      >
-        <LinkAnchor
-          href="/pregnancy_compartments/patient_detail/101C8Y"
-          navigate={[Function]}
-        >
-          <a
-            href="/pregnancy_compartments/patient_detail/101C8Y"
-            onClick={[Function]}
-          >
-            101C8Y
-          </a>
-        </LinkAnchor>
-      </Link>
-    </td>
-    <td
-      className="default-width"
-    >
-      33 Years 04 Months 18 Days
-    </td>
-    <td
-      className="default-width"
-    >
-      Thôn Kon Hia 1
-    </td>
-    <td
-      className="default-width"
-    >
-      Coughing
-    </td>
-    <td
-      className="default-width"
-    >
-      Previous C-section
-    </td>
-    <td
-      className="default-width"
-    >
-      2021-06-17
-    </td>
-    <td
-      className="default-width"
-    >
-      At home
-    </td>
-    <td
-      className="default-width"
-    >
-      <RiskColoring
-        displayValue=""
-        risk="low"
-      >
-        <span
-          className="badge"
-          style={
-            Object {
-              "backgroundColor": "#ffc107",
-            }
-          }
-        >
-          <div>
-            <p>
-              low
-            </p>
-          </div>
-        </span>
-      </RiskColoring>
-    </td>
-  </tr>,
-  <tr
-    key="1620906940394"
-  >
-    <td
-      className="default-width"
-    >
-      <Link
-        to="/pregnancy_compartments/patient_detail/101C8Y"
-      >
-        <LinkAnchor
-          href="/pregnancy_compartments/patient_detail/101C8Y"
-          navigate={[Function]}
-        >
-          <a
-            href="/pregnancy_compartments/patient_detail/101C8Y"
-            onClick={[Function]}
-          >
-            101C8Y
-          </a>
-        </LinkAnchor>
-      </Link>
-    </td>
-    <td
-      className="default-width"
-    >
-      33 Years 04 Months 18 Days
-    </td>
-    <td
-      className="default-width"
-    >
-      Thôn Kon Hia 1
-    </td>
-    <td
-      className="default-width"
-    >
-      Coughing
-    </td>
-    <td
-      className="default-width"
-    >
-      Previous C-section
-    </td>
-    <td
-      className="default-width"
-    >
-      2021-06-17
-    </td>
-    <td
-      className="default-width"
-    >
-      At home
-    </td>
-    <td
-      className="default-width"
-    >
-      <RiskColoring
-        displayValue=""
-        risk="low"
-      >
-        <span
-          className="badge"
-          style={
-            Object {
-              "backgroundColor": "#ffc107",
-            }
-          }
-        >
-          <div>
-            <p>
-              low
-            </p>
-          </div>
-        </span>
-      </RiskColoring>
-    </td>
-  </tr>,
-  <tr
-    key="1620906915598"
-  >
-    <td
-      className="default-width"
-    >
-      <Link
-        to="/pregnancy_compartments/patient_detail/101C8Y"
-      >
-        <LinkAnchor
-          href="/pregnancy_compartments/patient_detail/101C8Y"
-          navigate={[Function]}
-        >
-          <a
-            href="/pregnancy_compartments/patient_detail/101C8Y"
-            onClick={[Function]}
-          >
-            101C8Y
-          </a>
-        </LinkAnchor>
-      </Link>
-    </td>
-    <td
-      className="default-width"
-    >
-      33 Years 04 Months 18 Days
-    </td>
-    <td
-      className="default-width"
-    >
-      Thôn Kon Hia 1
-    </td>
-    <td
-      className="default-width"
-    >
-      Coughing
-    </td>
-    <td
-      className="default-width"
-    >
-      Previous C-section
-    </td>
-    <td
-      className="default-width"
-    >
-      2021-06-17
-    </td>
-    <td
-      className="default-width"
-    >
-      At home
-    </td>
-    <td
-      className="default-width"
-    >
-      <RiskColoring
-        displayValue=""
-        risk="low"
-      >
-        <span
-          className="badge"
-          style={
-            Object {
-              "backgroundColor": "#ffc107",
-            }
-          }
-        >
-          <div>
-            <p>
-              low
-            </p>
-          </div>
-        </span>
-      </RiskColoring>
-    </td>
-  </tr>,
-  <tr
-    key="1620907172391"
-  >
-    <td
-      className="default-width"
-    >
-      <Link
-        to="/pregnancy_compartments/patient_detail/101C8Y"
-      >
-        <LinkAnchor
-          href="/pregnancy_compartments/patient_detail/101C8Y"
-          navigate={[Function]}
-        >
-          <a
-            href="/pregnancy_compartments/patient_detail/101C8Y"
-            onClick={[Function]}
-          >
-            101C8Y
-          </a>
-        </LinkAnchor>
-      </Link>
-    </td>
-    <td
-      className="default-width"
-    >
-      33 Years 04 Months 18 Days
-    </td>
-    <td
-      className="default-width"
-    >
-      Thôn Kon Hia 1
-    </td>
-    <td
-      className="default-width"
-    >
-      Coughing
-    </td>
-    <td
-      className="default-width"
-    >
-      Previous C-section
-    </td>
-    <td
-      className="default-width"
-    >
-      2021-06-17
-    </td>
-    <td
-      className="default-width"
-    >
-      At home
-    </td>
-    <td
-      className="default-width"
-    >
-      <RiskColoring
-        displayValue=""
-        risk="red_alert"
-      >
-        <span
-          className="badge"
-          style={
-            Object {
-              "backgroundColor": "#dc3545",
-            }
-          }
-        >
-          <div>
-            <p>
-              red_alert
-            </p>
-          </div>
-        </span>
-      </RiskColoring>
-    </td>
-  </tr>,
-]
-`;
+exports[`components/VillageData must render correctly with data: VillageData with data 1`] = `"101CN224 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious Miscarriage/ Stillborn / Pregnancy termination2021-10-01Not at home/facilities, ENROUTERisk"`;
+
+exports[`components/VillageData must render correctly with data: VillageData with data 2`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-section2021-06-17At homeRisk"`;
+
+exports[`components/VillageData must render correctly with data: VillageData with data 3`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-section2021-06-17At homeRisk"`;
+
+exports[`components/VillageData must render correctly with data: VillageData with data 4`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-section2021-06-17At homeRisk"`;
+
+exports[`components/VillageData must render correctly with data: VillageData with data 5`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-section2021-06-17At homeRed alert"`;
 
 exports[`components/VillageData pagination works correctly: first Page 1`] = `"101CN224 Years 04 Months 18 DaysThôn Kon Hia 1"`;
 
@@ -468,27 +51,27 @@ exports[`components/VillageData pagination works correctly: second Page 5`] = `"
 
 exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 1`] = `"Patient IDDays Since BirthLocation Of ResidenceCurrent SymptomsLocation Of BirthRisk Category"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 2`] = `"101CN2NaNThôn Kon Hia 1high"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 2`] = `"101CN2NaNThôn Kon Hia 1Risk"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 3`] = `"101C8YNaNThôn Kon Hia 1low"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 3`] = `"101C8YNaNThôn Kon Hia 1Risk"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 4`] = `"101C8YNaNThôn Kon Hia 1low"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 4`] = `"101C8YNaNThôn Kon Hia 1Risk"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 5`] = `"101C8YNaNThôn Kon Hia 1low"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 5`] = `"101C8YNaNThôn Kon Hia 1Risk"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 6`] = `"101C8YNaNThôn Kon Hia 1red_alert"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_CHILD: NBC_AND_PNC_CHILD page 6`] = `"101C8YNaNThôn Kon Hia 1Red alert"`;
 
 exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 1`] = `"Patient IDAgeLocation Of ResidenceCurrent SymptomsPrevious Risks / Existing Medical ConditionsLocation Of BirthRisk Category"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 2`] = `"101CN224 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious Miscarriage/ Stillborn / Pregnancy terminationhigh"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 2`] = `"101CN224 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious Miscarriage/ Stillborn / Pregnancy terminationRisk"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 3`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-sectionlow"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 3`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-sectionRisk"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 4`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-sectionlow"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 4`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-sectionRisk"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 5`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-sectionlow"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 5`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-sectionRisk"`;
 
-exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 6`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-sectionred_alert"`;
+exports[`components/VillageData works correctly for NBC_AND_PNC_WOMAN: nBC and PNC woman Page 6`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-sectionRed alert"`;
 
 exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 1`] = `"Patient IDAgeLocation Of ResidenceRisk Category"`;
 
@@ -504,12 +87,12 @@ exports[`components/VillageData works correctly for NUTRITION: Nutrition Page 6`
 
 exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 1`] = `"Patient IDAgeLocation Of ResidenceCurrent SymptomsPrevious Risks / Existing Medical ConditionsEDDPlanned Delivery LocationRisk Category"`;
 
-exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 2`] = `"101CN224 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious Miscarriage/ Stillborn / Pregnancy termination2021-10-01Not at home/facilities, ENROUTEhigh"`;
+exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 2`] = `"101CN224 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious Miscarriage/ Stillborn / Pregnancy termination2021-10-01Not at home/facilities, ENROUTERisk"`;
 
-exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 3`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-section2021-06-17At homelow"`;
+exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 3`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-section2021-06-17At homeRisk"`;
 
-exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 4`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-section2021-06-17At homelow"`;
+exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 4`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-section2021-06-17At homeRisk"`;
 
-exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 5`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-section2021-06-17At homelow"`;
+exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 5`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-section2021-06-17At homeRisk"`;
 
-exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 6`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-section2021-06-17At homered_alert"`;
+exports[`components/VillageData works correctly for PREGNANCY: Pregnancy Page 6`] = `"101C8Y33 Years 04 Months 18 DaysThôn Kon Hia 1CoughingPrevious C-section2021-06-17At homeRed alert"`;

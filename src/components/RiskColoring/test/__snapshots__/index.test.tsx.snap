@@ -1,109 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RiskColoring must show correct Risk level depending on the string passed as a prop: default 1`] = `
-<RiskColoring
-  displayValue=""
-  risk=""
->
-  <span
-    className="badge"
-    style={
-      Object {
-        "backgroundColor": "#6c757d",
-      }
+exports[`RiskColoring renders correctly for nutrition module 1`] = `
+<span
+  className="badge m-1"
+  key="RiskColoring-growth_status"
+  style={
+    Object {
+      "backgroundColor": "#ff6361",
     }
-  >
-    <div>
-      <p />
-    </div>
-  </span>
-</RiskColoring>
+  }
+>
+  <div>
+    <p>
+      Stunting
+    </p>
+  </div>
+</span>
 `;
 
-exports[`RiskColoring must show correct Risk level depending on the string passed as a prop: hight_risk 1`] = `
-<RiskColoring
-  displayValue=""
-  risk="high"
->
-  <span
-    className="badge"
-    style={
-      Object {
-        "backgroundColor": "#ffc107",
-      }
+exports[`RiskColoring renders correctly for nutrition module 2`] = `
+<span
+  className="badge m-1"
+  key="RiskColoring-nutrition_status"
+  style={
+    Object {
+      "backgroundColor": "#58508d",
     }
-  >
-    <div>
-      <p>
-        high
-      </p>
-    </div>
-  </span>
-</RiskColoring>
-`;
-
-exports[`RiskColoring must show correct Risk level depending on the string passed as a prop: low_risk 1`] = `
-<RiskColoring
-  displayValue=""
-  risk="low"
+  }
 >
-  <span
-    className="badge"
-    style={
-      Object {
-        "backgroundColor": "#ffc107",
-      }
-    }
-  >
-    <div>
-      <p>
-        low
-      </p>
-    </div>
-  </span>
-</RiskColoring>
-`;
-
-exports[`RiskColoring must show correct Risk level depending on the string passed as a prop: not_set 1`] = `
-<RiskColoring
-  displayValue=""
-  risk="not set"
->
-  <span
-    className="badge"
-    style={
-      Object {
-        "backgroundColor": "#6c757d",
-      }
-    }
-  >
-    <div>
-      <p>
-        not set
-      </p>
-    </div>
-  </span>
-</RiskColoring>
-`;
-
-exports[`RiskColoring must show correct Risk level depending on the string passed as a prop: red_alert 1`] = `
-<RiskColoring
-  displayValue=""
-  risk="red"
->
-  <span
-    className="badge"
-    style={
-      Object {
-        "backgroundColor": "#6c757d",
-      }
-    }
-  >
-    <div>
-      <p>
-        red
-      </p>
-    </div>
-  </span>
-</RiskColoring>
+  <div>
+    <p>
+      Overweight
+    </p>
+  </div>
+</span>
 `;
