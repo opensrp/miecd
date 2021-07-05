@@ -13,7 +13,7 @@ import {
     LogFaceModules,
     LogFaceSliceByModule,
     riskCategories,
-    SmsTypes,
+    smsTypeFilterByModule,
     supersetPregnancyDataExportUrl,
 } from '../../configs/settings';
 import {
@@ -165,7 +165,7 @@ const LogFace = (props: LogFacePropsType) => {
                         <span>{t('Type')}</span>
                         <Select
                             placeholder={t('Select type')}
-                            options={SmsTypes.map((value) => ({ value, label: value }))}
+                            options={smsTypeFilterByModule[module].map((value) => ({ value, label: value }))}
                             onChange={(val) => updateUrlWithFilter(SMS_TYPE_FILTER_PARAM, props, val?.value)}
                             classNamePrefix="logface-filters"
                             isClearable={true}

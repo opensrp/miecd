@@ -79,7 +79,6 @@ export const COMMUNE = 'Commune';
 export const DISTRICT = 'District';
 export const VILLAGE = 'Village';
 export const RED_ALERT_CLASSNAME = 'red-alert';
-export const NEWBORN_REPORT = 'Newborn Report';
 export const EC_WOMAN = 'ec_woman';
 export const EC_FAMILY_MEMBER = 'ec_family_member';
 export const EC_CHILD = 'ec_child';
@@ -106,6 +105,10 @@ export const UPDATE_NUTRITION_REGISTRATION = 'Update Nutrition Registration';
 export const MONTHLY_NUTRITION_REPORT = 'Monthly Nutrition Report';
 export const ACCOUNT_CHECK = 'Account Check';
 export const ANC_VISIT = 'ANC Visit';
+export const HOME_ANC_VISIT = 'Home ANC Visit';
+export const DEPARTURE_REPORT = 'Departure Report';
+export const PNC_REPORT = 'PNC Report';
+export const NEWBORN_REPORT = 'Newborn Report';
 
 // // sms events fields
 export const NUTRITION_STATUS = 'nutrition_status';
