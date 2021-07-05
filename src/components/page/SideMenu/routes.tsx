@@ -77,16 +77,19 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
                     title: t('Log face'),
                     key: 'pregnancyLogFace',
                     url: PREGNANCY_LOGFACE_URL,
+                    enabled: true,
                 },
                 {
                     title: t('Compartments'),
                     key: 'pregnancyCompartments',
                     url: PREGNANCY_COMPARTMENTS_URL,
+                    enabled: true,
                 },
                 {
                     title: t('Analysis'),
                     key: 'pregnancyAnalysis',
                     url: PREGNANCY_ANALYSIS_URL,
+                    enabled: true,
                 },
             ],
         },
@@ -100,16 +103,19 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
                     title: t('Log face'),
                     key: 'nbcPncLogFace',
                     url: NBC_AND_PNC_LOGFACE_URL,
+                    enabled: true,
                 },
                 {
                     title: t('Compartments'),
                     key: 'nbcPncCompartments',
                     url: NBC_AND_PNC_COMPARTMENTS_URL,
+                    enabled: true,
                 },
                 {
                     title: t('Analysis'),
                     key: 'nbcPncAnalysis',
                     url: NBC_AND_PNC_ANALYSIS_URL,
+                    enabled: true,
                 },
             ],
         },
@@ -123,16 +129,19 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
                     title: t('Log face'),
                     key: 'nutritionLogFace',
                     url: NUTRITION_LOGFACE_URL,
+                    enabled: true,
                 },
                 {
                     title: t('Compartments'),
                     key: 'nutritionCompartments',
                     url: NUTRITION_COMPARTMENTS_URL,
+                    enabled: true,
                 },
                 {
                     title: t('Analysis'),
                     key: 'nutritionAnalysis',
                     url: NUTRITION_ANALYSIS_URL,
+                    enabled: true,
                 },
             ],
         },
@@ -151,20 +160,21 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
                     key: 'users',
                     enabled: ENABLE_USERS && roles && isAuthorized(roles, activeRoles.USERS?.split(',') ?? []),
                     children: [
-                        { title: t('Users'), key: 'user', url: URL_USER },
-                        { title: t('User groups'), key: 'user-groups', url: URL_USER_GROUPS },
-                        { title: t('User roles'), key: 'user-roles', url: URL_USER_ROLES },
+                        { title: t('Users'), key: 'user', url: URL_USER, enabled: true },
+                        { title: t('User groups'), key: 'user-groups', url: URL_USER_GROUPS, enabled: true },
+                        { title: t('User roles'), key: 'user-roles', url: URL_USER_ROLES, enabled: true },
                     ],
                 },
                 {
                     title: 'Locations',
-                    key: 'location',
+                    key: 'locations',
                     enabled: ENABLE_LOCATIONS && roles && isAuthorized(roles, activeRoles.LOCATIONS?.split(',') ?? []),
                     children: [
-                        { title: t('Location unit'), url: URL_LOCATION_UNIT, key: 'location-unit' },
+                        { title: t('Location unit'), url: URL_LOCATION_UNIT, key: 'location-unit', enabled: true },
                         {
                             title: t('Location unit group'),
                             url: URL_LOCATION_UNIT_GROUP,
+                            enabled: true,
                             key: 'location-group',
                         },
                     ],
@@ -174,7 +184,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
                     key: 'teams',
                     enabled: ENABLE_TEAMS && roles && isAuthorized(roles, activeRoles.TEAMS?.split(',') ?? []),
                     children: [
-                        { title: t('Teams'), url: URL_TEAMS, key: 'teams-list' },
+                        { title: t('Teams'), url: URL_TEAMS, key: 'teams-list', enabled: true },
                         {
                             title: t('Teams assignment'),
                             url: URL_TEAM_ASSIGNMENT,
@@ -197,7 +207,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
  */
 export function filterFalsyRoutes(routes: Route[]): Route[] {
     return routes
-        .filter((e) => !e.hasOwnProperty('enabled') || (e.hasOwnProperty('enabled') && e.enabled === true))
+        .filter((e) => e.enabled)
         .map((e) => {
             return e.children ? { ...e, children: filterFalsyRoutes(e.children) } : e;
         });

@@ -90,6 +90,12 @@ exports[`App location units routes are correctly registered: user list 1`] = `
 </MockLocationComponent>
 `;
 
+exports[`App module home routes are registered correctly 1`] = `" tHat PartSign OutEnglishVietnamesehome.svg   Homepregnancy.svg   PregnancyLog faceCompartmentsAnalysisnbcandpnc.svg   NBC & PNCnutrition.svg   NutritionWelcome to Newborn and Postnatal CareThis dashboard displays information collected from MIECD Viet Nam Pregnancy Module for patients in your geographical location.The module covers the whole pregnancy period from conception to delivery and includes Pregnancy Registration, ANC visits, Birth/Death reports, Risk Reports, Risk alerts and Response reports.Log faceDisplay of all messages received from MIECD in chronological orderViewCompartmentsThis is the aggregation and categorization of patients dataViewAnalysisImportant analysis and indicators generated from collected dataView"`;
+
+exports[`App module home routes are registered correctly 2`] = `" tHat PartSign OutEnglishVietnamesehome.svg   Homepregnancy.svg   PregnancyLog faceCompartmentsAnalysisnbcandpnc.svg   NBC & PNCnutrition.svg   NutritionLog faceCompartmentsAnalysisWelcome to Nutrition CareThis dashboard displays information collected from MIECD Viet Nam Pregnancy Module for patients in your geographical location.The module covers the whole pregnancy period from conception to delivery and includes Pregnancy Registration, ANC visits, Birth/Death reports, Risk Reports, Risk alerts and Response reports.Log faceDisplay of all messages received from MIECD in chronological orderViewCompartmentsThis is the aggregation and categorization of patients dataViewAnalysisImportant analysis and indicators generated from collected dataView"`;
+
+exports[`App module home routes are registered correctly: pregnancy module home 1`] = `" tHat PartSign OutEnglishVietnamesehome.svg   Homepregnancy.svg   PregnancyLog faceCompartmentsAnalysisnbcandpnc.svg   NBC & PNCnutrition.svg   NutritionWelcome to the pregnancy dashboardThis dashboard displays information collected from MIECD Viet Nam Pregnancy Module for patients in your geographical location.The module covers the whole pregnancy period from conception to delivery and includes Pregnancy Registration, ANC visits, Birth/Death reports, Risk Reports, Risk alerts and Response reports.Log faceDisplay of all messages received from MIECD in chronological orderViewCompartmentsThis is the aggregation and categorization of patients dataViewAnalysisImportant analysis and indicators generated from collected dataView"`;
+
 exports[`App teams routes are correctly registered 1`] = `
 <MockTeamAssignmentComponent
   message="Teams assignment"
@@ -132,10 +138,10 @@ exports[`App teams routes are correctly registered: user list 1`] = `
 
 exports[`App userManagement routes are correctly registered 1`] = `
 <MockUsersComponent
-  message="UserEdit"
+  message="User Create Edit"
 >
   <div>
-    UserEdit
+    User Create Edit
   </div>
 </MockUsersComponent>
 `;
@@ -172,10 +178,40 @@ exports[`App userManagement routes are correctly registered 4`] = `
 
 exports[`App userManagement routes are correctly registered 5`] = `
 <MockUsersComponent
+  message="User groups list"
+>
+  <div>
+    User groups list
+  </div>
+</MockUsersComponent>
+`;
+
+exports[`App userManagement routes are correctly registered 6`] = `
+<MockUsersComponent
   message="Edit user groups"
 >
   <div>
     Edit user groups
+  </div>
+</MockUsersComponent>
+`;
+
+exports[`App userManagement routes are correctly registered 7`] = `
+<MockUsersComponent
+  message="User roles list"
+>
+  <div>
+    User roles list
+  </div>
+</MockUsersComponent>
+`;
+
+exports[`App userManagement routes are correctly registered: shows user create/edit view 1`] = `
+<MockUsersComponent
+  message="User Create Edit"
+>
+  <div>
+    User Create Edit
   </div>
 </MockUsersComponent>
 `;

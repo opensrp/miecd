@@ -11,8 +11,12 @@ import {
     URL_LOCATION_UNIT_ADD,
     URL_LOCATION_UNIT_GROUP,
     URL_LOCATION_UNIT_GROUP_ADD,
+    URL_USER_ROLES,
+    NBC_AND_PNC_URL,
+    NUTRITION_URL,
+    PREGNANCY_URL,
 } from '../../constants';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import { MemoryRouter, RouteComponentProps } from 'react-router';
@@ -27,6 +31,7 @@ import {
     URL_USER_GROUP_EDIT,
     URL_USER,
     URL_USER_GROUPS,
+    URL_USER_CREATE,
 } from '@opensrp/user-management';
 
 jest.mock('containers/pages/Analysis', () => {
@@ -42,7 +47,7 @@ jest.mock('@opensrp/user-management', () => {
     return {
         ...userMocks,
         ConnectedUserList: () => <MockUsersComponent message="Users list" />,
-        ConnectedCreateEditUser: () => <MockUsersComponent message="UserEdit" />,
+        ConnectedCreateEditUser: () => <MockUsersComponent message="User Create Edit" />,
         ConnectedUserCredentials: () => <MockUsersComponent message="User credentials list" />,
         UserGroupsList: () => <MockUsersComponent message="User groups list" />,
         UserRolesList: () => <MockUsersComponent message="User roles list" />,
@@ -167,9 +172,22 @@ describe('App', () => {
         wrapper.update();
         expect(toJson(wrapper.find('MockUsersComponent'))).toMatchSnapshot();
 
+        (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(URL_USER_GROUPS);
+        wrapper.update();
+        expect(toJson(wrapper.find('MockUsersComponent'))).toMatchSnapshot();
+
         (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(URL_USER_GROUP_CREATE);
         wrapper.update();
         expect(toJson(wrapper.find('MockUsersComponent'))).toMatchSnapshot();
+
+        (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(URL_USER_CREATE);
+        wrapper.update();
+        expect(toJson(wrapper.find('MockUsersComponent'))).toMatchSnapshot('shows user create/edit view');
+
+        (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(URL_USER_ROLES);
+        wrapper.update();
+        expect(toJson(wrapper.find('MockUsersComponent'))).toMatchSnapshot('');
+
         wrapper.unmount();
     });
 
@@ -242,6 +260,29 @@ describe('App', () => {
         (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(URL_LOCATION_UNIT_ADD);
         wrapper.update();
         expect(toJson(wrapper.find('MockLocationComponent'))).toMatchSnapshot();
+        wrapper.unmount();
+    });
+
+    it('module home routes are registered correctly', async () => {
+        // redirecting to certain routes renders the correct page
+        const wrapper = mount(
+            <Provider store={store}>
+                <MemoryRouter initialEntries={[{ pathname: PREGNANCY_URL }]}>
+                    <App />
+                </MemoryRouter>
+            </Provider>,
+        );
+
+        expect(wrapper.text()).toMatchSnapshot('pregnancy module home');
+
+        (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(NBC_AND_PNC_URL);
+        wrapper.update();
+        expect(wrapper.text()).toMatchSnapshot();
+
+        (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(NUTRITION_URL);
+        wrapper.update();
+        expect(wrapper.text()).toMatchSnapshot();
+
         wrapper.unmount();
     });
 });
