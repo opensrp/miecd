@@ -9,8 +9,10 @@ import {
     NBC_AND_PNC_MODULE,
     NEWBORN_REPORT,
     NUTRITION_MODULE,
+    NUTRITION_REGISTRATION,
     PNC_REPORT,
     PREGNANCY,
+    PREGNANCY_DETECTION,
     PREGNANCY_LOGFACE_URL,
     PREGNANCY_MODULE,
 } from '../../../constants';
@@ -261,12 +263,12 @@ describe('containers/LogFace extended', () => {
         // change sms type level
         wrapper
             .find('#sms-type-filter select')
-            .simulate('change', { target: { value: 'Birth Report', name: 'Birth Report' } });
+            .simulate('change', { target: { value: PREGNANCY_DETECTION, name: PREGNANCY_DETECTION } });
         wrapper.update();
 
         // check url changed correctly
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
-            '?search=101&riskCategory=redAlert&smsType=Birth%20Report',
+            '?search=101&riskCategory=redAlert&smsType=Pregnancy%20Detection',
         );
 
         // just checking that there were some events filtered out.
@@ -281,7 +283,7 @@ describe('containers/LogFace extended', () => {
 
         // check url changed correctly
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
-            '?search=101&riskCategory=redAlert&smsType=Birth%20Report&locationSearch=eccfe905-0e03-4188-98bc-22f141cccd0e',
+            '?search=101&riskCategory=redAlert&smsType=Pregnancy%20Detection&locationSearch=eccfe905-0e03-4188-98bc-22f141cccd0e',
         );
         wrapper.unmount();
     });
@@ -356,12 +358,12 @@ describe('containers/LogFace extended', () => {
         });
         wrapper
             .find('#sms-type-filter select')
-            .simulate('change', { target: { value: 'Nutrition Report', name: 'Nutrition Report' } });
+            .simulate('change', { target: { value: NUTRITION_REGISTRATION, name: NUTRITION_REGISTRATION } });
         wrapper.update();
 
         // check url changed correctly
         expect((wrapper.find('Router').props() as RouteComponentProps).history.location.search).toEqual(
-            '?riskCategory=overweight&smsType=Nutrition%20Report',
+            '?riskCategory=overweight&smsType=Nutrition%20Registration',
         );
 
         expect(toJson(wrapper.find('#export-button'))).toMatchSnapshot('Export button');
