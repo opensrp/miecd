@@ -1,4 +1,4 @@
-import './mls';
+import './helpers/dispatchConfig';
 import { history } from '@onaio/connected-reducer-registry';
 import { ConnectedRouter } from 'connected-react-router';
 import React from 'react';
@@ -10,6 +10,7 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
 import Ripple from './components/page/Loading';
+import 'antd/dist/antd.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const queryClient = new QueryClient();

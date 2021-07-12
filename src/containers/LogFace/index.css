@@ -23,32 +23,32 @@ td {
     padding: 5px;
 }
 
-.table-container {
+.table-container-div {
     box-shadow: 0 2px 4px 0 #d7d7e0;
     display: block;
 }
 
-.table-container table tbody tr td:first-child {
+.table-container-div table tbody tr td:first-child {
     overflow-wrap: break-word;
 }
 
-.table-container table {
+.table-container-div table {
     border: none !important;
     background: #fff;
 }
 
-.table-container .card {
+.table-container-div .card {
     margin-bottom: 16px;
 }
 
-.table-container table th {
+.table-container-div table th {
     color: #3a484f;
     font-family: Roboto;
     font-size: 16px;
     font-weight: 400;
 }
 
-.table-container table td {
+.table-container-div table td {
     color: #7c7c7c;
     font-family: Roboto;
     font-size: 18px;
@@ -101,7 +101,7 @@ td {
     margin-top: 24px;
 }
 
-.logface-content .table-container table .badge-warning {
+.logface-content .table-container-div table .badge-warning {
     color: #fff;
 }
 
@@ -117,12 +117,12 @@ td {
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.2);
 }
 
-.table-container table #body {
+.table-container-div table #body {
     overflow: auto;
     height: 100%;
 }
 
-.table-container table #body > tr td:nth-child(8) {
+.table-container-div table #body > tr td:nth-child(8) {
     width: 26%;
     height: 20%;
 }

@@ -178,7 +178,7 @@ const LogFace = (props: LogFacePropsType) => {
                 </div>
             </div>
 
-            <div className="table-container">
+            <div className="table-container-div">
                 {smsData.length ? (
                     <Table striped={true} borderless={true}>
                         <thead id="header">

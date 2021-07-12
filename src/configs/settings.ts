@@ -80,6 +80,7 @@ import {
     SUPERSET_NBC_AND_PNC_ANALYSIS_DASHBOARD,
     SUPERSET_NUTRITION_ANALYSIS_DASHBOARD,
     SUPERSET_PREGNANCY_ANALYSIS_DASHBOARD,
+    OPENSRP_API_BASE_URL,
 } from './env';
 import { Dictionary } from 'helpers/utils';
 
@@ -354,3 +355,6 @@ export const smsTypeFilterByModule: LogFaceModuleDictionary<string[]> = {
         RESPONSE_REPORT,
     ],
 };
+
+// internal urls
+export const OPENSRP_REST_API_BASE_URL = OPENSRP_API_BASE_URL + '/rest/';

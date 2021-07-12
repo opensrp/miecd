@@ -1,132 +1,122 @@
-import * as React from 'react';
-import { WithTranslation, withTranslation } from 'react-i18next';
-import { RouteComponentProps } from 'react-router';
-import { withRouter } from 'react-router-dom';
-import { Col, Row } from 'reactstrap';
-import { RoutesProps } from '../../../App/Routes';
-import { ReactComponent as HomeLogo } from '../../../assets/menuIcons/home.svg';
-import { ReactComponent as NbcAndPncLogo } from '../../../assets/menuIcons/nbcandpnc.svg';
-import { ReactComponent as NutritionLogo } from '../../../assets/menuIcons/nutrition.svg';
-import { ReactComponent as PregnancyLogo } from '../../../assets/menuIcons/pregnancy.svg';
-import {
-    ENABLE_PREGNANCY_MODULE,
-    ENABLE_HOME_NAVIGATION,
-    ENABLE_NBC_AND_PNC_MODULE,
-    ENABLE_NUTRITION_MODULE,
-    ENABLE_REPORT_MODULE,
-} from '../../../configs/env';
-import { ENABLE_ADMIN_MODULE, ENABLE_CLIENT_RECORDS_MODULE, navigationModulesFactory } from './constants';
+import React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { Dictionary } from '@onaio/utils';
+import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import Menu from 'rc-menu';
 import './index.css';
-import SubMenu, { ModulePageLink, PageLink, SubMenuProps } from './SubMenu';
+import { getActiveKey, getRoutes, Route } from './routes';
+import { getExtraData } from '@opensrp/store';
+import 'rc-menu/assets/index.css';
+import { isAuthenticated, getUser } from '@onaio/session-reducer';
+import { connect } from 'react-redux';
+import { Store } from 'redux';
 
-/** interface for the local state for this component
- * @property {string} collapsedModuleLabel - label pointing to active navigation module
- */
-export interface SideMenuState {
-    collapsedModuleLabel: string;
+/** interface for SidebarProps */
+export interface SidebarProps extends RouteComponentProps {
+    authenticated: boolean;
+    extraData: { [key: string]: Dictionary };
 }
 
-const defaultSideMenuState: SideMenuState = {
-    collapsedModuleLabel: '',
+/** default props for Sidebar */
+const defaultSidebarProps: Partial<SidebarProps> = {
+    authenticated: false,
 };
 
-type HeaderPropsTypes = RoutesProps & RouteComponentProps & WithTranslation;
+/** The Sidebar component */
+export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) => {
+    const { t } = useTranslation();
+    const { extraData } = props;
+    const { roles } = extraData;
+    const location = useLocation();
+    const [openKeys, setOpenKeys] = React.useState<React.Key[]>([]);
 
-class SideMenu extends React.Component<HeaderPropsTypes, SideMenuState> {
-    constructor(props: HeaderPropsTypes) {
-        super(props);
-        this.state = defaultSideMenuState;
-    }
+    const routes = React.useMemo(() => getRoutes(roles as string[], t), [roles, t]);
 
-    public render() {
-        const { collapsedModuleLabel } = this.state;
-        interface SubMenuToRender {
-            shouldRender: boolean;
-            subMenuProps: Partial<SubMenuProps>;
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            icon?: any;
+    const sidebaritems: JSX.Element[] = React.useMemo(() => {
+        function mapChildren(route: Route) {
+            const icon = route.otherProps?.icon;
+            if (route.children) {
+                const title = (
+                    <>
+                        {icon}&nbsp;&nbsp;&nbsp;{route.title}
+                    </>
+                );
+
+                return (
+                    <Menu.SubMenu key={route.key} title={title}>
+                        {route.children.map(mapChildren)}
+                    </Menu.SubMenu>
+                );
+            } else if (route.url) {
+                return (
+                    <Menu.Item key={route.key}>
+                        <Link className="admin-link" to={route.url}>
+                            {icon ? (
+                                <>
+                                    {icon}&nbsp;&nbsp;&nbsp;{route.title}
+                                </>
+                            ) : (
+                                route.title
+                            )}
+                        </Link>
+                    </Menu.Item>
+                );
+            } else {
+                return <Menu.Item key={route.key}>{route.title}</Menu.Item>;
+            }
         }
 
-        const { t } = this.props;
-        const {
-            HOME_NAVIGATION_MODULE,
-            PREGNANCY_NAVIGATION_MODULE,
-            NBC_AND_PNC_NAVIGATION_MODULE,
-            NUTRITION_MODULE,
-            REPORT_NAVIGATION_MODULE,
-            CLIENT_NAVIGATION_MODULE,
-            ADMIN_NAVIGATION_MODULE,
-        } = navigationModulesFactory(t);
+        return routes.map(mapChildren);
+    }, [routes]);
 
-        const navigationModules: SubMenuToRender[] = [
-            {
-                icon: HomeLogo,
-                shouldRender: ENABLE_HOME_NAVIGATION,
-                subMenuProps: HOME_NAVIGATION_MODULE,
-            },
-            {
-                icon: PregnancyLogo,
-                shouldRender: ENABLE_PREGNANCY_MODULE,
-                subMenuProps: PREGNANCY_NAVIGATION_MODULE,
-            },
-            {
-                icon: NbcAndPncLogo,
-                shouldRender: ENABLE_NBC_AND_PNC_MODULE,
-                subMenuProps: NBC_AND_PNC_NAVIGATION_MODULE,
-            },
-            {
-                icon: NutritionLogo,
-                shouldRender: ENABLE_NUTRITION_MODULE,
-                subMenuProps: NUTRITION_MODULE,
-            },
-            { shouldRender: ENABLE_REPORT_MODULE, subMenuProps: REPORT_NAVIGATION_MODULE },
-            { shouldRender: ENABLE_CLIENT_RECORDS_MODULE, subMenuProps: CLIENT_NAVIGATION_MODULE },
-            { shouldRender: ENABLE_ADMIN_MODULE, subMenuProps: ADMIN_NAVIGATION_MODULE },
-        ];
-        return (
-            <div
-                className={`${
-                    this.props.authenticated && !this.checkHomePageURL(this.props) ? 'sidebar' : 'hidden-container'
-                }`}
-            >
-                <div className="side-menu-container">
-                    <Row>
-                        <Col className="side-menu-extend">
-                            {navigationModules.map((navigationModule: SubMenuToRender, index: number) => {
-                                if (navigationModule.shouldRender) {
-                                    return (
-                                        <SubMenu
-                                            childNavs={navigationModule.subMenuProps.childNavs as PageLink[]}
-                                            collapsedModuleLabel={collapsedModuleLabel}
-                                            setCollapsedModuleLabel={this.setCollapsedModuleLabel}
-                                            parentNav={navigationModule.subMenuProps.parentNav as ModulePageLink}
-                                            key={index}
-                                            customIcon={navigationModule.icon}
-                                        />
-                                    );
-                                }
-                                return null;
-                            })}
-                        </Col>
-                    </Row>
-                </div>
+    const activeLocationPaths = location.pathname.split('/').filter((locString: string) => locString.length);
+    const activeKey = getActiveKey(location.pathname, routes);
+
+    return (
+        <div>
+            <div className="side-menu-container">
+                <Menu
+                    key="main-menu"
+                    selectedKeys={[activeKey ?? '']}
+                    openKeys={openKeys.length ? (openKeys as string[]) : activeLocationPaths}
+                    defaultOpenKeys={activeLocationPaths}
+                    defaultSelectedKeys={[activeKey ?? '']}
+                    onOpenChange={(keys) => setOpenKeys(keys)}
+                    mode="inline"
+                    className="menu-dark"
+                >
+                    {sidebaritems}
+                </Menu>
             </div>
-        );
-    }
+        </div>
+    );
+};
 
-    /** updates collapsedModuleLabel to label of the new navigation module that should be collapsed */
-    private setCollapsedModuleLabel = (label: string) => {
-        this.setState({
-            collapsedModuleLabel: label,
-        });
+SidebarComponent.defaultProps = defaultSidebarProps;
+
+const Sidebar = withRouter(SidebarComponent);
+
+export { Sidebar };
+
+/** Connect the component to the store */
+
+/** map state to props */
+const mapStateToProps = (state: Partial<Store>) => {
+    const result = {
+        authenticated: isAuthenticated(state),
+        user: getUser(state),
+        extraData: getExtraData(state),
     };
+    return result;
+};
 
-    private checkHomePageURL = (props: HeaderPropsTypes) => {
-        const { location } = props;
-        return location.pathname.includes('oauth') || location.pathname === '/';
-    };
-}
+const mapDispatchToProps = {};
 
-const connectedSideMenu = withRouter((props: HeaderPropsTypes) => <SideMenu {...props} />);
+/** create connected component */
 
-export default withTranslation()(connectedSideMenu);
+/** Connected Sidebar component
+ */
+const ConnectedSidebar = connect(mapStateToProps, mapDispatchToProps)(Sidebar);
+
+export default ConnectedSidebar;

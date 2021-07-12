@@ -37,16 +37,18 @@ export const ENABLE_NBC_AND_PNC_MODULE = process.env.REACT_APP_ENABLE_NBC_AND_PN
 export const ENABLE_HOME_NAVIGATION = process.env.REACT_APP_ENABLE_HOME_NAVIGATION === 'true' || false;
 
 /** Do you want to enable User page of Admin Module? */
-export const ENABLE_USER_PAGE = process.env.REACT_APP_ENABLE_USER_PAGE === 'true' || false;
+export const ENABLE_USERS = process.env.REACT_APP_ENABLE_USERS === 'true' || false;
 
 /** Do you want to enable Role page of Admin Module? */
 export const ENABLE_ROLE_PAGE = process.env.REACT_APP_ENABLE_ROLE_PAGE === 'true' || false;
 
 /** Do you want to enable Team page of Admin Module? */
-export const ENABLE_TEAM_PAGE = process.env.REACT_APP_ENABLE_TEAM_PAGE === 'true' || false;
+export const ENABLE_TEAMS = process.env.REACT_APP_ENABLE_TEAMS === 'true' || false;
+
+export const ENABLE_TEAMS_ASSIGNMENT_MODULE = process.env.REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE === 'true' || false;
 
 /** Do you want to enable Location page of Admin Module? */
-export const ENABLE_LOCATION_PAGE = process.env.REACT_APP_ENABLE_LOCATION_PAGE === 'true' || false;
+export const ENABLE_LOCATIONS = process.env.REACT_APP_ENABLE_LOCATIONS === 'true' || false;
 
 /** Do you want to enable the clients page? */
 export const ENABLE_CLIENTS = process.env.REACT_APP_ENABLE_CLIENTS === 'true';
@@ -156,3 +158,27 @@ export const SUPERSET_NBC_AND_PNC_ANALYSIS_DASHBOARD =
     process.env.REACT_APP_SUPERSET_NBC_AND_PNC_ANALYSIS_DASHBOARD || '0';
 
 export const SUPERSET_NUTRITION_ANALYSIS_DASHBOARD = process.env.REACT_APP_SUPERSET_NUTRITION_ANALYSIS_DASHBOARD || '0';
+/** enum representing the keycloak roles */
+export enum Roles {
+    ROLE_EDIT_KEYCLOAK_USERS = 'ROLE_EDIT_KEYCLOAK_USERS',
+    ROLE_VIEW_KEYCLOAK_USERS = 'ROLE_VIEW_KEYCLOAK_USERS',
+}
+
+const defaultRoles = {
+    USERS: `${Roles.ROLE_EDIT_KEYCLOAK_USERS},${Roles.ROLE_VIEW_KEYCLOAK_USERS}`,
+    LOCATIONS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+    TEAMS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+    ADMIN: `${Roles.ROLE_EDIT_KEYCLOAK_USERS},${Roles.ROLE_VIEW_KEYCLOAK_USERS}`,
+};
+
+export const OPENSRP_ROLES =
+    (process.env.REACT_APP_OPENSRP_ROLES && JSON.parse(process.env.REACT_APP_OPENSRP_ROLES as string)) || defaultRoles;
+
+export const KEYCLOAK_API_BASE_URL =
+    process.env.REACT_APP_KEYCLOAK_API_BASE_URL ||
+    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
+
+export const KEYCLOAK_USERS_PAGE_SIZE = Number(process.env.REACT_APP_KEYCLOAK_USERS_PAGE_SIZE || '20');
+
+/** Default plan id */
+export const DEFAULT_PLAN_ID = process.env.REACT_APP_DEFAULT_PLAN_ID || '';

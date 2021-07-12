@@ -1,0 +1,62 @@
+.content-wrapper {
+    margin: 20px;
+    font-size: 1.2em !important;
+}
+
+.content-wrapper .main-content {
+    padding: 0;
+}
+
+.content-wrapper h1.fs-5 {
+    font-size: 1.5rem;
+}
+
+.content-wrapper > div {
+    padding: 0;
+}
+
+.content-wrapper .content-section > div {
+    padding-top: 0;
+}
+
+.content-wrapper .ant-table-thead,
+.ant-table-tbody {
+    position: static;
+    display: table-row-group;
+}
+
+.content-wrapper .ant-table-thead {
+    display: table-header-group;
+}
+
+.content-wrapper .main-content__header {
+    margin-bottom: 0;
+}
+
+table td {
+    border: none;
+}
+
+/** target more specific sections in the opensrp-web modules*/
+
+.content-wrapper h1,
+.content-wrapper .layout-content > h5,
+.ant-page-header-heading-title {
+    padding: 0px 15px;
+    border-left: 5px solid #0093db;
+    color: #001429 !important;
+    font-size: 30px !important;
+    letter-spacing: -0.18px;
+    line-height: 34px !important;
+    font-family: Roboto;
+    margin-bottom: 1rem !important;
+    font-weight: 500 !important;
+}
+
+.ant-table {
+    font-size: 16px !important;
+}
+
+.main-content > .ant-table-wrapper {
+    margin-top: 10px;
+}

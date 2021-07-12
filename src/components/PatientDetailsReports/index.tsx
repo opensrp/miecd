@@ -58,7 +58,7 @@ function PatientDetailsReport(props: ReportTableTypes) {
                 smsData.message,
             ]) ?? [],
         headerItems: [t('Report'), t('Date'), t('Reporter'), t('Message')],
-        tableClass: 'table-container',
+        tableClass: 'table-container-div',
         tbodyClass: 'body',
         thClass: 'report-table__td',
         tdClass: 'report-table__td',

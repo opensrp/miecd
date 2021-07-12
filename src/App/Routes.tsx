@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Store } from 'redux';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LastLocationProvider } from 'react-router-last-location';
-import SideMenu from '../components/page/SideMenu';
+import ConnectedSidebar from '../components/page/SideMenu';
 import { BACKEND_ACTIVE, DISABLE_LOGIN_PROTECTION } from '../configs/env';
 import { APP_CALLBACK_PATH, APP_CALLBACK_URL, APP_LOGIN_URL, AuthGrantType, providers } from '../configs/settings';
 import {
@@ -31,6 +31,18 @@ import {
     PREGNANCY_LOGFACE_URL,
     PREGNANCY_MODULE,
     PREGNANCY_URL,
+    URL_LOCATION_UNIT,
+    URL_LOCATION_UNIT_ADD,
+    URL_LOCATION_UNIT_EDIT,
+    URL_LOCATION_UNIT_GROUP,
+    URL_LOCATION_UNIT_GROUP_ADD,
+    URL_LOCATION_UNIT_GROUP_EDIT,
+    URL_TEAMS,
+    URL_TEAMS_ADD,
+    URL_TEAMS_EDIT,
+    URL_TEAM_ASSIGNMENT,
+    URL_USER_GROUPS,
+    URL_USER_ROLES,
 } from '../constants';
 import Compartments from '../containers/Compartments';
 import ConnectedHierarchicalDataTable from '../containers/HierarchichalDataTable';
@@ -46,8 +58,56 @@ import CustomConnectedAPICallBack, { SuccessfulLoginComponent } from 'components
 import Ripple from '../components/page/Loading';
 import React from 'react';
 import NotFound from '../components/NotFound';
+import {
+    LocationUnitList,
+    LocationUnitGroupAddEdit,
+    LocationUnitGroupList,
+    NewLocationUnit,
+    EditLocationUnit,
+} from '@opensrp/location-management';
+import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
+import {
+    locationUnitProps,
+    newLocationUnitProps,
+    editLocationProps,
+    createEditUserProps,
+    teamAssignmentProps,
+    usersListProps,
+    baseProps,
+    teamsEditProps,
+} from './utils';
+import {
+    ConnectedUserList,
+    ConnectedCreateEditUser,
+    ConnectedUserCredentials,
+    UserGroupsList,
+    UserRolesList,
+    URL_USER,
+    URL_USER_EDIT,
+    ROUTE_PARAM_USER_ID,
+    ROUTE_PARAM_USER_GROUP_ID,
+    URL_USER_GROUP_EDIT,
+    URL_USER_GROUP_CREATE,
+    URL_USER_CREATE,
+    URL_USER_CREDENTIALS,
+    CreateEditUserGroup,
+    EditUserProps,
+    CredentialsPropsTypes,
+} from '@opensrp/user-management';
+import { TeamAssignmentView } from '@opensrp/team-assignment';
+import '@opensrp/team-assignment/dist/index.css';
+import '@opensrp/user-management/dist/index.css';
+import { ContentWrapper } from 'components/ContentWrapper';
 
 library.add(faUser);
+
+interface UserGroupRouteParams {
+    userGroupId: string;
+}
+
+interface UserIdRouteParams {
+    userId: string;
+}
 
 const mapStateToProps = (state: Partial<Store>) => {
     return {
@@ -75,8 +135,7 @@ export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) 
     );
 };
 
-export const Routes = (props: RoutesProps) => {
-    const { authenticated } = props;
+export const Routes = () => {
     const { t } = useTranslation();
     const NBC_AND_PNC_DASHBOARD_WELCOME = t('Welcome to Newborn and Postnatal Care');
     const NUTRITION_DASHBOARD_WELCOME = t('Welcome to Nutrition Care');
@@ -91,12 +150,13 @@ export const Routes = (props: RoutesProps) => {
             </span>
         </Trans>
     );
+    const userAssignmentClass = 'user-assignment__list';
 
     const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
 
     return (
         <div className="main-container">
-            <SideMenu authenticated={authenticated} />
+            <ConnectedSidebar />
             <div className="content">
                 <LastLocationProvider>
                     <Switch>
@@ -298,6 +358,223 @@ export const Routes = (props: RoutesProps) => {
                                 <ConnectedLogFace module={NUTRITION_MODULE} {...routeProps} />
                             )}
                         />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={URL_LOCATION_UNIT}
+                            component={(props: RouteComponentProps) => (
+                                <ContentWrapper>
+                                    <LocationUnitList {...{ ...props, ...locationUnitProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={URL_LOCATION_UNIT_ADD}
+                            component={(props: RouteComponentProps) => (
+                                <ContentWrapper>
+                                    <NewLocationUnit {...{ ...props, ...newLocationUnitProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={URL_LOCATION_UNIT_EDIT}
+                            component={(props: RouteComponentProps<{ id: string }>) => (
+                                <ContentWrapper>
+                                    <EditLocationUnit {...{ ...props, ...editLocationProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={URL_LOCATION_UNIT_GROUP}
+                            component={(props: RouteComponentProps) => (
+                                <ContentWrapper>
+                                    <LocationUnitGroupList {...{ ...props, ...baseProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={URL_LOCATION_UNIT_GROUP_ADD}
+                            component={(props: RouteComponentProps) => (
+                                <ContentWrapper>
+                                    <LocationUnitGroupAddEdit {...{ ...props, ...baseProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={URL_LOCATION_UNIT_GROUP_EDIT}
+                            component={(props: RouteComponentProps) => (
+                                <ContentWrapper>
+                                    <LocationUnitGroupAddEdit {...{ ...props, ...baseProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={URL_USER}
+                            {...usersListProps}
+                            component={(props: RouteComponentProps<UserGroupRouteParams>) => (
+                                <ContentWrapper className={userAssignmentClass}>
+                                    <ConnectedUserList {...{ ...props, ...usersListProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={URL_USER_GROUPS}
+                            component={(props: RouteComponentProps<UserGroupRouteParams>) => (
+                                <ContentWrapper className={userAssignmentClass}>
+                                    <UserGroupsList {...{ ...props, ...baseProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={URL_USER_ROLES}
+                            component={(props: RouteComponentProps) => (
+                                <ContentWrapper className={userAssignmentClass}>
+                                    <UserRolesList {...{ ...props, ...baseProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
+                            component={(props: RouteComponentProps<UserGroupRouteParams>) => (
+                                <ContentWrapper className={userAssignmentClass}>
+                                    <UserGroupsList {...{ ...props, ...baseProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={URL_TEAMS}
+                            component={(props: RouteComponentProps) => (
+                                <ContentWrapper>
+                                    <TeamsView {...{ ...props, ...baseProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={URL_TEAM_ASSIGNMENT}
+                            {...teamAssignmentProps}
+                            component={(props: RouteComponentProps) => (
+                                <ContentWrapper>
+                                    <TeamAssignmentView {...{ ...props, ...teamAssignmentProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={URL_TEAMS_ADD}
+                            component={(props: RouteComponentProps) => (
+                                <ContentWrapper>
+                                    <TeamsAddEdit {...{ ...props, ...teamsEditProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={`${URL_TEAMS_EDIT}/:id`}
+                            component={(props: RouteComponentProps) => (
+                                <ContentWrapper>
+                                    <TeamsAddEdit {...{ ...props, ...teamsEditProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={URL_USER_CREATE}
+                            component={(props: RouteComponentProps<UserIdRouteParams>) => (
+                                <ContentWrapper>
+                                    <ConnectedCreateEditUser
+                                        {...{ ...props, ...(createEditUserProps as unknown as EditUserProps) }}
+                                    />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
+                            component={(props: RouteComponentProps<UserIdRouteParams>) => (
+                                <ContentWrapper>
+                                    <ConnectedCreateEditUser
+                                        {...{ ...props, ...(createEditUserProps as unknown as EditUserProps) }}
+                                    />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
+                            component={(props: RouteComponentProps) => (
+                                <ContentWrapper>
+                                    <ConnectedUserCredentials
+                                        {...{ ...props, ...(createEditUserProps as unknown as CredentialsPropsTypes) }}
+                                    />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={`${URL_USER_GROUP_EDIT}/:${ROUTE_PARAM_USER_GROUP_ID}`}
+                            component={(props: RouteComponentProps<UserGroupRouteParams>) => (
+                                <ContentWrapper>
+                                    <CreateEditUserGroup {...{ ...props, ...baseProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
+                        <ConnectedPrivateRoute
+                            redirectPath={APP_CALLBACK_URL}
+                            disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+                            exact
+                            path={URL_USER_GROUP_CREATE}
+                            component={(props: RouteComponentProps<UserGroupRouteParams>) => (
+                                <ContentWrapper>
+                                    <CreateEditUserGroup {...{ ...props, ...baseProps }} />
+                                </ContentWrapper>
+                            )}
+                        />
                         <Route
                             exact
                             path={APP_LOGIN_URL}
@@ -306,7 +583,6 @@ export const Routes = (props: RoutesProps) => {
                                 return <></>;
                             }}
                         />
-                        <Route exact path={APP_CALLBACK_PATH} component={CallbackComponent} />
                         <ConnectedPrivateRoute
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -314,6 +590,7 @@ export const Routes = (props: RoutesProps) => {
                             path={LOGOUT_URL}
                             component={CustomLogout}
                         />
+                        <Route exact path={APP_CALLBACK_PATH} component={CallbackComponent} />
                         <Route exact component={NotFound} />
                     </Switch>
                 </LastLocationProvider>
