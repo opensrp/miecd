@@ -1,6 +1,5 @@
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { Dictionary } from '@onaio/utils';
+import { withRouter } from 'react-router';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Menu from 'rc-menu';
@@ -8,28 +7,16 @@ import './index.css';
 import { getActiveKey, getRoutes, Route } from './routes';
 import { getExtraData } from '@opensrp/store';
 import 'rc-menu/assets/index.css';
-import { isAuthenticated, getUser } from '@onaio/session-reducer';
-import { connect } from 'react-redux';
-import { Store } from 'redux';
-
-/** interface for SidebarProps */
-export interface SidebarProps extends RouteComponentProps {
-    authenticated: boolean;
-    extraData: { [key: string]: Dictionary };
-}
-
-/** default props for Sidebar */
-const defaultSidebarProps: Partial<SidebarProps> = {
-    authenticated: false,
-};
+import { useSelector } from 'react-redux';
 
 /** The Sidebar component */
-export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) => {
+export const SidebarComponent: React.FC = () => {
     const { t } = useTranslation();
-    const { extraData } = props;
-    const { roles } = extraData;
     const location = useLocation();
     const [openKeys, setOpenKeys] = React.useState<React.Key[]>([]);
+
+    const extraData = useSelector((state) => getExtraData(state));
+    const { roles } = extraData;
 
     const routes = React.useMemo(() => getRoutes(roles as string[], t), [roles, t]);
 
@@ -93,30 +80,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     );
 };
 
-SidebarComponent.defaultProps = defaultSidebarProps;
-
 const Sidebar = withRouter(SidebarComponent);
 
-export { Sidebar };
-
-/** Connect the component to the store */
-
-/** map state to props */
-const mapStateToProps = (state: Partial<Store>) => {
-    const result = {
-        authenticated: isAuthenticated(state),
-        user: getUser(state),
-        extraData: getExtraData(state),
-    };
-    return result;
-};
-
-const mapDispatchToProps = {};
-
-/** create connected component */
-
-/** Connected Sidebar component
- */
-const ConnectedSidebar = connect(mapStateToProps, mapDispatchToProps)(Sidebar);
-
-export default ConnectedSidebar;
+export default Sidebar;
