@@ -147,7 +147,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         },
         {
             otherProps: { icon: adminModuleNavIcon },
-            title: t('admin'),
+            title: t('Admin'),
             key: 'admin',
             enabled:
                 (ENABLE_LOCATIONS || ENABLE_TEAMS || ENABLE_USERS) &&

@@ -8,11 +8,19 @@ import { Link } from 'react-router-dom';
 import { useLastLocation } from 'react-router-last-location';
 import { Store } from 'redux';
 import BasicInformation, { LabelValuePair } from '../../components/BasicInformation';
-import { BACKPAGE_ICON, COMMUNE, DISTRICT, MODULE_SEARCH_PARAM_KEY, PROVINCE, VILLAGE } from '../../constants';
+import {
+    BACKPAGE_ICON,
+    COMMUNE,
+    DISTRICT,
+    LANGUAGE_CODES,
+    MODULE_SEARCH_PARAM_KEY,
+    PROVINCE,
+    VILLAGE,
+} from '../../constants';
 import * as React from 'react';
 import './index.css';
 import { flatten, keyBy } from 'lodash';
-import { fetchData, fetchSupersetData, sortByEventDate, useHandleBrokenPage } from 'helpers/utils';
+import { fetchData, fetchSupersetData, sortByEventDate, translateSmsFields, useHandleBrokenPage } from 'helpers/utils';
 import supersetFetch from '../../services/superset';
 import { ErrorPage } from 'components/ErrorPage';
 import Ripple from 'components/page/Loading';
@@ -72,7 +80,7 @@ const PatientDetails = (props: PatientDetailProps) => {
     const { isChild, communes, villages, districts, provinces, supersetService, logFaceReports } = props;
     const [loading, setLoading] = React.useState(true);
     const { error, handleBrokenPage, broken } = useHandleBrokenPage();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const lastLocation = useLastLocation();
 
     const { patient_id: patientId } = props.match.params;
@@ -126,6 +134,7 @@ const PatientDetails = (props: PatientDetailProps) => {
         districts,
         villages,
         provinces,
+        i18n.language as LANGUAGE_CODES,
     );
 
     return (
@@ -155,10 +164,11 @@ function getBasicInformationProps(
     districts: Location[],
     villages: Location[],
     provinces: Location[],
+    selectedLanguage: LANGUAGE_CODES,
 ): LabelValuePair[] {
     const defaultNA = t('N/A');
     const defaultAge = defaultNA;
-    const mostRecentReport = sortByEventDate(recentSmsData)[0] ?? {};
+    const mostRecentReport = translateSmsFields(sortByEventDate(recentSmsData), selectedLanguage)[0] ?? {};
 
     const {
         lmp_edd: edd,

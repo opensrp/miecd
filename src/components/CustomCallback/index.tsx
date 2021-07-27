@@ -5,7 +5,7 @@ import querystring from 'querystring';
 import React from 'react';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router';
 import { HOME_URL, LOGOUT_URL, EXPRESS_LOGIN_URL } from '../../constants';
-import { toastToSuccess } from 'helpers/utils';
+import { toastToSuccess, translateFormat } from 'helpers/utils';
 import Ripple from 'components/page/Loading';
 import store from 'store';
 import { EXPRESS_OAUTH_GET_STATE_URL } from 'configs/env';
@@ -48,7 +48,7 @@ export const BaseSuccessfulLoginComponent: React.FC<RouteComponentProps> = (prop
         }
         if (nextPath === '/') {
             const user = getUser(store.getState());
-            toastToSuccess(format(t('Welcome back, %s'), user.username));
+            toastToSuccess(translateFormat(t('Welcome back, {0}'), user.username));
         }
     }
     return <Redirect to={pathToRedirectTo} />;

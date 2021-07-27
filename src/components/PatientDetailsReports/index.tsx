@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react';
 import { TFunction, Trans, useTranslation } from 'react-i18next';
 import Select from 'react-select';
 import { Row } from 'reactstrap';
-import { Dictionary, sortByEventDate } from '../../helpers/utils';
+import { Dictionary, sortByEventDate, translateFormat, translateSmsFields } from '../../helpers/utils';
 import { LogFaceSmsType, NutritionLogFaceSms, PregnancyLogFaceSms } from '../../store/ducks/sms_events';
 import React from 'react';
 import { format } from 'util';
+import { LANGUAGE_CODES } from '../../constants';
 
 interface PatientDetailsReportProps {
     patientsReports: (PregnancyLogFaceSms | NutritionLogFaceSms)[];
@@ -29,7 +30,7 @@ function PatientDetailsReport(props: ReportTableTypes) {
     const [currentPregnancyEventId, setCurrentPregnancyEventId] = useState<string>('');
     const [reportsToShow, setReportsToShow] = useState<LogFaceSmsType[]>([]);
     const [pregnancyGroups, setPregnancyGroups] = useState<Dictionary<PregnancyLogFaceSms[]>>({});
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         if (!isChild) {
@@ -51,7 +52,7 @@ function PatientDetailsReport(props: ReportTableTypes) {
 
     const listViewProps = {
         data:
-            reportsToShow?.map((smsData) => [
+            translateSmsFields(reportsToShow, i18n.language as LANGUAGE_CODES)?.map((smsData) => [
                 smsData.sms_type,
                 smsData.EventDate,
                 smsData.health_worker_name,
@@ -127,7 +128,8 @@ export const pregnancyOptionsFilter = (chunkedSms: Dictionary<PregnancyLogFaceSm
     const keySegmentsLength = listOfProps.length;
 
     listOfProps.map((key, index) => {
-        const label = index === 0 ? t('Current pregnancy') : format(t('Pregnancy %d'), keySegmentsLength - index);
+        const label =
+            index === 0 ? t('Current pregnancy') : translateFormat(t('Pregnancy {0}'), keySegmentsLength - index);
         const thisOption = {
             value: key,
             label,

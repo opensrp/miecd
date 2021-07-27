@@ -6,6 +6,7 @@ import { Card, CardBody, CardTitle, Row, Table } from 'reactstrap';
 import { CompartmentSmsTypes, PregnancySmsData, NutritionSmsData, NbcPncSmsData } from '../../store/ducks/sms_events';
 import {
     DEFAULT_PAGINATION_SIZE,
+    LANGUAGE_CODES,
     NBC_AND_PNC_CHILD,
     NBC_AND_PNC_MODULE,
     NBC_AND_PNC_WOMAN,
@@ -14,7 +15,12 @@ import {
     PREGNANCY,
     PREGNANCY_MODULE,
 } from '../../constants';
-import { getCommonPaginationProps, getModuleLink, getNumberOfDaysSinceDate } from '../../helpers/utils';
+import {
+    getCommonPaginationProps,
+    getModuleLink,
+    getNumberOfDaysSinceDate,
+    translateSmsFields,
+} from '../../helpers/utils';
 import RiskColoring from '../RiskColoring';
 import './index.css';
 
@@ -49,7 +55,7 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
     }
 
     public render() {
-        const { t } = this.props;
+        const { t, i18n } = this.props;
 
         const pageLimit = DEFAULT_PAGINATION_SIZE;
         const totalPageCount = Math.ceil(this.props.smsData.length / pageLimit);
@@ -127,20 +133,21 @@ class VillageData extends React.Component<VillageDataPropsType, State> {
                                 </thead>
                                 <tbody id="body">
                                     {this.props.smsData.length
-                                        ? this.props.smsData
-                                              .slice(
+                                        ? translateSmsFields(
+                                              this.props.smsData.slice(
                                                   this.state.currentPage * pageLimit,
                                                   this.state.currentPage * pageLimit + pageLimit,
-                                              )
-                                              .map(
-                                                  this.props.module === PREGNANCY
-                                                      ? this.pregnancyMapFunction
-                                                      : this.props.module === NUTRITION
-                                                      ? this.nutritionMapFunction
-                                                      : this.props.module === NBC_AND_PNC_CHILD
-                                                      ? this.nbcAndPncChildMapFunction
-                                                      : this.nbcAndPncMotherMapFunction,
-                                              )
+                                              ),
+                                              i18n.language as LANGUAGE_CODES,
+                                          ).map(
+                                              this.props.module === PREGNANCY
+                                                  ? this.pregnancyMapFunction
+                                                  : this.props.module === NUTRITION
+                                                  ? this.nutritionMapFunction
+                                                  : this.props.module === NBC_AND_PNC_CHILD
+                                                  ? this.nbcAndPncChildMapFunction
+                                                  : this.nbcAndPncMotherMapFunction,
+                                          )
                                         : null}
                                 </tbody>
                             </Table>
