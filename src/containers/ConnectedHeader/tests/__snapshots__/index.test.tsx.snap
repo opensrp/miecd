@@ -56,15 +56,15 @@ Object {
         <LanguageSwitcher
           allLanguageOptions={
             Object {
-              "en": "English",
-              "vi": "Vietnamese",
+              "en_core": "English",
+              "vi_core": "Vietnamese",
             }
           }
           onLanguageChange={[Function]}
           supportedLanguages={
             Array [
-              "en",
-              "vi",
+              "en_core",
+              "vi_core",
             ]
           }
         />
@@ -166,15 +166,15 @@ Object {
         <LanguageSwitcher
           allLanguageOptions={
             Object {
-              "en": "English",
-              "vi": "Vietnamese",
+              "en_core": "English",
+              "vi_core": "Vietnamese",
             }
           }
           onLanguageChange={[Function]}
           supportedLanguages={
             Array [
-              "en",
-              "vi",
+              "en_core",
+              "vi_core",
             ]
           }
         />
