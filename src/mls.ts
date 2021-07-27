@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import { VI_LANGUAGE_CODE, EN_LANGUAGE_CODE } from './constants';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const enJson = require('./locales/en.json');
@@ -11,10 +12,10 @@ export const namespace = 'translation';
 
 // the format to load the resource files: <languageCode>_<projectCode>. in small
 const resources = {
-    en: {
+    [EN_LANGUAGE_CODE]: {
         [namespace]: enJson,
     },
-    vi: {
+    [VI_LANGUAGE_CODE]: {
         [namespace]: viJson,
     },
 };
@@ -40,8 +41,7 @@ i18n.use(LanguageDetector)
     // init i18next
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
-        fallbackLng: 'en',
-        debug: false,
+        fallbackLng: EN_LANGUAGE_CODE,
         detection: langDetectorOptions,
         resources,
         nsSeparator: ':::',
@@ -51,4 +51,5 @@ i18n.use(LanguageDetector)
             escapeValue: false, // not needed for react as it escapes by default
         },
     });
+
 export default i18n;
