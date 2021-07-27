@@ -24,7 +24,9 @@ import {
     EC_CHILD,
     EC_FAMILY_MEMBER,
     EC_WOMAN,
+    EN_LANGUAGE_CODE,
     HIERARCHICAL_DATA_URL,
+    LANGUAGE_CODES,
     MODULE_SEARCH_PARAM_KEY,
     NBC_AND_PNC_CHILD,
     NBC_AND_PNC_COMPARTMENTS_URL,
@@ -43,6 +45,7 @@ import {
     VIETNAM,
     VIETNAM_COUNTRY_LOCATION_ID,
     VILLAGE,
+    VI_LANGUAGE_CODE,
 } from '../constants';
 import { OpenSRPService } from '../services/opensrp';
 import supersetFetch from '../services/superset';
@@ -755,5 +758,41 @@ export const inThePast24Months = <T extends { event_date: string }>(records: T[]
     return records.filter((record) => {
         const thisDate = new Date(record.event_date);
         return isWithinInterval(thisDate, { start: twoYearsBack, end: currentDate });
+    });
+};
+
+// positive look ahead
+const valueInVtRegex = /^\S*(?=_vt$)/;
+
+/** Choose the language values to use depending on the selected language
+ * @param smsObjects - an array of sms record objects
+ * @param languageCode - currently selected language
+ */
+export function translateSmsFields<T extends Dictionary>(smsObjects: T[], languageCode: LANGUAGE_CODES) {
+    if (languageCode === VI_LANGUAGE_CODE) {
+        // get the keys, find those that end in _vt, see if there is a corresponding key similar without vt, replace it.
+        const translated = smsObjects.map((obj) => {
+            const newObj = { ...obj };
+            for (const key of Object.keys(obj)) {
+                if (valueInVtRegex.test(key)) {
+                    const [enValueKey] = key.match(valueInVtRegex) as Array<string>;
+                    (newObj as Dictionary)[enValueKey] = obj[key];
+                }
+            }
+            return newObj;
+        });
+        return translated;
+    }
+    return smsObjects;
+}
+
+/** custom format function that implements python-style string.format functionality
+ * @param rawString the format string
+ */
+export const translateFormat = (rawString: string, ...args: unknown[]) => {
+    // python-style string format
+    //  var args = Array.prototype.slice.call(arguments, 1)
+    return rawString.replace(/{(\d+)}/g, (match: string, idx: number) => {
+        return typeof args[idx] != 'undefined' ? (args[idx] as string) : match;
     });
 };
