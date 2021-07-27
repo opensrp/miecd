@@ -12,6 +12,8 @@ import {
     getCommune,
     getModuleLink,
     getLinkToPatientDetail,
+    translateSmsFields,
+    translateFormat,
 } from '../utils';
 import { chartRecord1, chartRecord2, chartRecord3, chartRecords, OpenSRPAPIResponse } from './fixtures';
 import fetchMock from 'fetch-mock';
@@ -250,5 +252,47 @@ describe('src/helpers/utils.tsx', () => {
         fetchMock.get(`https://someopensrpbaseurl/opensrp/security/authenticate/`, securityAuthenticate);
         const supersetAuthData = await fetchOpenSrpData('', customT);
         expect(supersetAuthData).toMatchObject(supersetAuthData);
+    });
+
+    it('translate sms fields works correctly', () => {
+        const sample = {
+            message_vt: 'Vietnamese message',
+            message: 'English message',
+            placebo: 'Placebo message',
+        };
+        const expected = [
+            { message: 'Vietnamese message', message_vt: 'Vietnamese message', placebo: 'Placebo message' },
+        ];
+        const response = translateSmsFields([sample], 'vi_core');
+        expect(response).toEqual(expected);
+    });
+
+    it('translate sms fields when english', () => {
+        const sample = {
+            message_vt: 'Vietnamese message',
+            message: 'English message',
+            placebo: 'Placebo message',
+        };
+        const response = translateSmsFields([sample], 'en_core');
+        expect(response).toEqual([sample]);
+    });
+
+    it('translate sms fields when english message is not available', () => {
+        const sample = {
+            message_vt: 'Vietnamese message',
+            placebo: 'Placebo message',
+        };
+        const expected = [
+            { message: 'Vietnamese message', message_vt: 'Vietnamese message', placebo: 'Placebo message' },
+        ];
+        const response = translateSmsFields([sample], 'vi_core');
+        expect(response).toEqual(expected);
+    });
+
+    it('formats test correctly', () => {
+        const format2 = 'lastName {1} firstname {0}';
+        const expected2 = 'lastName Doe firstname Jane';
+        const response2 = translateFormat(format2, 'Jane', 'Doe');
+        expect(response2).toEqual(expected2);
     });
 });

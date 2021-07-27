@@ -31,6 +31,7 @@ export interface BaseLogFaceSms {
     client_type: ClientType;
     health_worker_contact: string;
     message_vt: string;
+    sms_type_vt: string;
 }
 
 // describes smsEvents received from the slices serving the logface with data.
