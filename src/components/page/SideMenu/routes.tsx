@@ -19,21 +19,14 @@ import {
     URL_USER_GROUPS,
     URL_USER_ROLES,
 } from '../../../constants';
-
-import {
-    ENABLE_LOCATIONS,
-    ENABLE_TEAMS,
-    ENABLE_TEAMS_ASSIGNMENT_MODULE,
-    ENABLE_USERS,
-    OPENSRP_ROLES,
-} from '../../../configs/env';
-import { isAuthorized } from '@opensrp/react-utils';
+import { ENABLE_TEAMS_ASSIGNMENT_MODULE } from '../../../configs/env';
 import { ReactComponent as HomeLogo } from '../../../assets/menuIcons/home.svg';
 import { ReactComponent as NbcAndPncLogo } from '../../../assets/menuIcons/nbcandpnc.svg';
 import { ReactComponent as NutritionLogo } from '../../../assets/menuIcons/nutrition.svg';
 import { ReactComponent as PregnancyLogo } from '../../../assets/menuIcons/pregnancy.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReactNode } from 'react';
+import { enabledModules } from '../../../helpers/utils';
 
 /** Interface for menu items */
 export interface Route {
@@ -57,8 +50,14 @@ export const adminModuleNavIcon = <FontAwesomeIcon icon={adminModuleNavIconStrin
  * @returns {Route[]} returns generated routes
  */
 export function getRoutes(roles: string[], t: TFunction): Route[] {
-    const activeRoles = OPENSRP_ROLES;
-
+    const {
+        pregnancyIsEnabled,
+        usersIsEnabled,
+        nutritionIsEnabled,
+        nbcPncIsEnabled,
+        locationsIsEnabled,
+        teamsIsEnabled,
+    } = enabledModules(roles);
     const routes: Route[] = [
         {
             otherProps: { icon: <HomeLogo /> },
@@ -71,7 +70,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             otherProps: { icon: <PregnancyLogo /> },
             title: t('Pregnancy'),
             key: 'pregnancy',
-            enabled: true,
+            enabled: pregnancyIsEnabled,
             children: [
                 {
                     title: t('Log face'),
@@ -97,7 +96,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             otherProps: { icon: <NbcAndPncLogo /> },
             title: t('NBC & PNC'),
             key: 'nbcPnc',
-            enabled: true,
+            enabled: nbcPncIsEnabled,
             children: [
                 {
                     title: t('Log face'),
@@ -123,7 +122,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             otherProps: { icon: <NutritionLogo /> },
             title: t('Nutrition'),
             key: 'nutrition',
-            enabled: true,
+            enabled: nutritionIsEnabled,
             children: [
                 {
                     title: t('Log face'),
@@ -149,16 +148,13 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             otherProps: { icon: adminModuleNavIcon },
             title: t('Admin'),
             key: 'admin',
-            enabled:
-                (ENABLE_LOCATIONS || ENABLE_TEAMS || ENABLE_USERS) &&
-                roles &&
-                isAuthorized(roles, activeRoles.ADMIN?.split(',') ?? []),
+            enabled: usersIsEnabled || locationsIsEnabled || teamsIsEnabled,
             url: '/admin',
             children: [
                 {
                     title: t('User Management'),
                     key: 'users',
-                    enabled: ENABLE_USERS && roles && isAuthorized(roles, activeRoles.USERS?.split(',') ?? []),
+                    enabled: usersIsEnabled,
                     children: [
                         { title: t('Users'), key: 'user', url: URL_USER, enabled: true },
                         { title: t('User groups'), key: 'user-groups', url: URL_USER_GROUPS, enabled: true },
@@ -166,9 +162,9 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
                     ],
                 },
                 {
-                    title: 'Locations',
+                    title: t('Locations'),
                     key: 'locations',
-                    enabled: ENABLE_LOCATIONS && roles && isAuthorized(roles, activeRoles.LOCATIONS?.split(',') ?? []),
+                    enabled: locationsIsEnabled,
                     children: [
                         { title: t('Location unit'), url: URL_LOCATION_UNIT, key: 'location-unit', enabled: true },
                         {
@@ -182,7 +178,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
                 {
                     title: t('Team management'),
                     key: 'teams',
-                    enabled: ENABLE_TEAMS && roles && isAuthorized(roles, activeRoles.TEAMS?.split(',') ?? []),
+                    enabled: teamsIsEnabled,
                     children: [
                         { title: t('Teams'), url: URL_TEAMS, key: 'teams-list', enabled: true },
                         {

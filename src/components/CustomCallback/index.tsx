@@ -10,7 +10,6 @@ import Ripple from 'components/page/Loading';
 import store from 'store';
 import { EXPRESS_OAUTH_GET_STATE_URL } from 'configs/env';
 import { useTranslation } from 'react-i18next';
-import { format } from 'util';
 
 /** checks if the value of next in searchParam is blacklisted
  *

@@ -25,6 +25,7 @@ export const PREGNANCY_ANALYSIS_URL = '/pregnancy_analysis';
 export const NBC_AND_PNC_ANALYSIS_URL = '/nbc_and_pnc_analysis';
 export const NUTRITION_ANALYSIS_URL = '/nutrition_analysis';
 export const NUTRITION_URL = '/nutrition';
+export const NOT_FOUND_URL = '/404';
 export const HOUSEHOLD_URL = '/404';
 export const ANC_URL = '/404';
 export const CHILD_URL = '/404';

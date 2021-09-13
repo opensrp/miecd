@@ -3,9 +3,16 @@
 import { getOnadataUserInfo, getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import { SessionState } from '@onaio/session-reducer';
 import {
+    ENABLE_LOCATIONS,
+    ENABLE_NBC_AND_PNC_MODULE,
+    ENABLE_NUTRITION_MODULE,
+    ENABLE_PREGNANCY_MODULE,
+    ENABLE_TEAMS,
+    ENABLE_USERS,
     LOCATION_SLICES,
     ONADATA_OAUTH_STATE,
     OPENSRP_OAUTH_STATE,
+    OPENSRP_ROLES,
     SUPERSET_SMS_DATA_SLICE,
     USER_LOCATION_DATA_SLICE,
 } from '../configs/env';
@@ -24,7 +31,6 @@ import {
     EC_CHILD,
     EC_FAMILY_MEMBER,
     EC_WOMAN,
-    EN_LANGUAGE_CODE,
     HIERARCHICAL_DATA_URL,
     LANGUAGE_CODES,
     MODULE_SEARCH_PARAM_KEY,
@@ -70,6 +76,7 @@ import { TFunction } from 'i18next';
 import { ActionCreator } from 'redux';
 import { SupersetFormData } from '@onaio/superset-connector';
 import { stringifyUrl } from 'query-string';
+import { isAuthorized } from '@opensrp/react-utils';
 export type { Dictionary };
 
 /** Custom function to get oAuth user info depending on the oAuth2 provider
@@ -795,4 +802,20 @@ export const translateFormat = (rawString: string, ...args: unknown[]) => {
     return rawString.replace(/{(\d+)}/g, (match: string, idx: number) => {
         return typeof args[idx] != 'undefined' ? (args[idx] as string) : match;
     });
+};
+
+/** combines information from enabled modules and roles assigned to user to know what modules the user can have access to */
+export const enabledModules = (roles: string[]) => {
+    const activeRoles = OPENSRP_ROLES;
+    return {
+        usersIsEnabled: ENABLE_USERS && roles && isAuthorized(roles, activeRoles.USERS?.split(',') ?? []),
+        locationsIsEnabled: ENABLE_LOCATIONS && roles && isAuthorized(roles, activeRoles.LOCATIONS?.split(',') ?? []),
+        teamsIsEnabled: ENABLE_TEAMS && roles && isAuthorized(roles, activeRoles.TEAMS?.split(',') ?? []),
+        pregnancyIsEnabled:
+            ENABLE_PREGNANCY_MODULE && roles && isAuthorized(roles, activeRoles.PREGNANCY?.split(',') ?? []),
+        nbcPncIsEnabled:
+            ENABLE_NBC_AND_PNC_MODULE && roles && isAuthorized(roles, activeRoles.NBC_PNC?.split(',') ?? []),
+        nutritionIsEnabled:
+            ENABLE_NUTRITION_MODULE && roles && isAuthorized(roles, activeRoles.NUTRITION?.split(',') ?? []),
+    };
 };
