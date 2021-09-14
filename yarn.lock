@@ -1684,10 +1684,10 @@
   dependencies:
     "@onaio/session-reducer" "^0.0.11"
 
-"@onaio/connected-private-route@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@onaio/connected-private-route/-/connected-private-route-0.1.0.tgz#30cbac1a222f9c21902cb76e46d15708f844908e"
-  integrity sha512-4XlTZwV+p2Kj2Wdvwxc+cy6qLwoTs7Nsg1In0TeyQzL5oOoMBQlgJMFZj8bJxfleO1ui9jweODkt2zdyMglMGg==
+"@onaio/connected-private-route@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@onaio/connected-private-route/-/connected-private-route-0.0.13.tgz#b93b4bc496bde5d9b0afd4411e2016b242d00394"
+  integrity sha512-RYQb4RNzA+ZRnV/LHGd8g9EEfRf5SRdJRDspye9tDYqzBOZrC3aBPRBzA8l/4MkvUypG+poxxzXB9orXb45zJg==
   dependencies:
     "@onaio/session-reducer" "^0.0.13"
 
