@@ -808,14 +808,27 @@ export const translateFormat = (rawString: string, ...args: unknown[]) => {
 export const enabledModules = (roles: string[]) => {
     const activeRoles = OPENSRP_ROLES;
     return {
-        usersIsEnabled: ENABLE_USERS && roles && isAuthorized(roles, activeRoles.USERS?.split(',') ?? []),
-        locationsIsEnabled: ENABLE_LOCATIONS && roles && isAuthorized(roles, activeRoles.LOCATIONS?.split(',') ?? []),
-        teamsIsEnabled: ENABLE_TEAMS && roles && isAuthorized(roles, activeRoles.TEAMS?.split(',') ?? []),
-        pregnancyIsEnabled:
-            ENABLE_PREGNANCY_MODULE && roles && isAuthorized(roles, activeRoles.PREGNANCY?.split(',') ?? []),
-        nbcPncIsEnabled:
-            ENABLE_NBC_AND_PNC_MODULE && roles && isAuthorized(roles, activeRoles.NBC_PNC?.split(',') ?? []),
-        nutritionIsEnabled:
-            ENABLE_NUTRITION_MODULE && roles && isAuthorized(roles, activeRoles.NUTRITION?.split(',') ?? []),
+        usersIsEnabled: !!(ENABLE_USERS && roles && isAuthorized(roles, activeRoles.USERS?.split(',') ?? [])),
+        locationsIsEnabled: !!(
+            ENABLE_LOCATIONS &&
+            roles &&
+            isAuthorized(roles, activeRoles.LOCATIONS?.split(',') ?? [])
+        ),
+        teamsIsEnabled: !!(ENABLE_TEAMS && roles && isAuthorized(roles, activeRoles.TEAMS?.split(',') ?? [])),
+        pregnancyIsEnabled: !!(
+            ENABLE_PREGNANCY_MODULE &&
+            roles &&
+            isAuthorized(roles, activeRoles.PREGNANCY?.split(',') ?? [])
+        ),
+        nbcPncIsEnabled: !!(
+            ENABLE_NBC_AND_PNC_MODULE &&
+            roles &&
+            isAuthorized(roles, activeRoles.NBC_PNC?.split(',') ?? [])
+        ),
+        nutritionIsEnabled: !!(
+            ENABLE_NUTRITION_MODULE &&
+            roles &&
+            isAuthorized(roles, activeRoles.NUTRITION?.split(',') ?? [])
+        ),
     };
 };
