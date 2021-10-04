@@ -1,6 +1,6 @@
 # Miecd Web Technical Guide
 
-The intended audience for this document is any technical-minded person with an interest in maintaining, enhancing or adding new code and/or features to this project. The assumption here is that the whomever picks up this work is familiar with the contextual problem that this project attempts to solve. please refer to the readme for an [overview](../README.md)
+The intended audience for this document is any technical-minded person with an interest in maintaining, enhancing or adding new code and/or features to this project. The assumption here is that whomever picks up this work is familiar with the contextual problem that this project attempts to solve. please refer to the readme for an [overview](../README.md)
 
 ## Getting Started
 
