@@ -1,11 +1,10 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
-import ConnectedPrivateRoute from '@onaio/connected-private-route';
+import RawConnectedPrivateRoute from '@onaio/connected-private-route';
 import { ConnectedOauthCallback, getOpenSRPUserInfo, RouteParams, useOAuthLogin } from '@onaio/gatekeeper';
-import { isAuthenticated } from '@onaio/session-reducer';
-import { connect } from 'react-redux';
-import { Store } from 'redux';
-import { Route, RouteComponentProps, Switch } from 'react-router';
+import { useSelector } from 'react-redux';
+import { getExtraData } from '@opensrp/store';
+import { Route, RouteComponentProps, RouteProps, Switch } from 'react-router';
 import { LastLocationProvider } from 'react-router-last-location';
 import ConnectedSidebar from '../components/page/SideMenu';
 import { BACKEND_ACTIVE, DISABLE_LOGIN_PROTECTION } from '../configs/env';
@@ -20,6 +19,7 @@ import {
     NBC_AND_PNC_LOGFACE_URL,
     NBC_AND_PNC_MODULE,
     NBC_AND_PNC_URL,
+    NOT_FOUND_URL,
     NUTRITION_ANALYSIS_URL,
     NUTRITION_COMPARTMENTS_URL,
     NUTRITION_LOGFACE_URL,
@@ -98,6 +98,7 @@ import { TeamAssignmentView } from '@opensrp/team-assignment';
 import '@opensrp/team-assignment/dist/index.css';
 import '@opensrp/user-management/dist/index.css';
 import { ContentWrapper } from 'components/ContentWrapper';
+import { enabledModules } from 'helpers/utils';
 
 library.add(faUser);
 
@@ -107,16 +108,6 @@ interface UserGroupRouteParams {
 
 interface UserIdRouteParams {
     userId: string;
-}
-
-const mapStateToProps = (state: Partial<Store>) => {
-    return {
-        authenticated: isAuthenticated(state),
-    };
-};
-
-export interface RoutesProps {
-    authenticated: boolean;
 }
 
 export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
@@ -135,8 +126,31 @@ export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) 
     );
 };
 
+/** interface for PrivateRoute props */
+interface PrivateRouteProps extends RouteProps {
+    authenticated: boolean /** is the current user authenticated */;
+    disableLoginProtection: boolean /** should we disable login protection */;
+    redirectPath: string /** redirect to this path is use if not authenticated */;
+    routerDisabledRedirectPath: string /** redirect to this path if router is not enabled */;
+    routerEnabled: boolean /** is this route enabled */;
+}
+const ConnectedPrivateRoute = (props: Partial<PrivateRouteProps>) => {
+    return <RawConnectedPrivateRoute {...props} routerDisableRedirectPath={NOT_FOUND_URL} />;
+};
+
+// ConnectedPrivateRoute.defaultProps.routerDisabledRedirectPath = NOT_FOUND_URL;
+
 export const Routes = () => {
     const { t } = useTranslation();
+    const extraData = useSelector((state) => getExtraData(state));
+    const {
+        pregnancyIsEnabled,
+        usersIsEnabled,
+        nutritionIsEnabled,
+        nbcPncIsEnabled,
+        locationsIsEnabled,
+        teamsIsEnabled,
+    } = enabledModules(extraData?.roles ?? []);
     const NBC_AND_PNC_DASHBOARD_WELCOME = t('Welcome to Newborn and Postnatal Care');
     const NUTRITION_DASHBOARD_WELCOME = t('Welcome to Nutrition Care');
     const PREGNANCY_DASHBOARD_WELCOME = t('Welcome to the pregnancy dashboard');
@@ -153,7 +167,6 @@ export const Routes = () => {
     const userAssignmentClass = 'user-assignment__list';
 
     const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
-
     return (
         <div className="main-container">
             <ConnectedSidebar />
@@ -172,6 +185,7 @@ export const Routes = () => {
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
                             path={PREGNANCY_URL}
+                            routerEnabled={pregnancyIsEnabled}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={() => (
                                 <ModuleHome
@@ -187,6 +201,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={nbcPncIsEnabled}
                             path={NBC_AND_PNC_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={() => (
@@ -203,6 +218,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={nutritionIsEnabled}
                             path={NUTRITION_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={() => (
@@ -219,6 +235,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={pregnancyIsEnabled}
                             path={PREGNANCY_COMPARTMENTS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={() => <Compartments module={PREGNANCY_MODULE} />}
@@ -227,6 +244,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={nbcPncIsEnabled}
                             path={NBC_AND_PNC_COMPARTMENTS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={() => <Compartments module={NBC_AND_PNC_MODULE} />}
@@ -235,6 +253,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={nutritionIsEnabled}
                             path={NUTRITION_COMPARTMENTS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={() => <Compartments module={NUTRITION_MODULE} />}
@@ -259,6 +278,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={pregnancyIsEnabled}
                             path={PREGNANCY_ANALYSIS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={() => <Analysis module={PREGNANCY_MODULE} />}
@@ -267,6 +287,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={nbcPncIsEnabled}
                             path={NBC_AND_PNC_ANALYSIS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={() => <Analysis module={NBC_AND_PNC_MODULE} />}
@@ -275,6 +296,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={nutritionIsEnabled}
                             path={NUTRITION_ANALYSIS_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={() => <Analysis module={NUTRITION_MODULE} />}
@@ -334,6 +356,7 @@ export const Routes = () => {
                         <ConnectedPrivateRoute
                             redirectPath={APP_CALLBACK_URL}
                             exact
+                            routerEnabled={pregnancyIsEnabled}
                             path={PREGNANCY_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={(routeProps: RouteComponentProps) => (
@@ -343,6 +366,7 @@ export const Routes = () => {
                         <ConnectedPrivateRoute
                             redirectPath={APP_CALLBACK_URL}
                             exact
+                            routerEnabled={nbcPncIsEnabled}
                             path={NBC_AND_PNC_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={(routeProps: RouteComponentProps) => (
@@ -352,6 +376,7 @@ export const Routes = () => {
                         <ConnectedPrivateRoute
                             redirectPath={APP_CALLBACK_URL}
                             exact
+                            routerEnabled={nutritionIsEnabled}
                             path={NUTRITION_LOGFACE_URL}
                             // tslint:disable-next-line: jsx-no-lambda
                             component={(routeProps: RouteComponentProps) => (
@@ -362,6 +387,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={locationsIsEnabled}
                             path={URL_LOCATION_UNIT}
                             component={(props: RouteComponentProps) => (
                                 <ContentWrapper>
@@ -373,6 +399,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={locationsIsEnabled}
                             path={URL_LOCATION_UNIT_ADD}
                             component={(props: RouteComponentProps) => (
                                 <ContentWrapper>
@@ -384,6 +411,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={locationsIsEnabled}
                             path={URL_LOCATION_UNIT_EDIT}
                             component={(props: RouteComponentProps<{ id: string }>) => (
                                 <ContentWrapper>
@@ -395,6 +423,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={locationsIsEnabled}
                             path={URL_LOCATION_UNIT_GROUP}
                             component={(props: RouteComponentProps) => (
                                 <ContentWrapper>
@@ -406,6 +435,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={locationsIsEnabled}
                             path={URL_LOCATION_UNIT_GROUP_ADD}
                             component={(props: RouteComponentProps) => (
                                 <ContentWrapper>
@@ -417,6 +447,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={locationsIsEnabled}
                             path={URL_LOCATION_UNIT_GROUP_EDIT}
                             component={(props: RouteComponentProps) => (
                                 <ContentWrapper>
@@ -428,6 +459,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={usersIsEnabled}
                             path={URL_USER}
                             {...usersListProps}
                             component={(props: RouteComponentProps<UserGroupRouteParams>) => (
@@ -440,6 +472,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={usersIsEnabled}
                             path={URL_USER_GROUPS}
                             component={(props: RouteComponentProps<UserGroupRouteParams>) => (
                                 <ContentWrapper className={userAssignmentClass}>
@@ -451,6 +484,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={usersIsEnabled}
                             path={URL_USER_ROLES}
                             component={(props: RouteComponentProps) => (
                                 <ContentWrapper className={userAssignmentClass}>
@@ -462,6 +496,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={usersIsEnabled}
                             path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
                             component={(props: RouteComponentProps<UserGroupRouteParams>) => (
                                 <ContentWrapper className={userAssignmentClass}>
@@ -473,6 +508,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={teamsIsEnabled}
                             path={URL_TEAMS}
                             component={(props: RouteComponentProps) => (
                                 <ContentWrapper>
@@ -484,6 +520,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={teamsIsEnabled}
                             path={URL_TEAM_ASSIGNMENT}
                             {...teamAssignmentProps}
                             component={(props: RouteComponentProps) => (
@@ -496,6 +533,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={teamsIsEnabled}
                             path={URL_TEAMS_ADD}
                             component={(props: RouteComponentProps) => (
                                 <ContentWrapper>
@@ -507,6 +545,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={teamsIsEnabled}
                             path={`${URL_TEAMS_EDIT}/:id`}
                             component={(props: RouteComponentProps) => (
                                 <ContentWrapper>
@@ -518,6 +557,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={usersIsEnabled}
                             path={URL_USER_CREATE}
                             component={(props: RouteComponentProps<UserIdRouteParams>) => (
                                 <ContentWrapper>
@@ -531,6 +571,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={usersIsEnabled}
                             path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
                             component={(props: RouteComponentProps<UserIdRouteParams>) => (
                                 <ContentWrapper>
@@ -544,6 +585,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={usersIsEnabled}
                             path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
                             component={(props: RouteComponentProps) => (
                                 <ContentWrapper>
@@ -568,6 +610,7 @@ export const Routes = () => {
                             redirectPath={APP_CALLBACK_URL}
                             disableLoginProtection={DISABLE_LOGIN_PROTECTION}
                             exact
+                            routerEnabled={usersIsEnabled}
                             path={URL_USER_GROUP_CREATE}
                             component={(props: RouteComponentProps<UserGroupRouteParams>) => (
                                 <ContentWrapper>
@@ -599,6 +642,4 @@ export const Routes = () => {
     );
 };
 
-const ConnectedRoutes = connect(mapStateToProps)(Routes);
-
-export default ConnectedRoutes;
+export default Routes;

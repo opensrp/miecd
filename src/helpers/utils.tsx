@@ -3,9 +3,16 @@
 import { getOnadataUserInfo, getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import { SessionState } from '@onaio/session-reducer';
 import {
+    ENABLE_LOCATIONS,
+    ENABLE_NBC_AND_PNC_MODULE,
+    ENABLE_NUTRITION_MODULE,
+    ENABLE_PREGNANCY_MODULE,
+    ENABLE_TEAMS,
+    ENABLE_USERS,
     LOCATION_SLICES,
     ONADATA_OAUTH_STATE,
     OPENSRP_OAUTH_STATE,
+    OPENSRP_ROLES,
     SUPERSET_SMS_DATA_SLICE,
     USER_LOCATION_DATA_SLICE,
 } from '../configs/env';
@@ -25,6 +32,7 @@ import {
     EC_FAMILY_MEMBER,
     EC_WOMAN,
     HIERARCHICAL_DATA_URL,
+    LANGUAGE_CODES,
     MODULE_SEARCH_PARAM_KEY,
     NBC_AND_PNC_CHILD,
     NBC_AND_PNC_COMPARTMENTS_URL,
@@ -43,6 +51,7 @@ import {
     VIETNAM,
     VIETNAM_COUNTRY_LOCATION_ID,
     VILLAGE,
+    VI_LANGUAGE_CODE,
 } from '../constants';
 import { OpenSRPService } from '../services/opensrp';
 import supersetFetch from '../services/superset';
@@ -67,6 +76,7 @@ import { TFunction } from 'i18next';
 import { ActionCreator } from 'redux';
 import { SupersetFormData } from '@onaio/superset-connector';
 import { stringifyUrl } from 'query-string';
+import { isAuthorized } from '@opensrp/react-utils';
 export type { Dictionary };
 
 /** Custom function to get oAuth user info depending on the oAuth2 provider
@@ -756,4 +766,69 @@ export const inThePast24Months = <T extends { event_date: string }>(records: T[]
         const thisDate = new Date(record.event_date);
         return isWithinInterval(thisDate, { start: twoYearsBack, end: currentDate });
     });
+};
+
+// positive look ahead
+const valueInVtRegex = /^\S*(?=_vt$)/;
+
+/** Choose the language values to use depending on the selected language
+ * @param smsObjects - an array of sms record objects
+ * @param languageCode - currently selected language
+ */
+export function translateSmsFields<T extends Dictionary>(smsObjects: T[], languageCode: LANGUAGE_CODES) {
+    if (languageCode === VI_LANGUAGE_CODE) {
+        // get the keys, find those that end in _vt, see if there is a corresponding key similar without vt, replace it.
+        const translated = smsObjects.map((obj) => {
+            const newObj = { ...obj };
+            for (const key of Object.keys(obj)) {
+                if (valueInVtRegex.test(key)) {
+                    const [enValueKey] = key.match(valueInVtRegex) as Array<string>;
+                    (newObj as Dictionary)[enValueKey] = obj[key];
+                }
+            }
+            return newObj;
+        });
+        return translated;
+    }
+    return smsObjects;
+}
+
+/** custom format function that implements python-style string.format functionality
+ * @param rawString the format string
+ */
+export const translateFormat = (rawString: string, ...args: unknown[]) => {
+    // python-style string format
+    //  var args = Array.prototype.slice.call(arguments, 1)
+    return rawString.replace(/{(\d+)}/g, (match: string, idx: number) => {
+        return typeof args[idx] != 'undefined' ? (args[idx] as string) : match;
+    });
+};
+
+/** combines information from enabled modules and roles assigned to user to know what modules the user can have access to */
+export const enabledModules = (roles: string[]) => {
+    const activeRoles = OPENSRP_ROLES;
+    return {
+        usersIsEnabled: !!(ENABLE_USERS && roles && isAuthorized(roles, activeRoles.USERS?.split(',') ?? [])),
+        locationsIsEnabled: !!(
+            ENABLE_LOCATIONS &&
+            roles &&
+            isAuthorized(roles, activeRoles.LOCATIONS?.split(',') ?? [])
+        ),
+        teamsIsEnabled: !!(ENABLE_TEAMS && roles && isAuthorized(roles, activeRoles.TEAMS?.split(',') ?? [])),
+        pregnancyIsEnabled: !!(
+            ENABLE_PREGNANCY_MODULE &&
+            roles &&
+            isAuthorized(roles, activeRoles.PREGNANCY?.split(',') ?? [])
+        ),
+        nbcPncIsEnabled: !!(
+            ENABLE_NBC_AND_PNC_MODULE &&
+            roles &&
+            isAuthorized(roles, activeRoles.NBC_PNC?.split(',') ?? [])
+        ),
+        nutritionIsEnabled: !!(
+            ENABLE_NUTRITION_MODULE &&
+            roles &&
+            isAuthorized(roles, activeRoles.NUTRITION?.split(',') ?? [])
+        ),
+    };
 };

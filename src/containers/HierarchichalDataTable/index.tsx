@@ -42,7 +42,7 @@ import {
     NO_UNDERSCORE_RISK,
     RISK_LEVEL,
 } from '../../constants';
-import { getModuleLink, fetchSupersetData, useHandleBrokenPage } from '../../helpers/utils';
+import { getModuleLink, fetchSupersetData, useHandleBrokenPage, translateFormat } from '../../helpers/utils';
 import locationsReducer, { Location, reducerName } from '../../store/ducks/locations';
 import smsReducer, {
     reducerName as smsReducerName,
@@ -549,8 +549,8 @@ const unavailableChildren = (headerTitle: string[], currentLevel: 0 | 1 | 2 | 3,
     };
 
     // compose message from last item in header, current and previous drill down level
-    const unavailableMessage = format(
-        t("The %s %s doesn't seem to have %s"),
+    const unavailableMessage = translateFormat(
+        t("The {0} {1} doesn't seem to have {2}"),
         headerTitle[headerTitle.length - 1],
         levelToName((currentLevel - 1) as 0 | 1 | 2 | 3, t),
         levelToName(currentLevel, t, true),
@@ -1031,7 +1031,7 @@ export default function HierarchicalDataTable() {
                                     return 'no_risk' in totals ? (
                                         <tr key="total" className="totals-row">
                                             <td className="default-width" id="total">
-                                                {format(t('Total %s', getLevelString(t)))}
+                                                {translateFormat(t('Total {0}', getLevelString(t)))}
                                             </td>
                                             <td
                                                 className={`default-width ${
@@ -1059,7 +1059,7 @@ export default function HierarchicalDataTable() {
                                     ) : (
                                         <tr key="total" className="totals-row">
                                             <td className="default-width" id="total">
-                                                {format(t('Total %s', getLevelString(t)))}
+                                                {translateFormat(t('Total {0}', getLevelString(t)))}
                                             </td>
                                             <td
                                                 className={`default-width ${
