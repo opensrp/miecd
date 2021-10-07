@@ -44,6 +44,7 @@ import {
     HeaderBreadCrumb,
     fetchSupersetData,
     useHandleBrokenPage,
+    translateFormat,
 } from '../../helpers/utils';
 
 import { Location } from '../../store/ducks/locations';
@@ -249,7 +250,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, birthsInTheFuture, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, birthsInTheFuture, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, birthsInTheFuture, RISK_LEVEL),
-                title: format(t('%d Total pregnancies'), birthsInTheFuture.length),
+                title: translateFormat(t('{0} Total pregnancies'), birthsInTheFuture.length),
             } as PregnancyAndNBCDataCircleCardProps);
 
             setpregnaciesDueIn2WeeksProps({
@@ -262,7 +263,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, last2WeeksSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, last2WeeksSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, last2WeeksSmsData, RISK_LEVEL),
-                title: format(t('%d Total Pregnancies due in 2 weeks'), last2WeeksSmsData.length),
+                title: translateFormat(t('{0} Total Pregnancies due in 2 weeks'), last2WeeksSmsData.length),
             });
 
             setpregnanciesDueIn1WeekProps({
@@ -275,7 +276,7 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, last1WeekSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, last1WeekSmsData, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, last1WeekSmsData, RISK_LEVEL),
-                title: format(t('%d Total Pregnancies due in 1 week'), last1WeekSmsData.length),
+                title: translateFormat(t('{0} Total Pregnancies due in 1 week'), last1WeekSmsData.length),
             });
         }
     }, [filteredData, module, t, userLocationLevel]);
@@ -313,7 +314,11 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, newBorn, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, newBorn, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, newBorn, RISK_LEVEL),
-                title: format(t('total_newborn.%d %s'), newBorn.length, t('Total newborn', { count: newBorn.length })),
+                title: translateFormat(
+                    t('total_newborn.{0} {1}'),
+                    newBorn.length,
+                    t('Total newborn', { count: newBorn.length }),
+                ),
             });
 
             setDataCircleCardWomanData({
@@ -326,8 +331,8 @@ export const Compartments = ({ module }: Props) => {
                     getNumberOfSmsWithRisk(LOW, woman, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(HIGH, woman, RISK_LEVEL) +
                     getNumberOfSmsWithRisk(RISK, woman, RISK_LEVEL),
-                title: format(
-                    t('total_mother_in_pnc.%d %s'),
+                title: translateFormat(
+                    t('total_mother_in_pnc.{0} {1}'),
                     woman.length,
                     t('Total mother in PNC', { count: woman.length }),
                 ),
@@ -374,7 +379,7 @@ export const Compartments = ({ module }: Props) => {
                 stunting: getNumberOfSmsWithRisk(STUNTED, childrenUnder5, GROWTH_STATUS),
                 wasting: getNumberOfSmsWithRisk(SEVERE_WASTING, childrenUnder5, NUTRITION_STATUS),
                 normal: getNumberOfSmsWithRisk(NORMAL, childrenUnder5, NUTRITION_STATUS),
-                title: format(t('%d Total children under 5'), childrenUnder5.length),
+                title: translateFormat(t('{0} Total children under 5'), childrenUnder5.length),
             });
 
             setDataCircleCardNutrition2({
@@ -386,7 +391,7 @@ export const Compartments = ({ module }: Props) => {
                 stunting: getNumberOfSmsWithRisk(STUNTED, childrenUnder2, GROWTH_STATUS),
                 wasting: getNumberOfSmsWithRisk(SEVERE_WASTING, childrenUnder2, NUTRITION_STATUS),
                 normal: getNumberOfSmsWithRisk(NORMAL, childrenUnder2, NUTRITION_STATUS),
-                title: format(t('%d Total children under 2'), childrenUnder2.length),
+                title: translateFormat(t('{0} Total children under 2'), childrenUnder2.length),
             });
         }
     }, [filteredData, module, t, userLocationLevel]);

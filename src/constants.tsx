@@ -25,6 +25,7 @@ export const PREGNANCY_ANALYSIS_URL = '/pregnancy_analysis';
 export const NBC_AND_PNC_ANALYSIS_URL = '/nbc_and_pnc_analysis';
 export const NUTRITION_ANALYSIS_URL = '/nutrition_analysis';
 export const NUTRITION_URL = '/nutrition';
+export const NOT_FOUND_URL = '/404';
 export const HOUSEHOLD_URL = '/404';
 export const ANC_URL = '/404';
 export const CHILD_URL = '/404';
@@ -101,30 +102,49 @@ export const EC_FAMILY_MEMBER = 'ec_family_member';
 export const EC_CHILD = 'ec_child';
 
 // smsTypes
+// t('Pregnancy Detection')
 export const PREGNANCY_DETECTION = 'Pregnancy Detection';
+// t('Update Pregnancy Detection')
 export const UPDATE_PREGNANCY_DETECTION = 'Update Pregnancy Detection';
 export const PREGNANCY_IDENTIFICATION = 'Pregnancy Identification';
+// t('Pregnancy Registration')
 export const PREGNANCY_REGISTRATION = 'Pregnancy Registration';
 export const ANC_REPORT = 'ANC Report';
 export const HOME_VISIT_REPORT = 'Home Visit Report';
+// t('Social Determinants')
 export const SOCIAL_DETERMINANTS = 'Social Determinants';
+// t('Delivery Planning')
 export const DELIVERY_PLANNING = 'Delivery Planning';
+// t('Birth Report')
 export const BIRTH_REPORT = 'Birth Report';
+// t('Death Report')
 export const DEATH_REPORT = 'Death Report';
 export const UPDATE_DEATH_REPORT = 'Update Death Report';
+// t('Red Alert Report')
 export const RED_ALERT_REPORT = 'Red Alert Report';
+// t('Response Report')
 export const RESPONSE_REPORT = 'Response Report';
+// t('Refusal Report')
 export const REFUSAL_REPORT = 'Refusal Report';
+// t('Departure Code')
 export const DEPARTURE_CODE = 'Departure Code';
+// t('Postnatal and Newborn Care')
 export const POSTNATAL_AND_NEWBORN_CARE = 'Postnatal and Newborn Care';
+// t('Nutrition Registration')
 export const NUTRITION_REGISTRATION = 'Nutrition Registration';
+// t('Update Nutrition Registration')
 export const UPDATE_NUTRITION_REGISTRATION = 'Update Nutrition Registration';
 export const MONTHLY_NUTRITION_REPORT = 'Monthly Nutrition Report';
 export const ACCOUNT_CHECK = 'Account Check';
+// t('ANC Visit')
 export const ANC_VISIT = 'ANC Visit';
+// t('Home ANC Visit')
 export const HOME_ANC_VISIT = 'Home ANC Visit';
+// t('Departure Report')
 export const DEPARTURE_REPORT = 'Departure Report';
+// t('PNC Report')
 export const PNC_REPORT = 'PNC Report';
+// t('Newborn Report')
 export const NEWBORN_REPORT = 'Newborn Report';
 
 // // sms events fields
@@ -164,8 +184,9 @@ export const getMonthNames = (t: TFunction) => [
 
 // operational constants
 export const DEFAULT_PAGINATION_SIZE = 5;
-export const EN_LANGUAGE_CODE = 'en' as const;
-export const VI_LANGUAGE_CODE = 'vi' as const;
+export const EN_LANGUAGE_CODE = 'en_core' as const;
+export const VI_LANGUAGE_CODE = 'vi_core' as const;
+export type LANGUAGE_CODES = typeof EN_LANGUAGE_CODE | typeof VI_LANGUAGE_CODE;
 
 export const ALL_LANGUAGE_OPTIONS = {
     [EN_LANGUAGE_CODE]: 'English',

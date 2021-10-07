@@ -18,6 +18,7 @@ import {
 } from '../../configs/settings';
 import {
     DEFAULT_PAGINATION_SIZE,
+    LANGUAGE_CODES,
     LOCATION_FILTER_PARAM,
     NBC_AND_PNC,
     NBC_AND_PNC_LOGFACE_URL,
@@ -38,6 +39,7 @@ import {
     logFaceSupersetCall,
     getCommonPaginationProps,
     translatedModuleLabel,
+    translateSmsFields,
 } from '../../helpers/utils';
 import supersetFetch from '../../services/superset';
 import locationsReducer, { reducerName as locationReducerName } from '../../store/ducks/locations';
@@ -95,7 +97,7 @@ const LogFace = (props: LogFacePropsType) => {
     }, [fetchLogFaceSmsCreator, module, supersetService, supersetSlice]);
 
     const [currentPage, setCurrentPage] = useState<number>(0);
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const { data: userAssignment } = useUserAssignment(t);
     const smsData = useGetLogFaceFilteredSms(props.location, module, userAssignment?.userHierarchy);
@@ -165,7 +167,7 @@ const LogFace = (props: LogFacePropsType) => {
                         <span>{t('Type')}</span>
                         <Select
                             placeholder={t('Select type')}
-                            options={smsTypeFilterByModule[module].map((value) => ({ value, label: value }))}
+                            options={smsTypeFilterByModule[module].map((value) => ({ value, label: t(value) }))}
                             onChange={(val) => updateUrlWithFilter(SMS_TYPE_FILTER_PARAM, props, val?.value)}
                             classNamePrefix="logface-filters"
                             isClearable={true}
@@ -195,7 +197,13 @@ const LogFace = (props: LogFacePropsType) => {
                         </thead>
                         <tbody id="body">
                             {map(
-                                smsData.slice(currentPage * numberOfRows, currentPage * numberOfRows + numberOfRows),
+                                translateSmsFields(
+                                    smsData.slice(
+                                        currentPage * numberOfRows,
+                                        currentPage * numberOfRows + numberOfRows,
+                                    ),
+                                    i18n.language as LANGUAGE_CODES,
+                                ),
                                 (dataObj) => {
                                     return (
                                         <tr key={dataObj.event_id}>
